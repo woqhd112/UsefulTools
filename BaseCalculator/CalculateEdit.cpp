@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CalculateEdit, CEdit)
 CalculateEdit::CalculateEdit()
 {
 	m_bExampleText = false;
+	m_bFocusOn = false;
 }
 
 CalculateEdit::~CalculateEdit()
@@ -45,6 +46,18 @@ void CalculateEdit::OnLButtonDown(UINT nFlags, CPoint point)
 		m_bExampleText = false;
 	}
 
+	CRect rect;
+	GetClientRect(&rect);
+
+	if (point.x > rect.left && point.x < (rect.left + rect.Width()) &&
+		point.y > rect.top && point.y < (rect.top + rect.Height()))
+	{
+		m_bFocusOn = true;
+	}
+	else
+	{
+		m_bFocusOn = false;
+	}
 
 	CEdit::OnLButtonDown(nFlags, point);
 }

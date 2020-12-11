@@ -76,6 +76,7 @@
 #define IDC_BUTTON_LIMITDATE            1023
 #define IDC_BUTTON_WIDTH                1023
 #define IDC_BUTTON_ICON_LENGTH          1023
+#define IDC_BUTTON_TEST2                1023
 #define IDC_BUTTON_BACK                 1024
 #define IDC_BUTTON_TIMER                1024
 #define IDC_BUTTON_WEIGHT               1024
@@ -147,6 +148,22 @@
 #define IDC_STATIC_JUNG                 1097
 #define IDC_STATIC_LEE                  1098
 #define IDC_STATIC_HAELEE               1099
+#define IDC_BUTTON_COMBO2               1100
+#define IDC_EDIT_LEFT_VALUE2            1101
+#define IDC_EDIT_RIGHT_VALUE2           1102
+#define IDC_COMBO_LEFT2                 1103
+#define IDC_COMBO_RIGHT2                1104
+#define IDC_STATIC_SQUAREDM             1105
+#define IDC_STATIC_ARE                  1106
+#define IDC_STATIC_HECTARE              1107
+#define IDC_STATIC_SQUAREDKM            1108
+#define IDC_STATIC_SQUAREDFT            1109
+#define IDC_STATIC_SQUAREDYD            1110
+#define IDC_STATIC_ACRE                 1111
+#define IDC_STATIC_SQUARERULER          1112
+#define IDC_STATIC_SQUARE               1113
+#define IDC_STATIC_DANBO                1114
+#define IDC_STATIC_JUNGBO               1115
 
 // Next default values for new objects
 // 
@@ -154,7 +171,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1100
+#define _APS_NEXT_CONTROL_VALUE         1115
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

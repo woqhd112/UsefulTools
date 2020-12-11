@@ -53,9 +53,10 @@ private:
 
 	void ConvertLength();
 	double ConvertLeftToMeter();
-	double ConvertMeterToRight(double dFirstResult);
+	double ConvertMeterToRight(double dFirstResult, CString& strSymbol);
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
+	void SetStaticValue(double dFirstValue);
 
 public:
 	afx_msg void OnBnClickedButtonCombo();

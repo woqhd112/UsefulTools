@@ -14,6 +14,7 @@ public:
 	void Initialize(int nFontSize, CString strFontName);
 
 	bool m_bExampleText;
+	bool m_bFocusOn;
 
 private:
 

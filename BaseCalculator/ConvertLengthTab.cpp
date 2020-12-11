@@ -88,19 +88,22 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_btn_test.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test.m_bUseMouseEvent = false;
 
-	m_stt_mm.Initialize(18, _T("휴먼매직체"));
-	m_stt_cm.Initialize(18, _T("휴먼매직체"));
-	m_stt_m.Initialize(18, _T("휴먼매직체"));
-	m_stt_km.Initialize(18, _T("휴먼매직체"));
-	m_stt_in.Initialize(18, _T("휴먼매직체"));
-	m_stt_ft.Initialize(18, _T("휴먼매직체"));
-	m_stt_yd.Initialize(18, _T("휴먼매직체"));
-	m_stt_miles.Initialize(18, _T("휴먼매직체"));
-	m_stt_ja.Initialize(18, _T("휴먼매직체"));
-	m_stt_gan.Initialize(18, _T("휴먼매직체"));
-	m_stt_jung.Initialize(18, _T("휴먼매직체"));
-	m_stt_lee.Initialize(18, _T("휴먼매직체"));
-	m_stt_haelee.Initialize(18, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(13, _T("휴먼매직체"));
+	m_edit_right_value.Initialize(15, _T("휴먼매직체"));
+
+	m_stt_mm.Initialize(14, _T("휴먼매직체"));
+	m_stt_cm.Initialize(14, _T("휴먼매직체"));
+	m_stt_m.Initialize(14, _T("휴먼매직체"));
+	m_stt_km.Initialize(14, _T("휴먼매직체"));
+	m_stt_in.Initialize(14, _T("휴먼매직체"));
+	m_stt_ft.Initialize(14, _T("휴먼매직체"));
+	m_stt_yd.Initialize(14, _T("휴먼매직체"));
+	m_stt_miles.Initialize(14, _T("휴먼매직체"));
+	m_stt_ja.Initialize(14, _T("휴먼매직체"));
+	m_stt_gan.Initialize(14, _T("휴먼매직체"));
+	m_stt_jung.Initialize(14, _T("휴먼매직체"));
+	m_stt_lee.Initialize(14, _T("휴먼매직체"));
+	m_stt_haelee.Initialize(14, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("밀리미터 (mm)"));
 	m_combo_left.InsertString(1, _T("센티미터 (cm)"));
@@ -136,11 +139,40 @@ BOOL ConvertLengthTab::OnInitDialog()
 
 	m_btn_test.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
+	m_stt_mm.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_cm.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_m.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_km.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_in.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_ft.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_yd.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_miles.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_ja.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_gan.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_jung.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_lee.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_haelee.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_stt_mm.BringWindowToTop();
+	m_stt_cm.BringWindowToTop();
+	m_stt_m.BringWindowToTop();
+	m_stt_km.BringWindowToTop();
+	m_stt_in.BringWindowToTop();
+	m_stt_ft.BringWindowToTop();
+	m_stt_yd.BringWindowToTop();
+	m_stt_miles.BringWindowToTop();
+	m_stt_ja.BringWindowToTop();
+	m_stt_gan.BringWindowToTop();
+	m_stt_jung.BringWindowToTop();
+	m_stt_lee.BringWindowToTop();
+	m_stt_haelee.BringWindowToTop();
 	m_edit_left_value.BringWindowToTop();
+	m_edit_right_value.BringWindowToTop();
 	m_combo_left.BringWindowToTop();
 	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
@@ -188,6 +220,7 @@ void ConvertLengthTab::OnCbnSelchangeComboLeft()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	SetComboButtonText(_T("▲"));
 	SetTestButtonText();
+	ConvertLength();
 }
 
 
@@ -205,11 +238,12 @@ void ConvertLengthTab::OnCbnSelchangeComboRight()
 
 void ConvertLengthTab::ConvertLength()
 {
+	CString strSymbol;
 	double dFirstResult = ConvertLeftToMeter();
-	double dLastResult = ConvertMeterToRight(dFirstResult);
+	double dLastResult = ConvertMeterToRight(dFirstResult, strSymbol);
 
 	CString strResult;
-	strResult.Format(_T("%g"), dLastResult);
+	strResult.Format(_T("%g %s"), dLastResult, strSymbol);
 	m_edit_right_value.SetWindowTextW(strResult);
 }
 
@@ -289,7 +323,7 @@ double ConvertLengthTab::ConvertLeftToMeter()
 	return dResult;
 }
 
-double ConvertLengthTab::ConvertMeterToRight(double dFirstResult)
+double ConvertLengthTab::ConvertMeterToRight(double dFirstResult, CString& strSymbol)
 {
 	double dResult = 0;
 	int nSel = m_combo_right.GetCurSel();
@@ -297,57 +331,116 @@ double ConvertLengthTab::ConvertMeterToRight(double dFirstResult)
 	if (nSel == 0) // m -> mm
 	{
 		dResult = dFirstResult * 100 * 10;
+		strSymbol = _T("mm");
 	}
 	else if (nSel == 1) // m -> cm
 	{
 		dResult = dFirstResult * 100;
+		strSymbol = _T("cm");
 	}
 	else if (nSel == 2) // m -> m
 	{
 		dResult = dFirstResult;
+		strSymbol = _T("m");
 	}
 	else if (nSel == 3) // m -> km
 	{
 		dResult = dFirstResult / 1000;
+		strSymbol = _T("km");
 	}
 	else if (nSel == 4) // m -> inch
 	{
 		dResult = dFirstResult * 39.370079;
+		strSymbol = _T("in");
 	}
 	else if (nSel == 5) // m -> feet
 	{
 		dResult = dFirstResult * 3.28084;
+		strSymbol = _T("ft");
 	}
 	else if (nSel == 6) // m -> yard
 	{
 		dResult = dFirstResult * 1.093613;
+		strSymbol = _T("yd");
 	}
 	else if (nSel == 7) // m -> mile
 	{
 		dResult = (dFirstResult * 0.621371) / 1000;
+		strSymbol = _T("mile");
 	}
 	else if (nSel == 8) // m -> ja
 	{
 		dResult = dFirstResult * 3.3;
+		strSymbol = _T("尺");
 	}
 	else if (nSel == 9) // m -> gan
 	{
 		dResult = dFirstResult * 0.55;
+		strSymbol = _T("間");
 	}
 	else if (nSel == 10) // m -> jung
 	{
 		dResult = (dFirstResult * 9.166667) / 1000;
+		strSymbol = _T("町");
 	}
 	else if (nSel == 11) // m -> lee
 	{
 		dResult = (dFirstResult * 2.546296) / 1000;
+		strSymbol = _T("里");
 	}
 	else // m -> haelee
 	{
 		dResult = (dFirstResult * 0.539957) / 1000;
+		strSymbol = _T("海里");
 	}
 
+	SetStaticValue(dFirstResult);
+
 	return dResult;
+}
+
+void ConvertLengthTab::SetStaticValue(double dFirstValue)
+{
+	CString strFormat;
+
+	strFormat.Format(_T("%g mm"), dFirstValue * 100 * 10);
+	m_stt_mm.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g cm"), dFirstValue * 100);
+	m_stt_cm.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g m"), dFirstValue);
+	m_stt_m.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g km"), dFirstValue / 1000);
+	m_stt_km.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g in"), dFirstValue * 39.370079);
+	m_stt_in.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g ft"), dFirstValue * 3.28084);
+	m_stt_ft.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g yd"), dFirstValue  * 1.093613);
+	m_stt_yd.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g mile"), (dFirstValue * 0.621371) / 1000);
+	m_stt_miles.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 尺"), dFirstValue * 3.3);
+	m_stt_ja.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 間"), dFirstValue * 0.55);
+	m_stt_gan.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 町"), (dFirstValue * 9.166667) / 1000);
+	m_stt_jung.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 里"), (dFirstValue * 2.546296) / 1000);
+	m_stt_lee.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 海里"), (dFirstValue * 0.539957) / 1000);
+	m_stt_haelee.SetWindowTextW(strFormat);
 }
 
 void ConvertLengthTab::SetComboButtonText(CString strSymbol)
@@ -424,14 +517,20 @@ void ConvertLengthTab::SetTestButtonText()
 BOOL ConvertLengthTab::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	if (m_edit_left_value.m_bFocusOn)
+	{
+		CRect rect;
+		m_edit_left_value.GetClientRect(rect);
+		CDC* pDC = m_edit_left_value.GetWindowDC();
+		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+	}
+	
 	if (pMsg->message == WM_LBUTTONUP)
 	{
-		if (pMsg->hwnd == m_edit_left_value)
+		if (pMsg->hwnd != m_edit_left_value)
 		{
-			CRect rect;
-			m_edit_left_value.GetClientRect(rect);
-			CDC* pDC = m_edit_left_value.GetWindowDC();
-			pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+			m_edit_left_value.m_bFocusOn = false;
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)
@@ -492,6 +591,65 @@ HBRUSH ConvertLengthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
+	else if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_MM)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_CM)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_M)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_KM)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_IN)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_FT)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_YD)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_MILES)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_JA)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_GAN)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_JUNG)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_LEE)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_HAELEE)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE)
+		{
+			pDC->SetTextColor(RGB(236, 130, 60));
+		}
+	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
@@ -505,5 +663,8 @@ void ConvertLengthTab::OnEnChangeEditLeftValue()
 	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
 	// 이 알림 메시지를 보내지 않습니다.
 
+	ConvertLength();
+
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+
