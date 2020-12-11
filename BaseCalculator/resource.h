@@ -164,6 +164,24 @@
 #define IDC_STATIC_SQUARE               1113
 #define IDC_STATIC_DANBO                1114
 #define IDC_STATIC_JUNGBO               1115
+#define IDC_STATIC_GUAN                 1116
+#define IDC_BUTTON_COMBO3               1117
+#define IDC_EDIT_LEFT_VALUE3            1118
+#define IDC_EDIT_RIGHT_VALUE3           1119
+#define IDC_BUTTON_TEST3                1120
+#define IDC_COMBO_LEFT3                 1121
+#define IDC_COMBO_RIGHT3                1122
+#define IDC_STATIC_MG                   1123
+#define IDC_STATIC_G                    1124
+#define IDC_STATIC_KG                   1125
+#define IDC_STATIC_T                    1126
+#define IDC_STATIC_KT                   1127
+#define IDC_STATIC_GR                   1128
+#define IDC_STATIC_OZ                   1129
+#define IDC_STATIC_LB                   1130
+#define IDC_STATIC_DON                  1131
+#define IDC_STATIC_NYANG                1132
+#define IDC_STATIC_GEUN                 1133
 
 // Next default values for new objects
 // 
@@ -171,7 +189,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1115
+#define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

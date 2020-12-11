@@ -200,12 +200,57 @@ double ConvertWidthTab::ConvertLeftToSquaredKMeter()
 	if (nSel == 0)	// m² -> km²
 	{
 		double dsqMeter = _ttof(strText);
-		dResult = 0;
+		dResult = dsqMeter / 1000000;
 	}
 	else if (nSel == 1) // a -> km²
 	{
 		double dare = _ttof(strText);
-		dResult = 0;
+		dResult = dare / 10000;
+	}
+	else if (nSel == 2) // ha -> km²
+	{
+		double dhectare = _ttof(strText);
+		dResult = dhectare / 100;
+	}
+	else if (nSel == 3) // km² -> km²
+	{
+		double dsqkMeter = _ttof(strText);
+		dResult = dsqkMeter;
+	}
+	else if (nSel == 4) // ft² -> km²
+	{
+		double dsqFeet = _ttof(strText);
+		dResult = dsqFeet / 10763910.4;
+	}
+	else if (nSel == 5) // yd² -> km²
+	{
+		double dsqYard = _ttof(strText);
+		dResult = dsqYard / 1195990.05;
+	}
+	else if (nSel == 6) // ac -> km²
+	{
+		double dacre = _ttof(strText);
+		dResult = (dacre * 4046.85642) / 1000000;
+	}
+	else if (nSel == 7) // 평방자 -> km²
+	{
+		double dsqRuler = _ttof(strText);
+		dResult = (dsqRuler / 10.89) / 1000000;
+	}
+	else if (nSel == 8) // 평 -> km²
+	{
+		double dsquare = _ttof(strText);
+		dResult = dsquare / 302500;
+	}
+	else if (nSel == 9) // 단보 -> km²
+	{
+		double ddanbo = _ttof(strText);
+		dResult = (ddanbo * 991.735537) / 1000000;
+	}
+	else if (nSel == 10) // 정보 -> km²
+	{
+		double djungbo = _ttof(strText);
+		dResult = (djungbo * 9917.35537) / 1000000;
 	}
 
 	return dResult;
@@ -215,6 +260,38 @@ void ConvertWidthTab::SetStaticValue(double dFirstValue)
 {
 	CString strFormat;
 	// 처리
+	strFormat.Format(_T("%g m²"), dFirstValue * 1000000);
+	m_stt_squared_m.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g a"), dFirstValue * 10000);
+	m_stt_are.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g ha"), dFirstValue * 100);
+	m_stt_hectare.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g km²"), dFirstValue);
+	m_stt_squared_km.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g ft²"), dFirstValue * 10763910.4);
+	m_stt_squared_ft.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g yd²"), dFirstValue * 1195990.05);
+	m_stt_squared_yd.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g ac"), dFirstValue * 247.105381);
+	m_stt_acre.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 평방자"), dFirstValue * 10890000);
+	m_stt_square_ruler.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 평"), dFirstValue * 302500);
+	m_stt_square.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 단보"), dFirstValue * 1008.33333);
+	m_stt_danbo.SetWindowTextW(strFormat);
+
+	strFormat.Format(_T("%g 정보"), dFirstValue * 100.833333);
+	m_stt_jungbo.SetWindowTextW(strFormat);
 }
 
 double ConvertWidthTab::ConvertSquaredKMeterToRight(double dFirstResult, CString& strSymbol)
@@ -222,6 +299,61 @@ double ConvertWidthTab::ConvertSquaredKMeterToRight(double dFirstResult, CString
 	double dResult = 0;
 	int nSel = m_combo_right.GetCurSel();
 	// 처리
+	if (nSel == 0)	// km² -> m²
+	{
+		dResult = dFirstResult * 1000000;
+		strSymbol = _T("m²");
+	}
+	else if (nSel == 1) // km² -> a
+	{
+		dResult = dFirstResult * 10000;
+		strSymbol = _T("a");
+	}
+	else if (nSel == 2) // km² -> ha
+	{
+		dResult = dFirstResult * 100;
+		strSymbol = _T("ha");
+	}
+	else if (nSel == 3) // km² -> km²
+	{
+		dResult = dFirstResult;
+		strSymbol = _T("km²");
+	}
+	else if (nSel == 4) // km² -> ft²
+	{
+		dResult = dFirstResult * 10763910.4;
+		strSymbol = _T("ft²");
+	}
+	else if (nSel == 5) // km² -> yd²
+	{
+		dResult = dFirstResult * 1195990.05;
+		strSymbol = _T("yd²");
+	}
+	else if (nSel == 6) // km² -> ac
+	{
+		dResult = dFirstResult * 247.105381;
+		strSymbol = _T("ac");
+	}
+	else if (nSel == 7) // km² -> 평방자
+	{
+		dResult = dFirstResult * 10890000;
+		strSymbol = _T("평방자");
+	}
+	else if (nSel == 8) // km² -> 평
+	{
+		dResult = dFirstResult * 302500;
+		strSymbol = _T("평");
+	}
+	else if (nSel == 9) // km² -> 단보
+	{
+		dResult = dFirstResult * 1008.33333;
+		strSymbol = _T("단보");
+	}
+	else if (nSel == 10) // km² -> 정보
+	{
+		dResult = dFirstResult * 100.833333;
+		strSymbol = _T("정보");
+	}
 
 	SetStaticValue(dFirstResult);
 
@@ -454,7 +586,7 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(RGB(236, 130, 60));
 		}
-		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE)
+		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE2)
 		{
 			pDC->SetTextColor(RGB(236, 130, 60));
 		}
