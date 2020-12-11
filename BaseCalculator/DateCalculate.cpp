@@ -88,7 +88,25 @@ void DateCalculate::OnOK()
 BOOL DateCalculate::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (WM_KEYDOWN == pMsg->message)
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_afterdate)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_limitdate)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_reset)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+	}
+	else if (WM_KEYDOWN == pMsg->message)
 	{
 		if (pMsg->wParam == VK_NUMPAD0) pMsg->wParam = L'0';
 		else if (pMsg->wParam == VK_NUMPAD1) pMsg->wParam = L'1';

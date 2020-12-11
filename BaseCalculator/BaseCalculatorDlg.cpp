@@ -141,6 +141,8 @@ BOOL CBaseCalculatorDlg::OnInitDialog()
 	m_stt_date.Initialize(15, _T("고딕"));
 	m_stt_timer.Initialize(15, _T("고딕"));
 
+	
+	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -272,3 +274,37 @@ void CBaseCalculatorDlg::OnOK()
 	//CDialogEx::OnOK();
 }
 
+BOOL CBaseCalculatorDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_base)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_engineering)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_converter)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_date)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_timer)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}

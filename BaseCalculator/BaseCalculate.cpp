@@ -270,7 +270,15 @@ void BaseCalculate::SelectComboBox()
 BOOL BaseCalculate::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (WM_KEYDOWN == pMsg->message)
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_result_select_from_base)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(MAKEINTRESOURCE(32649));
+			SetCursor(hCursor);
+		}
+	}
+	else if (WM_KEYDOWN == pMsg->message)
 	{
 		if (pMsg->wParam == VK_NUMPAD0) pMsg->wParam = L'0';
 		else if (pMsg->wParam == VK_NUMPAD1) pMsg->wParam = L'1';

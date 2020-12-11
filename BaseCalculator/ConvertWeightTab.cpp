@@ -75,8 +75,8 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_backBrush.CreateSolidBrush(RGB(250, 250, 250));
 
 	this->SetBackgroundColor(RGB(250, 250, 250));
-
-	m_btn_icon.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	
+	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_WEIGHT_NOMAL);
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
@@ -206,63 +206,63 @@ double ConvertWeightTab::ConvertLeftToKGram()
 	// 처리
 	if (nSel == 0)	// mg -> kg
 	{
-		double dsqMeter = _ttof(strText);
-		dResult = 0;
+		double dmGram = _ttof(strText);
+		dResult = dmGram / 1000000;
 	}
 	else if (nSel == 1) // g -> kg
 	{
-		double dare = _ttof(strText);
-		dResult = 0;
+		double dGram = _ttof(strText);
+		dResult = dGram / 1000;
 	}
 	else if (nSel == 2) // kg -> kg
 	{
-		double dhectare = _ttof(strText);
-		dResult = 0;
+		double dkGram = _ttof(strText);
+		dResult = dkGram;
 	}
 	else if (nSel == 3) // t -> kg
 	{
-		double dsqkMeter = _ttof(strText);
-		dResult = 0;
+		double dTon = _ttof(strText);
+		dResult = dTon * 1000;
 	}
 	else if (nSel == 4) // kt -> kg
 	{
-		double dsqFeet = _ttof(strText);
-		dResult = 0;
+		double dkTon = _ttof(strText);
+		dResult = dkTon * 1000000;
 	}
 	else if (nSel == 5) // gr -> kg
 	{
-		double dsqYard = _ttof(strText);
-		dResult = 0;
+		double dGrain = _ttof(strText);
+		dResult = (dGrain * 64.79891) / 1000000;
 	}
 	else if (nSel == 6) // oz -> kg
 	{
-		double dacre = _ttof(strText);
-		dResult = 0;
+		double dOnz = _ttof(strText);
+		dResult = (dOnz * 28349.5231) / 1000000;
 	}
 	else if (nSel == 7) // lb -> kg
 	{
-		double dsqRuler = _ttof(strText);
-		dResult = 0;
+		double dPound = _ttof(strText);
+		dResult = (dPound * 453.59237) / 1000;
 	}
 	else if (nSel == 8) // 돈 -> kg
 	{
-		double dsquare = _ttof(strText);
-		dResult = 0;
+		double dDon = _ttof(strText);
+		dResult = (dDon * 3.75) / 1000;
 	}
 	else if (nSel == 9) // 냥 -> kg
 	{
-		double ddanbo = _ttof(strText);
-		dResult = 0;
+		double dNyang = _ttof(strText);
+		dResult = (dNyang * 37.5) / 1000;
 	}
 	else if (nSel == 10) // 근 -> kg
 	{
-		double djungbo = _ttof(strText);
-		dResult = 0;
+		double dGeun = _ttof(strText);
+		dResult = (dGeun * 600) / 1000;
 	}
 	else if (nSel == 11) // 관 -> kg
 	{
-		double djungbo = _ttof(strText);
-		dResult = 0;
+		double dGuan = _ttof(strText);
+		dResult = dGuan * 3.75;
 	}
 
 	return dResult;
@@ -272,40 +272,40 @@ void ConvertWeightTab::SetStaticValue(double dFirstValue)
 {
 	CString strFormat;
 	// 처리
-	strFormat.Format(_T("%g mg"), 0);
+	strFormat.Format(_T("%g mg"), dFirstValue * 1000000);
 	m_stt_mg.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g g"), 0);
+	strFormat.Format(_T("%g g"), dFirstValue * 1000);
 	m_stt_g.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g kg"), 0);
+	strFormat.Format(_T("%g kg"), dFirstValue);
 	m_stt_kg.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g t"), 0);
+	strFormat.Format(_T("%g t"), dFirstValue / 1000);
 	m_stt_t.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g kt"), 0);
+	strFormat.Format(_T("%g kt"), dFirstValue / 1000000);
 	m_stt_kt.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g gr"), 0);
+	strFormat.Format(_T("%g gr"), dFirstValue * 15432.3584);
 	m_stt_gr.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g oz"), 0);
+	strFormat.Format(_T("%g oz"), dFirstValue * 35.2739619);
 	m_stt_oz.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g lb"), 0);
+	strFormat.Format(_T("%g lb"), dFirstValue * 2.20462262);
 	m_stt_lb.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g 돈"), 0);
+	strFormat.Format(_T("%g 돈"), dFirstValue * 266.666667);
 	m_stt_don.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g 냥"), 0);
+	strFormat.Format(_T("%g 냥"), dFirstValue * 26.6666667);
 	m_stt_nyang.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g 근"), 0);
+	strFormat.Format(_T("%g 근"), dFirstValue * 1.66666667);
 	m_stt_geun.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g 관"), 0);
+	strFormat.Format(_T("%g 관"), dFirstValue * 0.266666667);
 	m_stt_guan.SetWindowTextW(strFormat);
 }
 
@@ -316,62 +316,62 @@ double ConvertWeightTab::ConvertKGramToRight(double dFirstResult, CString& strSy
 	// 처리
 	if (nSel == 0)	// kg -> mg
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1000000;
 		strSymbol = _T("mg");
 	}
 	else if (nSel == 1) // kg -> g
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1000;
 		strSymbol = _T("g");
 	}
 	else if (nSel == 2) // kg -> kg
 	{
-		dResult = 0;
+		dResult = dFirstResult;
 		strSymbol = _T("kg");
 	}
 	else if (nSel == 3) // kg -> t
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1000;
 		strSymbol = _T("t");
 	}
 	else if (nSel == 4) // kg -> kt
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1000000;
 		strSymbol = _T("kt");
 	}
 	else if (nSel == 5) // kg -> gr
 	{
-		dResult = 0;
+		dResult = dFirstResult * 15432.3584;
 		strSymbol = _T("gr");
 	}
 	else if (nSel == 6) // kg -> oz
 	{
-		dResult = 0;
+		dResult = dFirstResult * 35.2739619;
 		strSymbol = _T("oz");
 	}
 	else if (nSel == 7) // kg -> lb
 	{
-		dResult = 0;
+		dResult = dFirstResult * 2.20462262;
 		strSymbol = _T("lb");
 	}
 	else if (nSel == 8) // kg -> 돈
 	{
-		dResult = 0;
+		dResult = dFirstResult * 266.666667;
 		strSymbol = _T("돈");
 	}
 	else if (nSel == 9) // kg -> 냥
 	{
-		dResult = 0;
+		dResult = dFirstResult * 26.6666667;
 		strSymbol = _T("냥");
 	}
 	else if (nSel == 10) // kg -> 근
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1.66666667;
 		strSymbol = _T("근");
 	}
 	else if (nSel == 11) // kg -> 관
 	{
-		dResult = 0;
+		dResult = dFirstResult * 0.266666667;
 		strSymbol = _T("관");
 	}
 
@@ -510,7 +510,15 @@ BOOL ConvertWeightTab::PreTranslateMessage(MSG* pMsg)
 		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
 	}
 
-	if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_combo)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONUP)
 	{
 		if (pMsg->hwnd != m_edit_left_value)
 		{

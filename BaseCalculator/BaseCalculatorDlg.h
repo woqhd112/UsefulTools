@@ -54,6 +54,8 @@ private:
 	DateCalculate* date;
 	StopWatch* stopwatch;
 
+
+
 public:
 	bool bBase;
 	bool bEngineering;
@@ -69,4 +71,5 @@ public:
 	afx_msg void OnBnClickedButtonTimer();
 	virtual void OnOK();
 
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

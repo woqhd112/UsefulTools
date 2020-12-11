@@ -49,8 +49,7 @@ void CalculateEdit::OnLButtonDown(UINT nFlags, CPoint point)
 	CRect rect;
 	GetClientRect(&rect);
 
-	if (point.x > rect.left && point.x < (rect.left + rect.Width()) &&
-		point.y > rect.top && point.y < (rect.top + rect.Height()))
+	if (PtInRect(&rect, point))
 	{
 		m_bFocusOn = true;
 	}

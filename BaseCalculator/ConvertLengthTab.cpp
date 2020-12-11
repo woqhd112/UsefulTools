@@ -78,7 +78,7 @@ BOOL ConvertLengthTab::OnInitDialog()
 
 	this->SetBackgroundColor(RGB(250, 250, 250));
 
-	m_btn_icon.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_LENGTH_NOMAL);
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
@@ -177,8 +177,8 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
 
-	m_combo_left.SetCurSel(1);
-	m_combo_right.SetCurSel(0);
+	m_combo_left.SetCurSel(0);
+	m_combo_right.SetCurSel(4);
 	
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
@@ -526,7 +526,15 @@ BOOL ConvertLengthTab::PreTranslateMessage(MSG* pMsg)
 		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
 	}
 	
-	if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_combo)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONUP)
 	{
 		if (pMsg->hwnd != m_edit_left_value)
 		{

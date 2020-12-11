@@ -147,7 +147,35 @@ void UnitConverter::OnOK()
 BOOL UnitConverter::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (WM_KEYDOWN == pMsg->message)
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (pMsg->hwnd == m_btn_length)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_width)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_weight)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_time)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+		else if (pMsg->hwnd == m_btn_bit)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
+	}
+	else if (WM_KEYDOWN == pMsg->message)
 	{
 		if (pMsg->wParam == VK_TAB)
 		{

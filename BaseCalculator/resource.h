@@ -182,6 +182,20 @@
 #define IDC_STATIC_DON                  1131
 #define IDC_STATIC_NYANG                1132
 #define IDC_STATIC_GEUN                 1133
+#define IDC_BUTTON_COMBO4               1134
+#define IDC_COMBO_LEFT4                 1135
+#define IDC_COMBO_RIGHT4                1136
+#define IDC_BUTTON_TEST4                1137
+#define IDC_EDIT_LEFT_VALUE4            1138
+#define IDC_EDIT_RIGHT_VALUE4           1139
+#define IDC_STATIC_BIT                  1140
+#define IDC_STATIC_BYTE                 1141
+#define IDC_STATIC_KBYTE                1142
+#define IDC_STATIC_MBYTE                1143
+#define IDC_STATIC_GBYTE                1144
+#define IDC_STATIC_TBYTE                1145
+#define IDC_STATIC_PBTYE                1146
+#define IDC_STATIC_EBYTE                1147
 
 // Next default values for new objects
 // 
@@ -189,7 +203,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1134
+#define _APS_NEXT_CONTROL_VALUE         1148
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
