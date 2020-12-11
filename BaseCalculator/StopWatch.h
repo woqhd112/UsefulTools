@@ -1,0 +1,57 @@
+﻿#pragma once
+#include "CalculateButton.h"
+#include "CalculateStatic.h"
+
+// Timer 대화 상자
+
+class StopWatch : public CDialogEx
+{
+	DECLARE_DYNAMIC(StopWatch)
+
+public:
+	StopWatch(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~StopWatch();
+
+// 대화 상자 데이터입니다.
+#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_DIALOG_STOPWATCH };
+#endif
+
+private:
+
+	CWnd* pParent;
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+
+	DECLARE_MESSAGE_MAP()
+	virtual void OnOK();
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnInitDialog();
+	virtual void PostNcDestroy();
+	afx_msg void OnClose();
+private:
+	CalculateStatic m_stt_stopwatch_view;
+	CalculateStatic m_stt_hms;
+	CalculateStatic m_stt_mils;
+	CalculateButton m_btn_startandstop;
+	CalculateButton m_btn_reset;
+
+	CBrush m_backBrush;
+
+	bool bThread;
+	bool bStart;
+
+	CWinThread* m_thread;
+	CString strHMS;
+	CString strMils;
+
+	static UINT thrStopWatch(LPVOID method);
+	void StartStopWatch();
+
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedButtonStartandstop();
+	afx_msg void OnBnClickedButtonReset();
+};

@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{ed3bc8b2-240a-45eb-9d5d-d282bdd1298a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{21d83337-353b-4a2a-926d-dab90bea38cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engineering">
+      <UniqueIdentifier>{f693435f-346d-4efe-8547-73760d9759e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converter">
+      <UniqueIdentifier>{24b84ad4-cd4d-499d-a5f4-23875d0734c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StopWatch">
+      <UniqueIdentifier>{321b6ee4-f851-4c30-ac31-51d5144c160c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Date">
+      <UniqueIdentifier>{511395e3-5353-4c9d-ba9d-b68a862702a7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseCalculator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCalculatorDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCalculate.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineeringCalculate.h">
+      <Filter>Engineering</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula.h">
+      <Filter>Engineering</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultTimeline.h">
+      <Filter>Engineering</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitConverter.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatch.h">
+      <Filter>StopWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="DateCalculate.h">
+      <Filter>Date</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateStatic.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateEdit.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertBitTab.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertLengthTab.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertTimeTab.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertWeightTab.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertWidthTab.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BaseCalculator.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCalculatorDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCalculate.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineeringCalculate.cpp">
+      <Filter>Engineering</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula.cpp">
+      <Filter>Engineering</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultTimeline.cpp">
+      <Filter>Engineering</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitConverter.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatch.cpp">
+      <Filter>StopWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="DateCalculate.cpp">
+      <Filter>Date</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateStatic.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateEdit.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertBitTab.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertLengthTab.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertTimeTab.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertWeightTab.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertWidthTab.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BaseCalculator.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\BaseCalculator.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BaseCalculator.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\cal.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Cal.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngegg.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngegg_24.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngegg24.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngegg24_h.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngegg24_d.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngwing24.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngwing24_h.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\pngwing24_d.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Base.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Engineering.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Converter.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\TimeCal.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Timer.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertBit.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertLength.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertTime.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
