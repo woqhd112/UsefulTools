@@ -43,7 +43,7 @@ BEGIN_MESSAGE_MAP(BaseCalculate, CDialogEx)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
-
+ 
 // BaseCalculate 메시지 처리기
 
 
