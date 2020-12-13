@@ -28,7 +28,7 @@ void ConvertWidthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_COMBO2, m_btn_combo);
 	DDX_Control(pDX, IDC_COMBO_LEFT2, m_combo_left);
 	DDX_Control(pDX, IDC_COMBO_RIGHT2, m_combo_right);
-	DDX_Control(pDX, IDC_BUTTON_TEST2, m_btn_test);
+	DDX_Control(pDX, IDC_BUTTON_CONTAINER2, m_btn_test1);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE2, m_edit_left_value);
 	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE2, m_edit_right_value);
 	DDX_Control(pDX, IDC_STATIC_SQUAREDM, m_stt_squared_m);
@@ -42,6 +42,7 @@ void ConvertWidthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_SQUARE, m_stt_square);
 	DDX_Control(pDX, IDC_STATIC_DANBO, m_stt_danbo);
 	DDX_Control(pDX, IDC_STATIC_JUNGBO, m_stt_jungbo);
+	DDX_Control(pDX, IDC_BUTTON_REVERSE3, m_btn_reverse);
 }
 
 
@@ -51,6 +52,7 @@ BEGIN_MESSAGE_MAP(ConvertWidthTab, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT2, &ConvertWidthTab::OnCbnSelchangeComboRight2)
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE2, &ConvertWidthTab::OnEnChangeEditLeftValue2)
+	ON_BN_CLICKED(IDC_BUTTON_REVERSE3, &ConvertWidthTab::OnBnClickedButtonReverse3)
 END_MESSAGE_MAP()
 
 
@@ -76,28 +78,30 @@ BOOL ConvertWidthTab::OnInitDialog()
 
 	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_WIDTH_NOMAL);
+	m_btn_reverse.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_SEMIFLAT);
+	m_btn_reverse.InsertImage(IDB_PNG_REVERSE_NOMAL);
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));
 	m_btn_combo.m_bUseMouseEvent = false;
-	m_btn_test.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_test.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
-	m_btn_test.m_bUseMouseEvent = false;
+	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
+	m_btn_test1.m_bUseMouseEvent = false;
 
-	m_edit_left_value.Initialize(13, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(15, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_right_value.Initialize(22, _T("휴먼매직체"));
 
-	m_stt_squared_m.Initialize(14, _T("휴먼매직체"));
-	m_stt_are.Initialize(14, _T("휴먼매직체"));
-	m_stt_hectare.Initialize(14, _T("휴먼매직체"));
-	m_stt_squared_km.Initialize(14, _T("휴먼매직체"));
-	m_stt_squared_ft.Initialize(14, _T("휴먼매직체"));
-	m_stt_squared_yd.Initialize(14, _T("휴먼매직체"));
-	m_stt_acre.Initialize(14, _T("휴먼매직체"));
-	m_stt_square_ruler.Initialize(14, _T("휴먼매직체"));
-	m_stt_square.Initialize(14, _T("휴먼매직체"));
-	m_stt_danbo.Initialize(14, _T("휴먼매직체"));
-	m_stt_jungbo.Initialize(14, _T("휴먼매직체"));
+	m_stt_squared_m.Initialize(18, _T("휴먼매직체"));
+	m_stt_are.Initialize(18, _T("휴먼매직체"));
+	m_stt_hectare.Initialize(18, _T("휴먼매직체"));
+	m_stt_squared_km.Initialize(18, _T("휴먼매직체"));
+	m_stt_squared_ft.Initialize(18, _T("휴먼매직체"));
+	m_stt_squared_yd.Initialize(18, _T("휴먼매직체"));
+	m_stt_acre.Initialize(18, _T("휴먼매직체"));
+	m_stt_square_ruler.Initialize(18, _T("휴먼매직체"));
+	m_stt_square.Initialize(18, _T("휴먼매직체"));
+	m_stt_danbo.Initialize(18, _T("휴먼매직체"));
+	m_stt_jungbo.Initialize(18, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("제곱미터 (m²)"));
 	m_combo_left.InsertString(1, _T("아르 (a)"));
@@ -127,7 +131,7 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_combo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
-	m_btn_test.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
@@ -146,6 +150,7 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_stt_danbo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_jungbo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
+	m_btn_test1.BringWindowToTop();
 	m_stt_squared_m.BringWindowToTop();
 	m_stt_are.BringWindowToTop();
 	m_stt_hectare.BringWindowToTop();
@@ -170,7 +175,7 @@ BOOL ConvertWidthTab::OnInitDialog()
 	SetTestButtonText();
 
 	m_edit_left_value.SetWindowTextW(_T("1"));
-	ConvertLength();
+	ConvertWidth();
 
 	m_combo_left.ShowWindow(SW_HIDE);
 	m_combo_right.ShowWindow(SW_HIDE);
@@ -179,7 +184,7 @@ BOOL ConvertWidthTab::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void ConvertWidthTab::ConvertLength()
+void ConvertWidthTab::ConvertWidth()
 {
 	CString strSymbol;
 	double dFirstResult = ConvertLeftToSquaredKMeter();
@@ -377,47 +382,47 @@ void ConvertWidthTab::SetTestButtonText()
 {
 	if (m_combo_left.GetCurSel() == 0)
 	{
-		m_btn_test.SetWindowTextW(_T("m²"));
+		m_btn_test1.SetWindowTextW(_T("m²"));
 	}
 	else if (m_combo_left.GetCurSel() == 1)
 	{
-		m_btn_test.SetWindowTextW(_T("a"));
+		m_btn_test1.SetWindowTextW(_T("a"));
 	}
 	else if (m_combo_left.GetCurSel() == 2)
 	{
-		m_btn_test.SetWindowTextW(_T("ha"));
+		m_btn_test1.SetWindowTextW(_T("ha"));
 	}
 	else if (m_combo_left.GetCurSel() == 3)
 	{
-		m_btn_test.SetWindowTextW(_T("km²"));
+		m_btn_test1.SetWindowTextW(_T("km²"));
 	}
 	else if (m_combo_left.GetCurSel() == 4)
 	{
-		m_btn_test.SetWindowTextW(_T("ft²"));
+		m_btn_test1.SetWindowTextW(_T("ft²"));
 	}
 	else if (m_combo_left.GetCurSel() == 5)
 	{
-		m_btn_test.SetWindowTextW(_T("yd²"));
+		m_btn_test1.SetWindowTextW(_T("yd²"));
 	}
 	else if (m_combo_left.GetCurSel() == 6)
 	{
-		m_btn_test.SetWindowTextW(_T("ac"));
+		m_btn_test1.SetWindowTextW(_T("ac"));
 	}
 	else if (m_combo_left.GetCurSel() == 7)
 	{
-		m_btn_test.SetWindowTextW(_T("평방자"));
+		m_btn_test1.SetWindowTextW(_T("평방자"));
 	}
 	else if (m_combo_left.GetCurSel() == 8)
 	{
-		m_btn_test.SetWindowTextW(_T("평"));
+		m_btn_test1.SetWindowTextW(_T("평"));
 	}
 	else if (m_combo_left.GetCurSel() == 9)
 	{
-		m_btn_test.SetWindowTextW(_T("단보"));
+		m_btn_test1.SetWindowTextW(_T("단보"));
 	}
 	else if (m_combo_left.GetCurSel() == 10)
 	{
-		m_btn_test.SetWindowTextW(_T("정보"));
+		m_btn_test1.SetWindowTextW(_T("정보"));
 	}
 }
 
@@ -447,7 +452,7 @@ void ConvertWidthTab::OnCbnSelchangeComboLeft2()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	SetComboButtonText(_T("▲"));
 	SetTestButtonText();
-	ConvertLength();
+	ConvertWidth();
 }
 
 
@@ -459,7 +464,7 @@ void ConvertWidthTab::OnCbnSelchangeComboRight2()
 	bComboShow = false;
 
 	SetComboButtonText(_T("▼"));
-	ConvertLength();
+	ConvertWidth();
 }
 
 
@@ -482,12 +487,23 @@ BOOL ConvertWidthTab::PreTranslateMessage(MSG* pMsg)
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
 		}
+		else if (pMsg->hwnd == m_btn_reverse)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
 	}
 	else if (pMsg->message == WM_LBUTTONUP)
 	{
+		m_edit_left_value.Invalidate();
 		if (pMsg->hwnd != m_edit_left_value)
 		{
 			m_edit_left_value.m_bFocusOn = false;
+			m_edit_left_value.HideCaret();
+		}
+		if (pMsg->hwnd == m_edit_right_value)
+		{
+			m_edit_right_value.HideCaret();
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)
@@ -613,5 +629,19 @@ void ConvertWidthTab::OnEnChangeEditLeftValue2()
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	ConvertLength();
+	ConvertWidth();
+}
+
+
+void ConvertWidthTab::OnBnClickedButtonReverse3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int nLeftSel = m_combo_left.GetCurSel();
+	int nRightSel = m_combo_right.GetCurSel();
+
+	m_combo_left.SetCurSel(nRightSel);
+	m_combo_right.SetCurSel(nLeftSel);
+	SetComboButtonText(_T("▼"));
+	SetTestButtonText();
+	ConvertWidth();
 }

@@ -57,6 +57,6 @@ void CalculateEdit::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		m_bFocusOn = false;
 	}
-
+	
 	CEdit::OnLButtonDown(nFlags, point);
 }

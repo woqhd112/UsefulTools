@@ -208,6 +208,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="DateCalculate.h" />
     <ClInclude Include="StopWatch.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitConverter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +235,7 @@
     <ClCompile Include="ResultTimeline.cpp" />
     <ClCompile Include="DateCalculate.cpp" />
     <ClCompile Include="StopWatch.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +252,7 @@
     <Image Include="res\ConvertBit.png" />
     <Image Include="res\Converter.png" />
     <Image Include="res\ConvertLength.png" />
+    <Image Include="res\ConvertReverse.png" />
     <Image Include="res\ConvertTime.png" />
     <Image Include="res\ConvertWeight.png" />
     <Image Include="res\ConvertWidth.png" />
@@ -263,6 +266,7 @@
     <Image Include="res\pngwing24.png" />
     <Image Include="res\pngwing24_d.png" />
     <Image Include="res\pngwing24_h.png" />
+    <Image Include="res\Time.png" />
     <Image Include="res\TimeCal.png" />
     <Image Include="res\Timer.png" />
   </ItemGroup>

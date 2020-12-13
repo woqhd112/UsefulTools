@@ -191,13 +191,13 @@ BOOL UnitConverter::PreTranslateMessage(MSG* pMsg)
 					break;
 				case CONVERT_WEIGHT_DESC:
 					bClickTab = true;
-					OnBnClickedButtonTimec();
-					break;
-				case CONVERT_TIME_DESC:
-					bClickTab = true;
 					OnBnClickedButtonBit();
 					break;
 				case CONVERT_BIT_DESC:
+					bClickTab = true;
+					OnBnClickedButtonTimec();
+					break;
+				case CONVERT_TIME_DESC:
 					bClickTab = true;
 					OnBnClickedButtonLength();
 					break;

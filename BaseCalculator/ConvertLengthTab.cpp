@@ -30,7 +30,7 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_RIGHT, m_combo_right);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE, m_edit_left_value);
 	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE, m_edit_right_value);
-	DDX_Control(pDX, IDC_BUTTON_TEST, m_btn_test);
+	DDX_Control(pDX, IDC_BUTTON_CONTAINER, m_btn_test);
 	DDX_Control(pDX, IDC_STATIC_MM, m_stt_mm);
 	DDX_Control(pDX, IDC_STATIC_CM, m_stt_cm);
 	DDX_Control(pDX, IDC_STATIC_M, m_stt_m);
@@ -44,6 +44,7 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_JUNG, m_stt_jung);
 	DDX_Control(pDX, IDC_STATIC_LEE, m_stt_lee);
 	DDX_Control(pDX, IDC_STATIC_HAELEE, m_stt_haelee);
+	DDX_Control(pDX, IDC_BUTTON_REVERSE, m_btn_reverse);
 }
 
 
@@ -54,6 +55,7 @@ BEGIN_MESSAGE_MAP(ConvertLengthTab, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE, &ConvertLengthTab::OnEnChangeEditLeftValue)
+	ON_BN_CLICKED(IDC_BUTTON_REVERSE, &ConvertLengthTab::OnBnClickedButtonReverse)
 END_MESSAGE_MAP()
 
 
@@ -80,6 +82,8 @@ BOOL ConvertLengthTab::OnInitDialog()
 
 	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_LENGTH_NOMAL);
+	m_btn_reverse.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_SEMIFLAT);
+	m_btn_reverse.InsertImage(IDB_PNG_REVERSE_NOMAL);
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));
@@ -88,22 +92,22 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_btn_test.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test.m_bUseMouseEvent = false;
 
-	m_edit_left_value.Initialize(13, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(15, _T("휴먼매직체"));
-
-	m_stt_mm.Initialize(14, _T("휴먼매직체"));
-	m_stt_cm.Initialize(14, _T("휴먼매직체"));
-	m_stt_m.Initialize(14, _T("휴먼매직체"));
-	m_stt_km.Initialize(14, _T("휴먼매직체"));
-	m_stt_in.Initialize(14, _T("휴먼매직체"));
-	m_stt_ft.Initialize(14, _T("휴먼매직체"));
-	m_stt_yd.Initialize(14, _T("휴먼매직체"));
-	m_stt_miles.Initialize(14, _T("휴먼매직체"));
-	m_stt_ja.Initialize(14, _T("휴먼매직체"));
-	m_stt_gan.Initialize(14, _T("휴먼매직체"));
-	m_stt_jung.Initialize(14, _T("휴먼매직체"));
-	m_stt_lee.Initialize(14, _T("휴먼매직체"));
-	m_stt_haelee.Initialize(14, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_right_value.Initialize(22, _T("휴먼매직체"));
+	
+	m_stt_mm.Initialize(18, _T("휴먼매직체"));
+	m_stt_cm.Initialize(18, _T("휴먼매직체"));
+	m_stt_m.Initialize(18, _T("휴먼매직체"));
+	m_stt_km.Initialize(18, _T("휴먼매직체"));
+	m_stt_in.Initialize(18, _T("휴먼매직체"));
+	m_stt_ft.Initialize(18, _T("휴먼매직체"));
+	m_stt_yd.Initialize(18, _T("휴먼매직체"));
+	m_stt_miles.Initialize(18, _T("휴먼매직체"));
+	m_stt_ja.Initialize(18, _T("휴먼매직체"));
+	m_stt_gan.Initialize(18, _T("휴먼매직체"));
+	m_stt_jung.Initialize(18, _T("휴먼매직체"));
+	m_stt_lee.Initialize(18, _T("휴먼매직체"));
+	m_stt_haelee.Initialize(18, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("밀리미터 (mm)"));
 	m_combo_left.InsertString(1, _T("센티미터 (cm)"));
@@ -158,6 +162,7 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_stt_lee.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_haelee.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
+	m_btn_test.BringWindowToTop();
 	m_stt_mm.BringWindowToTop();
 	m_stt_cm.BringWindowToTop();
 	m_stt_m.BringWindowToTop();
@@ -533,12 +538,23 @@ BOOL ConvertLengthTab::PreTranslateMessage(MSG* pMsg)
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
 		}
+		else if (pMsg->hwnd == m_btn_reverse)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
 	}
 	else if (pMsg->message == WM_LBUTTONUP)
 	{
+		m_edit_left_value.Invalidate();
 		if (pMsg->hwnd != m_edit_left_value)
 		{
 			m_edit_left_value.m_bFocusOn = false;
+			m_edit_left_value.HideCaret();
+		}
+		if (pMsg->hwnd == m_edit_right_value)
+		{
+			m_edit_right_value.HideCaret();
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)
@@ -676,3 +692,17 @@ void ConvertLengthTab::OnEnChangeEditLeftValue()
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
+
+
+void ConvertLengthTab::OnBnClickedButtonReverse()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int nLeftSel = m_combo_left.GetCurSel();
+	int nRightSel = m_combo_right.GetCurSel();
+
+	m_combo_left.SetCurSel(nRightSel);
+	m_combo_right.SetCurSel(nLeftSel);
+	SetComboButtonText(_T("▼"));
+	SetTestButtonText();
+	ConvertLength();
+}

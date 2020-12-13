@@ -68,9 +68,11 @@ void CBaseCalculatorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_CONVERTER, m_btn_converter);
 	DDX_Control(pDX, IDC_STATIC_CONVERTER, m_stt_converter);
 	DDX_Control(pDX, IDC_STATIC_DATE, m_stt_date);
-	DDX_Control(pDX, IDC_BUTTON_DATE, m_btn_date); 
-	DDX_Control(pDX, IDC_STATIC_TIMER, m_stt_timer);
-	DDX_Control(pDX, IDC_BUTTON_TIMER, m_btn_timer);
+	DDX_Control(pDX, IDC_BUTTON_DATE, m_btn_date);
+	DDX_Control(pDX, IDC_STATIC_STOPWATCH, m_stt_stopwatch);
+	DDX_Control(pDX, IDC_BUTTON_STOPWATCH, m_btn_stopwatch);
+	DDX_Control(pDX, IDC_BUTTON_TIMER1, m_btn_timer);
+	DDX_Control(pDX, IDC_STATIC_TIMER1, m_stt_timer);
 }
 
 BEGIN_MESSAGE_MAP(CBaseCalculatorDlg, CDialogEx)
@@ -81,7 +83,8 @@ BEGIN_MESSAGE_MAP(CBaseCalculatorDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_CALCULATOR, &CBaseCalculatorDlg::OnBnClickedButtonCalculator)
 	ON_BN_CLICKED(IDC_BUTTON_CONVERTER, &CBaseCalculatorDlg::OnBnClickedButtonConverter)
 	ON_BN_CLICKED(IDC_BUTTON_TIME, &CBaseCalculatorDlg::OnBnClickedButtonTime)
-	ON_BN_CLICKED(IDC_BUTTON_TIMER, &CBaseCalculatorDlg::OnBnClickedButtonTimer)
+	ON_BN_CLICKED(IDC_BUTTON_STOPWATCH, &CBaseCalculatorDlg::OnBnClickedButtonStopWatch)
+	ON_BN_CLICKED(IDC_BUTTON_TIMER1, &CBaseCalculatorDlg::OnBnClickedButtonTimer1)
 END_MESSAGE_MAP()
 
 
@@ -122,6 +125,7 @@ BOOL CBaseCalculatorDlg::OnInitDialog()
 	bConverter = false;
 	bDate = false;
 	bStopWatch = false;
+	bTimer = false;
 
 
 	this->SetBackgroundColor(RGB(255, 255, 255));
@@ -133,12 +137,15 @@ BOOL CBaseCalculatorDlg::OnInitDialog()
 	m_btn_converter.InsertImage(IDB_PNG_CONVERTER_NOMAL);
 	m_btn_date.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
 	m_btn_date.InsertImage(IDB_PNG_TIME_NOMAL);
+	m_btn_stopwatch.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
+	m_btn_stopwatch.InsertImage(IDB_PNG_STOPWATCH_NOMAL);
 	m_btn_timer.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
-	m_btn_timer.InsertImage(IDB_PNG_TIMER_NOMAL); 
+	m_btn_timer.InsertImage(IDB_PNG_TIMER1_NOMAL);
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
 	m_stt_converter.Initialize(15, _T("고딕"));
 	m_stt_date.Initialize(15, _T("고딕"));
+	m_stt_stopwatch.Initialize(15, _T("고딕"));
 	m_stt_timer.Initialize(15, _T("고딕"));
 
 	
@@ -253,8 +260,8 @@ void CBaseCalculatorDlg::OnBnClickedButtonTime()
 	}
 }
 
-// 타이머 버튼 클릭
-void CBaseCalculatorDlg::OnBnClickedButtonTimer()
+// 스탑워치 버튼 클릭
+void CBaseCalculatorDlg::OnBnClickedButtonStopWatch()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
@@ -267,6 +274,19 @@ void CBaseCalculatorDlg::OnBnClickedButtonTimer()
 	}
 }
 
+// 타이머 버튼 클릭
+void CBaseCalculatorDlg::OnBnClickedButtonTimer1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (!bTimer)
+	{
+		timer = new Timer(this);
+		timer->Create(IDD_DIALOG_TIMER, GetDesktopWindow());
+		timer->ShowWindow(SW_SHOW);
+		bTimer = true;
+	}
+}
 void CBaseCalculatorDlg::OnOK()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -299,6 +319,11 @@ BOOL CBaseCalculatorDlg::PreTranslateMessage(MSG* pMsg)
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
 		}
+		else if (pMsg->hwnd == m_btn_stopwatch)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
 		else if (pMsg->hwnd == m_btn_timer)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
@@ -308,3 +333,4 @@ BOOL CBaseCalculatorDlg::PreTranslateMessage(MSG* pMsg)
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
+

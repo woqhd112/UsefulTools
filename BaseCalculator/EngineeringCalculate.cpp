@@ -866,6 +866,17 @@ BOOL EngineeringCalculate::PreTranslateMessage(MSG* pMsg)
 			SetCursor(hCursor);
 		}
 	}
+	else if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == m_edit_calculate_view)
+		{
+			m_edit_calculate_view.HideCaret();
+		}
+		else if (pMsg->hwnd == m_edit_result)
+		{
+			m_edit_result.HideCaret();
+		}
+	}
 	else if (WM_KEYDOWN == pMsg->message)
 	{
 		if (pMsg->wParam == VK_NUMPAD0) pMsg->wParam = L'0';

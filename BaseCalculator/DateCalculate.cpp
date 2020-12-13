@@ -67,8 +67,8 @@ BOOL DateCalculate::OnInitDialog()
 
 	m_edit_baseedit.SetLimitText(10);
 	m_edit_limitdate.SetLimitText(10);
-	m_edit_afterdate_result.EnableWindow(FALSE);
-	m_edit_limitdate_result.EnableWindow(FALSE);
+	//m_edit_afterdate_result.EnableWindow(FALSE);
+	//m_edit_limitdate_result.EnableWindow(FALSE);
 
 	SetCalendar();
 
@@ -104,6 +104,17 @@ BOOL DateCalculate::PreTranslateMessage(MSG* pMsg)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == m_edit_afterdate_result)
+		{
+			m_edit_afterdate_result.HideCaret();
+		}
+		else if (pMsg->hwnd == m_edit_limitdate_result)
+		{
+			m_edit_limitdate_result.HideCaret();
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)

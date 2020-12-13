@@ -31,6 +31,9 @@
     <Filter Include="Date">
       <UniqueIdentifier>{511395e3-5353-4c9d-ba9d-b68a862702a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{7d48e105-d85c-4f77-8b2b-6050e6687898}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculator.h">
@@ -99,6 +102,9 @@
     <ClInclude Include="ConvertButton.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseCalculator.cpp">
@@ -157,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="ConvertButton.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +243,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\ConvertWidth.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Time.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

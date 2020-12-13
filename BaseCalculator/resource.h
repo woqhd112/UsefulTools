@@ -28,6 +28,7 @@
 #define IDD_DIALOG_STOPWATCH            161
 #define IDB_PNG_TIMER                   163
 #define IDB_PNG_TIMER_NOMAL             163
+#define IDB_PNG_STOPWATCH_NOMAL         163
 #define IDD_TAB_LENGTH                  166
 #define IDD_TAB_WEIGHT                  168
 #define IDD_TAB_WIDTH                   170
@@ -38,6 +39,9 @@
 #define IDB_PNG_TIMEC_NOMAL             184
 #define IDB_PNG_WEIGHT_NOMAL            185
 #define IDB_PNG_WIDTH_NOMAL             186
+#define IDB_PNG_REVERSE_NOMAL           189
+#define IDB_PNG_TIMER1_NOMAL            190
+#define IDD_DIALOG_TIMER                191
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -67,7 +71,6 @@
 #define IDC_BUTTON_ICON_TIME            1022
 #define IDC_BUTTON_ICON_WEIGHT          1022
 #define IDC_BUTTON_ICON_WIDTH           1022
-#define IDC_BUTTON_TEST                 1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_MFCBUTTON2                  1023
@@ -76,13 +79,19 @@
 #define IDC_BUTTON_LIMITDATE            1023
 #define IDC_BUTTON_WIDTH                1023
 #define IDC_BUTTON_ICON_LENGTH          1023
-#define IDC_BUTTON_TEST2                1023
+#define IDC_BUTTON_CONTAINER2           1023
 #define IDC_BUTTON_BACK                 1024
 #define IDC_BUTTON_TIMER                1024
 #define IDC_BUTTON_WEIGHT               1024
+#define IDC_BUTTON_HOUR_TEST            1024
+#define IDC_BUTTON_STOPWATCH            1024
 #define IDC_BUTTON_7                    1025
 #define IDC_BUTTON_TIMEC                1025
+#define IDC_BUTTON_MINUTE_TEST          1025
+#define IDC_BUTTON_DATE2                1025
+#define IDC_BUTTON_TIMER1               1025
 #define IDC_BUTTON_8                    1026
+#define IDC_BUTTON_SECOND_TEST          1026
 #define IDC_BUTTON_9                    1027
 #define IDC_BUTTON_4                    1028
 #define IDC_BUTTON_1                    1029
@@ -117,6 +126,9 @@
 #define IDC_STATIC_DATE                 1057
 #define IDC_STATIC_TIMER                1058
 #define IDC_STATIC_MILS                 1058
+#define IDC_STATIC_STOPWATCH            1058
+#define IDC_STATIC_DATE2                1059
+#define IDC_STATIC_TIMER1               1059
 #define IDC_MONTHCALENDAR               1064
 #define IDC_EDIT_BASEDATE               1065
 #define IDC_EDIT_AFTER_DATE             1066
@@ -135,6 +147,8 @@
 #define IDC_COMBO_RIGHT                 1084
 #define IDC_EDIT_LEFT_VALUE             1085
 #define IDC_EDIT_RIGHT_VALUE            1086
+#define IDC_EDIT_LEFT_VALUE5            1086
+#define IDC_EDIT_HOUR                   1086
 #define IDC_STATIC_MM                   1087
 #define IDC_STATIC_CM                   1088
 #define IDC_STATIC_M                    1089
@@ -149,6 +163,8 @@
 #define IDC_STATIC_LEE                  1098
 #define IDC_STATIC_HAELEE               1099
 #define IDC_BUTTON_COMBO2               1100
+#define IDC_EDIT_LEFT_VALUE6            1100
+#define IDC_EDIT_MINUTE                 1100
 #define IDC_EDIT_LEFT_VALUE2            1101
 #define IDC_EDIT_RIGHT_VALUE2           1102
 #define IDC_COMBO_LEFT2                 1103
@@ -168,7 +184,7 @@
 #define IDC_BUTTON_COMBO3               1117
 #define IDC_EDIT_LEFT_VALUE3            1118
 #define IDC_EDIT_RIGHT_VALUE3           1119
-#define IDC_BUTTON_TEST3                1120
+#define IDC_BUTTON_CONTAINER3           1120
 #define IDC_COMBO_LEFT3                 1121
 #define IDC_COMBO_RIGHT3                1122
 #define IDC_STATIC_MG                   1123
@@ -185,7 +201,7 @@
 #define IDC_BUTTON_COMBO4               1134
 #define IDC_COMBO_LEFT4                 1135
 #define IDC_COMBO_RIGHT4                1136
-#define IDC_BUTTON_TEST4                1137
+#define IDC_BUTTON_CONTAINER            1137
 #define IDC_EDIT_LEFT_VALUE4            1138
 #define IDC_EDIT_RIGHT_VALUE4           1139
 #define IDC_STATIC_BIT                  1140
@@ -196,14 +212,27 @@
 #define IDC_STATIC_TBYTE                1145
 #define IDC_STATIC_PBTYE                1146
 #define IDC_STATIC_EBYTE                1147
+#define IDC_BUTTON_REVERSE              1148
+#define IDC_BUTTON_REVERSE2             1149
+#define IDC_BUTTON_REVERSE3             1150
+#define IDC_BUTTON_REVERSE4             1151
+#define IDC_EDIT_DATE                   1152
+#define IDC_EDIT_SECOND                 1153
+#define IDC_BUTTON_DATE_TEST            1154
+#define IDC_BUTTON_RESET_TIME           1155
+#define IDC_STATIC_DHMS_TIME            1156
+#define IDC_STATIC_MS_TIME              1158
+#define IDC_STATIC_S_TIME               1159
+#define IDC_STATIC_HMS_TIME             1160
+#define IDC_BUTTON_CONTAINER4           1161
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        187
+#define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1148
+#define _APS_NEXT_CONTROL_VALUE         1162
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

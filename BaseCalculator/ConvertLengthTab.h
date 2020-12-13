@@ -29,6 +29,7 @@ private:
 	ConvertButton m_btn_icon;
 	ConvertButton m_btn_combo;
 	ConvertButton m_btn_test;
+	ConvertButton m_btn_reverse;
 	CComboBox m_combo_left;
 	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;
@@ -67,4 +68,6 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	
 	afx_msg void OnEnChangeEditLeftValue();
+	
+	afx_msg void OnBnClickedButtonReverse();
 };

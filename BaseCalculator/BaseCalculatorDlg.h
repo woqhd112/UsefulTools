@@ -8,6 +8,7 @@
 #include "UnitConverter.h"
 #include "DateCalculate.h"
 #include "StopWatch.h"
+#include "Timer.h"
 
 // CBaseCalculatorDlg 대화 상자
 class CBaseCalculatorDlg : public CDialogEx
@@ -41,11 +42,13 @@ private:
 	CalculateButton m_btn_engineering;
 	CalculateButton m_btn_converter;
 	CalculateButton m_btn_date;
+	CalculateButton m_btn_stopwatch;
 	CalculateButton m_btn_timer;
 	CalculateStatic m_stt_engineering;
 	CalculateStatic m_stt_base;
 	CalculateStatic m_stt_converter;
 	CalculateStatic m_stt_date;
+	CalculateStatic m_stt_stopwatch;
 	CalculateStatic m_stt_timer;
 
 	BaseCalculate* base;
@@ -53,7 +56,7 @@ private:
 	UnitConverter* converter;
 	DateCalculate* date;
 	StopWatch* stopwatch;
-
+	Timer* timer;
 
 
 public:
@@ -62,14 +65,16 @@ public:
 	bool bConverter;
 	bool bDate;
 	bool bStopWatch;
+	bool bTimer;
 
 public:
 	afx_msg void OnBnClickedButtonBase();
 	afx_msg void OnBnClickedButtonCalculator();
 	afx_msg void OnBnClickedButtonConverter();
 	afx_msg void OnBnClickedButtonTime();
-	afx_msg void OnBnClickedButtonTimer();
+	afx_msg void OnBnClickedButtonStopWatch();
 	virtual void OnOK();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedButtonTimer1();
 };

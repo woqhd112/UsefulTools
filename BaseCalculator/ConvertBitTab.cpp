@@ -28,7 +28,6 @@ void ConvertBitTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_COMBO4, m_btn_combo);
 	DDX_Control(pDX, IDC_COMBO_LEFT4, m_combo_left);
 	DDX_Control(pDX, IDC_COMBO_RIGHT4, m_combo_right);
-	DDX_Control(pDX, IDC_BUTTON_TEST4, m_btn_test);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE4, m_edit_left_value);
 	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE4, m_edit_right_value);
 	DDX_Control(pDX, IDC_STATIC_BIT, m_stt_bit);
@@ -39,6 +38,8 @@ void ConvertBitTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_TBYTE, m_stt_tbyte);
 	DDX_Control(pDX, IDC_STATIC_PBTYE, m_stt_pbyte);
 	DDX_Control(pDX, IDC_STATIC_EBYTE, m_stt_ebyte);
+	DDX_Control(pDX, IDC_BUTTON_REVERSE4, m_btn_reverse);
+	DDX_Control(pDX, IDC_BUTTON_CONTAINER4, m_btn_container);
 }
 
 
@@ -48,6 +49,7 @@ BEGIN_MESSAGE_MAP(ConvertBitTab, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_LEFT4, &ConvertBitTab::OnCbnSelchangeComboLeft4)
 	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT4, &ConvertBitTab::OnCbnSelchangeComboRight4)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_BUTTON_REVERSE4, &ConvertBitTab::OnBnClickedButtonReverse4)
 END_MESSAGE_MAP()
 
 
@@ -74,25 +76,27 @@ BOOL ConvertBitTab::OnInitDialog()
 
 	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_BIT_NOMAL);
+	m_btn_reverse.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_SEMIFLAT);
+	m_btn_reverse.InsertImage(IDB_PNG_REVERSE_NOMAL);
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));
 	m_btn_combo.m_bUseMouseEvent = false;
-	m_btn_test.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_test.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
-	m_btn_test.m_bUseMouseEvent = false;
+	m_btn_container.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_container.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
+	m_btn_container.m_bUseMouseEvent = false;
 
-	m_edit_left_value.Initialize(13, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(15, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_right_value.Initialize(22, _T("휴먼매직체"));
 
-	m_stt_bit.Initialize(14, _T("휴먼매직체"));
-	m_stt_byte.Initialize(14, _T("휴먼매직체"));
-	m_stt_kbyte.Initialize(14, _T("휴먼매직체"));
-	m_stt_mbyte.Initialize(14, _T("휴먼매직체"));
-	m_stt_gbyte.Initialize(14, _T("휴먼매직체"));
-	m_stt_tbyte.Initialize(14, _T("휴먼매직체"));
-	m_stt_pbyte.Initialize(14, _T("휴먼매직체"));
-	m_stt_ebyte.Initialize(14, _T("휴먼매직체"));
+	m_stt_bit.Initialize(18, _T("휴먼매직체"));
+	m_stt_byte.Initialize(18, _T("휴먼매직체"));
+	m_stt_kbyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_mbyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_gbyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_tbyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_pbyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_ebyte.Initialize(18, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("비트 (bit)"));
 	m_combo_left.InsertString(1, _T("바이트 (B)"));
@@ -116,7 +120,7 @@ BOOL ConvertBitTab::OnInitDialog()
 	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_combo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
-	m_btn_test.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_container.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
@@ -132,6 +136,7 @@ BOOL ConvertBitTab::OnInitDialog()
 	m_stt_pbyte.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_ebyte.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
+	m_btn_container.BringWindowToTop();
 	m_stt_bit.BringWindowToTop();
 	m_stt_byte.BringWindowToTop();
 	m_stt_kbyte.BringWindowToTop();
@@ -145,7 +150,6 @@ BOOL ConvertBitTab::OnInitDialog()
 	m_combo_left.BringWindowToTop();
 	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
-
 	m_combo_left.SetCurSel(1);
 	m_combo_right.SetCurSel(0);
 
@@ -153,7 +157,7 @@ BOOL ConvertBitTab::OnInitDialog()
 	SetTestButtonText();
 
 	m_edit_left_value.SetWindowTextW(_T("1"));
-	ConvertLength();
+	ConvertBit();
 
 	m_combo_left.ShowWindow(SW_HIDE);
 	m_combo_right.ShowWindow(SW_HIDE);
@@ -162,7 +166,7 @@ BOOL ConvertBitTab::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void ConvertBitTab::ConvertLength()
+void ConvertBitTab::ConvertBit()
 {
 	CString strSymbol;
 	double dFirstResult = ConvertLeftToMByte();
@@ -182,43 +186,43 @@ double ConvertBitTab::ConvertLeftToMByte()
 	// 처리
 	if (nSel == 0)	// bit -> mb
 	{
-		double dmGram = _ttof(strText);
-		dResult = 0;
+		double dBit = _ttof(strText);
+		dResult = dBit / 8 / 1024 / 1024;
 	}
 	else if (nSel == 1) // b -> mb
 	{
-		double dGram = _ttof(strText);
-		dResult = 0;
+		double dByte = _ttof(strText);
+		dResult = dByte / 1024 / 1024;
 	}
 	else if (nSel == 2) // kb -> mb
 	{
-		double dkGram = _ttof(strText);
-		dResult = 0;
+		double dkByte = _ttof(strText);
+		dResult = dkByte / 1024;
 	}
 	else if (nSel == 3) // mb -> mb
 	{
-		double dTon = _ttof(strText);
-		dResult = 0;
+		double dmByte = _ttof(strText);
+		dResult = dmByte;
 	}
 	else if (nSel == 4) // gb -> mb
 	{
-		double dkTon = _ttof(strText);
-		dResult = 0;
+		double dgByte = _ttof(strText);
+		dResult = dgByte * 1024;
 	}
 	else if (nSel == 5) // tb -> mb
 	{
-		double dGrain = _ttof(strText);
-		dResult = 0;
+		double dtByte = _ttof(strText);
+		dResult = dtByte * 1024 * 1024;
 	}
 	else if (nSel == 6) // pb -> mb
 	{
-		double dOnz = _ttof(strText);
-		dResult = 0;
+		double dpByte = _ttof(strText);
+		dResult = dpByte * 1024 * 1024 * 1024;
 	}
 	else if (nSel == 7) // eb -> mb
 	{
-		double dPound = _ttof(strText);
-		dResult = 0;
+		double deByte = _ttof(strText);
+		dResult = deByte * 1024 * 1024 * 1024 * 1024;
 	}
 
 	return dResult;
@@ -228,28 +232,28 @@ void ConvertBitTab::SetStaticValue(double dFirstValue)
 {
 	CString strFormat;
 	// 처리
-	strFormat.Format(_T("%g bit"), 0);
+	strFormat.Format(_T("%g bit"), dFirstValue * 1024 * 1024 * 8);
 	m_stt_bit.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g B"), 0);
+	strFormat.Format(_T("%g B"), dFirstValue * 1024 * 1024);
 	m_stt_byte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g KB"), 0);
+	strFormat.Format(_T("%g KB"), dFirstValue * 1024);
 	m_stt_kbyte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g MB"), 0);
+	strFormat.Format(_T("%g MB"), dFirstValue);
 	m_stt_mbyte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g GB"), 0);
+	strFormat.Format(_T("%g GB"), dFirstValue / 1024);
 	m_stt_gbyte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g TB"), 0);
+	strFormat.Format(_T("%g TB"), dFirstValue / 1024 / 1024);
 	m_stt_tbyte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g PB"), 0);
+	strFormat.Format(_T("%g PB"), dFirstValue / 1024 / 1024 / 1024);
 	m_stt_pbyte.SetWindowTextW(strFormat);
 
-	strFormat.Format(_T("%g EB"), 0);
+	strFormat.Format(_T("%g EB"), dFirstValue / 1024 / 1024 / 1024 / 1024);
 	m_stt_ebyte.SetWindowTextW(strFormat);
 }
 
@@ -260,42 +264,42 @@ double ConvertBitTab::ConvertMByteToRight(double dFirstResult, CString& strSymbo
 	// 처리
 	if (nSel == 0)	// mb -> bit
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1024 * 1024 * 8;
 		strSymbol = _T("bit");
 	}
 	else if (nSel == 1) // mb -> b
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1024 * 1024;
 		strSymbol = _T("B");
 	}
 	else if (nSel == 2) // mb -> kb
 	{
-		dResult = 0;
+		dResult = dFirstResult * 1024;
 		strSymbol = _T("KB");
 	}
 	else if (nSel == 3) // mb -> mb
 	{
-		dResult = 0;
+		dResult = dFirstResult;
 		strSymbol = _T("MB");
 	}
 	else if (nSel == 4) // mb -> gb
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1024;
 		strSymbol = _T("GB");
 	}
 	else if (nSel == 5) // mb -> tb
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1024 / 1024;
 		strSymbol = _T("TB");
 	}
 	else if (nSel == 6) // mb -> pb
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1024 / 1024 / 1024;
 		strSymbol = _T("PB");
 	}
 	else if (nSel == 7) // mb -> eb
 	{
-		dResult = 0;
+		dResult = dFirstResult / 1024 / 1024 / 1024 / 1024;
 		strSymbol = _T("EB");
 	}
 
@@ -321,35 +325,35 @@ void ConvertBitTab::SetTestButtonText()
 {
 	if (m_combo_left.GetCurSel() == 0)
 	{
-		m_btn_test.SetWindowTextW(_T("bit"));
+		m_btn_container.SetWindowTextW(_T("bit"));
 	}
 	else if (m_combo_left.GetCurSel() == 1)
 	{
-		m_btn_test.SetWindowTextW(_T("B"));
+		m_btn_container.SetWindowTextW(_T("B"));
 	}
 	else if (m_combo_left.GetCurSel() == 2)
 	{
-		m_btn_test.SetWindowTextW(_T("KB"));
+		m_btn_container.SetWindowTextW(_T("KB"));
 	}
 	else if (m_combo_left.GetCurSel() == 3)
 	{
-		m_btn_test.SetWindowTextW(_T("MB"));
+		m_btn_container.SetWindowTextW(_T("MB"));
 	}
 	else if (m_combo_left.GetCurSel() == 4)
 	{
-		m_btn_test.SetWindowTextW(_T("GB"));
+		m_btn_container.SetWindowTextW(_T("GB"));
 	}
 	else if (m_combo_left.GetCurSel() == 5)
 	{
-		m_btn_test.SetWindowTextW(_T("TB"));
+		m_btn_container.SetWindowTextW(_T("TB"));
 	}
 	else if (m_combo_left.GetCurSel() == 6)
 	{
-		m_btn_test.SetWindowTextW(_T("PB"));
+		m_btn_container.SetWindowTextW(_T("PB"));
 	}
 	else if (m_combo_left.GetCurSel() == 7)
 	{
-		m_btn_test.SetWindowTextW(_T("EB"));
+		m_btn_container.SetWindowTextW(_T("EB"));
 	}
 }
 
@@ -382,7 +386,7 @@ void ConvertBitTab::OnEnChangeEditLeftValue4()
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	ConvertLength();
+	ConvertBit();
 }
 
 
@@ -391,7 +395,7 @@ void ConvertBitTab::OnCbnSelchangeComboLeft4()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	SetComboButtonText(_T("▲"));
 	SetTestButtonText();
-	ConvertLength();
+	ConvertBit();
 }
 
 
@@ -403,7 +407,7 @@ void ConvertBitTab::OnCbnSelchangeComboRight4()
 	bComboShow = false;
 
 	SetComboButtonText(_T("▼"));
-	ConvertLength();
+	ConvertBit();
 }
 
 
@@ -425,12 +429,23 @@ BOOL ConvertBitTab::PreTranslateMessage(MSG* pMsg)
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
 		}
+		else if (pMsg->hwnd == m_btn_reverse)
+		{
+			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
+			SetCursor(hCursor);
+		}
 	}
 	else if (pMsg->message == WM_LBUTTONUP)
 	{
+		m_edit_left_value.Invalidate();
 		if (pMsg->hwnd != m_edit_left_value)
 		{
 			m_edit_left_value.m_bFocusOn = false;
+			m_edit_left_value.HideCaret();
+		}
+		if (pMsg->hwnd == m_edit_right_value)
+		{
+			m_edit_right_value.HideCaret();
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)
@@ -531,4 +546,18 @@ HBRUSH ConvertBitTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
+}
+
+
+void ConvertBitTab::OnBnClickedButtonReverse4()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int nLeftSel = m_combo_left.GetCurSel();
+	int nRightSel = m_combo_right.GetCurSel();
+
+	m_combo_left.SetCurSel(nRightSel);
+	m_combo_right.SetCurSel(nLeftSel);
+	SetComboButtonText(_T("▼"));
+	SetTestButtonText();
+	ConvertBit();
 }

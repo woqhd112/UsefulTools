@@ -21,7 +21,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 private:
-	void EnableText();
+	//void EnableText();
 	void SetComboBox();
 	void SelectComboBox();
 	char ConvertIntToChar(int nInt);

@@ -54,7 +54,7 @@ BOOL BaseCalculate::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundColor(RGB(255, 255, 255));
-	EnableText();
+	//EnableText();
 	SetComboBox();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -100,10 +100,10 @@ void BaseCalculate::SetComboBox()
 	SelectComboBox();
 }
 
-void BaseCalculate::EnableText()
-{
-	m_edit_output_select_from_base.EnableWindow(FALSE);
-}
+//void BaseCalculate::EnableText()
+//{
+//	m_edit_output_select_from_base.EnableWindow(FALSE);
+//}
 
 
 // 10진수를 선택진수로 변환 버튼
@@ -276,6 +276,13 @@ BOOL BaseCalculate::PreTranslateMessage(MSG* pMsg)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(MAKEINTRESOURCE(32649));
 			SetCursor(hCursor);
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == m_edit_output_select_from_base)
+		{
+			m_edit_output_select_from_base.HideCaret();
 		}
 	}
 	else if (WM_KEYDOWN == pMsg->message)

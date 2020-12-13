@@ -28,7 +28,8 @@ public:
 private:
 	ConvertButton m_btn_icon;
 	ConvertButton m_btn_combo;
-	ConvertButton m_btn_test;
+	ConvertButton m_btn_test1;
+	ConvertButton m_btn_reverse;
 	CComboBox m_combo_left;
 	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;
@@ -49,7 +50,7 @@ private:
 
 	bool bComboShow;
 
-	void ConvertLength();
+	void ConvertWidth();
 	double ConvertLeftToSquaredKMeter();
 	double ConvertSquaredKMeterToRight(double dFirstResult, CString& strSymbol);
 	void SetComboButtonText(CString strSymbol);
@@ -63,4 +64,6 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnEnChangeEditLeftValue2();
+	afx_msg void OnBnClickedButtonReverse3();
+	
 };
