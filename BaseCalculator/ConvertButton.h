@@ -19,7 +19,7 @@ public:
 		CLICKHOVER	= 3
 	};
 
-	void Initialize(COLORREF color, FlatStyle style, CString strFontName = _T("고딕"));
+	void Initialize(COLORREF color, FlatStyle style, CString strFontName = _T("고딕"), int nFontSize = 14);
 	void InsertImage(int nImageID);
 	void SetFont(FontFlag flag);
 	void SetAlignment(CMFCButton::AlignStyle style);

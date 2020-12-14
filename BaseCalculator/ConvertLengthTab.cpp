@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(ConvertLengthTab, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE, &ConvertLengthTab::OnEnChangeEditLeftValue)
 	ON_BN_CLICKED(IDC_BUTTON_REVERSE, &ConvertLengthTab::OnBnClickedButtonReverse)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -88,26 +89,26 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));
 	m_btn_combo.m_bUseMouseEvent = false;
-	m_btn_test.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"));
 	m_btn_test.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test.m_bUseMouseEvent = false;
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(22, _T("휴먼매직체"));
+	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
 	
-	m_stt_mm.Initialize(18, _T("휴먼매직체"));
-	m_stt_cm.Initialize(18, _T("휴먼매직체"));
-	m_stt_m.Initialize(18, _T("휴먼매직체"));
-	m_stt_km.Initialize(18, _T("휴먼매직체"));
-	m_stt_in.Initialize(18, _T("휴먼매직체"));
-	m_stt_ft.Initialize(18, _T("휴먼매직체"));
-	m_stt_yd.Initialize(18, _T("휴먼매직체"));
-	m_stt_miles.Initialize(18, _T("휴먼매직체"));
-	m_stt_ja.Initialize(18, _T("휴먼매직체"));
-	m_stt_gan.Initialize(18, _T("휴먼매직체"));
-	m_stt_jung.Initialize(18, _T("휴먼매직체"));
-	m_stt_lee.Initialize(18, _T("휴먼매직체"));
-	m_stt_haelee.Initialize(18, _T("휴먼매직체"));
+	m_stt_mm.Initialize(15, _T("휴먼매직체"));
+	m_stt_cm.Initialize(15, _T("휴먼매직체"));
+	m_stt_m.Initialize(15, _T("휴먼매직체"));
+	m_stt_km.Initialize(15, _T("휴먼매직체"));
+	m_stt_in.Initialize(15, _T("휴먼매직체"));
+	m_stt_ft.Initialize(15, _T("휴먼매직체"));
+	m_stt_yd.Initialize(15, _T("휴먼매직체"));
+	m_stt_miles.Initialize(15, _T("휴먼매직체"));
+	m_stt_ja.Initialize(15, _T("휴먼매직체"));
+	m_stt_gan.Initialize(15, _T("휴먼매직체"));
+	m_stt_jung.Initialize(15, _T("휴먼매직체"));
+	m_stt_lee.Initialize(15, _T("휴먼매직체"));
+	m_stt_haelee.Initialize(15, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("밀리미터 (mm)"));
 	m_combo_left.InsertString(1, _T("센티미터 (cm)"));
@@ -705,4 +706,56 @@ void ConvertLengthTab::OnBnClickedButtonReverse()
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
 	ConvertLength();
+}
+
+
+void ConvertLengthTab::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	LOGBRUSH lb;
+
+	lb.lbStyle = BS_SOLID;
+	lb.lbColor = RGB(200, 200, 200);
+
+	CPen arNewPen[5];
+	CPen* pOldPen = NULL;
+
+	arNewPen[0].CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE, 5, &lb);
+	arNewPen[1].CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE, 5, &lb);
+	arNewPen[2].CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE, 5, &lb);
+	arNewPen[3].CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE, 5, &lb);
+	arNewPen[4].CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE, 5, &lb);
+	
+	pOldPen = dc.SelectObject(&arNewPen[0]);
+	dc.MoveTo(0 /*펜을 시작할 x축 좌표*/, 0 /*펜을 시작할 y축 좌표*/);
+	dc.LineTo(0 /*펜을 끝낼 x축 좌표*/, 0 /*펜을 끝낼 y축 좌표*/);
+	dc.SelectObject(pOldPen);
+	arNewPen[0].DeleteObject();
+
+	pOldPen = dc.SelectObject(&arNewPen[1]);
+	dc.MoveTo(0, 0);
+	dc.LineTo(0, 0);
+	dc.SelectObject(pOldPen);
+	arNewPen[1].DeleteObject();
+
+	pOldPen = dc.SelectObject(&arNewPen[2]);
+	dc.MoveTo(0, 0);
+	dc.LineTo(0, 0);
+	dc.SelectObject(pOldPen);
+	arNewPen[2].DeleteObject();
+
+	pOldPen = dc.SelectObject(&arNewPen[3]);
+	dc.MoveTo(0, 0);
+	dc.LineTo(0, 0);
+	dc.SelectObject(pOldPen);
+	arNewPen[3].DeleteObject();
+
+	pOldPen = dc.SelectObject(&arNewPen[4]);
+	dc.MoveTo(0, 0);
+	dc.LineTo(0, 0);
+	dc.SelectObject(pOldPen);
+	arNewPen[4].DeleteObject();
 }

@@ -58,4 +58,5 @@ public:
 	afx_msg void OnEnChangeEditMinute();
 	afx_msg void OnEnChangeEditSecond();
 	afx_msg void OnBnClickedButtonResetTime();
+	afx_msg void OnPaint();
 };

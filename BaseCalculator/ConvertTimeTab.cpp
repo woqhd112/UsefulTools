@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(ConvertTimeTab, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_MINUTE, &ConvertTimeTab::OnEnChangeEditMinute)
 	ON_EN_CHANGE(IDC_EDIT_SECOND, &ConvertTimeTab::OnEnChangeEditSecond)
 	ON_BN_CLICKED(IDC_BUTTON_RESET_TIME, &ConvertTimeTab::OnBnClickedButtonResetTime)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -75,16 +76,16 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_btn_icon.InsertImage(IDB_PNG_TIMEC_NOMAL);
 	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	
-	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseEvent = false;
-	m_btn_test2.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test2.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test2.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test2.m_bUseMouseEvent = false;
-	m_btn_test3.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test3.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test3.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test3.m_bUseMouseEvent = false;
-	m_btn_test4.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_test4.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test4.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test4.m_bUseMouseEvent = false;
 
@@ -93,10 +94,10 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_edit_minute.Initialize(18, _T("휴먼매직체"));
 	m_edit_second.Initialize(18, _T("휴먼매직체"));
 
-	m_stt_dhms.Initialize(18, _T("휴먼매직체"));
-	m_stt_hms.Initialize(18, _T("휴먼매직체"));
-	m_stt_ms.Initialize(18, _T("휴먼매직체"));
-	m_stt_s.Initialize(18, _T("휴먼매직체"));
+	m_stt_dhms.Initialize(15, _T("휴먼매직체"));
+	m_stt_hms.Initialize(15, _T("휴먼매직체"));
+	m_stt_ms.Initialize(15, _T("휴먼매직체"));
+	m_stt_s.Initialize(15, _T("휴먼매직체"));
 
 	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_test2.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -494,4 +495,12 @@ void ConvertTimeTab::OnBnClickedButtonResetTime()
 	m_edit_minute.SetWindowTextW(_T(""));
 	m_edit_second.SetWindowTextW(_T(""));
 	ConvertTime();
+}
+
+
+void ConvertTimeTab::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 }

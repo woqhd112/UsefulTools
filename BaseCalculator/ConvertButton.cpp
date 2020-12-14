@@ -33,22 +33,22 @@ END_MESSAGE_MAP()
 
 
 
-void ConvertButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /*= _T("고딕")*/)
+void ConvertButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /* = _T("고딕")*/, int nFontSize /* = 14*/)
 {
 	this->EnableWindowsTheming(FALSE);
 	this->SetFaceColor(color);
 	this->m_bDrawFocus = FALSE;
 	
-	defaultFont.CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+	defaultFont.CreateFontW(nFontSize, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
-	hoverFont.CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, TRUE, 0, DEFAULT_CHARSET,
+	hoverFont.CreateFontW(nFontSize, 0, 0, 0, FW_NORMAL, FALSE, TRUE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
-	clickFont.CreateFontW(14, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+	clickFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
-	clickHoverFont.CreateFontW(14, 0, 0, 0, FW_BOLD, FALSE, TRUE, 0, DEFAULT_CHARSET,
+	clickHoverFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, TRUE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
 

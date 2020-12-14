@@ -70,4 +70,5 @@ public:
 	afx_msg void OnEnChangeEditLeftValue();
 	
 	afx_msg void OnBnClickedButtonReverse();
+	afx_msg void OnPaint();
 };

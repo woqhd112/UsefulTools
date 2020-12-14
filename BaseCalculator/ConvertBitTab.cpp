@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(ConvertBitTab, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT4, &ConvertBitTab::OnCbnSelchangeComboRight4)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON_REVERSE4, &ConvertBitTab::OnBnClickedButtonReverse4)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -82,21 +83,21 @@ BOOL ConvertBitTab::OnInitDialog()
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));
 	m_btn_combo.m_bUseMouseEvent = false;
-	m_btn_container.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_container.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"));
 	m_btn_container.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_container.m_bUseMouseEvent = false;
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
 	m_edit_right_value.Initialize(22, _T("휴먼매직체"));
 
-	m_stt_bit.Initialize(18, _T("휴먼매직체"));
-	m_stt_byte.Initialize(18, _T("휴먼매직체"));
-	m_stt_kbyte.Initialize(18, _T("휴먼매직체"));
-	m_stt_mbyte.Initialize(18, _T("휴먼매직체"));
-	m_stt_gbyte.Initialize(18, _T("휴먼매직체"));
-	m_stt_tbyte.Initialize(18, _T("휴먼매직체"));
-	m_stt_pbyte.Initialize(18, _T("휴먼매직체"));
-	m_stt_ebyte.Initialize(18, _T("휴먼매직체"));
+	m_stt_bit.Initialize(15, _T("휴먼매직체"));
+	m_stt_byte.Initialize(15, _T("휴먼매직체"));
+	m_stt_kbyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_mbyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_gbyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_tbyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_pbyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_ebyte.Initialize(15, _T("휴먼매직체"));
 
 	m_combo_left.InsertString(0, _T("비트 (bit)"));
 	m_combo_left.InsertString(1, _T("바이트 (B)"));
@@ -560,4 +561,14 @@ void ConvertBitTab::OnBnClickedButtonReverse4()
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
 	ConvertBit();
+}
+
+
+void ConvertBitTab::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	
 }
