@@ -47,8 +47,10 @@ private:
 	CalculateStatic m_stt_jung;
 	CalculateStatic m_stt_lee;
 	CalculateStatic m_stt_haelee;
+	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
+
 
 	bool bComboShow;
 
@@ -58,6 +60,7 @@ private:
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
+	void CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth = 1);
 
 public:
 	afx_msg void OnBnClickedButtonCombo();

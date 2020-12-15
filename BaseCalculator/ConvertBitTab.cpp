@@ -40,6 +40,7 @@ void ConvertBitTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_EBYTE, m_stt_ebyte);
 	DDX_Control(pDX, IDC_BUTTON_REVERSE4, m_btn_reverse);
 	DDX_Control(pDX, IDC_BUTTON_CONTAINER4, m_btn_container);
+	DDX_Control(pDX, IDC_STATIC_DIVIDE4, m_stt_divide);
 }
 
 
@@ -563,6 +564,50 @@ void ConvertBitTab::OnBnClickedButtonReverse4()
 	ConvertBit();
 }
 
+void ConvertBitTab::CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth /* = 1*/)
+{
+	if (nDepth > 3)
+		return;
+
+	CRect controlRect, controlToMarginRect1, controlToMarginRect2;
+
+	if (nDepth == 1)
+	{
+		m_stt_bit.GetWindowRect(&controlToMarginRect1);
+		m_stt_mbyte.GetWindowRect(&controlToMarginRect2);
+		m_stt_bit.GetClientRect(&controlRect);
+	}
+	else
+	{
+		m_stt_mbyte.GetWindowRect(&controlToMarginRect1);
+		m_stt_pbyte.GetWindowRect(&controlToMarginRect2);
+		m_stt_mbyte.GetClientRect(&controlRect);
+	}
+
+	int nMargin = controlToMarginRect2.top - controlToMarginRect1.bottom;
+
+	int nStart_x = controlRect.left + 15;
+	int nStart_y = nStartValue_y + nStartMargin + controlRect.Height() + (nMargin / 2);
+	int nEnd_x = (controlRect.left + controlRect.Width()) * 3;
+
+	LOGBRUSH lb;
+
+	lb.lbStyle = BS_SOLID;
+	lb.lbColor = RGB(200, 200, 200);
+
+	CPen arNewPen;
+	CPen* pOldPen = NULL;
+	arNewPen.CreatePen(PS_SOLID | PS_ENDCAP_SQUARE, 1, &lb);
+
+	pOldPen = dc->SelectObject(&arNewPen);
+	dc->MoveTo(nStart_x /*펜을 시작할 x축 좌표*/, nStart_y /*펜을 시작할 y축 좌표*/);
+	dc->LineTo(nEnd_x /*펜을 끝낼 x축 좌표*/, nStart_y /*펜을 끝낼 y축 좌표*/);
+	dc->SelectObject(pOldPen);
+	arNewPen.DeleteObject();
+	nDepth++;
+
+	CalcDrawLine(dc, nStart_y, nMargin / 2, nDepth);
+}
 
 void ConvertBitTab::OnPaint()
 {
@@ -570,5 +615,13 @@ void ConvertBitTab::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	
+	CRect divideRect;
+	m_stt_divide.GetClientRect(&divideRect);
+
+	CRect divideToMargin1, divideToMargin2;
+	m_stt_divide.GetWindowRect(&divideToMargin1);
+	m_stt_bit.GetWindowRect(&divideToMargin2);
+	int nDivideMargin = divideToMargin2.top - divideToMargin1.bottom;
+
+	CalcDrawLine(&dc, divideRect.top + divideRect.Height(), nDivideMargin);
 }

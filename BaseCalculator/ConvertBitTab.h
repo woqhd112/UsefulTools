@@ -43,6 +43,7 @@ private:
 	CalculateStatic m_stt_tbyte;
 	CalculateStatic m_stt_pbyte;
 	CalculateStatic m_stt_ebyte;
+	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
 
@@ -54,6 +55,7 @@ private:
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
+	void CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth = 1);
 
 public:
 	afx_msg void OnBnClickedButtonCombo4();

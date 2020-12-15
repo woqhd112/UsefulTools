@@ -41,6 +41,7 @@ private:
 	CalculateStatic m_stt_hms;
 	CalculateStatic m_stt_ms;
 	CalculateStatic m_stt_s;
+	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
 
@@ -49,6 +50,7 @@ private:
 	void SetHMS(CString strDate, CString strHour, CString strMinute, CString strSecond);
 	void SetMS(CString strDate, CString strHour, CString strMinute, CString strSecond);
 	void SetS(CString strDate, CString strHour, CString strMinute, CString strSecond);
+	void CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth = 1);
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

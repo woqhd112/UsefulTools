@@ -46,6 +46,7 @@ private:
 	CalculateStatic m_stt_nyang;
 	CalculateStatic m_stt_geun;
 	CalculateStatic m_stt_guan;
+	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
 
@@ -57,6 +58,7 @@ private:
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
+	void CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth = 1);
 
 public:
 	afx_msg void OnBnClickedButtonCombo3();

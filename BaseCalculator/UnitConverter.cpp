@@ -88,27 +88,27 @@ BOOL UnitConverter::OnInitDialog()
 	CRect tabRect;
 	m_stt_tab.GetWindowRect(&tabRect);
 
-	m_convert_length = new ConvertLengthTab;
+	m_convert_length = new ConvertLengthTab(this);
 	m_convert_length->Create(IDD_TAB_LENGTH, &m_stt_tab);
 	m_convert_length->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_length->ShowWindow(SW_SHOW);
 
-	m_convert_width = new ConvertWidthTab;
+	m_convert_width = new ConvertWidthTab(this);
 	m_convert_width->Create(IDD_TAB_WIDTH, &m_stt_tab);
 	m_convert_width->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_width->ShowWindow(SW_HIDE);
 
-	m_convert_weight = new ConvertWeightTab;
+	m_convert_weight = new ConvertWeightTab(this);
 	m_convert_weight->Create(IDD_TAB_WEIGHT, &m_stt_tab);
 	m_convert_weight->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_weight->ShowWindow(SW_HIDE);
 
-	m_convert_time = new ConvertTimeTab;
+	m_convert_time = new ConvertTimeTab(this);
 	m_convert_time->Create(IDD_TAB_TIME, &m_stt_tab);
 	m_convert_time->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_time->ShowWindow(SW_HIDE);
 
-	m_convert_bit = new ConvertBitTab;
+	m_convert_bit = new ConvertBitTab(this);
 	m_convert_bit->Create(IDD_TAB_BIT, &m_stt_tab);
 	m_convert_bit->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_bit->ShowWindow(SW_HIDE);

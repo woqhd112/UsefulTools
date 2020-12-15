@@ -225,6 +225,11 @@
 #define IDC_STATIC_S_TIME               1159
 #define IDC_STATIC_HMS_TIME             1160
 #define IDC_BUTTON_CONTAINER4           1161
+#define IDC_STATIC_DIVIDE               1162
+#define IDC_STATIC_DIVIDE2              1163
+#define IDC_STATIC_DIVIDE3              1164
+#define IDC_STATIC_DIVIDE4              1165
+#define IDC_STATIC_DIVIDE5              1166
 
 // Next default values for new objects
 // 
@@ -232,7 +237,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1162
+#define _APS_NEXT_CONTROL_VALUE         1167
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
