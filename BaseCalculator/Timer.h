@@ -2,6 +2,10 @@
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
 
+#define BACKGROUND_COLOR_YELLOW		RGB(255, 230, 85)
+#define BACKGROUND_COLOR_GREEN		RGB(139, 255, 136)
+#define BACKGROUND_COLOR_RED		RGB(255, 136, 136)
+
 // Timer 대화 상자
 
 class Timer : public CDialogEx
@@ -29,6 +33,13 @@ protected:
 
 private:
 
+	enum OperateState
+	{
+		OPERATE_STATE_NONE		= 0,
+		OPERATE_STATE_WORKING	= 1,
+		OPERATE_STATE_RESTING	= 2
+	};
+
 	CalculateEdit m_edit_work_hour_1;
 	CalculateEdit m_edit_work_hour_2;
 	CalculateEdit m_edit_work_minute_1;
@@ -41,6 +52,8 @@ private:
 	CalculateEdit m_edit_rest_minute_2;
 	CalculateEdit m_edit_rest_second_1;
 	CalculateEdit m_edit_rest_second_2;
+	CalculateEdit m_edit_custom_count;
+	CalculateEdit m_edit_state;
 	CalculateButton m_btn_startandstop;
 	CalculateButton m_btn_reset;
 	CalculateButton m_btn_work_hour_up;
@@ -55,20 +68,37 @@ private:
 	CalculateButton m_btn_rest_minute_down;
 	CalculateButton m_btn_rest_second_up;
 	CalculateButton m_btn_rest_second_down;
+	CButton m_radio_infinite;
+	CButton m_radio_custom;
 
-	CBrush m_backBrush;
+	CBrush m_returnBrush;
+
+	OperateState os;
 
 	bool bThread;
 	bool bStart;
 
 	bool bWorkEnd;
 	bool bRestEnd;
+	bool bFirstRestClock;
+	bool bFirstWorkClock;
+
+	CString g_str_work_hour;
+	CString g_str_work_minute;
+	CString g_str_work_second;
+	CString g_str_rest_hour;
+	CString g_str_rest_minute;
+	CString g_str_rest_second;
 
 	CWinThread* m_thread;
 
 	static UINT thrTimer(LPVOID method);
 	void StartTimer();
 	void CalculateWorkTime();
+	void CalculateRestTime();
+	bool CheckRepeatCount();
+	void SetGlobalEditText();
+	void SetOperateStateToColor(OperateState os);
 
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
@@ -92,4 +122,7 @@ public:
 	afx_msg void OnBnClickedButtonRestSecondDown();
 	afx_msg void OnBnClickedButtonStartandstop2();
 	afx_msg void OnBnClickedButtonReset2();
+	afx_msg void OnBnClickedRadioInfinite();
+	afx_msg void OnBnClickedRadioCustom();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

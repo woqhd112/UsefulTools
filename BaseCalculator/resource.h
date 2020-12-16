@@ -246,6 +246,10 @@
 #define IDC_EDIT_REST_SECOND2           1178
 #define IDC_BUTTON_STARTANDSTOP2        1179
 #define IDC_BUTTON_RESET2               1180
+#define IDC_RADIO_INFINITE              1182
+#define IDC_RADIO_CUSTOM                1183
+#define IDC_EDIT_CUSTOM_COUNT           1184
+#define IDC_EDIT_STATE                  1185
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -263,7 +267,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        194
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1181
+#define _APS_NEXT_CONTROL_VALUE         1186
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
