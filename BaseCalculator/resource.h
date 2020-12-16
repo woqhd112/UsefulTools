@@ -71,6 +71,7 @@
 #define IDC_BUTTON_ICON_TIME            1022
 #define IDC_BUTTON_ICON_WEIGHT          1022
 #define IDC_BUTTON_ICON_WIDTH           1022
+#define IDC_BUTTON_WORK_HOUR_UP         1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_MFCBUTTON2                  1023
@@ -80,26 +81,27 @@
 #define IDC_BUTTON_WIDTH                1023
 #define IDC_BUTTON_ICON_LENGTH          1023
 #define IDC_BUTTON_CONTAINER2           1023
+#define IDC_BUTTON_WORK_HOUR_DOWN       1023
 #define IDC_BUTTON_BACK                 1024
 #define IDC_BUTTON_TIMER                1024
 #define IDC_BUTTON_WEIGHT               1024
 #define IDC_BUTTON_HOUR_TEST            1024
 #define IDC_BUTTON_STOPWATCH            1024
-#define IDC_BUTTON_7                    1025
+#define IDC_BUTTON_WORK_MINUTE_UP       1024
 #define IDC_BUTTON_TIMEC                1025
 #define IDC_BUTTON_MINUTE_TEST          1025
 #define IDC_BUTTON_DATE2                1025
 #define IDC_BUTTON_TIMER1               1025
-#define IDC_BUTTON_8                    1026
+#define IDC_BUTTON_WORK_MINUTE_DOWN     1025
 #define IDC_BUTTON_SECOND_TEST          1026
-#define IDC_BUTTON_9                    1027
-#define IDC_BUTTON_4                    1028
-#define IDC_BUTTON_1                    1029
-#define IDC_BUTTON_5                    1030
-#define IDC_BUTTON_2                    1031
-#define IDC_BUTTON_6                    1032
-#define IDC_BUTTON_3                    1033
-#define IDC_BUTTON_0                    1034
+#define IDC_BUTTON_WORK_SECOND_UP       1026
+#define IDC_BUTTON_WORK_SECOND_DOWN     1027
+#define IDC_BUTTON_REST_HOUR_UP         1028
+#define IDC_BUTTON_REST_HOUR_DOWN       1029
+#define IDC_BUTTON_REST_MINUTE_UP       1030
+#define IDC_BUTTON_REST_MINUTE_DOWN     1031
+#define IDC_BUTTON_REST_SECOND_UP       1032
+#define IDC_BUTTON_REST_SECOND_DOWN     1033
 #define IDC_BUTTON_DIVIDE               1035
 #define IDC_BUTTON_MULTI                1036
 #define IDC_BUTTON_SUM                  1037
@@ -230,14 +232,38 @@
 #define IDC_STATIC_DIVIDE3              1164
 #define IDC_STATIC_DIVIDE4              1165
 #define IDC_STATIC_DIVIDE5              1166
+#define IDC_EDIT_WORK_HOUR1             1167
+#define IDC_EDIT_WORK_HOUR2             1168
+#define IDC_EDIT_WORK_MINUTE1           1169
+#define IDC_EDIT_WORK_MINUTE2           1170
+#define IDC_EDIT_WORK_SECOND1           1171
+#define IDC_EDIT_WORK_SECOND2           1172
+#define IDC_EDIT_REST_HOUR1             1173
+#define IDC_EDIT_REST_HOUR2             1174
+#define IDC_EDIT_REST_MINUTE1           1175
+#define IDC_EDIT_REST_MINUTE2           1176
+#define IDC_EDIT_REST_SECOND1           1177
+#define IDC_EDIT_REST_SECOND2           1178
+#define IDC_BUTTON_STARTANDSTOP2        1179
+#define IDC_BUTTON_RESET2               1180
+#define IDC_BUTTON_0                    2000
+#define IDC_BUTTON_1                    2001
+#define IDC_BUTTON_2                    2002
+#define IDC_BUTTON_3                    2003
+#define IDC_BUTTON_4                    2004
+#define IDC_BUTTON_5                    2005
+#define IDC_BUTTON_6                    2006
+#define IDC_BUTTON_7                    2007
+#define IDC_BUTTON_8                    2008
+#define IDC_BUTTON_9                    2009
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        193
+#define _APS_NEXT_RESOURCE_VALUE        194
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1167
+#define _APS_NEXT_CONTROL_VALUE         1181
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

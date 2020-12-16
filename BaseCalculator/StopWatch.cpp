@@ -209,6 +209,11 @@ void StopWatch::StartStopWatch()
 
 	while (bThread)
 	{
+		clock_t start, finish;
+		double duration;
+
+		start = clock();
+
 		m_stt_mils.GetWindowTextW(strMils);
 		m_stt_hms.GetWindowTextW(strHMS);
 		AfxExtractSubString(strM, strHMS, 0, ':');
@@ -246,6 +251,9 @@ void StopWatch::StartStopWatch()
 		strHMS.Format(_T("%02d:%02d"), m, s);
 		m_stt_hms.SetWindowTextW(strHMS);
 		m_stt_mils.SetWindowTextW(strMils);
-		Sleep(10);
+
+		finish = clock();
+		duration = (double)(finish - start) / CLOCKS_PER_SEC;
+		Sleep(10 - duration + duration);
 	}
 }
