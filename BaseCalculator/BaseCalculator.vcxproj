@@ -76,6 +76,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -193,12 +194,17 @@
     <ClInclude Include="CalculateButton.h" />
     <ClInclude Include="CalculateEdit.h" />
     <ClInclude Include="CalculateStatic.h" />
+    <ClInclude Include="CMarkup\Markup.h" />
     <ClInclude Include="ConvertBitTab.h" />
     <ClInclude Include="ConvertButton.h" />
     <ClInclude Include="ConvertLengthTab.h" />
     <ClInclude Include="ConvertTimeTab.h" />
     <ClInclude Include="ConvertWeightTab.h" />
     <ClInclude Include="ConvertWidthTab.h" />
+    <ClInclude Include="CXml\Xml.h" />
+    <ClInclude Include="CXml\XmlNode.h" />
+    <ClInclude Include="CXml\XmlNodes.h" />
+    <ClInclude Include="CXml\Xsl.h" />
     <ClInclude Include="EngineeringCalculate.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -218,12 +224,17 @@
     <ClCompile Include="CalculateButton.cpp" />
     <ClCompile Include="CalculateEdit.cpp" />
     <ClCompile Include="CalculateStatic.cpp" />
+    <ClCompile Include="CMarkup\Markup.cpp" />
     <ClCompile Include="ConvertBitTab.cpp" />
     <ClCompile Include="ConvertButton.cpp" />
     <ClCompile Include="ConvertLengthTab.cpp" />
     <ClCompile Include="ConvertTimeTab.cpp" />
     <ClCompile Include="ConvertWeightTab.cpp" />
     <ClCompile Include="ConvertWidthTab.cpp" />
+    <ClCompile Include="CXml\Xml.cpp" />
+    <ClCompile Include="CXml\XmlNode.cpp" />
+    <ClCompile Include="CXml\XmlNodes.cpp" />
+    <ClCompile Include="CXml\Xsl.cpp" />
     <ClCompile Include="EngineeringCalculate.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

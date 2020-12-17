@@ -250,6 +250,9 @@
 #define IDC_RADIO_CUSTOM                1183
 #define IDC_EDIT_CUSTOM_COUNT           1184
 #define IDC_EDIT_STATE                  1185
+#define IDC_BUTTON_COLOR_NONE           1187
+#define IDC_BUTTON_COLOR_WORKING        1188
+#define IDC_BUTTON_COLOR_RESTING        1189
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -267,7 +270,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        194
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1186
+#define _APS_NEXT_CONTROL_VALUE         1190
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

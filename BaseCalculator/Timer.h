@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "CalculateButton.h"
+#include "ConvertButton.h"
 #include "CalculateEdit.h"
+#include "CMarkup/Markup.h"
+#include "CXml\Xml.h"
 
-#define BACKGROUND_COLOR_YELLOW		RGB(255, 230, 85)
-#define BACKGROUND_COLOR_GREEN		RGB(139, 255, 136)
-#define BACKGROUND_COLOR_RED		RGB(255, 136, 136)
+#define BACKGROUND_COLOR_YELLOW		RGB(241, 209, 85)
+#define BACKGROUND_COLOR_GREEN		RGB(101, 179, 97)
+#define BACKGROUND_COLOR_RED		RGB(215, 70, 57)
 
 // Timer 대화 상자
 
@@ -68,10 +71,16 @@ private:
 	CalculateButton m_btn_rest_minute_down;
 	CalculateButton m_btn_rest_second_up;
 	CalculateButton m_btn_rest_second_down;
+	ConvertButton m_btn_color_none;
+	ConvertButton m_btn_color_working;
+	ConvertButton m_btn_color_resting;
 	CButton m_radio_infinite;
 	CButton m_radio_custom;
 
 	CBrush m_returnBrush;
+	COLORREF none_color;
+	COLORREF work_color;
+	COLORREF rest_color;
 
 	OperateState os;
 
@@ -102,6 +111,10 @@ private:
 
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
+	bool WorkTimeToUnderTenSecondCondition();
+	bool RestTimeToUnderTenSecondCondition();
+	void LoadSettingColor(COLORREF* none_color, COLORREF* work_color, COLORREF* rest_color);
+	void SaveXml(CMarkup* markup);
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -125,4 +138,7 @@ public:
 	afx_msg void OnBnClickedRadioInfinite();
 	afx_msg void OnBnClickedRadioCustom();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedButtonColorNone();
+	afx_msg void OnBnClickedButtonColorWorking();
+	afx_msg void OnBnClickedButtonColorResting();
 };
