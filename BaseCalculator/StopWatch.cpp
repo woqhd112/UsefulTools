@@ -254,6 +254,6 @@ void StopWatch::StartStopWatch()
 
 		finish = clock();
 		duration = (double)(finish - start) / CLOCKS_PER_SEC;
-		Sleep(10 - duration + duration);
+		Sleep(10 - duration);
 	}
 }

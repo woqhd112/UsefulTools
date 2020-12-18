@@ -5,6 +5,9 @@
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
 
+#pragma comment(lib, "winmm")
+#include <mmsystem.h>
+
 #define BACKGROUND_COLOR_YELLOW		RGB(241, 209, 85)
 #define BACKGROUND_COLOR_GREEN		RGB(101, 179, 97)
 #define BACKGROUND_COLOR_RED		RGB(215, 70, 57)
@@ -41,6 +44,21 @@ private:
 		OPERATE_STATE_NONE		= 0,
 		OPERATE_STATE_WORKING	= 1,
 		OPERATE_STATE_RESTING	= 2
+	};
+
+	enum ProgressState
+	{
+		PROGRESS_STATE_NONE				= 0,
+		PROGRESS_STATE_WORKING_START	= 1,
+		PROGRESS_STATE_WORKING_END		= 2,
+		PROGRESS_STATE_RESTING_START	= 3,
+		PROGRESS_STATE_RESTING_END		= 4,
+		PROGRESS_STATE_COUNT_1			= 5,
+		PROGRESS_STATE_COUNT_2			= 6,
+		PROGRESS_STATE_COUNT_3			= 7,
+		PROGRESS_STATE_COUNT_4			= 8,
+		PROGRESS_STATE_COUNT_5			= 9,
+		PROGRESS_STATE_WORKING_END_ALL	= 10
 	};
 
 	CalculateEdit m_edit_work_hour_1;
@@ -83,6 +101,7 @@ private:
 	COLORREF rest_color;
 
 	OperateState os;
+	ProgressState ps;
 
 	bool bThread;
 	bool bStart;
@@ -98,23 +117,30 @@ private:
 	CString g_str_rest_hour;
 	CString g_str_rest_minute;
 	CString g_str_rest_second;
+	CString g_str_repeat_count;
 
 	CWinThread* m_thread;
+	CWinThread* m_soundThread;
 
 	static UINT thrTimer(LPVOID method);
+	static UINT thrLoadSound(LPVOID method);
 	void StartTimer();
+	void StartSound(CString strSoundPath);
 	void CalculateWorkTime();
 	void CalculateRestTime();
 	bool CheckRepeatCount();
 	void SetGlobalEditText();
+	void SetDefaultGlobalEditText();
 	void SetOperateStateToColor(OperateState os);
 
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
 	bool WorkTimeToUnderTenSecondCondition();
 	bool RestTimeToUnderTenSecondCondition();
-	void LoadSettingColor(COLORREF* none_color, COLORREF* work_color, COLORREF* rest_color);
+	void LoadSettingColor();
 	void SaveXml(CMarkup* markup);
+	bool CreateDefaultXml(CMarkup* markUp, CString strFilePath);
+	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
