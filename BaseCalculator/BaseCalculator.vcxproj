@@ -83,6 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -269,6 +270,7 @@
     <Image Include="res\ConvertWidth.png" />
     <Image Include="res\Engineering.png" />
     <Image Include="res\icon1.ico" />
+    <Image Include="res\load.png" />
     <Image Include="res\pngegg.png" />
     <Image Include="res\pngegg24.png" />
     <Image Include="res\pngegg24_d.png" />
@@ -277,6 +279,7 @@
     <Image Include="res\pngwing24.png" />
     <Image Include="res\pngwing24_d.png" />
     <Image Include="res\pngwing24_h.png" />
+    <Image Include="res\save.png" />
     <Image Include="res\Time.png" />
     <Image Include="res\TimeCal.png" />
     <Image Include="res\Timer.png" />

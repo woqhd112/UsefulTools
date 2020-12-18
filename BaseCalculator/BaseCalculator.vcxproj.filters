@@ -284,5 +284,11 @@
     <Image Include="res\Time.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\load.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\save.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

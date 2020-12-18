@@ -89,6 +89,8 @@ private:
 	CalculateButton m_btn_rest_minute_down;
 	CalculateButton m_btn_rest_second_up;
 	CalculateButton m_btn_rest_second_down;
+	CalculateButton m_btn_time_save;
+	CalculateButton m_btn_time_load;
 	ConvertButton m_btn_color_none;
 	ConvertButton m_btn_color_working;
 	ConvertButton m_btn_color_resting;
@@ -138,9 +140,11 @@ private:
 	bool WorkTimeToUnderTenSecondCondition();
 	bool RestTimeToUnderTenSecondCondition();
 	void LoadSettingColor();
-	void SaveXml(CMarkup* markup);
-	bool CreateDefaultXml(CMarkup* markUp, CString strFilePath);
+	void SaveXml(CMarkup* markup, CString strSaveFullPath);
+	bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
+	bool CreateDefaultTimeXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
+	void TimeSettingCreateXml();
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -167,4 +171,6 @@ public:
 	afx_msg void OnBnClickedButtonColorNone();
 	afx_msg void OnBnClickedButtonColorWorking();
 	afx_msg void OnBnClickedButtonColorResting();
+	afx_msg void OnBnClickedButtonTimeLoad();
+	afx_msg void OnBnClickedButtonTimeSave();
 };

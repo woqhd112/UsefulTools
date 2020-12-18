@@ -42,6 +42,8 @@
 #define IDB_PNG_REVERSE_NOMAL           189
 #define IDB_PNG_TIMER1_NOMAL            190
 #define IDD_DIALOG_TIMER                191
+#define IDB_PNG_LOAD                    194
+#define IDB_PNG_SAVE                    195
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -253,6 +255,8 @@
 #define IDC_BUTTON_COLOR_NONE           1187
 #define IDC_BUTTON_COLOR_WORKING        1188
 #define IDC_BUTTON_COLOR_RESTING        1189
+#define IDC_BUTTON_TIME_LOAD            1190
+#define IDC_BUTTON_TIME_SAVE            1191
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -268,9 +272,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_RESOURCE_VALUE        196
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1190
+#define _APS_NEXT_CONTROL_VALUE         1192
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
