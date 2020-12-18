@@ -43,22 +43,26 @@ private:
 	{
 		OPERATE_STATE_NONE		= 0,
 		OPERATE_STATE_WORKING	= 1,
-		OPERATE_STATE_RESTING	= 2
+		OPERATE_STATE_RESTING	= 2,
+		OPERATE_STATE_PAUSE		= 3
 	};
 
 	enum ProgressState
 	{
 		PROGRESS_STATE_NONE				= 0,
 		PROGRESS_STATE_WORKING_START	= 1,
-		PROGRESS_STATE_WORKING_END		= 2,
-		PROGRESS_STATE_RESTING_START	= 3,
-		PROGRESS_STATE_RESTING_END		= 4,
-		PROGRESS_STATE_COUNT_1			= 5,
-		PROGRESS_STATE_COUNT_2			= 6,
-		PROGRESS_STATE_COUNT_3			= 7,
-		PROGRESS_STATE_COUNT_4			= 8,
-		PROGRESS_STATE_COUNT_5			= 9,
-		PROGRESS_STATE_WORKING_END_ALL	= 10
+		PROGRESS_STATE_WORKING_SOON_END	= 2,
+		PROGRESS_STATE_WORKING_END		= 3,
+		PROGRESS_STATE_RESTING_START	= 4,
+		PROGRESS_STATE_RESTING_SOON_END	= 5,
+		PROGRESS_STATE_RESTING_END		= 6,
+		PROGRESS_STATE_COUNT_0			= 7,
+		PROGRESS_STATE_COUNT_1			= 8,
+		PROGRESS_STATE_COUNT_2			= 9,
+		PROGRESS_STATE_COUNT_3			= 10,
+		PROGRESS_STATE_COUNT_4			= 11,
+		PROGRESS_STATE_COUNT_5			= 12,
+		PROGRESS_STATE_WORKING_END_ALL	= 13
 	};
 
 	CalculateEdit m_edit_work_hour_1;
@@ -75,7 +79,8 @@ private:
 	CalculateEdit m_edit_rest_second_2;
 	CalculateEdit m_edit_custom_count;
 	CalculateEdit m_edit_state;
-	CalculateButton m_btn_startandstop;
+	CalculateButton m_btn_startandpause;
+	CalculateButton m_btn_stop;
 	CalculateButton m_btn_reset;
 	CalculateButton m_btn_work_hour_up;
 	CalculateButton m_btn_work_hour_down;
@@ -107,11 +112,13 @@ private:
 
 	bool bThread;
 	bool bStart;
+	bool bPause;
 
 	bool bWorkEnd;
 	bool bRestEnd;
 	bool bFirstRestClock;
 	bool bFirstWorkClock;
+	bool bLastWorkClock;
 
 	CString g_str_work_hour;
 	CString g_str_work_minute;
@@ -128,9 +135,10 @@ private:
 	static UINT thrLoadSound(LPVOID method);
 	void StartTimer();
 	void StartSound(CString strSoundPath);
+	void StartBeepSound(ProgressState ps);
 	void CalculateWorkTime();
 	void CalculateRestTime();
-	bool CheckRepeatCount();
+	bool CheckRepeatCount(bool bCalc);
 	void SetGlobalEditText();
 	void SetDefaultGlobalEditText();
 	void SetOperateStateToColor(OperateState os);
@@ -173,4 +181,5 @@ public:
 	afx_msg void OnBnClickedButtonColorResting();
 	afx_msg void OnBnClickedButtonTimeLoad();
 	afx_msg void OnBnClickedButtonTimeSave();
+	afx_msg void OnBnClickedButtonStop();
 };
