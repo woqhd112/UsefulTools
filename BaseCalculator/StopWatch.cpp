@@ -2,9 +2,9 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
+#include "GojasTools.h"
 #include "StopWatch.h"
-#include "BaseCalculatorDlg.h"
+#include "GojasToolsDlg.h"
 #include "afxdialogex.h"
 
 
@@ -87,19 +87,7 @@ void StopWatch::OnOK()
 BOOL StopWatch::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-		if (pMsg->hwnd == m_btn_startandstop)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reset)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-	}
+
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
@@ -108,7 +96,7 @@ BOOL StopWatch::PreTranslateMessage(MSG* pMsg)
 void StopWatch::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CBaseCalculatorDlg* parent = (CBaseCalculatorDlg*)pParent;
+	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
 	parent->bStopWatch = false;
 	delete this;
 	CDialogEx::PostNcDestroy();

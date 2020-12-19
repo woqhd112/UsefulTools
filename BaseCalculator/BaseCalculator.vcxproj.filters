@@ -39,12 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseCalculator.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseCalculatorDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -123,14 +117,14 @@
     <ClInclude Include="CXml\Xsl.h">
       <Filter>XMLParse</Filter>
     </ClInclude>
+    <ClInclude Include="GojasTools.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GojasToolsDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseCalculator.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseCalculatorDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -200,19 +194,20 @@
     <ClCompile Include="CXml\Xsl.cpp">
       <Filter>XMLParse</Filter>
     </ClCompile>
+    <ClCompile Include="GojasTools.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GojasToolsDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="BaseCalculator.rc">
-      <Filter>리소스 파일</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\BaseCalculator.rc2">
+    <None Include="res\GojasTools.rc2">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\BaseCalculator.ico">
+    <Image Include="res\GojasTools.ico">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\cal.png">
@@ -290,5 +285,10 @@
     <Image Include="res\save.png">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GojasTools.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
+#include "GojasTools.h"
 #include "ConvertTimeTab.h"
 #include "afxdialogex.h"
 
@@ -293,15 +293,7 @@ BOOL ConvertTimeTab::PreTranslateMessage(MSG* pMsg)
 		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
 	}
 
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-		if (pMsg->hwnd == m_btn_reset)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-	}
-	else if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_LBUTTONUP)
 	{
 		m_edit_date.Invalidate();
 		m_edit_hour.Invalidate();

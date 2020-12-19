@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
+#include "GojasTools.h"
 #include "ConvertWeightTab.h"
 #include "afxdialogex.h"
 
@@ -517,20 +517,7 @@ BOOL ConvertWeightTab::PreTranslateMessage(MSG* pMsg)
 		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
 	}
 
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-		if (pMsg->hwnd == m_btn_combo)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reverse)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-	}
-	else if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_LBUTTONUP)
 	{
 		m_edit_left_value.Invalidate();
 		if (pMsg->hwnd != m_edit_left_value)

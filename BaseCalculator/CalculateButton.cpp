@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
+#include "GojasTools.h"
 #include "CalculateButton.h"
 
 
@@ -40,11 +40,13 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 	this->EnableWindowsTheming(FALSE);
 	this->SetFaceColor(color);
 	this->m_bDrawFocus = FALSE;
-	m_defaultColor = color;
 
 	nID = this->GetDlgCtrlID();
 	int nFontFlag = 0;
 	int nFontSize = 0;
+	int nRv = GetRValue(color);
+	int nGv = GetGValue(color);
+	int nBv = GetBValue(color);
 	if (nID == IDC_BUTTON_0 ||
 		nID == IDC_BUTTON_1 ||
 		nID == IDC_BUTTON_2 ||
@@ -58,13 +60,19 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 	{
 		nFontFlag = FW_BOLD;
 		nFontSize = 15;
+		m_defaultColor = color;
+		m_hoverColor = RGB(nRv - 30, nGv - 30, nBv - 30);
+		m_downColor = RGB(nRv - 80, nGv - 80, nBv - 80);
 	}
 	else
 	{
 		nFontFlag = FW_NORMAL;
 		nFontSize = 10;
+		m_defaultColor = color;
+		m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
+		m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
 	}
-	
+
 	font.CreateFontW(nFontSize, 0, 0, 0, nFontFlag, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);

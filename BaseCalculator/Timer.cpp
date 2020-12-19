@@ -2,12 +2,17 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
-#include "BaseCalculatorDlg.h"
+#include "GojasTools.h"
+#include "GojasToolsDlg.h"
 #include "Timer.h"
 #include "afxdialogex.h"
- 
- 
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif // _DEBUG
+
 // Timer 대화 상자
 
 IMPLEMENT_DYNAMIC(Timer, CDialogEx)
@@ -16,32 +21,30 @@ Timer::Timer(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_TIMER, pParent)
 {
 	this->pParent = pParent;
-	bStart = true;
-	bFirstRestClock = true;
-	bFirstWorkClock = true;
-	bLastWorkClock = false;
-	bWorkEnd = false;
-	bRestEnd = false;
-	bPause = false;
-	os = OPERATE_STATE_NONE;
-	ps = PROGRESS_STATE_NONE;
+	nDivideMargin = 0;
+	bDivideClick = false;
 }
 
 Timer::~Timer()
 {
-	if (bThread)
+	if (tr.bThread)
 	{
-		bThread = false;
-		if (m_soundThread)
+		tr.bThread = false;
+		DWORD nExitCode = NULL;
+		DWORD nExitSoundCode = NULL;
+		GetExitCodeThread(tr.m_soundThread->m_hThread, &nExitSoundCode);
+		if (TerminateThread(tr.m_soundThread->m_hThread, nExitSoundCode) != 0)
 		{
-			PlaySound(NULL, AfxGetInstanceHandle(), NULL);
-			TerminateThread(m_soundThread, 0);
-			m_soundThread = nullptr;
-			Sleep(500);
+			delete tr.m_soundThread;
+			tr.m_soundThread = nullptr;
 		}
-		TerminateThread(m_thread, 0);
-		m_thread = nullptr;
-		Sleep(500);
+
+		GetExitCodeThread(tr.m_thread->m_hThread, &nExitCode);
+		if (TerminateThread(tr.m_thread->m_hThread, nExitCode) != 0)
+		{
+			delete tr.m_thread;
+			tr.m_thread = nullptr;
+		}
 	}
 }
 
@@ -84,6 +87,7 @@ void Timer::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_TIME_SAVE, m_btn_time_save);
 	DDX_Control(pDX, IDC_BUTTON_TIME_LOAD, m_btn_time_load);
 	DDX_Control(pDX, IDC_BUTTON_STOP, m_btn_stop);
+	DDX_Control(pDX, IDC_BUTTON_SETTING_DIVIDE, m_btn_setting_divide);
 }
 
 
@@ -112,6 +116,7 @@ BEGIN_MESSAGE_MAP(Timer, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_TIME_LOAD, &Timer::OnBnClickedButtonTimeLoad)
 	ON_BN_CLICKED(IDC_BUTTON_TIME_SAVE, &Timer::OnBnClickedButtonTimeSave)
 	ON_BN_CLICKED(IDC_BUTTON_STOP, &Timer::OnBnClickedButtonStop)
+	ON_BN_CLICKED(IDC_BUTTON_SETTING_DIVIDE, &Timer::OnBnClickedButtonSettingDivide)
 END_MESSAGE_MAP()
 
 
@@ -125,7 +130,7 @@ BOOL Timer::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	LoadSettingColor();
 
-	this->SetBackgroundColor(none_color);
+	this->SetBackgroundColor(tr.none_color);
 	m_returnBrush.CreateSolidBrush(RGB(255, 255, 255));
 
 	m_btn_startandpause.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -145,10 +150,11 @@ BOOL Timer::OnInitDialog()
 	m_btn_rest_second_down.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_time_save.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
 	m_btn_time_load.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
+	m_btn_setting_divide.Initialize(tr.none_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
 
-	m_btn_color_none.Initialize(none_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_color_working.Initialize(work_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_color_resting.Initialize(rest_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
+	m_btn_color_none.Initialize(tr.none_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
+	m_btn_color_working.Initialize(tr.work_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
+	m_btn_color_resting.Initialize(tr.rest_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
 
 	m_edit_work_hour_1.Initialize(25, _T("고딕"));
 	m_edit_work_hour_2.Initialize(25, _T("고딕"));
@@ -183,15 +189,24 @@ BOOL Timer::OnInitDialog()
 
 	EmptyTextCondition();
 	m_edit_state.SetWindowTextW(_T("None"));
-	TimeSettingCreateXml();
 	m_radio_custom.SetCheck(TRUE);
 	m_btn_stop.EnableWindow(FALSE);
 
 	m_btn_startandpause.SetFocus();
 
+	SetDivideMargin();
+	OnBnClickedButtonSettingDivide();
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void Timer::SetDivideMargin()
+{
+	CRect divideRect, thisRect;
+	m_btn_setting_divide.GetWindowRect(divideRect);
+	this->GetWindowRect(thisRect);
+	nDivideMargin = thisRect.bottom - divideRect.bottom - divideRect.Height();
 }
 
 void Timer::LoadSettingColor()
@@ -213,15 +228,15 @@ void Timer::LoadSettingColor()
 
 			if (strColorState == _T("none"))
 			{
-				none_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.none_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
 			}
 			else if (strColorState == _T("working"))
 			{
-				work_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.work_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
 			}
 			else if (strColorState == _T("resting"))
 			{
-				rest_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.rest_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
 			}
 			bSavedXml = true;
 		}
@@ -292,40 +307,9 @@ bool Timer::CreateDefaultColorXml(CMarkup* markUp, CString strFilePath)
 		markUp->AddAttrib(_T("redv"), _T("215"));
 		markUp->AddAttrib(_T("greenv"), _T("70"));
 		markUp->AddAttrib(_T("bluev"), _T("57"));
-		none_color = BACKGROUND_COLOR_YELLOW;
-		work_color = BACKGROUND_COLOR_GREEN;
-		rest_color = BACKGROUND_COLOR_RED;
-		bReturn = true;
-	}
-	xmlFind.Close();
-
-	return bReturn;
-}
-
-bool Timer::CreateDefaultTimeXml(CMarkup* markUp, CString strFilePath)
-{
-	bool bReturn = false;
-	CFileFind xmlFind;
-	strFilePath += _T("\\TimeSetting.conf");
-	if (!xmlFind.FindFile(strFilePath))
-	{
-		markUp->AddElem(_T("Timer"));
-		markUp->IntoElem();
-		markUp->AddElem(_T("Time"));
-		markUp->AddAttrib(_T("name"), _T("work"));
-		markUp->AddAttrib(_T("hour"), _T("00"));
-		markUp->AddAttrib(_T("minute"), _T("00"));
-		markUp->AddAttrib(_T("second"), _T("00"));
-		markUp->AddElem(_T("Time"));
-		markUp->AddAttrib(_T("name"), _T("rest"));
-		markUp->AddAttrib(_T("hour"), _T("00"));
-		markUp->AddAttrib(_T("minute"), _T("00"));
-		markUp->AddAttrib(_T("second"), _T("00"));
-		markUp->AddElem(_T("Time"));
-		markUp->AddAttrib(_T("name"), _T("repeat"));
-		markUp->AddAttrib(_T("type"), _T("custom"));
-		markUp->AddAttrib(_T("value"), _T("1"));
-		EmptyTextCondition();
+		tr.none_color = BACKGROUND_COLOR_YELLOW;
+		tr.work_color = BACKGROUND_COLOR_GREEN;
+		tr.rest_color = BACKGROUND_COLOR_RED;
 		bReturn = true;
 	}
 	xmlFind.Close();
@@ -344,7 +328,6 @@ void Timer::OnOK()
 void Timer::OnClose()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	CDialogEx::OnClose();
 	Timer::PostNcDestroy();
 }
@@ -353,7 +336,7 @@ void Timer::OnClose()
 void Timer::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CBaseCalculatorDlg* parent = (CBaseCalculatorDlg*)pParent;
+	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
 	parent->bTimer = false;
 	delete this;
 	CDialogEx::PostNcDestroy();
@@ -363,90 +346,7 @@ void Timer::PostNcDestroy()
 BOOL Timer::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-		if (pMsg->hwnd == m_btn_startandpause)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reset)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_hour_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_hour_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_minute_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_minute_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_second_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_work_second_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_hour_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_hour_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_minute_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_minute_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_second_up)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_rest_second_down)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_time_save)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_time_load)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-	}
-	else if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_LBUTTONUP)
 	{
 		if (pMsg->hwnd == m_edit_work_hour_1)
 		{
@@ -1272,43 +1172,29 @@ void Timer::SetEnabledCtrl(BOOL bEnabled)
 		m_edit_custom_count.EnableWindow(bEnabled);
 }
 
-bool Timer::WorkTimeToUnderTenSecondCondition()
+bool Timer::TimeToUnderTenSecondCondition(bool isWork)
 {
 	bool bReturn = true;
 
 	CString strHour, strMinute, strSecond, strHour1, strHour2, strMinute1, strMinute2, strSecond1, strSecond2;
-	m_edit_work_hour_1.GetWindowTextW(strHour1);
-	m_edit_work_hour_2.GetWindowTextW(strHour2);
-	m_edit_work_minute_1.GetWindowTextW(strMinute1);
-	m_edit_work_minute_2.GetWindowTextW(strMinute2);
-	m_edit_work_second_1.GetWindowTextW(strSecond1);
-	m_edit_work_second_2.GetWindowTextW(strSecond2);
-
-	strHour.Format(_T("%s%s"), strHour1, strHour2);
-	strMinute.Format(_T("%s%s"), strMinute1, strMinute2);
-	strSecond.Format(_T("%s%s"), strSecond1, strSecond2);
-	int nHour = _ttoi(strHour);
-	int nMinute = _ttoi(strMinute);
-	int nSecond = _ttoi(strSecond);
-	if (nHour == 0 && nMinute == 0 && nSecond < 10)
+	if (isWork)
 	{
-		bReturn = false;
+		m_edit_work_hour_1.GetWindowTextW(strHour1);
+		m_edit_work_hour_2.GetWindowTextW(strHour2);
+		m_edit_work_minute_1.GetWindowTextW(strMinute1);
+		m_edit_work_minute_2.GetWindowTextW(strMinute2);
+		m_edit_work_second_1.GetWindowTextW(strSecond1);
+		m_edit_work_second_2.GetWindowTextW(strSecond2);
 	}
-
-	return bReturn;
-}
-
-bool Timer::RestTimeToUnderTenSecondCondition()
-{
-	bool bReturn = true;
-
-	CString strHour, strMinute, strSecond, strHour1, strHour2, strMinute1, strMinute2, strSecond1, strSecond2;
-	m_edit_rest_hour_1.GetWindowTextW(strHour1);
-	m_edit_rest_hour_2.GetWindowTextW(strHour2);
-	m_edit_rest_minute_1.GetWindowTextW(strMinute1);
-	m_edit_rest_minute_2.GetWindowTextW(strMinute2);
-	m_edit_rest_second_1.GetWindowTextW(strSecond1);
-	m_edit_rest_second_2.GetWindowTextW(strSecond2);
+	else
+	{
+		m_edit_rest_hour_1.GetWindowTextW(strHour1);
+		m_edit_rest_hour_2.GetWindowTextW(strHour2);
+		m_edit_rest_minute_1.GetWindowTextW(strMinute1);
+		m_edit_rest_minute_2.GetWindowTextW(strMinute2);
+		m_edit_rest_second_1.GetWindowTextW(strSecond1);
+		m_edit_rest_second_2.GetWindowTextW(strSecond2);
+	}
 
 	strHour.Format(_T("%s%s"), strHour1, strHour2);
 	strMinute.Format(_T("%s%s"), strMinute1, strMinute2);
@@ -1327,35 +1213,35 @@ bool Timer::RestTimeToUnderTenSecondCondition()
 void Timer::OnBnClickedButtonStartandstop2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (bStart)
+	if (tr.bStart)
 	{
-		if (!bPause)
+		if (!tr.bPause)
 		{
-			if (!WorkTimeToUnderTenSecondCondition())
+			if (!TimeToUnderTenSecondCondition(true))
 			{
 				MessageBox(_T("Work Time의 최소시간은 10초 입니다."));
 				return;
 			}
 
-			if (!RestTimeToUnderTenSecondCondition())
+			if (!TimeToUnderTenSecondCondition(false))
 			{
 				MessageBox(_T("Rest Time의 최소시간은 10초 입니다."));
 				return;
 			}
 		}
-		ps = PROGRESS_STATE_NONE;
-		bStart = false;
-		bThread = true;
+		tr.ps = PROGRESS_STATE_NONE;
+		tr.bStart = false;
+		tr.bThread = true;
 		m_btn_startandpause.SetWindowTextW(_T("일시 정지"));
 		SetEnabledCtrl(FALSE);
-		m_thread = AfxBeginThread(thrTimer, this);
+		tr.m_thread = AfxBeginThread(thrTimer, this);
 	}
 	else
 	{
 		SetOperateStateToColor(OPERATE_STATE_PAUSE);
-		bStart = true;
-		bPause = true;
-		bThread = false;
+		tr.bStart = true;
+		tr.bPause = true;
+		tr.bThread = false;
 		m_btn_startandpause.SetWindowTextW(_T("시작"));
 	}
 }
@@ -1363,14 +1249,14 @@ void Timer::OnBnClickedButtonStartandstop2()
 void Timer::OnBnClickedButtonStop()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	ps = PROGRESS_STATE_NONE;	
-	bFirstRestClock = true;
-	bFirstWorkClock = true;	
-	bStart = true;
-	bPause = false;
-	bThread = false;
-	bWorkEnd = false;	
-	bRestEnd = false;	
+	tr.ps = PROGRESS_STATE_NONE;
+	tr.bFirstRestClock = true;
+	tr.bFirstWorkClock = true;
+	tr.bStart = true;
+	tr.bPause = false;
+	tr.bThread = false;
+	tr.bWorkEnd = false;
+	tr.bRestEnd = false;
 	m_btn_startandpause.SetWindowTextW(_T("시작"));
 	SetEnabledCtrl(TRUE);	
 	SetOperateStateToColor(OPERATE_STATE_NONE);	
@@ -1391,25 +1277,22 @@ UINT Timer::thrLoadSound(LPVOID method)
 
 	CString strSoundPath;
 
-	switch (timer->ps)
+	switch (timer->tr.ps)
 	{
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_START:
-		strSoundPath = _T("SoundTrack\\start_work.wav");
-		break;
-	case Timer::ProgressState::PROGRESS_STATE_WORKING_SOON_END:
-		strSoundPath = _T("SoundTrack\\soon_end_work.wav");
+		strSoundPath = _T("SoundTrack\\Timer\\start_work.wav");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_END:
-		strSoundPath = _T("SoundTrack\\end_work.wav");
+		strSoundPath = _T("SoundTrack\\Timer\\end_work.wav");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_RESTING_START:
-		strSoundPath = _T("SoundTrack\\start_rest.wav");
+		strSoundPath = _T("SoundTrack\\Timer\\start_rest.wav");
 		break;
-	case Timer::ProgressState::PROGRESS_STATE_RESTING_SOON_END:
-		strSoundPath = _T("SoundTrack\\soon_end_rest.wav");
+	case Timer::ProgressState::PROGRESS_STATE_SOON_WORKING_END:
+		strSoundPath = _T("SoundTrack\\Timer\\soon_end_work.wav");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_RESTING_END:
-		strSoundPath = _T("SoundTrack\\end_rest.wav");
+		strSoundPath = _T("SoundTrack\\Timer\\end_rest.wav");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_0:
 		strSoundPath = _T("");
@@ -1430,7 +1313,7 @@ UINT Timer::thrLoadSound(LPVOID method)
 		strSoundPath = _T("");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_END_ALL:
-		strSoundPath = _T("SoundTrack\\end_work_all.wav");
+		strSoundPath = _T("SoundTrack\\Timer\\end_work_all.wav");
 		break;
 	default : 
 		break;
@@ -1438,7 +1321,7 @@ UINT Timer::thrLoadSound(LPVOID method)
 
 	if (strSoundPath.IsEmpty())
 	{
-		timer->StartBeepSound(timer->ps);
+		timer->StartBeepSound(timer->tr.ps);
 	}
 	else
 	{
@@ -1521,18 +1404,18 @@ bool Timer::CheckRepeatCount(bool bCalc)
 	if (nCount <= 0)
 	{
 		if (!bCalc) MessageBox(_T("반복횟수가 0입니다."));
-		bStart = true;
-		bThread = false;
+		tr.bStart = true;
+		tr.bThread = false;
 		m_btn_startandpause.SetWindowTextW(_T("시작"));
 		SetDefaultGlobalEditText();
 		SetEnabledCtrl(TRUE);
 		SetOperateStateToColor(OPERATE_STATE_NONE);
-		bPause = false;
+		tr.bPause = false;
 		return true;
 	}
 	else if (nCount == 1)
 	{
-		bLastWorkClock = true;
+		tr.bLastWorkClock = true;
 	}
 	if (bCalc)
 	{
@@ -1546,13 +1429,13 @@ bool Timer::CheckRepeatCount(bool bCalc)
 void Timer::StartTimer()
 {
 	EmptyTextCondition();
-	if (!bPause)
+	if (!tr.bPause)
 	{
 		SetGlobalEditText();
-		ps = PROGRESS_STATE_COUNT_0;
-		StartBeepSound(ps);
+		tr.ps = PROGRESS_STATE_COUNT_0;
+		StartBeepSound(tr.ps);
 	}
-	while (bThread)
+	while (tr.bThread)
 	{
 		if (CheckRepeatCount(false)) break;
 		clock_t start, finish;
@@ -1560,16 +1443,16 @@ void Timer::StartTimer()
 
 		start = clock();
 
-		if (!bWorkEnd)
+		if (!tr.bWorkEnd)
 		{
 			CalculateWorkTime();
 		}
 		else
 		{
-			if (bLastWorkClock)
+			if (tr.bLastWorkClock)
 			{
-				bRestEnd = true;
-				bLastWorkClock = false;
+				tr.bRestEnd = true;
+				tr.bLastWorkClock = false;
 			}
 			else
 			{
@@ -1577,30 +1460,30 @@ void Timer::StartTimer()
 			}
 		}
 
-		if (bRestEnd)
+		if (tr.bRestEnd)
 		{
-			bWorkEnd = false;
-			bRestEnd = false;
+			tr.bWorkEnd = false;
+			tr.bRestEnd = false;
 
 			if (m_radio_custom.GetCheck())
 			{
-				bFirstRestClock = true;
-				bFirstWorkClock = true;
+				tr.bFirstRestClock = true;
+				tr.bFirstWorkClock = true;
 				if (CheckRepeatCount(true))
 				{
 					// 마무리 멘트 알람 함수
 					// func
 					//Sleep(1000);
-					ps = PROGRESS_STATE_WORKING_END_ALL;
-					m_soundThread = AfxBeginThread(thrLoadSound, this);
+					tr.ps = PROGRESS_STATE_WORKING_END_ALL;
+					tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 					
 					break;
 				}
 			}
 			else
 			{
-				bFirstRestClock = true;
-				bFirstWorkClock = true;
+				tr.bFirstRestClock = true;
+				tr.bFirstWorkClock = true;
 			}
 		}
 
@@ -1615,14 +1498,13 @@ void Timer::StartTimer()
 void Timer::CalculateWorkTime()
 {
 	SetOperateStateToColor(OPERATE_STATE_WORKING);
-	if (bFirstWorkClock)
+	if (tr.bFirstWorkClock)
 	{
 		// 일 시작 알람 함수
 		// func
-		ps = PROGRESS_STATE_WORKING_START;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
-		Sleep(2500);
-		bFirstWorkClock = false;
+		tr.ps = PROGRESS_STATE_WORKING_START;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.bFirstWorkClock = false;
 
 		m_edit_rest_hour_1.SetWindowTextW((CString)g_str_rest_hour.GetAt(0));
 		m_edit_rest_hour_2.SetWindowTextW((CString)g_str_rest_hour.GetAt(1));
@@ -1664,59 +1546,67 @@ void Timer::CalculateWorkTime()
 
 	if (nHour == 0 && nMinute == 0 && nSecond == 0)
 	{
-		bWorkEnd = true;
+		tr.bWorkEnd = true;
 		// 종료 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_0;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_0;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 		
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 1)
 	{
 		// 종료 1초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_1;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_1;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 2)
 	{
 		// 종료 2초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_2;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_2;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 3)
 	{
 		// 종료 3초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_3;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_3;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 4)
 	{
 		// 종료 4초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_4;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_4;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 5)
 	{
 		// 종료 5초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_5;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_5;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
-	else if (nHour == 0 && nMinute == 0 && nSecond == 8)
+	else if (nHour == 0 && nMinute == 0 && nSecond == 7)
 	{
 		// 종료 7초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_WORKING_SOON_END;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		if (!tr.bLastWorkClock)
+		{
+			tr.ps = PROGRESS_STATE_WORKING_END;
+			tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
+		}
+		else
+		{
+			tr.ps = PROGRESS_STATE_SOON_WORKING_END;
+			tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
+		}
 	}
 	strHour.Format(_T("%02d"), nHour);
 	strMinute.Format(_T("%02d"), nMinute);
 	strSecond.Format(_T("%02d"), nSecond);
-	if (bThread)
+	if (tr.bThread)
 	{
 		m_edit_work_hour_1.SetWindowTextW((CString)strHour.GetAt(0));
 		m_edit_work_hour_2.SetWindowTextW((CString)strHour.GetAt(1));
@@ -1725,26 +1615,18 @@ void Timer::CalculateWorkTime()
 		m_edit_work_second_1.SetWindowTextW((CString)strSecond.GetAt(0));
 		m_edit_work_second_2.SetWindowTextW((CString)strSecond.GetAt(1));
 	}
-	if (nHour == 0 && nMinute == 0 && nSecond == 0)
-	{
-		Sleep(1000);
-		ps = PROGRESS_STATE_WORKING_END;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
-	}
-	if (ps == PROGRESS_STATE_WORKING_END) Sleep(1000);
 }
 
 void Timer::CalculateRestTime()
 {
 	SetOperateStateToColor(OPERATE_STATE_RESTING);
-	if (bFirstRestClock)
+	if (tr.bFirstRestClock)
 	{
 		// 휴식 시작 알람 함수
 		// func
-		ps = PROGRESS_STATE_RESTING_START;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
-		Sleep(2500);
-		bFirstRestClock = false;
+		tr.ps = PROGRESS_STATE_RESTING_START;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.bFirstRestClock = false;
 
 		CString strCount;
 		m_edit_custom_count.GetWindowTextW(strCount);
@@ -1791,58 +1673,58 @@ void Timer::CalculateRestTime()
 
 	if (nHour == 0 && nMinute == 0 && nSecond == 0)
 	{
-		bRestEnd = true;
+		tr.bRestEnd = true;
 		// 종료 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_0;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_0;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 1)
 	{
 		// 종료 1초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_1;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_1;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 2)
 	{
 		// 종료 2초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_2;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_2;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 3)
 	{
 		// 종료 3초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_3;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_3;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 4)
 	{
 		// 종료 4초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_4;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_4;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	else if (nHour == 0 && nMinute == 0 && nSecond == 5)
 	{
 		// 종료 5초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_COUNT_5;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_COUNT_5;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
-	else if (nHour == 0 && nMinute == 0 && nSecond == 8)
+	else if (nHour == 0 && nMinute == 0 && nSecond == 7)
 	{
 		// 종료 7초전 알람 함수
 		// func
-		ps = PROGRESS_STATE_RESTING_SOON_END;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.ps = PROGRESS_STATE_RESTING_END;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	strHour.Format(_T("%02d"), nHour);
 	strMinute.Format(_T("%02d"), nMinute);
 	strSecond.Format(_T("%02d"), nSecond);
-	if (bThread)
+	if (tr.bThread)
 	{
 		m_edit_rest_hour_1.SetWindowTextW((CString)strHour.GetAt(0));
 		m_edit_rest_hour_2.SetWindowTextW((CString)strHour.GetAt(1));
@@ -1851,41 +1733,42 @@ void Timer::CalculateRestTime()
 		m_edit_rest_second_1.SetWindowTextW((CString)strSecond.GetAt(0));
 		m_edit_rest_second_2.SetWindowTextW((CString)strSecond.GetAt(1));
 	}
-	if (nHour == 0 && nMinute == 0 && nSecond == 0)
-	{
-		Sleep(1000);
-		ps = PROGRESS_STATE_RESTING_END;
-		m_soundThread = AfxBeginThread(thrLoadSound, this);
-	}
-	if (ps == PROGRESS_STATE_RESTING_END) Sleep(1000);
 }
 
 void Timer::SetOperateStateToColor(OperateState os)
 {
-	this->os = os;
+	this->tr.os = os;
 	if (os == OPERATE_STATE_NONE)
 	{
-		OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
-		m_edit_state.SetWindowTextW(_T("None"));
-		this->SetBackgroundColor(none_color);
+		SetOperateColor(tr.none_color, _T("None"));
 	}
 	else if (os == OPERATE_STATE_RESTING)
 	{
-		OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
-		m_edit_state.SetWindowTextW(_T("Resting"));
-		this->SetBackgroundColor(rest_color);
+		SetOperateColor(tr.rest_color, _T("Resting"));
 	}
 	else if (os == OPERATE_STATE_WORKING)
 	{
-		OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
-		m_edit_state.SetWindowTextW(_T("Working"));
-		this->SetBackgroundColor(work_color);
+		SetOperateColor(tr.work_color, _T("Working"));
 	}
 	else if (os == OPERATE_STATE_PAUSE)
 	{
 		OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
 		m_edit_state.SetWindowTextW(_T("Pause"));
 	}
+}
+
+void Timer::SetOperateColor(COLORREF color, CString strOperateState)
+{
+	int nRv = GetRValue(color);
+	int nGv = GetGValue(color);
+	int nBv = GetBValue(color);
+	OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
+	m_edit_state.SetWindowTextW(strOperateState);
+	this->SetBackgroundColor(color);
+	m_btn_setting_divide.SetFaceColor(color);
+	m_btn_setting_divide.m_defaultColor = color;
+	m_btn_setting_divide.m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
+	m_btn_setting_divide.m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
 }
 
 void Timer::OnBnClickedButtonReset2()
@@ -1930,25 +1813,25 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_STATE)
 		{
-			if (os == OPERATE_STATE_NONE)
+			if (tr.os == OPERATE_STATE_NONE)
 			{
-				pDC->SetTextColor(none_color);
+				pDC->SetTextColor(tr.none_color);
 				pDC->SetBkColor(RGB(255, 255, 255));
 				hbr = (HBRUSH)m_returnBrush;
 			}
-			else if (os == OPERATE_STATE_RESTING)
+			else if (tr.os == OPERATE_STATE_RESTING)
 			{
-				pDC->SetTextColor(rest_color);
+				pDC->SetTextColor(tr.rest_color);
 				pDC->SetBkColor(RGB(255, 255, 255));
 				hbr = (HBRUSH)m_returnBrush;
 			}
-			else if (os == OPERATE_STATE_WORKING)
+			else if (tr.os == OPERATE_STATE_WORKING)
 			{
-				pDC->SetTextColor(work_color);
+				pDC->SetTextColor(tr.work_color);
 				pDC->SetBkColor(RGB(255, 255, 255));
 				hbr = (HBRUSH)m_returnBrush;
 			}
-			else if (os == OPERATE_STATE_PAUSE)
+			else if (tr.os == OPERATE_STATE_PAUSE)
 			{
 				pDC->SetTextColor(RGB(200, 200, 200));
 				hbr = (HBRUSH)m_returnBrush;
@@ -1967,7 +1850,7 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void Timer::OnBnClickedButtonColorNone()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CColorDialog none_color_dlg(none_color, CC_FULLOPEN, this);
+	CColorDialog none_color_dlg(tr.none_color, CC_FULLOPEN, this);
 	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
 	for (int i = 3; i < 16; i++)
 	{
@@ -1977,29 +1860,18 @@ void Timer::OnBnClickedButtonColorNone()
 
 	if (none_color_dlg.DoModal())
 	{
-		none_color = none_color_dlg.GetColor();
-		m_btn_color_none.SetFaceColor(none_color);
-		this->SetBackgroundColor(none_color);
+		tr.none_color = none_color_dlg.GetColor();
+		m_btn_color_none.SetFaceColor(tr.none_color);
+		this->SetBackgroundColor(tr.none_color);
+		int nRv = GetRValue(tr.none_color);
+		int nGv = GetGValue(tr.none_color);
+		int nBv = GetBValue(tr.none_color);
+		m_btn_setting_divide.m_defaultColor = tr.none_color;
+		m_btn_setting_divide.m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
+		m_btn_setting_divide.m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
+		m_btn_setting_divide.SetFaceColor(tr.none_color);
 
-		CMarkup markUp;
-		CString strFullPath = _T("Config\\Timer\\ColorSetting.conf");
-		if (markUp.Load(strFullPath))
-		{
-			markUp.FindElem(_T("Timer"));
-			markUp.IntoElem();
-			while (markUp.FindElem(_T("Color")))
-			{
-				CString strColorState = markUp.GetAttrib(_T("name"));
-				
-				if (strColorState == _T("none"))
-				{
-					markUp.SetAttrib(_T("redv"), GetRValue(none_color));
-					markUp.SetAttrib(_T("greenv"), GetGValue(none_color));
-					markUp.SetAttrib(_T("bluev"), GetBValue(none_color));
-				}
-			}
-		}
-		SaveXml(&markUp, strFullPath);
+		SetSettingColor(_T("none"), tr.none_color);
 	}
 }
 
@@ -2007,7 +1879,7 @@ void Timer::OnBnClickedButtonColorNone()
 void Timer::OnBnClickedButtonColorWorking()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CColorDialog work_color_dlg(work_color, CC_FULLOPEN, this);
+	CColorDialog work_color_dlg(tr.work_color, CC_FULLOPEN, this);
 	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
 	for (int i = 3; i < 16; i++)
 	{
@@ -2017,28 +1889,10 @@ void Timer::OnBnClickedButtonColorWorking()
 
 	if (work_color_dlg.DoModal())
 	{
-		work_color = work_color_dlg.GetColor();
-		m_btn_color_working.SetFaceColor(work_color);
+		tr.work_color = work_color_dlg.GetColor();
+		m_btn_color_working.SetFaceColor(tr.work_color);
 
-		CMarkup markUp;
-		CString strFullPath = _T("Config\\Timer\\ColorSetting.conf");
-		if (markUp.Load(strFullPath))
-		{
-			markUp.FindElem(_T("Timer"));
-			markUp.IntoElem();
-			while (markUp.FindElem(_T("Color")))
-			{
-				CString strColorState = markUp.GetAttrib(_T("name"));
-
-				if (strColorState == _T("working"))
-				{
-					markUp.SetAttrib(_T("redv"), GetRValue(work_color));
-					markUp.SetAttrib(_T("greenv"), GetGValue(work_color));
-					markUp.SetAttrib(_T("bluev"), GetBValue(work_color));
-				}
-			}
-		}
-		SaveXml(&markUp, strFullPath);
+		SetSettingColor(_T("working"), tr.work_color);
 	}
 }
 
@@ -2046,7 +1900,7 @@ void Timer::OnBnClickedButtonColorWorking()
 void Timer::OnBnClickedButtonColorResting()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CColorDialog rest_color_dlg(rest_color, CC_FULLOPEN, this);
+	CColorDialog rest_color_dlg(tr.rest_color, CC_FULLOPEN, this);
 	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
 	for (int i = 3; i < 16; i++)
 	{
@@ -2056,29 +1910,34 @@ void Timer::OnBnClickedButtonColorResting()
 
 	if (rest_color_dlg.DoModal())
 	{
-		rest_color = rest_color_dlg.GetColor();
-		m_btn_color_resting.SetFaceColor(rest_color);
+		tr.rest_color = rest_color_dlg.GetColor();
+		m_btn_color_resting.SetFaceColor(tr.rest_color);
 
-		CMarkup markUp;
-		CString strFullPath = _T("Config\\Timer\\ColorSetting.conf");
-		if (markUp.Load(strFullPath))
+		SetSettingColor(_T("resting"), tr.rest_color);
+	}
+}
+
+void Timer::SetSettingColor(CString strOperateState, COLORREF operateColor)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("Config\\Timer\\ColorSetting.conf");
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Timer"));
+		markUp.IntoElem();
+		while (markUp.FindElem(_T("Color")))
 		{
-			markUp.FindElem(_T("Timer"));
-			markUp.IntoElem();
-			while (markUp.FindElem(_T("Color")))
-			{
-				CString strColorState = markUp.GetAttrib(_T("name"));
+			CString strColorState = markUp.GetAttrib(_T("name"));
 
-				if (strColorState == _T("resting"))
-				{
-					markUp.SetAttrib(_T("redv"), GetRValue(rest_color));
-					markUp.SetAttrib(_T("greenv"), GetGValue(rest_color));
-					markUp.SetAttrib(_T("bluev"), GetBValue(rest_color));
-				}
+			if (strColorState == strOperateState)
+			{
+				markUp.SetAttrib(_T("redv"), GetRValue(operateColor));
+				markUp.SetAttrib(_T("greenv"), GetGValue(operateColor));
+				markUp.SetAttrib(_T("bluev"), GetBValue(operateColor));
 			}
 		}
-		SaveXml(&markUp, strFullPath);
 	}
+	SaveXml(&markUp, strFullPath);
 }
 
 void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
@@ -2097,11 +1956,12 @@ void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
 void Timer::OnBnClickedButtonTimeLoad()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (MessageBox(_T("현재 데이터를 덮어씁니다. 정말 로드하시겠습니까?"), NULL, MB_YESNO | MB_ICONQUESTION) == IDYES)
+	CString szFilter = _T("Config File(*.conf)|*.conf||");
+	CFileDialog dlg(TRUE, L"*.conf", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter);
+	if (IDOK == dlg.DoModal())
 	{
-		bool bSavedXml = false;
+		CString strFullPath = dlg.GetPathName();
 		CMarkup markUp;
-		CString strFullPath = _T("Config\\Timer\\TimeSetting.conf");
 		if (markUp.Load(strFullPath))
 		{
 			markUp.FindElem(_T("Timer"));
@@ -2152,37 +2012,7 @@ void Timer::OnBnClickedButtonTimeLoad()
 					}
 					m_edit_custom_count.SetWindowTextW(strRepeatValue);
 				}
-				bSavedXml = true;
 			}
-		}
-		else
-		{
-			BOOL bRval = FALSE;
-			CString szRoot = _T("");
-
-			TCHAR chFilePath[256] = { 0, };
-			GetModuleFileName(NULL, chFilePath, 256);
-			szRoot = (LPCTSTR)chFilePath;
-			int nLen = szRoot.ReverseFind('\\');
-
-			if (nLen > 0)
-			{
-				szRoot = szRoot.Left(nLen);
-			}
-
-			CFileFind rootFind;
-			if (rootFind.FindFile(szRoot + _T("\\BaseCalculator"))) {
-				szRoot += _T("\\BaseCalculator");
-			}
-			rootFind.Close();
-
-			CreateDefaultDirectory(szRoot, _T("\\Config"));
-			CreateDefaultDirectory(szRoot, _T("\\Timer"));
-			if (CreateDefaultTimeXml(&markUp, szRoot)) bSavedXml = true;
-		}
-		if (bSavedXml)
-		{
-			SaveXml(&markUp, strFullPath);
 		}
 	}
 }
@@ -2191,98 +2021,72 @@ void Timer::OnBnClickedButtonTimeLoad()
 void Timer::OnBnClickedButtonTimeSave()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (MessageBox(_T("기존 데이터를 덮어씁니다. 정말 저장하시겠습니까?"), NULL, MB_YESNO | MB_ICONQUESTION) == IDYES)
+	CString szFilter = _T("Config File(*.conf)|*.conf||");
+	CFileDialog dlg(FALSE, L"*.conf", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter);
+	if (IDOK == dlg.DoModal())
 	{
 		EmptyTextCondition();
 		CMarkup markUp;
-		CString strFullPath = _T("Config\\Timer\\TimeSetting.conf");
-		if (markUp.Load(strFullPath))
-		{
-			markUp.FindElem(_T("Timer"));
-			markUp.IntoElem();
-			while (markUp.FindElem(_T("Time")))
-			{
-				CString strTimeState = markUp.GetAttrib(_T("name"));
+		CString strFullPath = dlg.GetPathName();
 
-				if (strTimeState == _T("work"))
-				{
-					CString strHour1, strHour2, strMinute1, strMinute2, strSecond1, strSecond2;
+		CString strWorkHour1, strWorkHour2, strWorkMinute1, strWorkMinute2, strWorkSecond1, strWorkSecond2;
+		CString strRestHour1, strRestHour2, strRestMinute1, strRestMinute2, strRestSecond1, strRestSecond2;
+		CString strRepeatCount, strRepeatType;
 
-					m_edit_work_hour_1.GetWindowTextW(strHour1);
-					m_edit_work_hour_2.GetWindowTextW(strHour2);
-					m_edit_work_minute_1.GetWindowTextW(strMinute1);
-					m_edit_work_minute_2.GetWindowTextW(strMinute2);
-					m_edit_work_second_1.GetWindowTextW(strSecond1);
-					m_edit_work_second_2.GetWindowTextW(strSecond2);
+		m_edit_work_hour_1.GetWindowTextW(strWorkHour1);
+		m_edit_work_hour_2.GetWindowTextW(strWorkHour2);
+		m_edit_work_minute_1.GetWindowTextW(strWorkMinute1);
+		m_edit_work_minute_2.GetWindowTextW(strWorkMinute2);
+		m_edit_work_second_1.GetWindowTextW(strWorkSecond1);
+		m_edit_work_second_2.GetWindowTextW(strWorkSecond2);
 
-					markUp.SetAttrib(_T("hour"), strHour1 + strHour2);
-					markUp.SetAttrib(_T("minute"), strMinute1 + strMinute2);
-					markUp.SetAttrib(_T("second"), strSecond1 + strSecond2);
-				}
-				else if (strTimeState == _T("rest"))
-				{
-					CString strHour1, strHour2, strMinute1, strMinute2, strSecond1, strSecond2;
-				
-					m_edit_rest_hour_1.GetWindowTextW(strHour1);
-					m_edit_rest_hour_2.GetWindowTextW(strHour2);
-					m_edit_rest_minute_1.GetWindowTextW(strMinute1);
-					m_edit_rest_minute_2.GetWindowTextW(strMinute2);
-					m_edit_rest_second_1.GetWindowTextW(strSecond1);
-					m_edit_rest_second_2.GetWindowTextW(strSecond2);
+		m_edit_rest_hour_1.GetWindowTextW(strRestHour1);
+		m_edit_rest_hour_2.GetWindowTextW(strRestHour2);
+		m_edit_rest_minute_1.GetWindowTextW(strRestMinute1);
+		m_edit_rest_minute_2.GetWindowTextW(strRestMinute2);
+		m_edit_rest_second_1.GetWindowTextW(strRestSecond1);
+		m_edit_rest_second_2.GetWindowTextW(strRestSecond2);
 
-					markUp.SetAttrib(_T("hour"), strHour1 + strHour2);
-					markUp.SetAttrib(_T("minute"), strMinute1 + strMinute2);
-					markUp.SetAttrib(_T("second"), strSecond1 + strSecond2);
-				}
-				else
-				{
-					CString strRepeatCount, strRepeatType;
+		m_edit_custom_count.GetWindowTextW(strRepeatCount);
 
-					m_edit_custom_count.GetWindowTextW(strRepeatCount);
-
-					markUp.SetAttrib(_T("value"), strRepeatCount);
-					markUp.SetAttrib(_T("type"), m_radio_infinite.GetCheck() ? _T("infinite") : _T("custom"));
-				}
-			}
-		}
+		markUp.AddElem(_T("Timer"));
+		markUp.IntoElem();
+		markUp.AddElem(_T("Time"));
+		markUp.AddAttrib(_T("name"), _T("work"));
+		markUp.AddAttrib(_T("hour"), strWorkHour1 + strWorkHour2);
+		markUp.AddAttrib(_T("minute"), strWorkMinute1 + strWorkMinute2);
+		markUp.AddAttrib(_T("second"), strWorkSecond1 + strWorkSecond2);
+		markUp.AddElem(_T("Time"));
+		markUp.AddAttrib(_T("name"), _T("rest"));
+		markUp.AddAttrib(_T("hour"), strRestHour1 + strRestHour2);
+		markUp.AddAttrib(_T("minute"), strRestMinute1 + strRestMinute2);
+		markUp.AddAttrib(_T("second"), strRestSecond1 + strRestSecond2);
+		markUp.AddElem(_T("Time"));
+		markUp.AddAttrib(_T("name"), _T("repeat"));
+		markUp.AddAttrib(_T("type"), m_radio_infinite.GetCheck() ? _T("infinite") : _T("custom"));
+		markUp.AddAttrib(_T("value"), strRepeatCount);
 		SaveXml(&markUp, strFullPath);
 	}
 }
 
-void Timer::TimeSettingCreateXml()
+
+
+
+void Timer::OnBnClickedButtonSettingDivide()
 {
-	bool bSavedXml = false;
-	CMarkup markUp;
-	CString strFullPath = _T("Config\\Timer\\TimeSetting.conf");
-	if (!markUp.Load(strFullPath))
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CRect divideRect, thisRect;
+	m_btn_setting_divide.GetWindowRect(divideRect);
+	this->GetWindowRect(thisRect);
+
+	if (!bDivideClick)
 	{
-		BOOL bRval = FALSE;
-		CString szRoot = _T("");
-
-		TCHAR chFilePath[256] = { 0, };
-		GetModuleFileName(NULL, chFilePath, 256);
-		szRoot = (LPCTSTR)chFilePath;
-		int nLen = szRoot.ReverseFind('\\');
-
-		if (nLen > 0)
-		{
-			szRoot = szRoot.Left(nLen);
-		}
-
-		CFileFind rootFind;
-		if (rootFind.FindFile(szRoot + _T("\\BaseCalculator"))) {
-			szRoot += _T("\\BaseCalculator");
-		}
-		rootFind.Close();
-
-		CreateDefaultDirectory(szRoot, _T("\\Config"));
-		CreateDefaultDirectory(szRoot, _T("\\Timer"));
-		if (CreateDefaultTimeXml(&markUp, szRoot)) bSavedXml = true;
+		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() - nDivideMargin);
+		bDivideClick = true;
 	}
-	if (bSavedXml)
+	else
 	{
-		SaveXml(&markUp, strFullPath);
+		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + nDivideMargin);
+		bDivideClick = false;
 	}
 }
-
-

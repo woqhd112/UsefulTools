@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "BaseCalculator.h"
+#include "GojasTools.h"
 #include "ResultTimeline.h"
 #include "afxdialogex.h"
 

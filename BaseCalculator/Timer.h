@@ -51,18 +51,36 @@ private:
 	{
 		PROGRESS_STATE_NONE				= 0,
 		PROGRESS_STATE_WORKING_START	= 1,
-		PROGRESS_STATE_WORKING_SOON_END	= 2,
-		PROGRESS_STATE_WORKING_END		= 3,
-		PROGRESS_STATE_RESTING_START	= 4,
-		PROGRESS_STATE_RESTING_SOON_END	= 5,
-		PROGRESS_STATE_RESTING_END		= 6,
-		PROGRESS_STATE_COUNT_0			= 7,
-		PROGRESS_STATE_COUNT_1			= 8,
-		PROGRESS_STATE_COUNT_2			= 9,
-		PROGRESS_STATE_COUNT_3			= 10,
-		PROGRESS_STATE_COUNT_4			= 11,
-		PROGRESS_STATE_COUNT_5			= 12,
-		PROGRESS_STATE_WORKING_END_ALL	= 13
+		PROGRESS_STATE_WORKING_END		= 2,
+		PROGRESS_STATE_RESTING_START	= 3,
+		PROGRESS_STATE_RESTING_END		= 4,
+		PROGRESS_STATE_SOON_WORKING_END	= 5,
+		PROGRESS_STATE_COUNT_0			= 6,
+		PROGRESS_STATE_COUNT_1			= 7,
+		PROGRESS_STATE_COUNT_2			= 8,
+		PROGRESS_STATE_COUNT_3			= 9,
+		PROGRESS_STATE_COUNT_4			= 10,
+		PROGRESS_STATE_COUNT_5			= 11,
+		PROGRESS_STATE_WORKING_END_ALL	= 12
+	};
+
+	struct TimerReference
+	{
+		bool bStart = true;				// 시작버튼 클릭 유무, 시작상태 = true
+		bool bThread = false;			// 타이머스레드 동작 상태, 동작 = true
+		bool bPause = false;			// 일시정지 상태, 일시정지 = true
+		bool bWorkEnd = false;			// 업무 한 사이클 완료 상태, 완료 = true
+		bool bRestEnd = false;			// 휴식 한 사이클 완료 상태, 완료 = true
+		bool bFirstRestClock = true;	// 첫번째 휴식 사이클의 알람 실행 상태, 실행가능 = true
+		bool bFirstWorkClock = true;	// 첫번째 업무 사이클의 알람 실행 상태, 실행가능 = true
+		bool bLastWorkClock = false;	// 마지막 업무 사이클의 알람 실행 상태, 실행가능 = true
+		OperateState os = OPERATE_STATE_NONE;	// 현재 타이머의 진행 상태
+		ProgressState ps = PROGRESS_STATE_NONE;	// 현재 타이머의 사운드 출력 상태
+		CWinThread* m_thread;				// 현재 타이머의 스레드 객체
+		CWinThread* m_soundThread;			// 현재 타이머의 알람스레드 객체
+		COLORREF none_color;				// 대기상태의 컨트롤러 색상
+		COLORREF work_color;				// 업무상태의 컨트롤러 색상
+		COLORREF rest_color;				// 휴식상태의 컨트롤러 색상
 	};
 
 	CalculateEdit m_edit_work_hour_1;
@@ -96,6 +114,7 @@ private:
 	CalculateButton m_btn_rest_second_down;
 	CalculateButton m_btn_time_save;
 	CalculateButton m_btn_time_load;
+	CalculateButton m_btn_setting_divide;
 	ConvertButton m_btn_color_none;
 	ConvertButton m_btn_color_working;
 	ConvertButton m_btn_color_resting;
@@ -103,22 +122,8 @@ private:
 	CButton m_radio_custom;
 
 	CBrush m_returnBrush;
-	COLORREF none_color;
-	COLORREF work_color;
-	COLORREF rest_color;
-
-	OperateState os;
-	ProgressState ps;
-
-	bool bThread;
-	bool bStart;
-	bool bPause;
-
-	bool bWorkEnd;
-	bool bRestEnd;
-	bool bFirstRestClock;
-	bool bFirstWorkClock;
-	bool bLastWorkClock;
+	
+	TimerReference tr;
 
 	CString g_str_work_hour;
 	CString g_str_work_minute;
@@ -127,9 +132,6 @@ private:
 	CString g_str_rest_minute;
 	CString g_str_rest_second;
 	CString g_str_repeat_count;
-
-	CWinThread* m_thread;
-	CWinThread* m_soundThread;
 
 	static UINT thrTimer(LPVOID method);
 	static UINT thrLoadSound(LPVOID method);
@@ -142,17 +144,21 @@ private:
 	void SetGlobalEditText();
 	void SetDefaultGlobalEditText();
 	void SetOperateStateToColor(OperateState os);
+	void SetOperateColor(COLORREF color, CString strOperateState);
 
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
-	bool WorkTimeToUnderTenSecondCondition();
-	bool RestTimeToUnderTenSecondCondition();
+	bool TimeToUnderTenSecondCondition(bool isWork);
 	void LoadSettingColor();
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 	bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
-	bool CreateDefaultTimeXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
-	void TimeSettingCreateXml();
+	void SetSettingColor(CString strOperateState, COLORREF operateColor);
+
+	bool bDivideClick;
+	int nDivideMargin;
+
+	void SetDivideMargin();
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -182,4 +188,5 @@ public:
 	afx_msg void OnBnClickedButtonTimeLoad();
 	afx_msg void OnBnClickedButtonTimeSave();
 	afx_msg void OnBnClickedButtonStop();
+	afx_msg void OnBnClickedButtonSettingDivide();
 };
