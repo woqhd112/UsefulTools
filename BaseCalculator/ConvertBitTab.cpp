@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "GojasTools.h"
+#include "GoCabinet.h"
 #include "ConvertBitTab.h"
 #include "afxdialogex.h"
 

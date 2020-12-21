@@ -49,19 +49,19 @@ private:
 
 	enum ProgressState
 	{
-		PROGRESS_STATE_NONE				= 0,
-		PROGRESS_STATE_WORKING_START	= 1,
-		PROGRESS_STATE_WORKING_END		= 2,
-		PROGRESS_STATE_RESTING_START	= 3,
-		PROGRESS_STATE_RESTING_END		= 4,
-		PROGRESS_STATE_SOON_WORKING_END	= 5,
-		PROGRESS_STATE_COUNT_0			= 6,
-		PROGRESS_STATE_COUNT_1			= 7,
-		PROGRESS_STATE_COUNT_2			= 8,
-		PROGRESS_STATE_COUNT_3			= 9,
-		PROGRESS_STATE_COUNT_4			= 10,
-		PROGRESS_STATE_COUNT_5			= 11,
-		PROGRESS_STATE_WORKING_END_ALL	= 12
+		PROGRESS_STATE_NONE					= 0,
+		PROGRESS_STATE_WORKING_START		= 1,
+		PROGRESS_STATE_WORKING_END			= 2,
+		PROGRESS_STATE_RESTING_START		= 3,
+		PROGRESS_STATE_SOON_RESTING_START	= 4,
+		PROGRESS_STATE_SOON_WORKING_START	= 5,
+		PROGRESS_STATE_COUNT_0				= 6,
+		PROGRESS_STATE_COUNT_1				= 7,
+		PROGRESS_STATE_COUNT_2				= 8,
+		PROGRESS_STATE_COUNT_3				= 9,
+		PROGRESS_STATE_COUNT_4				= 10,
+		PROGRESS_STATE_COUNT_5				= 11,
+		PROGRESS_STATE_WORKING_END_ALL		= 12
 	};
 
 	struct TimerReference
@@ -72,8 +72,9 @@ private:
 		bool bWorkEnd = false;			// 업무 한 사이클 완료 상태, 완료 = true
 		bool bRestEnd = false;			// 휴식 한 사이클 완료 상태, 완료 = true
 		bool bFirstRestClock = true;	// 첫번째 휴식 사이클의 알람 실행 상태, 실행가능 = true
-		bool bFirstWorkClock = true;	// 첫번째 업무 사이클의 알람 실행 상태, 실행가능 = true
+		bool bFirstWorkClock = false;	// 첫번째 업무 사이클의 알람 실행 상태, 실행가능 = true
 		bool bLastWorkClock = false;	// 마지막 업무 사이클의 알람 실행 상태, 실행가능 = true
+		bool bConstFirstWorkClock = true;	// 타이머 스레드에서 딱 한번의 알람 실행 상태, 실행가능 = true;
 		OperateState os = OPERATE_STATE_NONE;	// 현재 타이머의 진행 상태
 		ProgressState ps = PROGRESS_STATE_NONE;	// 현재 타이머의 사운드 출력 상태
 		CWinThread* m_thread;				// 현재 타이머의 스레드 객체
@@ -159,6 +160,8 @@ private:
 	int nDivideMargin;
 
 	void SetDivideMargin();
+
+	bool TimerThreadDelete();
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

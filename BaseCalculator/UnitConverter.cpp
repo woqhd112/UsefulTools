@@ -2,9 +2,9 @@
 //
 
 #include "pch.h"
-#include "GojasTools.h"
+#include "GoCabinet.h"
 #include "UnitConverter.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinetDlg.h"
 #include "afxdialogex.h"
 
 
@@ -186,7 +186,7 @@ BOOL UnitConverter::PreTranslateMessage(MSG* pMsg)
 void UnitConverter::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
+	CGoCabinetDlg* parent = (CGoCabinetDlg*)pParent;
 	parent->bConverter = false;
 	delete this;
 	CDialogEx::PostNcDestroy();

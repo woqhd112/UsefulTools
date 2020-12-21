@@ -11,14 +11,15 @@
 #include "resource.h"		// 주 기호입니다.
 
 
-// CGojasToolsrApp:
-// 이 클래스의 구현에 대해서는 GojasTools.cpp을(를) 참조하세요.
+// CGoCabinetApp:
+// 이 클래스의 구현에 대해서는 GoCabinet.cpp을(를) 참조하세요.
 //
 
-class CGojasToolsApp : public CWinApp
+class CGoCabinetApp : public CWinApp
 {
 public:
-	CGojasToolsApp();
+	CGoCabinetApp();
+	ULONG_PTR m_gdiplusToken;
 
 // 재정의입니다.
 public:
@@ -29,4 +30,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CGojasToolsApp theApp;
+extern CGoCabinetApp theApp;

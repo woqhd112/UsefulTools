@@ -4,8 +4,8 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "GojasTools.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinet.h"
+#include "GoCabinetDlg.h"
 #include "afxdialogex.h"
 
 
@@ -52,45 +52,45 @@ END_MESSAGE_MAP()
 
 
 
-CGojasToolsDlg::CGojasToolsDlg(CWnd* pParent /*=nullptr*/)
+CGoCabinetDlg::CGoCabinetDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_BASECALCULATOR_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
-void CGojasToolsDlg::DoDataExchange(CDataExchange* pDX)
+void CGoCabinetDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_BUTTON_BASE, m_btn_base);
-	DDX_Control(pDX, IDC_BUTTON_CALCULATOR, m_btn_engineering);
 	DDX_Control(pDX, IDC_STATIC_ENGINEERING, m_stt_engineering);
 	DDX_Control(pDX, IDC_STATIC_BASE, m_stt_base);
-	DDX_Control(pDX, IDC_BUTTON_CONVERTER, m_btn_converter);
 	DDX_Control(pDX, IDC_STATIC_CONVERTER, m_stt_converter);
 	DDX_Control(pDX, IDC_STATIC_DATE, m_stt_date);
-	DDX_Control(pDX, IDC_BUTTON_DATE, m_btn_date);
 	DDX_Control(pDX, IDC_STATIC_STOPWATCH, m_stt_stopwatch);
-	DDX_Control(pDX, IDC_BUTTON_STOPWATCH, m_btn_stopwatch);
-	DDX_Control(pDX, IDC_BUTTON_TIMER1, m_btn_timer);
 	DDX_Control(pDX, IDC_STATIC_TIMER1, m_stt_timer);
+	DDX_Control(pDX, IDC_BUTTON_BASE_GDI, m_btn_base_gdi);
+	DDX_Control(pDX, IDC_BUTTON_CALCULATOR_GDI, m_btn_calculator_gdi);
+	DDX_Control(pDX, IDC_BUTTON_STOPWATCH_GDI, m_btn_stopwatch_gdi);
+	DDX_Control(pDX, IDC_BUTTON_CONVERTER_GDI, m_btn_converter_gdi);
+	DDX_Control(pDX, IDC_BUTTON_DATE_GDI, m_btn_date_gdi);
+	DDX_Control(pDX, IDC_BUTTON_TIMER_GDI, m_btn_timer_gdi);
 }
 
-BEGIN_MESSAGE_MAP(CGojasToolsDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CGoCabinetDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON_BASE, &CGojasToolsDlg::OnBnClickedButtonBase)
-	ON_BN_CLICKED(IDC_BUTTON_CALCULATOR, &CGojasToolsDlg::OnBnClickedButtonCalculator)
-	ON_BN_CLICKED(IDC_BUTTON_CONVERTER, &CGojasToolsDlg::OnBnClickedButtonConverter)
-	ON_BN_CLICKED(IDC_BUTTON_TIME, &CGojasToolsDlg::OnBnClickedButtonTime)
-	ON_BN_CLICKED(IDC_BUTTON_STOPWATCH, &CGojasToolsDlg::OnBnClickedButtonStopWatch)
-	ON_BN_CLICKED(IDC_BUTTON_TIMER1, &CGojasToolsDlg::OnBnClickedButtonTimer1)
+	ON_BN_CLICKED(IDC_BUTTON_BASE_GDI, &CGoCabinetDlg::OnBnClickedButtonBaseGdi)
+	ON_BN_CLICKED(IDC_BUTTON_CALCULATOR_GDI, &CGoCabinetDlg::OnBnClickedButtonCalculatorGdi)
+	ON_BN_CLICKED(IDC_BUTTON_STOPWATCH_GDI, &CGoCabinetDlg::OnBnClickedButtonStopwatchGdi)
+	ON_BN_CLICKED(IDC_BUTTON_CONVERTER_GDI, &CGoCabinetDlg::OnBnClickedButtonConverterGdi)
+	ON_BN_CLICKED(IDC_BUTTON_DATE_GDI, &CGoCabinetDlg::OnBnClickedButtonDateGdi)
+	ON_BN_CLICKED(IDC_BUTTON_TIMER_GDI, &CGoCabinetDlg::OnBnClickedButtonTimerGdi)
 END_MESSAGE_MAP()
 
 
 // CBaseCalculatorDlg 메시지 처리기
 
-BOOL CGojasToolsDlg::OnInitDialog()
+BOOL CGoCabinetDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -127,20 +127,7 @@ BOOL CGojasToolsDlg::OnInitDialog()
 	bStopWatch = false;
 	bTimer = false;
 
-
-	this->SetBackgroundColor(RGB(255, 255, 255));
-	m_btn_base.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_base.InsertImage(IDB_PNG_BASE_NOMAL);
-	m_btn_engineering.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_engineering.InsertImage(IDB_PNG_ENGINEERING_NOMAL);
-	m_btn_converter.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_converter.InsertImage(IDB_PNG_CONVERTER_NOMAL);
-	m_btn_date.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_date.InsertImage(IDB_PNG_TIME_NOMAL);
-	m_btn_stopwatch.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_stopwatch.InsertImage(IDB_PNG_STOPWATCH_NOMAL);
-	m_btn_timer.Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	m_btn_timer.InsertImage(IDB_PNG_TIMER1_NOMAL);
+	
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
 	m_stt_converter.Initialize(15, _T("고딕"));
@@ -148,12 +135,50 @@ BOOL CGojasToolsDlg::OnInitDialog()
 	m_stt_stopwatch.Initialize(15, _T("고딕"));
 	m_stt_timer.Initialize(15, _T("고딕"));
 
+	m_btn_base_gdi.LoadStdImage(IDB_PNG_BASE_NOMAL, _T("PNG"));
+	m_btn_base_gdi.LoadHovImage(IDB_PNG_BASE_HOVER, _T("PNG"));
+	m_btn_base_gdi.LoadAltImage(IDB_PNG_BASE_CLICK, _T("PNG"));
+	CRect rect;
+	m_btn_base_gdi.GetWindowRect(rect);
+	m_btn_base_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
+	m_btn_calculator_gdi.LoadStdImage(IDB_PNG_ENGINEERING_NOMAL, _T("PNG"));
+	m_btn_calculator_gdi.LoadHovImage(IDB_PNG_ENGINEERING_HOVER, _T("PNG"));
+	m_btn_calculator_gdi.LoadAltImage(IDB_PNG_ENGINEERING_CLICK, _T("PNG"));
+	m_btn_calculator_gdi.GetWindowRect(rect);
+	m_btn_calculator_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
+	m_btn_stopwatch_gdi.LoadStdImage(IDB_PNG_STOPWATCH_NOMAL, _T("PNG"));
+	m_btn_stopwatch_gdi.LoadHovImage(IDB_PNG_STOPWATCH_HOVER, _T("PNG"));
+	m_btn_stopwatch_gdi.LoadAltImage(IDB_PNG_STOPWATCH_CLICK, _T("PNG"));
+	m_btn_stopwatch_gdi.GetWindowRect(rect);
+	m_btn_stopwatch_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
+	
+	m_btn_converter_gdi.LoadStdImage(IDB_PNG_CONVERTER_NOMAL, _T("PNG"));
+	m_btn_converter_gdi.LoadHovImage(IDB_PNG_CONVERTER_HOVER, _T("PNG"));
+	m_btn_converter_gdi.LoadAltImage(IDB_PNG_CONVERTER_CLICK, _T("PNG"));
+	m_btn_converter_gdi.GetWindowRect(rect);
+	m_btn_converter_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
+	m_btn_date_gdi.LoadStdImage(IDB_PNG_DATECAL_NOMAL, _T("PNG"));
+	m_btn_date_gdi.LoadHovImage(IDB_PNG_DATECAL_HOVER, _T("PNG"));
+	m_btn_date_gdi.LoadAltImage(IDB_PNG_DATECAL_CLICK, _T("PNG"));
+	m_btn_date_gdi.GetWindowRect(rect);
+	m_btn_date_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
+	m_btn_timer_gdi.LoadStdImage(IDB_PNG_TIMER_NOMAL, _T("PNG"));
+	m_btn_timer_gdi.LoadHovImage(IDB_PNG_TIMER_HOVER, _T("PNG"));
+	m_btn_timer_gdi.LoadAltImage(IDB_PNG_TIMER_CLICK, _T("PNG"));
+	m_btn_timer_gdi.GetWindowRect(rect);
+	m_btn_timer_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
+
 	
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
-void CGojasToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CGoCabinetDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -170,7 +195,7 @@ void CGojasToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  아래 코드가 필요합니다.  문서/뷰 모델을 사용하는 MFC 응용 프로그램의 경우에는
 //  프레임워크에서 이 작업을 자동으로 수행합니다.
 
-void CGojasToolsDlg::OnPaint()
+void CGoCabinetDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -197,17 +222,31 @@ void CGojasToolsDlg::OnPaint()
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
 //  이 함수를 호출합니다.
-HCURSOR CGojasToolsDlg::OnQueryDragIcon()
+HCURSOR CGoCabinetDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CGoCabinetDlg::OnOK()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-// 진법계산 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonBase()
+	//CDialogEx::OnOK();
+}
+
+BOOL CGoCabinetDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+
+void CGoCabinetDlg::OnBnClickedButtonBaseGdi()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	if (!bBase)
 	{
 		base = new BaseCalculate(this);
@@ -217,11 +256,10 @@ void CGojasToolsDlg::OnBnClickedButtonBase()
 	}
 }
 
-// 공학계산 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonCalculator()
+
+void CGoCabinetDlg::OnBnClickedButtonCalculatorGdi()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	if (!bEngineering)
 	{
 		engineering = new EngineeringCalculate(this);
@@ -229,14 +267,26 @@ void CGojasToolsDlg::OnBnClickedButtonCalculator()
 		engineering->ShowWindow(SW_SHOW);
 		bEngineering = true;
 	}
+}
+
+
+void CGoCabinetDlg::OnBnClickedButtonStopwatchGdi()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (!bStopWatch)
+	{
+		stopwatch = new StopWatch(this);
+		stopwatch->Create(IDD_DIALOG_STOPWATCH, GetDesktopWindow());
+		stopwatch->ShowWindow(SW_SHOW);
+		bStopWatch = true;
+	}
 
 }
 
-// 단위변환 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonConverter()
+
+void CGoCabinetDlg::OnBnClickedButtonConverterGdi()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	if (!bConverter)
 	{
 		converter = new UnitConverter(this);
@@ -246,11 +296,10 @@ void CGojasToolsDlg::OnBnClickedButtonConverter()
 	}
 }
 
-// 시간계산 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonTime()
+
+void CGoCabinetDlg::OnBnClickedButtonDateGdi()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	if (!bDate)
 	{
 		date = new DateCalculate(this);
@@ -260,25 +309,10 @@ void CGojasToolsDlg::OnBnClickedButtonTime()
 	}
 }
 
-// 스탑워치 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonStopWatch()
+
+void CGoCabinetDlg::OnBnClickedButtonTimerGdi()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	if (!bStopWatch)
-	{
-		stopwatch = new StopWatch(this);
-		stopwatch->Create(IDD_DIALOG_STOPWATCH, GetDesktopWindow());
-		stopwatch->ShowWindow(SW_SHOW);
-		bStopWatch = true;
-	}
-}
-
-// 타이머 버튼 클릭
-void CGojasToolsDlg::OnBnClickedButtonTimer1()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	if (!bTimer)
 	{
 		timer = new Timer(this);
@@ -287,18 +321,3 @@ void CGojasToolsDlg::OnBnClickedButtonTimer1()
 		bTimer = true;
 	}
 }
-void CGojasToolsDlg::OnOK()
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	//CDialogEx::OnOK();
-}
-
-BOOL CGojasToolsDlg::PreTranslateMessage(MSG* pMsg)
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	
-
-	return CDialogEx::PreTranslateMessage(pMsg);
-}
-

@@ -2,8 +2,8 @@
 //
 
 #include "pch.h"
-#include "GojasTools.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinet.h"
+#include "GoCabinetDlg.h"
 #include "Timer.h"
 #include "afxdialogex.h"
 
@@ -336,7 +336,7 @@ void Timer::OnClose()
 void Timer::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
+	CGoCabinetDlg* parent = (CGoCabinetDlg*)pParent;
 	parent->bTimer = false;
 	delete this;
 	CDialogEx::PostNcDestroy();
@@ -1246,21 +1246,43 @@ void Timer::OnBnClickedButtonStartandstop2()
 	}
 }
 
+bool Timer::TimerThreadDelete()
+{
+	if (tr.bThread)
+	{
+		tr.bThread = false;
+		DWORD nExitCode = NULL;
+
+		GetExitCodeThread(tr.m_thread->m_hThread, &nExitCode);
+		if (TerminateThread(tr.m_thread->m_hThread, nExitCode) != 0)
+		{
+			delete tr.m_thread;
+			tr.m_thread = nullptr;
+			return true;
+		}
+	}
+	return false;
+}
+
 void Timer::OnBnClickedButtonStop()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	tr.ps = PROGRESS_STATE_NONE;
-	tr.bFirstRestClock = true;
-	tr.bFirstWorkClock = true;
-	tr.bStart = true;
-	tr.bPause = false;
-	tr.bThread = false;
-	tr.bWorkEnd = false;
-	tr.bRestEnd = false;
-	m_btn_startandpause.SetWindowTextW(_T("시작"));
-	SetEnabledCtrl(TRUE);	
-	SetOperateStateToColor(OPERATE_STATE_NONE);	
-	SetDefaultGlobalEditText();
+	if (TimerThreadDelete())
+	{
+		tr.ps = PROGRESS_STATE_NONE;
+		tr.bFirstRestClock = true;
+		tr.bFirstWorkClock = false;
+		tr.bConstFirstWorkClock = true;
+		tr.bStart = true;
+		tr.bPause = false;
+		tr.bThread = false;
+		tr.bWorkEnd = false;
+		tr.bRestEnd = false;
+		m_btn_startandpause.SetWindowTextW(_T("시작"));
+		SetEnabledCtrl(TRUE);	
+		SetOperateStateToColor(OPERATE_STATE_NONE);	
+		SetDefaultGlobalEditText();
+	}
 }
 
 UINT Timer::thrTimer(LPVOID method)
@@ -1288,11 +1310,11 @@ UINT Timer::thrLoadSound(LPVOID method)
 	case Timer::ProgressState::PROGRESS_STATE_RESTING_START:
 		strSoundPath = _T("SoundTrack\\Timer\\start_rest.wav");
 		break;
-	case Timer::ProgressState::PROGRESS_STATE_SOON_WORKING_END:
-		strSoundPath = _T("SoundTrack\\Timer\\soon_end_work.wav");
+	case Timer::ProgressState::PROGRESS_STATE_SOON_WORKING_START:
+		strSoundPath = _T("SoundTrack\\Timer\\soon_start_work.wav");
 		break;
-	case Timer::ProgressState::PROGRESS_STATE_RESTING_END:
-		strSoundPath = _T("SoundTrack\\Timer\\end_rest.wav");
+	case Timer::ProgressState::PROGRESS_STATE_SOON_RESTING_START:
+		strSoundPath = _T("SoundTrack\\Timer\\soon_start_rest.wav");
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_0:
 		strSoundPath = _T("");
@@ -1411,6 +1433,8 @@ bool Timer::CheckRepeatCount(bool bCalc)
 		SetEnabledCtrl(TRUE);
 		SetOperateStateToColor(OPERATE_STATE_NONE);
 		tr.bPause = false;
+		tr.bConstFirstWorkClock = true;
+		tr.bFirstWorkClock = false;
 		return true;
 	}
 	else if (nCount == 1)
@@ -1449,26 +1473,18 @@ void Timer::StartTimer()
 		}
 		else
 		{
-			if (tr.bLastWorkClock)
-			{
-				tr.bRestEnd = true;
-				tr.bLastWorkClock = false;
-			}
-			else
-			{
-				CalculateRestTime();
-			}
+			CalculateRestTime();
 		}
 
 		if (tr.bRestEnd)
 		{
 			tr.bWorkEnd = false;
 			tr.bRestEnd = false;
+			tr.bFirstRestClock = true;
+			tr.bFirstWorkClock = true;
 
 			if (m_radio_custom.GetCheck())
 			{
-				tr.bFirstRestClock = true;
-				tr.bFirstWorkClock = true;
 				if (CheckRepeatCount(true))
 				{
 					// 마무리 멘트 알람 함수
@@ -1479,11 +1495,6 @@ void Timer::StartTimer()
 					
 					break;
 				}
-			}
-			else
-			{
-				tr.bFirstRestClock = true;
-				tr.bFirstWorkClock = true;
 			}
 		}
 
@@ -1497,6 +1508,12 @@ void Timer::StartTimer()
 
 void Timer::CalculateWorkTime()
 {
+	if (tr.bConstFirstWorkClock)
+	{
+		tr.ps = PROGRESS_STATE_SOON_WORKING_START;
+		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
+		tr.bConstFirstWorkClock = false;
+	}
 	SetOperateStateToColor(OPERATE_STATE_WORKING);
 	if (tr.bFirstWorkClock)
 	{
@@ -1592,14 +1609,14 @@ void Timer::CalculateWorkTime()
 	{
 		// 종료 7초전 알람 함수
 		// func
-		if (!tr.bLastWorkClock)
+		if (tr.bLastWorkClock)
 		{
 			tr.ps = PROGRESS_STATE_WORKING_END;
 			tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 		}
 		else
 		{
-			tr.ps = PROGRESS_STATE_SOON_WORKING_END;
+			tr.ps = PROGRESS_STATE_SOON_RESTING_START;
 			tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 		}
 	}
@@ -1619,6 +1636,12 @@ void Timer::CalculateWorkTime()
 
 void Timer::CalculateRestTime()
 {
+	if (tr.bLastWorkClock)
+	{
+		tr.bRestEnd = true;
+		tr.bLastWorkClock = false;
+		return;
+	}
 	SetOperateStateToColor(OPERATE_STATE_RESTING);
 	if (tr.bFirstRestClock)
 	{
@@ -1718,7 +1741,7 @@ void Timer::CalculateRestTime()
 	{
 		// 종료 7초전 알람 함수
 		// func
-		tr.ps = PROGRESS_STATE_RESTING_END;
+		tr.ps = PROGRESS_STATE_SOON_WORKING_START;
 		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 	}
 	strHour.Format(_T("%02d"), nHour);

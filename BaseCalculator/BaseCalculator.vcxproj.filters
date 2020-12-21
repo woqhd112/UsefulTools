@@ -117,11 +117,20 @@
     <ClInclude Include="CXml\Xsl.h">
       <Filter>XMLParse</Filter>
     </ClInclude>
-    <ClInclude Include="GojasTools.h">
+    <ClInclude Include="GoCabinetDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GojasToolsDlg.h">
+    <ClInclude Include="GoCabinet.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CGdiPlusBitmap.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GdipButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MemDC.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,22 +203,22 @@
     <ClCompile Include="CXml\Xsl.cpp">
       <Filter>XMLParse</Filter>
     </ClCompile>
-    <ClCompile Include="GojasTools.cpp">
+    <ClCompile Include="GoCabinetDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GojasToolsDlg.cpp">
+    <ClCompile Include="GoCabinet.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GdipButton.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\GojasTools.rc2">
+    <None Include="res\GoCabinet.rc2">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\GojasTools.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="res\cal.png">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -243,21 +252,6 @@
     <Image Include="res\pngwing24_d.png">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="res\Base.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\Engineering.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\Converter.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\TimeCal.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\Timer.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="res\ConvertBit.png">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -276,18 +270,81 @@
     <Image Include="res\ConvertReverse.png">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="res\Time.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="res\load.png">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\save.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\GoCabinet.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\icon2.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Cal.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Base_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Base_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Engineering_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Engineering_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Converter_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Converter_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\DateCal_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\DateCal_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Timer_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Timer_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Base_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Engineering_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Converter_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\DateCal_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Timer_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GojasTools.rc">
+    <ResourceCompile Include="GoCabinet.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>

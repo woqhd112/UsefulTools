@@ -31,5 +31,26 @@
 #include <afxwin.h>
 #include <afxwin.h>
 #include <afxcontrolbars.h>
+#include <afxwin.h>
+#include <afxwin.h>
+#if defined(_MSC_VER) && _MSC_VER == 1200
+
+#ifndef ULONG_PTR
+#define ULONG_PTR unsigned long*
+#endif
+
+#include <Specstrings.h>
+#include <gdiplus.h>
+#pragma comment(lib, "gdiplus.lib")
+using namespace Gdiplus;
+
+// VS2005
+#else 
+
+#include <gdiplus.h>
+#pragma comment(lib, "gdiplus.lib")
+using namespace Gdiplus;
+
+#endif
 
 #endif //PCH_H

@@ -9,13 +9,14 @@
 #include "DateCalculate.h"
 #include "StopWatch.h"
 #include "Timer.h"
+#include "GdipButton.h" 
 
 // CBaseCalculatorDlg 대화 상자
-class CGojasToolsDlg : public CDialogEx
+class CGoCabinetDlg : public CDialogEx
 {
 // 생성입니다.
 public:
-	CGojasToolsDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
+	CGoCabinetDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -38,18 +39,18 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 
-	CalculateButton m_btn_base;
-	CalculateButton m_btn_engineering;
-	CalculateButton m_btn_converter;
-	CalculateButton m_btn_date;
-	CalculateButton m_btn_stopwatch;
-	CalculateButton m_btn_timer;
 	CalculateStatic m_stt_engineering;
 	CalculateStatic m_stt_base;
 	CalculateStatic m_stt_converter;
 	CalculateStatic m_stt_date;
 	CalculateStatic m_stt_stopwatch;
 	CalculateStatic m_stt_timer;
+	CGdipButton m_btn_base_gdi;
+	CGdipButton m_btn_calculator_gdi;
+	CGdipButton m_btn_stopwatch_gdi;
+	CGdipButton m_btn_converter_gdi;
+	CGdipButton m_btn_date_gdi;
+	CGdipButton m_btn_timer_gdi;
 
 	BaseCalculate* base;
 	EngineeringCalculate* engineering;
@@ -68,13 +69,15 @@ public:
 	bool bTimer;
 
 public:
-	afx_msg void OnBnClickedButtonBase();
-	afx_msg void OnBnClickedButtonCalculator();
-	afx_msg void OnBnClickedButtonConverter();
-	afx_msg void OnBnClickedButtonTime();
-	afx_msg void OnBnClickedButtonStopWatch();
+
 	virtual void OnOK();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnBnClickedButtonTimer1();
+	
+	afx_msg void OnBnClickedButtonBaseGdi();
+	afx_msg void OnBnClickedButtonCalculatorGdi();
+	afx_msg void OnBnClickedButtonStopwatchGdi();
+	afx_msg void OnBnClickedButtonConverterGdi();
+	afx_msg void OnBnClickedButtonDateGdi();
+	afx_msg void OnBnClickedButtonTimerGdi();
 };

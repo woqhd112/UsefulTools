@@ -2,10 +2,10 @@
 //
 
 #include "pch.h"
-#include "GojasTools.h"
+#include "GoCabinet.h"
 #include "BaseCalculate.h"
 #include "afxdialogex.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinetDlg.h"
 #include <stack>
 #include <math.h>
 
@@ -620,7 +620,7 @@ void BaseCalculate::OnClose()
 void BaseCalculate::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
+	CGoCabinetDlg* parent = (CGoCabinetDlg*)pParent;
 	parent->bBase = false;
 	delete this;
 	CDialogEx::PostNcDestroy();

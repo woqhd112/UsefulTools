@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
-// BaseCalculator.rc에서 사용되고 있습니다.
+// GoCabinet.rc에서 사용되고 있습니다.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -17,18 +17,10 @@
 #define IDB_PNG_TRASH_NOMAL             149
 #define IDB_PNG_TRASH_HOVER             150
 #define IDB_PNG_TRASH_DOWN              151
-#define IDB_PNG_BASE_NOMAL              152
-#define IDB_PNG_ENGINEERING             153
-#define IDB_PNG_ENGINEERING_NOMAL       153
 #define IDD_DIALOG_CONVERTER            154
-#define IDB_PNG_CONVERTER_NOMAL         157
-#define IDB_PNG_TIME_NOMAL              158
 #define IDD_DIALOG_TIME                 159
 #define IDD_DIALOG_DATE                 159
 #define IDD_DIALOG_STOPWATCH            161
-#define IDB_PNG_TIMER                   163
-#define IDB_PNG_TIMER_NOMAL             163
-#define IDB_PNG_STOPWATCH_NOMAL         163
 #define IDD_TAB_LENGTH                  166
 #define IDD_TAB_WEIGHT                  168
 #define IDD_TAB_WIDTH                   170
@@ -40,10 +32,28 @@
 #define IDB_PNG_WEIGHT_NOMAL            185
 #define IDB_PNG_WIDTH_NOMAL             186
 #define IDB_PNG_REVERSE_NOMAL           189
-#define IDB_PNG_TIMER1_NOMAL            190
 #define IDD_DIALOG_TIMER                191
 #define IDB_PNG_LOAD                    194
 #define IDB_PNG_SAVE                    195
+#define IDB_BITMAP_TEST                 196
+#define IDB_PNG_BASE_NOMAL              199
+#define IDB_PNG_BASE_CLICK              200
+#define IDB_PNG_ENGINEERING_NOMAL       202
+#define IDB_PNG_ENGINEERING_CLICK       203
+#define IDB_PNG_STOPWATCH_NOMAL         204
+#define IDB_PNG_STOPWATCH_CLICK         205
+#define IDB_PNG_CONVERTER_NOMAL         206
+#define IDB_PNG_CONVERTER_CLICK         207
+#define IDB_PNG_DATECAL_NOMAL           208
+#define IDB_PNG_DATECAL_CLICK           209
+#define IDB_PNG_TIMER_NOMAL             210
+#define IDB_PNG_TIMER_CLICK             211
+#define IDB_PNG_BASE_HOVER              212
+#define IDB_PNG_ENGINEERING_HOVER       213
+#define IDB_PNG_STOPWATCH_HOVER         214
+#define IDB_PNG_CONVERTER_HOVER         215
+#define IDB_PNG_DATECAL_HOVER           216
+#define IDB_PNG_TIMER_HOVER             217
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -76,7 +86,6 @@
 #define IDC_BUTTON_WORK_HOUR_UP         1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
-#define IDC_MFCBUTTON2                  1023
 #define IDC_BUTTON_RESET                1023
 #define IDC_BUTTON_DATE                 1023
 #define IDC_BUTTON_LIMITDATE            1023
@@ -259,6 +268,15 @@
 #define IDC_BUTTON_TIME_SAVE            1191
 #define IDC_BUTTON_STOP                 1192
 #define IDC_BUTTON_SETTING_DIVIDE       1193
+#define IDC_BUTTON1                     1194
+#define IDC_BUTTON_TEST_DRAW            1194
+#define IDC_BUTTON_BASE_GDI             1194
+#define IDC_BUTTON_STOPWATCH_GDI        1195
+#define IDC_BUTTON_CONVERTER_GDI        1196
+#define IDC_BUTTON_CALCULATOR_GDI       1197
+#define IDC_BUTTON_DATE_GDI             1198
+#define IDC_BUTTON_TIMER_GDI            1199
+#define IDC_BUTTON_TEST_DRAW2           1201
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -274,9 +292,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        196
+#define _APS_NEXT_RESOURCE_VALUE        219
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1194
+#define _APS_NEXT_CONTROL_VALUE         1207
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -4,8 +4,8 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "GojasTools.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinet.h"
+#include "GoCabinetDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,14 +14,14 @@
 
 // CBaseCalculatorApp
 
-BEGIN_MESSAGE_MAP(CGojasToolsApp, CWinApp)
+BEGIN_MESSAGE_MAP(CGoCabinetApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
 // CBaseCalculatorApp 생성
 
-CGojasToolsApp::CGojasToolsApp()
+CGoCabinetApp::CGoCabinetApp()
 {
 	// 다시 시작 관리자 지원
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -33,12 +33,12 @@ CGojasToolsApp::CGojasToolsApp()
 
 // 유일한 CBaseCalculatorApp 개체입니다.
 
-CGojasToolsApp theApp;
+CGoCabinetApp theApp;
 
 
 // CBaseCalculatorApp 초기화
 
-BOOL CGojasToolsApp::InitInstance()
+BOOL CGoCabinetApp::InitInstance()
 {
 	// 응용 프로그램 매니페스트가 ComCtl32.dll 버전 6 이상을 사용하여 비주얼 스타일을
 	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다.
@@ -71,7 +71,7 @@ BOOL CGojasToolsApp::InitInstance()
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 응용 프로그램 마법사에서 생성된 응용 프로그램"));
 
-	CGojasToolsDlg dlg;
+	CGoCabinetDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
@@ -102,6 +102,9 @@ BOOL CGojasToolsApp::InitInstance()
 
 	// 대화 상자가 닫혔으므로 응용 프로그램의 메시지 펌프를 시작하지 않고  응용 프로그램을 끝낼 수 있도록 FALSE를
 	// 반환합니다.
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+
 	return FALSE;
 }
 

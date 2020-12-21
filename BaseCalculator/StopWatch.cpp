@@ -2,9 +2,9 @@
 //
 
 #include "pch.h"
-#include "GojasTools.h"
+#include "GoCabinet.h"
 #include "StopWatch.h"
-#include "GojasToolsDlg.h"
+#include "GoCabinetDlg.h"
 #include "afxdialogex.h"
 
 
@@ -96,7 +96,7 @@ BOOL StopWatch::PreTranslateMessage(MSG* pMsg)
 void StopWatch::PostNcDestroy()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CGojasToolsDlg* parent = (CGojasToolsDlg*)pParent;
+	CGoCabinetDlg* parent = (CGoCabinetDlg*)pParent;
 	parent->bStopWatch = false;
 	delete this;
 	CDialogEx::PostNcDestroy();
