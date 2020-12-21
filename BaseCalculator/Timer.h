@@ -121,8 +121,26 @@ private:
 	ConvertButton m_btn_color_resting;
 	CButton m_radio_infinite;
 	CButton m_radio_custom;
+	CStatic m_stt_repeat_setting;
+	CStatic m_stt_work_time;
+	CStatic m_stt_rest_time;
+	CStatic m_stt_color_setting;
+	CStatic m_stt_time_setting;
+	CStatic m_stt_state;
+	CStatic m_stt_color_none;
+	CStatic m_stt_color_working;
+	CStatic m_stt_color_resting;
+	CStatic m_stt_time_load;
+	CStatic m_stt_time_save;
+	CStatic m_stt_work_hour;
+	CStatic m_stt_work_minute;
+	CStatic m_stt_work_second;
+	CStatic m_stt_rest_hour;
+	CStatic m_stt_rest_minute;
+	CStatic m_stt_rest_second;
 
 	CBrush m_returnBrush;
+	int nBkBrightness;
 	
 	TimerReference tr;
 
@@ -155,6 +173,7 @@ private:
 	bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 	void SetSettingColor(CString strOperateState, COLORREF operateColor);
+	int GetBrightness(int nRv, int nGv, int nBv);
 
 	bool bDivideClick;
 	int nDivideMargin;

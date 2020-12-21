@@ -12,7 +12,7 @@
 #define IDD_DIALOG_ENGINEERING          137
 #define IDB_PNG_TIMELINE_NOMAL          143
 #define IDB_PNG_TIMELINE_HOVER          145
-#define IDB_PNG_TIMELINE_DOWN           146
+#define IDB_PNG_TIMELINE_DOWN           146 
 #define IDD_DIALOG_TIMELINE             147
 #define IDB_PNG_TRASH_NOMAL             149
 #define IDB_PNG_TRASH_HOVER             150
@@ -277,6 +277,23 @@
 #define IDC_BUTTON_DATE_GDI             1198
 #define IDC_BUTTON_TIMER_GDI            1199
 #define IDC_BUTTON_TEST_DRAW2           1201
+#define IDC_STATIC_REPEAT_SETTING       1207
+#define IDC_STATIC_WORK_TIME            1208
+#define IDC_STATIC_REST_TIME            1209
+#define IDC_STATIC_COLOR_SETTING        1210
+#define IDC_STATIC_TIME_SETTING         1211
+#define IDC_STATIC_STATE                1212
+#define IDC_STATIC_COLOR_NONE           1213
+#define IDC_STATIC_COLOR_WORKING        1214
+#define IDC_STATIC_COLOR_RESTING        1215
+#define IDC_STATIC_TIME_LOAD            1216
+#define IDC_STATIC_TIME_SAVE            1217
+#define IDC_STATIC_WORK_HOUR            1218
+#define IDC_STATIC_WORK_MINUTE          1219
+#define IDC_STATIC_WORK_SECOND          1220
+#define IDC_STATIC_REST_HOUR            1221
+#define IDC_STATIC_REST_MINUTE          1222
+#define IDC_STATIC_REST_SECOND          1223
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -294,7 +311,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        219
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1207
+#define _APS_NEXT_CONTROL_VALUE         1224
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

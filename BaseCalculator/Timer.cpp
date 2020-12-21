@@ -13,6 +13,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif // _DEBUG
 
+#pragma comment(lib, "UxTheme.lib")
+
 // Timer 대화 상자
 
 IMPLEMENT_DYNAMIC(Timer, CDialogEx)
@@ -23,6 +25,7 @@ Timer::Timer(CWnd* pParent /*=nullptr*/)
 	this->pParent = pParent;
 	nDivideMargin = 0;
 	bDivideClick = false;
+	nBkBrightness = 0;
 }
 
 Timer::~Timer()
@@ -88,6 +91,23 @@ void Timer::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_TIME_LOAD, m_btn_time_load);
 	DDX_Control(pDX, IDC_BUTTON_STOP, m_btn_stop);
 	DDX_Control(pDX, IDC_BUTTON_SETTING_DIVIDE, m_btn_setting_divide);
+	DDX_Control(pDX, IDC_STATIC_REPEAT_SETTING, m_stt_repeat_setting);
+	DDX_Control(pDX, IDC_STATIC_WORK_TIME, m_stt_work_time);
+	DDX_Control(pDX, IDC_STATIC_REST_TIME, m_stt_rest_time);
+	DDX_Control(pDX, IDC_STATIC_COLOR_SETTING, m_stt_color_setting);
+	DDX_Control(pDX, IDC_STATIC_TIME_SETTING, m_stt_time_setting);
+	DDX_Control(pDX, IDC_STATIC_STATE, m_stt_state);
+	DDX_Control(pDX, IDC_STATIC_COLOR_NONE, m_stt_color_none);
+	DDX_Control(pDX, IDC_STATIC_COLOR_WORKING, m_stt_color_working);
+	DDX_Control(pDX, IDC_STATIC_COLOR_RESTING, m_stt_color_resting);
+	DDX_Control(pDX, IDC_STATIC_TIME_LOAD, m_stt_time_load);
+	DDX_Control(pDX, IDC_STATIC_TIME_SAVE, m_stt_time_save);
+	DDX_Control(pDX, IDC_STATIC_WORK_HOUR, m_stt_work_hour);
+	DDX_Control(pDX, IDC_STATIC_WORK_MINUTE, m_stt_work_minute);
+	DDX_Control(pDX, IDC_STATIC_WORK_SECOND, m_stt_work_second);
+	DDX_Control(pDX, IDC_STATIC_REST_HOUR, m_stt_rest_hour);
+	DDX_Control(pDX, IDC_STATIC_REST_MINUTE, m_stt_rest_minute);
+	DDX_Control(pDX, IDC_STATIC_REST_SECOND, m_stt_rest_second);
 }
 
 
@@ -128,6 +148,14 @@ BOOL Timer::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	SetWindowTheme(m_stt_repeat_setting, _T(""), _T(""));
+	SetWindowTheme(m_stt_color_setting, _T(""), _T(""));
+	SetWindowTheme(m_stt_time_setting, _T(""), _T(""));
+	SetWindowTheme(m_stt_work_time, _T(""), _T(""));
+	SetWindowTheme(m_stt_rest_time, _T(""), _T(""));
+	SetWindowTheme(m_radio_infinite, _T(""), _T(""));
+	SetWindowTheme(m_radio_custom, _T(""), _T(""));
+
 	LoadSettingColor();
 
 	this->SetBackgroundColor(tr.none_color);
@@ -225,18 +253,21 @@ void Timer::LoadSettingColor()
 			CString strColorRed = markUp.GetAttrib(_T("redv"));
 			CString strColorGreen = markUp.GetAttrib(_T("greenv"));
 			CString strColorBlue = markUp.GetAttrib(_T("bluev"));
-
+			int nRedColor = _ttoi(strColorRed);
+			int nGreenColor = _ttoi(strColorGreen);
+			int nBlueColor = _ttoi(strColorBlue);
 			if (strColorState == _T("none"))
 			{
-				tr.none_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.none_color = RGB(nRedColor, nGreenColor, nBlueColor);
+				nBkBrightness = GetBrightness(nRedColor, nGreenColor, nBlueColor);
 			}
 			else if (strColorState == _T("working"))
 			{
-				tr.work_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.work_color = RGB(nRedColor, nGreenColor, nBlueColor);
 			}
 			else if (strColorState == _T("resting"))
 			{
-				tr.rest_color = RGB(_ttoi(strColorRed), _ttoi(strColorGreen), _ttoi(strColorBlue));
+				tr.rest_color = RGB(nRedColor, nGreenColor, nBlueColor);
 			}
 			bSavedXml = true;
 		}
@@ -310,6 +341,7 @@ bool Timer::CreateDefaultColorXml(CMarkup* markUp, CString strFilePath)
 		tr.none_color = BACKGROUND_COLOR_YELLOW;
 		tr.work_color = BACKGROUND_COLOR_GREEN;
 		tr.rest_color = BACKGROUND_COLOR_RED;
+		nBkBrightness = GetBrightness(GetRValue(tr.none_color), GetGValue(tr.none_color), GetBValue(tr.none_color));
 		bReturn = true;
 	}
 	xmlFind.Close();
@@ -1514,7 +1546,11 @@ void Timer::CalculateWorkTime()
 		tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 		tr.bConstFirstWorkClock = false;
 	}
-	SetOperateStateToColor(OPERATE_STATE_WORKING);
+	if (tr.os != OPERATE_STATE_WORKING)
+	{
+		SetOperateStateToColor(OPERATE_STATE_WORKING);
+		//Invalidate();
+	}
 	if (tr.bFirstWorkClock)
 	{
 		// 일 시작 알람 함수
@@ -1642,7 +1678,11 @@ void Timer::CalculateRestTime()
 		tr.bLastWorkClock = false;
 		return;
 	}
-	SetOperateStateToColor(OPERATE_STATE_RESTING);
+	if (tr.os != OPERATE_STATE_RESTING)
+	{
+		SetOperateStateToColor(OPERATE_STATE_RESTING);
+		//Invalidate();
+	}
 	if (tr.bFirstRestClock)
 	{
 		// 휴식 시작 알람 함수
@@ -1860,6 +1900,222 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				hbr = (HBRUSH)m_returnBrush;
 			}
 		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_STATE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_NONE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_WORKING)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_RESTING)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_LOAD)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_SAVE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_HOUR)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_MINUTE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_SECOND)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_SECOND)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_HOUR)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_MINUTE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REPEAT_SETTING)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_TIME)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_TIME)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_SETTING)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_SETTING)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_RADIO_INFINITE)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_RADIO_CUSTOM)
+		{
+			if (nBkBrightness > 120)
+			{
+				pDC->SetTextColor(RGB(0, 0, 0));
+			}
+			else
+			{
+				pDC->SetTextColor(RGB(255, 255, 255));
+			}
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
 	}
 	else
 	{
@@ -1895,6 +2151,9 @@ void Timer::OnBnClickedButtonColorNone()
 		m_btn_setting_divide.SetFaceColor(tr.none_color);
 
 		SetSettingColor(_T("none"), tr.none_color);
+	
+		nBkBrightness = GetBrightness(nRv, nGv, nBv);
+		Invalidate();
 	}
 }
 
@@ -1913,9 +2172,13 @@ void Timer::OnBnClickedButtonColorWorking()
 	if (work_color_dlg.DoModal())
 	{
 		tr.work_color = work_color_dlg.GetColor();
+		int nRv = GetRValue(tr.work_color);
+		int nGv = GetGValue(tr.work_color);
+		int nBv = GetBValue(tr.work_color);
 		m_btn_color_working.SetFaceColor(tr.work_color);
 
 		SetSettingColor(_T("working"), tr.work_color);
+		nBkBrightness = GetBrightness(nRv, nGv, nBv);
 	}
 }
 
@@ -1934,9 +2197,13 @@ void Timer::OnBnClickedButtonColorResting()
 	if (rest_color_dlg.DoModal())
 	{
 		tr.rest_color = rest_color_dlg.GetColor();
+		int nRv = GetRValue(tr.rest_color);
+		int nGv = GetGValue(tr.rest_color);
+		int nBv = GetBValue(tr.rest_color);
 		m_btn_color_resting.SetFaceColor(tr.rest_color);
 
 		SetSettingColor(_T("resting"), tr.rest_color);
+		nBkBrightness = GetBrightness(nRv, nGv, nBv);
 	}
 }
 
@@ -1961,6 +2228,28 @@ void Timer::SetSettingColor(CString strOperateState, COLORREF operateColor)
 		}
 	}
 	SaveXml(&markUp, strFullPath);
+}
+
+int Timer::GetBrightness(int nRv, int nGv, int nBv)
+{
+	int nMax = nRv;
+	int nMin = nRv;
+
+	if (nMax < nGv) nMax = nGv;
+	if (nMin > nGv) nMin = nGv; 
+	if (nMax < nBv) nMax = nBv;
+	if (nMin > nBv) nMin = nBv;
+
+	// nRv, nGv, nBv가 전부 동일
+	if (nMax == nRv && nMin == nRv)	
+	{
+		nMin = nGv;	// 그냥 nGv값을 최소값으로 설정 nRv만 아니면된다..
+	}
+
+	double dFirstBrightness = round(static_cast<double>(nMax) / 2.125);
+	double dLastBrightness = round(static_cast<double>(nMin) / 2.125);
+
+	return static_cast<int>(dFirstBrightness + dLastBrightness);
 }
 
 void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
