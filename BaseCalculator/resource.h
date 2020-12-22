@@ -12,7 +12,7 @@
 #define IDD_DIALOG_ENGINEERING          137
 #define IDB_PNG_TIMELINE_NOMAL          143
 #define IDB_PNG_TIMELINE_HOVER          145
-#define IDB_PNG_TIMELINE_DOWN           146 
+#define IDB_PNG_TIMELINE_DOWN           146
 #define IDD_DIALOG_TIMELINE             147
 #define IDB_PNG_TRASH_NOMAL             149
 #define IDB_PNG_TRASH_HOVER             150
@@ -294,6 +294,12 @@
 #define IDC_STATIC_REST_HOUR            1221
 #define IDC_STATIC_REST_MINUTE          1222
 #define IDC_STATIC_REST_SECOND          1223
+#define IDC_BUTTON_BASE_FOLDER          1224
+#define IDC_BUTTON_ENGINEERING_FOLDER   1225
+#define IDC_BUTTON_STOPWATCH_FOLDER     1226
+#define IDC_BUTTON_CONVERTER_FOLDER     1227
+#define IDC_BUTTON_DATECAL_FOLDER       1228
+#define IDC_BUTTON_TIMER_FOLDER         1229
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -309,9 +315,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        219
+#define _APS_NEXT_RESOURCE_VALUE        220
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1224
+#define _APS_NEXT_CONTROL_VALUE         1225
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

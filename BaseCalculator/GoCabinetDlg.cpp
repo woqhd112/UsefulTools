@@ -73,6 +73,12 @@ void CGoCabinetDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_CONVERTER_GDI, m_btn_converter_gdi);
 	DDX_Control(pDX, IDC_BUTTON_DATE_GDI, m_btn_date_gdi);
 	DDX_Control(pDX, IDC_BUTTON_TIMER_GDI, m_btn_timer_gdi);
+	DDX_Control(pDX, IDC_BUTTON_BASE_FOLDER, m_btn_base_folder);
+	DDX_Control(pDX, IDC_BUTTON_ENGINEERING_FOLDER, m_btn_engineering_folder);
+	DDX_Control(pDX, IDC_BUTTON_STOPWATCH_FOLDER, m_btn_stopwatch_folder);
+	DDX_Control(pDX, IDC_BUTTON_CONVERTER_FOLDER, m_btn_converter_folder);
+	DDX_Control(pDX, IDC_BUTTON_DATECAL_FOLDER, m_btn_datecal_folder);
+	DDX_Control(pDX, IDC_BUTTON_TIMER_FOLDER, m_btn_timer_folder);
 }
 
 BEGIN_MESSAGE_MAP(CGoCabinetDlg, CDialogEx)
@@ -85,6 +91,7 @@ BEGIN_MESSAGE_MAP(CGoCabinetDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_CONVERTER_GDI, &CGoCabinetDlg::OnBnClickedButtonConverterGdi)
 	ON_BN_CLICKED(IDC_BUTTON_DATE_GDI, &CGoCabinetDlg::OnBnClickedButtonDateGdi)
 	ON_BN_CLICKED(IDC_BUTTON_TIMER_GDI, &CGoCabinetDlg::OnBnClickedButtonTimerGdi)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -127,6 +134,7 @@ BOOL CGoCabinetDlg::OnInitDialog()
 	bStopWatch = false;
 	bTimer = false;
 
+	m_returnBrush.CreateSolidBrush(RGB(35, 35, 35));
 	
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
@@ -173,7 +181,44 @@ BOOL CGoCabinetDlg::OnInitDialog()
 	m_btn_timer_gdi.GetWindowRect(rect);
 	m_btn_timer_gdi.MoveWindow(rect.left - 10, rect.top - 35, 128, 128);
 
-	
+	this->SetBackgroundColor(RGB(55, 55, 55));
+	m_btn_base_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_base_folder.m_bUseMouseEvent = false;
+	m_btn_engineering_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_engineering_folder.m_bUseMouseEvent = false;
+	m_btn_stopwatch_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_stopwatch_folder.m_bUseMouseEvent = false;
+	m_btn_converter_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_converter_folder.m_bUseMouseEvent = false;
+	m_btn_datecal_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_datecal_folder.m_bUseMouseEvent = false;
+	m_btn_timer_folder.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_timer_folder.m_bUseMouseEvent = false;
+
+	m_btn_base_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_base_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_engineering_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_calculator_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_stopwatch_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_stopwatch_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_converter_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_converter_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_datecal_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_date_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_timer_folder.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_btn_timer_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	m_btn_base_gdi.BringWindowToTop();
+	m_btn_calculator_gdi.BringWindowToTop();
+	m_btn_stopwatch_gdi.BringWindowToTop();
+	m_btn_converter_gdi.BringWindowToTop();
+	m_btn_date_gdi.BringWindowToTop();
+	m_btn_timer_gdi.BringWindowToTop();
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -218,6 +263,7 @@ void CGoCabinetDlg::OnPaint()
 	{
 		CDialogEx::OnPaint();
 	}
+
 }
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
@@ -320,4 +366,53 @@ void CGoCabinetDlg::OnBnClickedButtonTimerGdi()
 		timer->ShowWindow(SW_SHOW);
 		bTimer = true;
 	}
+}
+
+
+HBRUSH CGoCabinetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  여기서 DC의 특성을 변경합니다.
+	if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_ENGINEERING)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_STOPWATCH)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_CONVERTER)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_DATE)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIMER1)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(35, 35, 35));
+			hbr = (HBRUSH)m_returnBrush;
+		}
+	}
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
 }

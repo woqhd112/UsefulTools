@@ -2,6 +2,7 @@
 #include "CalculateButton.h"
 #include "ConvertButton.h"
 #include "CalculateEdit.h"
+#include "CalculateStatic.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
 
@@ -121,11 +122,11 @@ private:
 	ConvertButton m_btn_color_resting;
 	CButton m_radio_infinite;
 	CButton m_radio_custom;
-	CStatic m_stt_repeat_setting;
-	CStatic m_stt_work_time;
-	CStatic m_stt_rest_time;
-	CStatic m_stt_color_setting;
-	CStatic m_stt_time_setting;
+	CalculateStatic m_stt_repeat_setting;
+	CalculateStatic m_stt_work_time;
+	CalculateStatic m_stt_rest_time;
+	CalculateStatic m_stt_color_setting;
+	CalculateStatic m_stt_time_setting;
 	CStatic m_stt_state;
 	CStatic m_stt_color_none;
 	CStatic m_stt_color_working;
@@ -164,12 +165,20 @@ private:
 	void SetDefaultGlobalEditText();
 	void SetOperateStateToColor(OperateState os);
 	void SetOperateColor(COLORREF color, CString strOperateState);
+	void ResetTimerReference();
+
+	inline int MinRGBColor(int nRv, int nCalcv) 
+	{
+		if (nRv - nCalcv < 0) return 0;
+		return nRv - nCalcv;
+	}
 
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
 	bool TimeToUnderTenSecondCondition(bool isWork);
 	void LoadSettingColor();
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
+	void CreateConfigFile(CString& strFullPath);
 	bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 	void SetSettingColor(CString strOperateState, COLORREF operateColor);

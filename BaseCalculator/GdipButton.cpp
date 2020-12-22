@@ -65,6 +65,7 @@ CGdipButton::~CGdipButton()
 {
 	if(m_pStdImage) delete m_pStdImage;
 	if(m_pAltImage) delete m_pAltImage;
+	if(m_pHovImage) delete m_pHovImage;
 
 	if(m_pToolTip)	delete m_pToolTip;
 }

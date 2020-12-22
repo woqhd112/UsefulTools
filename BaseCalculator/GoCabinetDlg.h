@@ -51,6 +51,12 @@ private:
 	CGdipButton m_btn_converter_gdi;
 	CGdipButton m_btn_date_gdi;
 	CGdipButton m_btn_timer_gdi;
+	CalculateButton m_btn_base_folder;
+	CalculateButton m_btn_engineering_folder;
+	CalculateButton m_btn_stopwatch_folder;
+	CalculateButton m_btn_converter_folder;
+	CalculateButton m_btn_datecal_folder;
+	CalculateButton m_btn_timer_folder;
 
 	BaseCalculate* base;
 	EngineeringCalculate* engineering;
@@ -59,6 +65,7 @@ private:
 	StopWatch* stopwatch;
 	Timer* timer;
 
+	CBrush m_returnBrush;
 
 public:
 	bool bBase;
@@ -80,4 +87,5 @@ public:
 	afx_msg void OnBnClickedButtonConverterGdi();
 	afx_msg void OnBnClickedButtonDateGdi();
 	afx_msg void OnBnClickedButtonTimerGdi();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

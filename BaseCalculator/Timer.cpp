@@ -199,6 +199,12 @@ BOOL Timer::OnInitDialog()
 	m_edit_custom_count.Initialize(15, _T("고딕"));
 	m_edit_state.Initialize(20, _T("고딕"));
 
+	m_stt_repeat_setting.Initialize(16, _T("고딕"));
+	m_stt_color_setting.Initialize(16, _T("고딕"));
+	m_stt_time_setting.Initialize(16, _T("고딕"));
+	m_stt_work_time.Initialize(16, _T("고딕"));
+	m_stt_rest_time.Initialize(16, _T("고딕"));
+
 	m_btn_time_save.InsertImage(IDB_PNG_SAVE);
 	m_btn_time_load.InsertImage(IDB_PNG_LOAD);
 
@@ -214,6 +220,7 @@ BOOL Timer::OnInitDialog()
 	m_edit_rest_minute_2.SetLimitText(1);
 	m_edit_rest_second_1.SetLimitText(1);
 	m_edit_rest_second_2.SetLimitText(1);
+
 
 	EmptyTextCondition();
 	m_edit_state.SetWindowTextW(_T("None"));
@@ -274,33 +281,37 @@ void Timer::LoadSettingColor()
 	}
 	else
 	{
-		BOOL bRval = FALSE;
 		CString szRoot = _T("");
 
-		TCHAR chFilePath[256] = { 0, };
-		GetModuleFileName(NULL, chFilePath, 256);
-		szRoot = (LPCTSTR)chFilePath;
-		int nLen = szRoot.ReverseFind('\\');
-
-		if (nLen > 0)
-		{
-			szRoot = szRoot.Left(nLen);
-		}
-
-		CFileFind rootFind;
-		if (rootFind.FindFile(szRoot + _T("\\BaseCalculator"))) {
-			szRoot += _T("\\BaseCalculator");
-		}
-		rootFind.Close();
-
-		CreateDefaultDirectory(szRoot, _T("\\Config"));
-		CreateDefaultDirectory(szRoot, _T("\\Timer"));
+		CreateConfigFile(szRoot);
 		if (CreateDefaultColorXml(&markUp, szRoot)) bSavedXml = true;
 	}
 	if (bSavedXml)
 	{
 		SaveXml(&markUp, strFullPath);
 	}
+}
+
+void Timer::CreateConfigFile(CString& strFullPath)
+{
+	TCHAR chFilePath[256] = { 0, };
+	GetModuleFileName(NULL, chFilePath, 256);
+	strFullPath = (LPCTSTR)chFilePath;
+	int nLen = strFullPath.ReverseFind('\\');
+
+	if (nLen > 0)
+	{
+		strFullPath = strFullPath.Left(nLen);
+	}
+
+	CFileFind rootFind;
+	if (rootFind.FindFile(strFullPath + _T("\\BaseCalculator"))) {
+		strFullPath += _T("\\BaseCalculator");
+	}
+	rootFind.Close();
+
+	CreateDefaultDirectory(strFullPath, _T("\\Config"));
+	CreateDefaultDirectory(strFullPath, _T("\\Timer"));
 }
 
 void Timer::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
@@ -1301,20 +1312,26 @@ void Timer::OnBnClickedButtonStop()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (TimerThreadDelete())
 	{
-		tr.ps = PROGRESS_STATE_NONE;
-		tr.bFirstRestClock = true;
-		tr.bFirstWorkClock = false;
-		tr.bConstFirstWorkClock = true;
-		tr.bStart = true;
-		tr.bPause = false;
-		tr.bThread = false;
-		tr.bWorkEnd = false;
-		tr.bRestEnd = false;
-		m_btn_startandpause.SetWindowTextW(_T("시작"));
-		SetEnabledCtrl(TRUE);	
-		SetOperateStateToColor(OPERATE_STATE_NONE);	
-		SetDefaultGlobalEditText();
+		ResetTimerReference();
 	}
+}
+
+void Timer::ResetTimerReference()
+{
+	tr.ps = PROGRESS_STATE_NONE;
+	tr.bFirstRestClock = true;
+	tr.bFirstWorkClock = false;
+	tr.bConstFirstWorkClock = true;
+	tr.bLastWorkClock = false;
+	tr.bStart = true;
+	tr.bPause = false;
+	tr.bThread = false;
+	tr.bWorkEnd = false;
+	tr.bRestEnd = false;
+	m_btn_startandpause.SetWindowTextW(_T("시작"));
+	SetEnabledCtrl(TRUE);
+	SetOperateStateToColor(OPERATE_STATE_NONE);
+	SetDefaultGlobalEditText();
 }
 
 UINT Timer::thrTimer(LPVOID method)
@@ -1458,15 +1475,7 @@ bool Timer::CheckRepeatCount(bool bCalc)
 	if (nCount <= 0)
 	{
 		if (!bCalc) MessageBox(_T("반복횟수가 0입니다."));
-		tr.bStart = true;
-		tr.bThread = false;
-		m_btn_startandpause.SetWindowTextW(_T("시작"));
-		SetDefaultGlobalEditText();
-		SetEnabledCtrl(TRUE);
-		SetOperateStateToColor(OPERATE_STATE_NONE);
-		tr.bPause = false;
-		tr.bConstFirstWorkClock = true;
-		tr.bFirstWorkClock = false;
+		ResetTimerReference();
 		return true;
 	}
 	else if (nCount == 1)
@@ -1532,11 +1541,9 @@ void Timer::StartTimer()
 
 		finish = clock();
 		duration = (double)(finish - start) / CLOCKS_PER_SEC;
-		Sleep((1000 - duration <= 0) ? 0 : 1000 - duration);
+		Sleep((1000 - (duration * 1000) <= 0) ? 0 : 1000 - (duration * 1000));
 	}
 }
-
-
 
 void Timer::CalculateWorkTime()
 {
@@ -1549,7 +1556,6 @@ void Timer::CalculateWorkTime()
 	if (tr.os != OPERATE_STATE_WORKING)
 	{
 		SetOperateStateToColor(OPERATE_STATE_WORKING);
-		//Invalidate();
 	}
 	if (tr.bFirstWorkClock)
 	{
@@ -1681,7 +1687,6 @@ void Timer::CalculateRestTime()
 	if (tr.os != OPERATE_STATE_RESTING)
 	{
 		SetOperateStateToColor(OPERATE_STATE_RESTING);
-		//Invalidate();
 	}
 	if (tr.bFirstRestClock)
 	{
@@ -1825,13 +1830,14 @@ void Timer::SetOperateColor(COLORREF color, CString strOperateState)
 	int nRv = GetRValue(color);
 	int nGv = GetGValue(color);
 	int nBv = GetBValue(color);
+	nBkBrightness = GetBrightness(nRv, nGv, nBv);
 	OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
 	m_edit_state.SetWindowTextW(strOperateState);
 	this->SetBackgroundColor(color);
 	m_btn_setting_divide.SetFaceColor(color);
 	m_btn_setting_divide.m_defaultColor = color;
-	m_btn_setting_divide.m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
-	m_btn_setting_divide.m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
+	m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
+	m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
 }
 
 void Timer::OnBnClickedButtonReset2()
@@ -1902,218 +1908,104 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_STATE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_NONE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_WORKING)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_RESTING)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_LOAD)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_SAVE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_HOUR)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_MINUTE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_SECOND)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_SECOND)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_HOUR)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_MINUTE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REPEAT_SETTING)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0)); 
+			else pDC->SetTextColor(RGB(255, 255, 255)); 
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_TIME)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_TIME)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_SETTING)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_SETTING)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_RADIO_INFINITE)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_RADIO_CUSTOM)
 		{
-			if (nBkBrightness > 120)
-			{
-				pDC->SetTextColor(RGB(0, 0, 0));
-			}
-			else
-			{
-				pDC->SetTextColor(RGB(255, 255, 255));
-			}
+			if (nBkBrightness > 120) pDC->SetTextColor(RGB(0, 0, 0));
+			else pDC->SetTextColor(RGB(255, 255, 255));
 			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 	}
@@ -2146,8 +2038,8 @@ void Timer::OnBnClickedButtonColorNone()
 		int nGv = GetGValue(tr.none_color);
 		int nBv = GetBValue(tr.none_color);
 		m_btn_setting_divide.m_defaultColor = tr.none_color;
-		m_btn_setting_divide.m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
-		m_btn_setting_divide.m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
+		m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
+		m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
 		m_btn_setting_divide.SetFaceColor(tr.none_color);
 
 		SetSettingColor(_T("none"), tr.none_color);
@@ -2268,8 +2160,11 @@ void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
 void Timer::OnBnClickedButtonTimeLoad()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString szRoot = _T("");
+	CreateConfigFile(szRoot);
+
 	CString szFilter = _T("Config File(*.conf)|*.conf||");
-	CFileDialog dlg(TRUE, L"*.conf", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter);
+	CFileDialog dlg(TRUE, L"*.conf", szRoot + _T("\\"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (IDOK == dlg.DoModal())
 	{
 		CString strFullPath = dlg.GetPathName();
@@ -2333,8 +2228,11 @@ void Timer::OnBnClickedButtonTimeLoad()
 void Timer::OnBnClickedButtonTimeSave()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString szRoot = _T("");
+	CreateConfigFile(szRoot);
+
 	CString szFilter = _T("Config File(*.conf)|*.conf||");
-	CFileDialog dlg(FALSE, L"*.conf", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter);
+	CFileDialog dlg(FALSE, L"*.conf", szRoot + _T("\\"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (IDOK == dlg.DoModal())
 	{
 		EmptyTextCondition();
