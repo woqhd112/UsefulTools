@@ -51,12 +51,6 @@ private:
 	CGdipButton m_btn_converter_gdi;
 	CGdipButton m_btn_date_gdi;
 	CGdipButton m_btn_timer_gdi;
-	CalculateButton m_btn_base_folder;
-	CalculateButton m_btn_engineering_folder;
-	CalculateButton m_btn_stopwatch_folder;
-	CalculateButton m_btn_converter_folder;
-	CalculateButton m_btn_datecal_folder;
-	CalculateButton m_btn_timer_folder;
 
 	BaseCalculate* base;
 	EngineeringCalculate* engineering;
@@ -66,6 +60,8 @@ private:
 	Timer* timer;
 
 	CBrush m_returnBrush;
+
+	void SetCtlPos();
 
 public:
 	bool bBase;

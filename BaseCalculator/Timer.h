@@ -183,6 +183,7 @@ private:
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 	void SetSettingColor(CString strOperateState, COLORREF operateColor);
 	int GetBrightness(int nRv, int nGv, int nBv);
+	void SetDivideTextColor();
 
 	bool bDivideClick;
 	int nDivideMargin;

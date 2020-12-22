@@ -232,6 +232,14 @@ BOOL Timer::OnInitDialog()
 	SetDivideMargin();
 	OnBnClickedButtonSettingDivide();
 
+	int nRv = GetRValue(tr.none_color);
+	int nGv = GetGValue(tr.none_color);
+	int nBv = GetBValue(tr.none_color);
+	m_btn_setting_divide.m_defaultColor = tr.none_color;
+	m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
+	m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
+	SetDivideTextColor();
+
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -241,7 +249,7 @@ void Timer::SetDivideMargin()
 	CRect divideRect, thisRect;
 	m_btn_setting_divide.GetWindowRect(divideRect);
 	this->GetWindowRect(thisRect);
-	nDivideMargin = thisRect.bottom - divideRect.bottom - divideRect.Height();
+	nDivideMargin = thisRect.bottom - divideRect.bottom - divideRect.Height() + 10;
 }
 
 void Timer::LoadSettingColor()
@@ -352,7 +360,10 @@ bool Timer::CreateDefaultColorXml(CMarkup* markUp, CString strFilePath)
 		tr.none_color = BACKGROUND_COLOR_YELLOW;
 		tr.work_color = BACKGROUND_COLOR_GREEN;
 		tr.rest_color = BACKGROUND_COLOR_RED;
-		nBkBrightness = GetBrightness(GetRValue(tr.none_color), GetGValue(tr.none_color), GetBValue(tr.none_color));
+		int nRv = GetRValue(tr.none_color);
+		int nGv = GetGValue(tr.none_color);
+		int nBv = GetBValue(tr.none_color);
+		nBkBrightness = GetBrightness(nRv, nGv, nBv);
 		bReturn = true;
 	}
 	xmlFind.Close();
@@ -1838,6 +1849,7 @@ void Timer::SetOperateColor(COLORREF color, CString strOperateState)
 	m_btn_setting_divide.m_defaultColor = color;
 	m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
 	m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
+	SetDivideTextColor();
 }
 
 void Timer::OnBnClickedButtonReset2()
@@ -2045,10 +2057,17 @@ void Timer::OnBnClickedButtonColorNone()
 		SetSettingColor(_T("none"), tr.none_color);
 	
 		nBkBrightness = GetBrightness(nRv, nGv, nBv);
+		SetDivideTextColor();
 		Invalidate();
 	}
 }
 
+void Timer::SetDivideTextColor()
+{
+	if (nBkBrightness > 120) m_btn_setting_divide.SetTextColor(RGB(0, 0, 0));
+	else m_btn_setting_divide.SetTextColor(RGB(255, 255, 255));
+	m_btn_setting_divide.Invalidate();
+}
 
 void Timer::OnBnClickedButtonColorWorking()
 {
@@ -2291,11 +2310,13 @@ void Timer::OnBnClickedButtonSettingDivide()
 
 	if (!bDivideClick)
 	{
+		m_btn_setting_divide.SetWindowTextW(_T("▼▼"));
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() - nDivideMargin);
 		bDivideClick = true;
 	}
 	else
 	{
+		m_btn_setting_divide.SetWindowTextW(_T("▲▲"));
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + nDivideMargin);
 		bDivideClick = false;
 	}
