@@ -85,7 +85,7 @@ void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
 	strFormat.Format(_T("%s =\r\n\r\n%s"), strFormula, strResult);
 	newEdit->SetWindowTextW(strFormat);
 	int lineCount = newEdit->GetLineCount();
-	newEdit->MoveWindow(10, nStartEditPos, thisRect.Width() * 0.9, lineCount * 20);
+	newEdit->MoveWindow(10, nStartEditPos, int(thisRect.Width() * 0.9), lineCount * 20);
 	nStartEditPos += (lineCount * 20 + 10);
 	if (nViewHeight == 0) nViewHeight = 30;
 	nViewHeight += (lineCount * 20 + 10);
