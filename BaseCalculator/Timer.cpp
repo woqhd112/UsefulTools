@@ -26,6 +26,8 @@ Timer::Timer(CWnd* pParent /*=nullptr*/)
 	nDivideMargin = 0;
 	bDivideClick = false;
 	nBkBrightness = 0;
+	bTextChanged = false;
+	efp = FOCUS_WORK_HOUR_1;
 }
 
 Timer::~Timer()
@@ -396,7 +398,6 @@ void Timer::PostNcDestroy()
 	CDialogEx::PostNcDestroy();
 }
 
-
 BOOL Timer::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -404,75 +405,99 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == m_edit_work_hour_1)
 		{
+			m_edit_work_hour_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_hour_1.SetWindowTextW(_T(""));
 			m_edit_work_hour_1.HideCaret();
 			EmptyTextCondition(m_edit_work_hour_1.GetDlgCtrlID());
+			efp = FOCUS_WORK_HOUR_1;
 		}
 		else if (pMsg->hwnd == m_edit_work_hour_2)
 		{
+			m_edit_work_hour_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_hour_2.SetWindowTextW(_T(""));
 			m_edit_work_hour_2.HideCaret();
 			EmptyTextCondition(m_edit_work_hour_2.GetDlgCtrlID());
+			efp = FOCUS_WORK_HOUR_2;
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_1)
 		{
+			m_edit_work_minute_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_minute_1.SetWindowTextW(_T(""));
 			m_edit_work_minute_1.HideCaret();
 			EmptyTextCondition(m_edit_work_minute_1.GetDlgCtrlID());
+			efp = FOCUS_WORK_MINUTE_1;
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_2)
 		{
+			m_edit_work_minute_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_minute_2.SetWindowTextW(_T(""));
 			m_edit_work_minute_2.HideCaret();
 			EmptyTextCondition(m_edit_work_minute_2.GetDlgCtrlID());
+			efp = FOCUS_WORK_MINUTE_2;
 		}
 		else if (pMsg->hwnd == m_edit_work_second_1)
 		{
+			m_edit_work_second_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_second_1.SetWindowTextW(_T(""));
 			m_edit_work_second_1.HideCaret();
 			EmptyTextCondition(m_edit_work_second_1.GetDlgCtrlID());
+			efp = FOCUS_WORK_SECOND_1;
 		}
 		else if (pMsg->hwnd == m_edit_work_second_2)
 		{
+			m_edit_work_second_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_second_2.SetWindowTextW(_T(""));
 			m_edit_work_second_2.HideCaret();
 			EmptyTextCondition(m_edit_work_second_2.GetDlgCtrlID());
+			efp = FOCUS_WORK_SECOND_2;
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_1)
 		{
+			m_edit_rest_hour_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_hour_1.SetWindowTextW(_T(""));
 			m_edit_rest_hour_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_hour_1.GetDlgCtrlID());
+			efp = FOCUS_REST_HOUR_1;
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_2)
 		{
+			m_edit_rest_hour_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_hour_2.SetWindowTextW(_T(""));
 			m_edit_rest_hour_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_hour_2.GetDlgCtrlID());
+			efp = FOCUS_REST_HOUR_2;
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_1)
 		{
+			m_edit_rest_minute_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_minute_1.SetWindowTextW(_T(""));
 			m_edit_rest_minute_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_minute_1.GetDlgCtrlID());
+			efp = FOCUS_REST_MINUTE_1;
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_2)
 		{
+			m_edit_rest_minute_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_minute_2.SetWindowTextW(_T(""));
 			m_edit_rest_minute_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_minute_2.GetDlgCtrlID());
+			efp = FOCUS_REST_MINUTE_2;
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_1)
 		{
+			m_edit_rest_second_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_second_1.SetWindowTextW(_T(""));
 			m_edit_rest_second_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_second_1.GetDlgCtrlID());
+			efp = FOCUS_REST_SECOND_1;
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_2)
 		{
+			m_edit_rest_second_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_second_2.SetWindowTextW(_T(""));
 			m_edit_rest_second_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_second_2.GetDlgCtrlID());
+			efp = FOCUS_REST_SECOND_2;
 		}
 		else if (pMsg->hwnd == m_edit_state)
 		{
@@ -492,19 +517,48 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		else if (pMsg->wParam == VK_NUMPAD8) pMsg->wParam = L'8';
 		else if (pMsg->wParam == VK_NUMPAD9) pMsg->wParam = L'9';
 
-		if (pMsg->hwnd == m_edit_work_minute_1)
+		if (pMsg->hwnd == m_edit_work_hour_1)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			else
+			{
+				return TRUE;
+			}
+		}
+		else if (pMsg->hwnd == m_edit_work_hour_2)
+		{
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			else
+			{
+				return TRUE;
+			}
+		}
+		else if (pMsg->hwnd == m_edit_work_minute_1)
+		{
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -512,21 +566,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_2)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == L'6') {}
-			else if (pMsg->wParam == L'7') {}
-			else if (pMsg->wParam == L'8') {}
-			else if (pMsg->wParam == L'9') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -534,17 +583,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_1)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -552,21 +596,50 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_2)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == L'6') {}
-			else if (pMsg->wParam == L'7') {}
-			else if (pMsg->wParam == L'8') {}
-			else if (pMsg->wParam == L'9') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			else
+			{
+				return TRUE;
+			}
+		}
+		else if (pMsg->hwnd == m_edit_rest_hour_1)
+		{
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			else
+			{
+				return TRUE;
+			}
+		}
+		else if (pMsg->hwnd == m_edit_rest_hour_2)
+		{
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -574,17 +647,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_1)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -592,21 +660,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_2)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == L'6') {}
-			else if (pMsg->wParam == L'7') {}
-			else if (pMsg->wParam == L'8') {}
-			else if (pMsg->wParam == L'9') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -614,17 +677,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_1)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
@@ -632,26 +690,36 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_2)
 		{
-			if (pMsg->wParam == L'0') {}
-			else if (pMsg->wParam == L'1') {}
-			else if (pMsg->wParam == L'2') {}
-			else if (pMsg->wParam == L'3') {}
-			else if (pMsg->wParam == L'4') {}
-			else if (pMsg->wParam == L'5') {}
-			else if (pMsg->wParam == L'6') {}
-			else if (pMsg->wParam == L'7') {}
-			else if (pMsg->wParam == L'8') {}
-			else if (pMsg->wParam == L'9') {}
-			else if (pMsg->wParam == VK_LEFT) {}
-			else if (pMsg->wParam == VK_UP) {}
-			else if (pMsg->wParam == VK_RIGHT) {}
-			else if (pMsg->wParam == VK_DOWN) {}
-			else if (pMsg->wParam == VK_BACK) {}
+			if (pMsg->wParam == L'0') { bTextChanged = true; }
+			else if (pMsg->wParam == L'1') { bTextChanged = true; }
+			else if (pMsg->wParam == L'2') { bTextChanged = true; }
+			else if (pMsg->wParam == L'3') { bTextChanged = true; }
+			else if (pMsg->wParam == L'4') { bTextChanged = true; }
+			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			else if (pMsg->wParam == L'6') { bTextChanged = true; }
+			else if (pMsg->wParam == L'7') { bTextChanged = true; }
+			else if (pMsg->wParam == L'8') { bTextChanged = true; }
+			else if (pMsg->wParam == L'9') { bTextChanged = true; }
 			else
 			{
 				return TRUE;
 			}
 		}
+		/*else if (pMsg->wParam == VK_TAB)
+		{
+			if (pMsg->hwnd == m_edit_work_hour_1)
+			{
+				TRACE("!\n");
+			}
+			else if (pMsg->hwnd == m_edit_work_hour_2)
+			{
+				TRACE("!\n");
+			}
+			else if (pMsg->hwnd == m_edit_work_minute_1)
+			{
+				TRACE("!\n");
+			}
+		}*/
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -1541,7 +1609,6 @@ void Timer::StartTimer()
 				{
 					// 마무리 멘트 알람 함수
 					// func
-					//Sleep(1000);
 					tr.ps = PROGRESS_STATE_WORKING_END_ALL;
 					tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 					
@@ -1552,7 +1619,7 @@ void Timer::StartTimer()
 
 		finish = clock();
 		duration = (double)(finish - start) / CLOCKS_PER_SEC;
-		Sleep((1000 - (duration * 1000) <= 0) ? 0 : 1000 - (duration * 1000));
+		Sleep((1000 - (duration * 1000) <= 0) ? DWORD(0) : DWORD(1000 - (duration * 1000)));
 	}
 }
 

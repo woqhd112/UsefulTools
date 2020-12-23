@@ -59,7 +59,7 @@ private:
 	StopWatch* stopwatch;
 	Timer* timer;
 
-	CBrush m_returnBrush;
+	//CBrush m_returnBrush;
 
 	void SetCtlPos();
 

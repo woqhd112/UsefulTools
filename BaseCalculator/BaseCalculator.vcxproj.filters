@@ -219,12 +219,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\cal.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\icon1.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="res\Cal.ico">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -277,15 +271,6 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\GoCabinet.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\bitmap1.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\icon2.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\Cal.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Base_B.png">

@@ -271,8 +271,6 @@
     <Image Include="res\Base_B.png" />
     <Image Include="res\Base_C.png" />
     <Image Include="res\Base_U.png" />
-    <Image Include="res\bitmap1.bmp" />
-    <Image Include="res\Cal.bmp" />
     <Image Include="res\Converter_B.png" />
     <Image Include="res\Converter_C.png" />
     <Image Include="res\Converter_U.png" />
@@ -284,15 +282,12 @@
     <Image Include="res\Engineering_U.png" />
     <Image Include="res\GoCabinet.ico" />
     <Image Include="res\Cal.ico" />
-    <Image Include="res\cal.png" />
     <Image Include="res\ConvertBit.png" />
     <Image Include="res\ConvertLength.png" />
     <Image Include="res\ConvertReverse.png" />
     <Image Include="res\ConvertTime.png" />
     <Image Include="res\ConvertWeight.png" />
     <Image Include="res\ConvertWidth.png" />
-    <Image Include="res\icon1.ico" />
-    <Image Include="res\icon2.ico" />
     <Image Include="res\load.png" />
     <Image Include="res\pngegg.png" />
     <Image Include="res\pngegg24.png" />

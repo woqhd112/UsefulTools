@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.1259
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoCabinet", "BaseCalculator\BaseCalculator.vcxproj", "{DA4223B3-AE16-455A-A7DE-4312FD178919}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GoCabinet_Setup", "GoCabinet_Setup\GoCabinet_Setup.vdproj", "{85991351-29E8-4AA5-A78D-F44759D66941}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,11 +21,6 @@ Global
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x64.Build.0 = Release|x64
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x86.ActiveCfg = Release|Win32
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x86.Build.0 = Release|Win32
-		{85991351-29E8-4AA5-A78D-F44759D66941}.Debug|x64.ActiveCfg = Debug
-		{85991351-29E8-4AA5-A78D-F44759D66941}.Debug|x86.ActiveCfg = Debug
-		{85991351-29E8-4AA5-A78D-F44759D66941}.Release|x64.ActiveCfg = Release
-		{85991351-29E8-4AA5-A78D-F44759D66941}.Release|x64.Build.0 = Release
-		{85991351-29E8-4AA5-A78D-F44759D66941}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

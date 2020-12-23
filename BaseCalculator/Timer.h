@@ -65,6 +65,22 @@ private:
 		PROGRESS_STATE_WORKING_END_ALL		= 12
 	};
 
+	enum EditFocusPos
+	{
+		FOCUS_WORK_HOUR_1 = 1,
+		FOCUS_WORK_HOUR_2 = 2,
+		FOCUS_WORK_MINUTE_1 = 3,
+		FOCUS_WORK_MINUTE_2 = 4,
+		FOCUS_WORK_SECOND_1 = 5,
+		FOCUS_WORK_SECOND_2 = 6,
+		FOCUS_REST_HOUR_1 = 7,
+		FOCUS_REST_HOUR_2 = 8,
+		FOCUS_REST_MINUTE_1 = 9,
+		FOCUS_REST_MINUTE_2 = 10,
+		FOCUS_REST_SECOND_1 = 11,
+		FOCUS_REST_SECOND_2 = 12
+	};
+
 	struct TimerReference
 	{
 		bool bStart = true;				// 시작버튼 클릭 유무, 시작상태 = true
@@ -152,6 +168,10 @@ private:
 	CString g_str_rest_minute;
 	CString g_str_rest_second;
 	CString g_str_repeat_count;
+
+	EditFocusPos efp;
+	CString strCurrentFocusText;
+	bool bTextChanged;
 
 	static UINT thrTimer(LPVOID method);
 	static UINT thrLoadSound(LPVOID method);

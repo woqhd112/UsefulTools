@@ -128,7 +128,7 @@ BOOL CGoCabinetDlg::OnInitDialog()
 	bStopWatch = false;
 	bTimer = false;
 
-	m_returnBrush.CreateSolidBrush(RGB(35, 35, 35));
+	//m_returnBrush.CreateSolidBrush(RGB(35, 35, 35));
 	
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
@@ -211,20 +211,45 @@ void CGoCabinetDlg::SetCtlPos()
 	const int TOP_MARGIN = 30;
 	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
 	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
+	int nStaticHeight = rect.Height();
 
-	m_btn_base_gdi.MoveWindow(LEFT_MARGIN, TOP_MARGIN, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_btn_calculator_gdi.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_btn_stopwatch_gdi.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_btn_converter_gdi.MoveWindow(LEFT_MARGIN, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_btn_date_gdi.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_btn_timer_gdi.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT, PICTURE_WIDTH, PICTURE_HEIGHT);
+	int nCtlPos_X = 0;
+	int nCtlPos_Y = 0;
 
-	m_stt_base.MoveWindow(LEFT_MARGIN, TOP_MARGIN + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
-	m_stt_engineering.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
-	m_stt_stopwatch.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
-	m_stt_converter.MoveWindow(LEFT_MARGIN, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
-	m_stt_date.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
-	m_stt_timer.MoveWindow(LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH, TOP_MARGIN + PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + PICTURE_HEIGHT, PICTURE_WIDTH, rect.Height());
+	nCtlPos_X += LEFT_MARGIN;
+	nCtlPos_Y += TOP_MARGIN;
+	m_btn_base_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_base.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_calculator_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_engineering.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_stopwatch_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_stopwatch.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X = LEFT_MARGIN;
+	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+	m_btn_converter_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_converter.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_date_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_date.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_timer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	m_stt_timer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+
+	CRect SystemRect;
+	CPoint pos;
+	GetClientRect(SystemRect);
+	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
+	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
+
+	this->MoveWindow(pos.x, pos.y, nCtlPos_X + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + LEFT_MARGIN, nCtlPos_Y * 2 + nStaticHeight * 2);
 }
 
 void CGoCabinetDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -383,38 +408,26 @@ HBRUSH CGoCabinetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_ENGINEERING)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_STOPWATCH)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_CONVERTER)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_DATE)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIMER1)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			//pDC->SetBkColor(RGB(35, 35, 35));
-			//hbr = (HBRUSH)m_returnBrush;
 		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.

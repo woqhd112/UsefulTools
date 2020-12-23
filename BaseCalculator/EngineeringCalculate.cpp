@@ -112,7 +112,7 @@ BOOL EngineeringCalculate::OnInitDialog()
 	timeline.GetWindowRect(&childRect);
 	m_btn_trash.GetClientRect(&trashRect);
 	timeline.MoveWindow(thisRect.Width(), 0, childRect.Width(), thisRect.Height() - 90);
-	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, thisRect.Height() * 0.8, trashRect.Width(), trashRect.Height());
+	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, int(thisRect.Height() * 0.8), trashRect.Width(), trashRect.Height());
 	timeline.ShowWindow(SW_HIDE);
 	m_btn_trash.ShowWindow(SW_HIDE);
 
