@@ -90,8 +90,6 @@ private:
 
 	CWnd* pParent;
 	Calculate* calculate;
-	//CFont resultEditFont;
-	//CFont viewEditFont;
 	CBrush m_backBrush;
 	CRect thisRect;
 	CRect childRect;
@@ -99,7 +97,6 @@ private:
 	ResultTimeline timeline;
 	bool bTimeline;
 
-	CScrollBar* viewScroll;
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

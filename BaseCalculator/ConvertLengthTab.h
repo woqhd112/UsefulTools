@@ -2,6 +2,7 @@
 #include "ConvertButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
+#include "GdipButton.h" 
 
 // ConvertLengthTab 대화 상자
 
@@ -26,10 +27,10 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 private:
-	ConvertButton m_btn_icon;
+	CGdipButton m_btn_icon;
+	CGdipButton m_btn_reverse;
 	ConvertButton m_btn_combo;
 	ConvertButton m_btn_test;
-	ConvertButton m_btn_reverse;
 	CComboBox m_combo_left;
 	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;

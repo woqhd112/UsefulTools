@@ -217,6 +217,7 @@
     <ClInclude Include="GdipButton.h" />
     <ClInclude Include="GoCabinet.h" />
     <ClInclude Include="GoCabinetDlg.h" />
+    <ClInclude Include="LapTime.h" />
     <ClInclude Include="MemDC.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Formula.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="CXml\XmlNodes.cpp" />
     <ClCompile Include="CXml\Xsl.cpp" />
     <ClCompile Include="EngineeringCalculate.cpp" />
+    <ClCompile Include="LapTime.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -277,9 +279,27 @@
     <Image Include="res\CalculatorTrash_B.png" />
     <Image Include="res\CalculatorTrash_C.png" />
     <Image Include="res\CalculatorTrash_U.png" />
+    <Image Include="res\ConvertBit_B.png" />
+    <Image Include="res\ConvertBit_C.png" />
+    <Image Include="res\ConvertBit_U.png" />
     <Image Include="res\Converter_B.png" />
     <Image Include="res\Converter_C.png" />
     <Image Include="res\Converter_U.png" />
+    <Image Include="res\ConvertLength_B.png" />
+    <Image Include="res\ConvertLength_C.png" />
+    <Image Include="res\ConvertLength_U.png" />
+    <Image Include="res\ConvertReverse_B.png" />
+    <Image Include="res\ConvertReverse_C.png" />
+    <Image Include="res\ConvertReverse_U.png" />
+    <Image Include="res\ConvertTime_B.png" />
+    <Image Include="res\ConvertTime_C.png" />
+    <Image Include="res\ConvertTime_U.png" />
+    <Image Include="res\ConvertWeight_B.png" />
+    <Image Include="res\ConvertWeight_C.png" />
+    <Image Include="res\ConvertWeight_U.png" />
+    <Image Include="res\ConvertWidth_B.png" />
+    <Image Include="res\ConvertWidth_C.png" />
+    <Image Include="res\ConvertWidth_U.png" />
     <Image Include="res\DateCal_B.png" />
     <Image Include="res\DateCal_C.png" />
     <Image Include="res\DateCal_U.png" />
@@ -288,21 +308,7 @@
     <Image Include="res\Engineering_U.png" />
     <Image Include="res\GoCabinet.ico" />
     <Image Include="res\Cal.ico" />
-    <Image Include="res\ConvertBit.png" />
-    <Image Include="res\ConvertLength.png" />
-    <Image Include="res\ConvertReverse.png" />
-    <Image Include="res\ConvertTime.png" />
-    <Image Include="res\ConvertWeight.png" />
-    <Image Include="res\ConvertWidth.png" />
     <Image Include="res\load.png" />
-    <Image Include="res\pngegg.png" />
-    <Image Include="res\pngegg24.png" />
-    <Image Include="res\pngegg24_d.png" />
-    <Image Include="res\pngegg24_h.png" />
-    <Image Include="res\pngegg_24.png" />
-    <Image Include="res\pngwing24.png" />
-    <Image Include="res\pngwing24_d.png" />
-    <Image Include="res\pngwing24_h.png" />
     <Image Include="res\save.png" />
     <Image Include="res\Stopwatch_B.png" />
     <Image Include="res\Stopwatch_C.png" />

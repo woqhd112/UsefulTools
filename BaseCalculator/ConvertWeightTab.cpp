@@ -81,10 +81,15 @@ BOOL ConvertWeightTab::OnInitDialog()
 
 	this->SetBackgroundColor(RGB(55, 55, 55));
 	
-	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_icon.InsertImage(IDB_PNG_WEIGHT_NOMAL);
-	m_btn_reverse.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_SEMIFLAT);
-	m_btn_reverse.InsertImage(IDB_PNG_REVERSE_NOMAL);
+	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WEIGHT_NOMAL, _T("PNG"));
+	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WEIGHT_HOVER, _T("PNG"));
+	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WEIGHT_CLICK, _T("PNG"));
+	m_btn_icon.MoveWindow(5, 5, 24, 24);
+
+	m_btn_reverse.LoadStdImage(IDB_PNG_CONVERT_REVERSE_NOMAL, _T("PNG"));
+	m_btn_reverse.LoadHovImage(IDB_PNG_CONVERT_REVERSE_HOVER, _T("PNG"));
+	m_btn_reverse.LoadAltImage(IDB_PNG_CONVERT_REVERSE_CLICK, _T("PNG"));
+
 	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.SetWindowTextW(_T("테스트"));

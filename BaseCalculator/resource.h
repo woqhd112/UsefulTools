@@ -20,12 +20,6 @@
 #define IDD_TAB_WIDTH                   170
 #define IDD_TAB_TIME                    172
 #define IDD_TAB_BIT                     174
-#define IDB_PNG_BIT_NOMAL               182
-#define IDB_PNG_LENGTH_NOMAL            183
-#define IDB_PNG_TIMEC_NOMAL             184
-#define IDB_PNG_WEIGHT_NOMAL            185
-#define IDB_PNG_WIDTH_NOMAL             186
-#define IDB_PNG_REVERSE_NOMAL           189
 #define IDD_DIALOG_TIMER                191
 #define IDB_PNG_LOAD                    194
 #define IDB_PNG_SAVE                    195
@@ -54,6 +48,25 @@
 #define IDB_PNG_TRASH_NOMAL             223
 #define IDB_PNG_TRASH_HOVER             224
 #define IDB_PNG_TRASH_CLICK             225
+#define IDD_DIALOG_LAPTIME              226
+#define IDB_PNG_CONVERT_BIT_NOMAL       228
+#define IDB_PNG_CONVERT_BIT_CLICK       229
+#define IDB_PNG_CONVERT_BIT_HOVER       230
+#define IDB_PNG_CONVERT_LENGTH_NOMAL    231
+#define IDB_PNG_CONVERT_LENGTH_CLICK    232
+#define IDB_PNG_CONVERT_LENGTH_HOVER    233
+#define IDB_PNG_CONVERT_REVERSE_NOMAL   234
+#define IDB_PNG_CONVERT_REVERSE_CLICK   235
+#define IDB_PNG_CONVERT_REVERSE_HOVER   236
+#define IDB_PNG_CONVERT_TIME_NOMAL      237
+#define IDB_PNG_CONVERT_TIME_CLICK      238
+#define IDB_PNG_CONVERT_TIME_HOVER      239
+#define IDB_PNG_CONVERT_WEIGHT_NOMAL    240
+#define IDB_PNG_CONVERT_WEIGHT_CLICK    241
+#define IDB_PNG_CONVERT_WEIGHT_HOVER    242
+#define IDB_PNG_CONVERT_WIDTH_NOMAL     243
+#define IDB_PNG_CONVERT_WIDTH_CLICK     244
+#define IDB_PNG_CONVERT_WIDTH_HOVER     245
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -310,6 +323,8 @@
 #define IDC_STATIC_EQUAR2               1232
 #define IDC_STATIC_EQUAR3               1233
 #define IDC_STATIC_EQUAR4               1234
+#define IDC_BUTTON_LAPTIME              1235
+#define IDC_BUTTON_LAPTIME_RESET        1236
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -325,9 +340,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        226
+#define _APS_NEXT_RESOURCE_VALUE        246
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1235
+#define _APS_NEXT_CONTROL_VALUE         1237
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

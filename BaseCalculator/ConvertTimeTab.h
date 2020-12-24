@@ -3,6 +3,7 @@
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
+#include "GdipButton.h" 
 
 // ConvertTimeTab 대화 상자
 
@@ -27,7 +28,7 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 private:
-	ConvertButton m_btn_icon;
+	CGdipButton m_btn_icon;
 	ConvertButton m_btn_test1;
 	ConvertButton m_btn_test2;
 	ConvertButton m_btn_test3;

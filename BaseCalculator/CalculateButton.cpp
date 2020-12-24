@@ -12,7 +12,6 @@ IMPLEMENT_DYNAMIC(CalculateButton, CMFCButton)
 
 CalculateButton::CalculateButton()
 {
-	isImage = false;
 	m_defaultColor = RGB(220, 220, 220);
 	m_hoverColor = RGB(200, 200, 200);
 	m_downColor = RGB(150, 150, 150);
@@ -91,7 +90,6 @@ void CalculateButton::InsertImage(int nImageID)
 	this->SetImage(bitmap, TRUE);
 	this->SizeToContent();
 	this->nImageID = nImageID;
-	isImage = true;
 }
 
 
@@ -123,29 +121,6 @@ void CalculateButton::OnMouseHover(UINT nFlags, CPoint point)
 	if (m_bUseMouseEvent)
 	{
 		this->SetFaceColor(m_hoverColor);
-	
-		if (nImageID == IDB_PNG_TIMELINE_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TIMELINE_HOVER);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
-		else if (nImageID == IDB_PNG_TRASH_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TRASH_HOVER);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
 	}
 
 	CMFCButton::OnMouseHover(nFlags, point);

@@ -20,7 +20,6 @@ public:
 
 private:
 	bool m_bTrackMouse = false;
-	bool isImage;
 	int nImageID;
 	CFont font;
 	int nID;

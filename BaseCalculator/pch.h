@@ -48,6 +48,7 @@ using namespace Gdiplus;
 #else 
 
 #include <gdiplus.h>
+#include <afxcontrolbars.h>
 #pragma comment(lib, "gdiplus.lib")
 using namespace Gdiplus;
 

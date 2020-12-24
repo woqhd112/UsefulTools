@@ -73,10 +73,12 @@ BOOL ConvertTimeTab::OnInitDialog()
 
 	this->SetBackgroundColor(RGB(55, 55, 55));
 	
-	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_icon.InsertImage(IDB_PNG_TIMEC_NOMAL);
+	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_TIME_NOMAL, _T("PNG"));
+	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_TIME_HOVER, _T("PNG"));
+	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
+	m_btn_icon.MoveWindow(5, 5, 24, 24);
+
 	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	
 	m_btn_test1.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseEvent = false;

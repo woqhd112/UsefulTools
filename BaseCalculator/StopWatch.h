@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
+#include "LapTime.h"
 
 // Timer 대화 상자
 
@@ -31,12 +32,14 @@ public:
 	virtual BOOL OnInitDialog();
 	virtual void PostNcDestroy();
 	afx_msg void OnClose();
+
 private:
 	CalculateStatic m_stt_stopwatch_view;
 	CalculateStatic m_stt_hms;
-	CalculateStatic m_stt_mils;
 	CalculateButton m_btn_startandstop;
 	CalculateButton m_btn_reset;
+	CalculateButton m_btn_laptime;
+	CalculateButton m_btn_laptime_reset;
 
 	CBrush m_backBrush;
 
@@ -45,7 +48,15 @@ private:
 
 	CWinThread* m_thread;
 	CString strHMS;
+	CString strM;
+	CString strS;
 	CString strMils;
+
+	LapTime laptime;
+	bool bLaptime;
+	CRect thisRect;
+	CRect childRect;
+	CRect laptimeResetRect;
 
 	static UINT thrStopWatch(LPVOID method);
 	void StartStopWatch();
@@ -54,4 +65,7 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnBnClickedButtonStartandstop();
 	afx_msg void OnBnClickedButtonReset();
+	afx_msg void OnBnClickedButtonLaptime();
+	afx_msg void OnMove(int x, int y);
+	afx_msg void OnBnClickedButtonLaptimeReset();
 };

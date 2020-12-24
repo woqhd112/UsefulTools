@@ -132,6 +132,9 @@
     <ClInclude Include="MemDC.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="LapTime.h">
+      <Filter>StopWatch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -212,6 +215,9 @@
     <ClCompile Include="GdipButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="LapTime.cpp">
+      <Filter>StopWatch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\GoCabinet.rc2">
@@ -220,48 +226,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Cal.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngegg.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngegg_24.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngegg24.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngegg24_h.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngegg24_d.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngwing24.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngwing24_h.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\pngwing24_d.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertBit.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertLength.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertTime.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertWeight.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertWidth.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ConvertReverse.png">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\load.png">
@@ -343,6 +307,60 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\CalculatorTrash_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_U.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

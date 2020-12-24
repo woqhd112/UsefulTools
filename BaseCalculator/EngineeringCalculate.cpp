@@ -27,6 +27,11 @@ EngineeringCalculate::~EngineeringCalculate()
 		delete calculate;
 		calculate = (Calculate*)nullptr;
 	}
+
+	if (timeline)
+	{
+		timeline.DestroyWindow();
+	}
 }
 
 void EngineeringCalculate::DoDataExchange(CDataExchange* pDX)
@@ -110,9 +115,10 @@ BOOL EngineeringCalculate::OnInitDialog()
 
 	timeline.Create(IDD_DIALOG_TIMELINE, this);
 	timeline.GetWindowRect(&childRect);
-	m_btn_trash.GetClientRect(&trashRect);
 	timeline.MoveWindow(thisRect.Width() - 5, 20, childRect.Width(), thisRect.Height() - 120);
-	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, int(thisRect.Height() * 0.8), trashRect.Width(), trashRect.Height());
+	timeline.GetWindowRect(&childRect);
+	m_btn_trash.GetClientRect(&trashRect);
+	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, childRect.Height() + trashRect.Height(), trashRect.Width(), trashRect.Height());
 	timeline.ShowWindow(SW_HIDE);
 	m_btn_trash.ShowWindow(SW_HIDE);
 

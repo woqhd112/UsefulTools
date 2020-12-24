@@ -2,6 +2,7 @@
 #include "ConvertButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
+#include "GdipButton.h" 
 
 
 // ConvertBitTab 대화 상자
@@ -27,9 +28,9 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 private:
-	ConvertButton m_btn_icon;
+	CGdipButton m_btn_icon;
+	CGdipButton m_btn_reverse;
 	ConvertButton m_btn_combo;
-	ConvertButton m_btn_reverse;
 	ConvertButton m_btn_container;
 	CComboBox m_combo_left;
 	CComboBox m_combo_right;

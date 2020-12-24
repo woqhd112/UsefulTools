@@ -1,18 +1,18 @@
-﻿// ResultTimeline.cpp: 구현 파일
+﻿// LapTime.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "GoCabinet.h"
-#include "ResultTimeline.h"
+#include "LapTime.h"
 #include "afxdialogex.h"
 
 
-// ResultTimeline 대화 상자
+// LapTime 대화 상자
 
-IMPLEMENT_DYNAMIC(ResultTimeline, CDialogEx)
+IMPLEMENT_DYNAMIC(LapTime, CDialogEx)
 
-ResultTimeline::ResultTimeline(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOG_TIMELINE, pParent)
+LapTime::LapTime(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_DIALOG_LAPTIME, pParent)
 {
 	ResetGValue();
 	cy = 0;	// 한 페이지의 사이즈
@@ -23,7 +23,7 @@ ResultTimeline::ResultTimeline(CWnd* pParent /*=nullptr*/)
 	SetSysColors(1, &clrIndex, &clr);
 }
 
-ResultTimeline::~ResultTimeline()
+LapTime::~LapTime()
 {
 	if (!editVector.empty())
 	{
@@ -38,13 +38,13 @@ ResultTimeline::~ResultTimeline()
 	}
 }
 
-void ResultTimeline::DoDataExchange(CDataExchange* pDX)
+void LapTime::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
 
-BEGIN_MESSAGE_MAP(ResultTimeline, CDialogEx)
+BEGIN_MESSAGE_MAP(LapTime, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_SIZE()
 	ON_WM_VSCROLL()
@@ -52,23 +52,26 @@ BEGIN_MESSAGE_MAP(ResultTimeline, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// ResultTimeline 메시지 처리기
+// LapTime 메시지 처리기
 
-void ResultTimeline::ResetGValue()
+void LapTime::ResetGValue()
 {
 	nStaticEditID = 0;	// 에딧의 동적 아이디
 	nStartEditPos = 10;	// 에딧을 입력할 시작 위치
-	m_nBasic = 60;	// 스크롤 위아래 버튼 클릭 시 스크롤 간격
+	m_nBasic = 30;	// 스크롤 위아래 버튼 클릭 시 스크롤 간격
 	nViewHeight = 0;	// 스크롤 전체 출력 화면
 	nScrollPos = 0;	// 현재 스크롤의 위치
 	nPageSize = 0;	// 한페이지의 사이즈
+	nStaticLapTimeCount = 0;
 }
 
-BOOL ResultTimeline::OnInitDialog()
+
+BOOL LapTime::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+
 	GetWindowRect(&thisRect);
 	this->SetBackgroundColor(RGB(77, 77, 77));
 	m_backBrush.CreateSolidBrush(RGB(77, 77, 77));
@@ -78,16 +81,17 @@ BOOL ResultTimeline::OnInitDialog()
 }
 
 
-void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
+void LapTime::AppendLapTime(CString strM, CString strS, CString strMils)
 {
-	int nID = 10000 + (++nStaticEditID);
+	int nID = 20000 + (++nStaticEditID);
+	nStaticLapTimeCount++;
 	CalculateEdit* newEdit = new CalculateEdit;
-	newEdit->Create(WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_RIGHT | WS_DISABLED, CRect(0, 0, 0, 0), this, nID);
+	newEdit->Create(WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_LEFT | WS_DISABLED, CRect(0, 0, 0, 0), this, nID);
 	newEdit->MoveWindow(10, 10, thisRect.Width() - 30, 10000);
 	newEdit->Initialize(20, _T("고딕"));
 
 	CString strFormat;
-	strFormat.Format(_T("%s =\r\n%s"), strFormula, strResult);
+	strFormat.Format(_T("%d.\t%s : %s : %s"), nStaticLapTimeCount, strM, strS, strMils);
 	newEdit->SetWindowTextW(strFormat);
 	int lineCount = newEdit->GetLineCount();
 	newEdit->MoveWindow(10, nStartEditPos, int(thisRect.Width() * 0.9), lineCount * 20);
@@ -95,14 +99,14 @@ void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
 	if (nViewHeight == 0) nViewHeight = 30;
 	nViewHeight += (lineCount * 20 + 10);
 	SetScrollSize(cy);
-	
+
 	editVector.push_back(newEdit);
 	newEdit->Invalidate();
 
-	if (cy < nViewHeight) OnVScroll(SB_LINEDOWN, 0, GetScrollBarCtrl(SB_VERT));
+	if(cy < nViewHeight) OnVScroll(SB_LINEDOWN, 0, GetScrollBarCtrl(SB_VERT));
 }
 
-void ResultTimeline::DeleteTimeline()
+void LapTime::DeleteLapTime()
 {
 	for (int i = 0; i < (int)editVector.size(); i++)
 	{
@@ -116,14 +120,15 @@ void ResultTimeline::DeleteTimeline()
 	SetScrollSize(cy);
 }
 
-HBRUSH ResultTimeline::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+
+HBRUSH LapTime::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  여기서 DC의 특성을 변경합니다.
 	if (nCtlColor == CTLCOLOR_STATIC)
 	{
-		if (pWnd->GetDlgCtrlID() >= 10001)
+		if (pWnd->GetDlgCtrlID() >= 20001)
 		{
 			pDC->SetBkColor(RGB(77, 77, 77));
 			hbr = (HBRUSH)m_backBrush;
@@ -139,14 +144,15 @@ HBRUSH ResultTimeline::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
-void ResultTimeline::OnSize(UINT nType, int cx, int cy)
+void LapTime::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType, cx, cy);
 	this->cy = cy;
 	SetScrollSize(cy);
 }
 
-void ResultTimeline::SetScrollSize(int nThisHeight)
+
+void LapTime::SetScrollSize(int nThisHeight)
 {
 	//nViewHeight = nStartEditSize;// rect.Height() + 120;
 	int nScrollMax = 0;
@@ -166,9 +172,11 @@ void ResultTimeline::SetScrollSize(int nThisHeight)
 	SetScrollInfo(SB_VERT, &si, TRUE);
 }
 
-void ResultTimeline::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+
+void LapTime::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
 	int delta = 0;
 	switch (nSBCode)
 	{
@@ -213,12 +221,12 @@ void ResultTimeline::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		ScrollWindow(0, -delta);
 		nStartEditPos -= delta;
 	}
-
+	
 	//CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
 
-BOOL ResultTimeline::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL LapTime::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	UINT nFlag;
@@ -237,7 +245,7 @@ BOOL ResultTimeline::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 }
 
 
-void ResultTimeline::OnOK()
+void LapTime::OnOK()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 

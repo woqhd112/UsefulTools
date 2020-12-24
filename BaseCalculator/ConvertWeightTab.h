@@ -2,6 +2,7 @@
 #include "ConvertButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
+#include "GdipButton.h" 
 
 // ConvertWeightTab 대화 상자
 
@@ -26,10 +27,10 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 private:
-	ConvertButton m_btn_icon;
+	CGdipButton m_btn_icon;
+	CGdipButton m_btn_reverse;
 	ConvertButton m_btn_combo;
 	ConvertButton m_btn_test1;
-	ConvertButton m_btn_reverse;
 	CalculateEdit m_edit_left_value;
 	CalculateEdit m_edit_right_value;
 	CComboBox m_combo_left;
