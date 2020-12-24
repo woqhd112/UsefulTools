@@ -10,13 +10,7 @@
 #define IDI_ICON1                       133
 #define IDD_DIALOG_BASE                 135
 #define IDD_DIALOG_ENGINEERING          137
-#define IDB_PNG_TIMELINE_NOMAL          143
-#define IDB_PNG_TIMELINE_HOVER          145
-#define IDB_PNG_TIMELINE_DOWN           146
 #define IDD_DIALOG_TIMELINE             147
-#define IDB_PNG_TRASH_NOMAL             149
-#define IDB_PNG_TRASH_HOVER             150
-#define IDB_PNG_TRASH_DOWN              151
 #define IDD_DIALOG_CONVERTER            154
 #define IDD_DIALOG_TIME                 159
 #define IDD_DIALOG_DATE                 159
@@ -54,6 +48,12 @@
 #define IDB_PNG_CONVERTER_HOVER         215
 #define IDB_PNG_DATECAL_HOVER           216
 #define IDB_PNG_TIMER_HOVER             217
+#define IDB_PNG_TIMELINE_NOMAL          220
+#define IDB_PNG_TIMELINE_HOVER          221
+#define IDB_PNG_TIMELINE_CLICK          222
+#define IDB_PNG_TRASH_NOMAL             223
+#define IDB_PNG_TRASH_HOVER             224
+#define IDB_PNG_TRASH_CLICK             225
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -296,10 +296,20 @@
 #define IDC_STATIC_REST_SECOND          1223
 #define IDC_BUTTON_BASE_FOLDER          1224
 #define IDC_BUTTON_ENGINEERING_FOLDER   1225
+#define IDC_STATIC_GROUP_BASE           1225
 #define IDC_BUTTON_STOPWATCH_FOLDER     1226
+#define IDC_STATIC_SELECT_INPUT         1226
 #define IDC_BUTTON_CONVERTER_FOLDER     1227
+#define IDC_STATIC_SELECT_OUTPUT        1227
 #define IDC_BUTTON_DATECAL_FOLDER       1228
+#define IDC_STATIC_BASE_DATE            1228
 #define IDC_BUTTON_TIMER_FOLDER         1229
+#define IDC_STATIC_FIRST_OFFICIAL       1229
+#define IDC_STATIC_LAST_OFFICIAL        1230
+#define IDC_STATIC_EQUAR1               1231
+#define IDC_STATIC_EQUAR2               1232
+#define IDC_STATIC_EQUAR3               1233
+#define IDC_STATIC_EQUAR4               1234
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -315,9 +325,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        220
+#define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1225
+#define _APS_NEXT_CONTROL_VALUE         1235
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

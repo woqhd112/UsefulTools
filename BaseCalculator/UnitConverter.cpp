@@ -83,7 +83,7 @@ BOOL UnitConverter::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	this->SetBackgroundColor(RGB(255, 255, 255));
+	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 
 	CRect tabRect;
 	m_stt_tab.GetWindowRect(&tabRect);
@@ -118,6 +118,16 @@ BOOL UnitConverter::OnInitDialog()
 	m_btn_weight.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_time.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_bit.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_length.SetFaceColor(BASE_BKGROUND_COLOR);
+	m_btn_width.SetFaceColor(BASE_BKGROUND_COLOR);
+	m_btn_weight.SetFaceColor(BASE_BKGROUND_COLOR);
+	m_btn_time.SetFaceColor(BASE_BKGROUND_COLOR);
+	m_btn_bit.SetFaceColor(BASE_BKGROUND_COLOR);
+	m_btn_length.SetTextColor(RGB(255, 255, 255));
+	m_btn_width.SetTextColor(RGB(255, 255, 255));
+	m_btn_weight.SetTextColor(RGB(255, 255, 255));
+	m_btn_time.SetTextColor(RGB(255, 255, 255));
+	m_btn_bit.SetTextColor(RGB(255, 255, 255));
 
 	m_btn_length.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_width.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);

@@ -1,5 +1,7 @@
 ﻿#pragma once
-
+#include "CalculateStatic.h"
+#include "CalculateButton.h"
+#include "CalculateEdit.h"
 
 // BaseCalculate 대화 상자
 
@@ -21,7 +23,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 private:
-	//void EnableText();
 	void SetComboBox();
 	void SelectComboBox();
 	char ConvertIntToChar(int nInt);
@@ -35,11 +36,12 @@ private:
 	CComboBox m_result;
 
 	// 2진법 계산기 컨트롤러
+	CalculateButton m_btn_result_select_from_base;
+	CalculateEdit m_edit_input_ten_from_base;
+	CalculateEdit m_edit_output_select_from_base;
+	CalculateStatic m_stt_group_base;
 	CStatic m_stt_input_select;
 	CStatic m_stt_output_result;
-	CEdit m_edit_input_ten_from_base;
-	CEdit m_edit_output_select_from_base;
-	CButton m_btn_result_select_from_base;
 
 public:
 	afx_msg void OnBnClickedButtonResultTwoFrom2();
@@ -51,4 +53,5 @@ public:
 	
 	afx_msg void OnClose();
 	virtual void PostNcDestroy();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

@@ -34,6 +34,7 @@ void BaseCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_INPUT_10_FROM2, m_edit_input_ten_from_base);
 	DDX_Control(pDX, IDC_OUTPUT_2_FROM2, m_edit_output_select_from_base);
 	DDX_Control(pDX, IDC_BUTTON_RESULT_TWO_FROM2, m_btn_result_select_from_base);
+	DDX_Control(pDX, IDC_STATIC_GROUP_BASE, m_stt_group_base);
 }
 
 
@@ -41,6 +42,7 @@ BEGIN_MESSAGE_MAP(BaseCalculate, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_RESULT_TWO_FROM2, &BaseCalculate::OnBnClickedButtonResultTwoFrom2)
 	ON_CBN_SELCHANGE(IDC_COMBO_RESULT, &BaseCalculate::OnCbnSelchangeComboResult)
 	ON_WM_CLOSE()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
  
@@ -52,9 +54,14 @@ BOOL BaseCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	SetWindowTheme(m_stt_group_base, _T(""), _T(""));
+	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 
-	this->SetBackgroundColor(RGB(255, 255, 255));
-	//EnableText();
+	m_btn_result_select_from_base.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_edit_input_ten_from_base.Initialize(12, _T("고딕"));
+	m_edit_output_select_from_base.Initialize(12, _T("고딕"));
+	m_stt_group_base.Initialize(16, _T("고딕"));
+
 	SetComboBox();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -99,11 +106,6 @@ void BaseCalculate::SetComboBox()
 	m_result.SetCurSel(0);
 	SelectComboBox();
 }
-
-//void BaseCalculate::EnableText()
-//{
-//	m_edit_output_select_from_base.EnableWindow(FALSE);
-//}
 
 
 // 10진수를 선택진수로 변환 버튼
@@ -624,4 +626,38 @@ void BaseCalculate::PostNcDestroy()
 	parent->bBase = false;
 	delete this;
 	CDialogEx::PostNcDestroy();
+}
+
+
+HBRUSH BaseCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  여기서 DC의 특성을 변경합니다.
+	if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_GROUP_BASE)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_SELECT_INPUT)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_SELECT_OUTPUT)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_INPUT_SELECT)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_OUTPUT_RESULT)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+	}
+
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
 }

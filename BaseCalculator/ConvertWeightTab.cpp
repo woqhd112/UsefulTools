@@ -76,9 +76,10 @@ BOOL ConvertWeightTab::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	m_backBrush.CreateSolidBrush(RGB(250, 250, 250));
+	m_backBrush.CreateSolidBrush(RGB(55, 55, 55));
+	m_rightValueBrush.CreateSolidBrush(RGB(77, 77, 77));
 
-	this->SetBackgroundColor(RGB(250, 250, 250));
+	this->SetBackgroundColor(RGB(55, 55, 55));
 	
 	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_WEIGHT_NOMAL);
@@ -91,6 +92,10 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseEvent = false;
+	m_btn_combo.SetFaceColor(RGB(55, 55, 55));
+	m_btn_combo.SetTextColor(RGB(255, 255, 255));
+	m_btn_test1.SetFaceColor(RGB(55, 55, 55));
+	m_btn_test1.SetTextColor(RGB(255, 255, 255));
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
 	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
@@ -514,7 +519,7 @@ BOOL ConvertWeightTab::PreTranslateMessage(MSG* pMsg)
 		CRect rect;
 		m_edit_left_value.GetClientRect(rect);
 		CDC* pDC = m_edit_left_value.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
 	}
 
 	if (pMsg->message == WM_LBUTTONUP)
@@ -584,7 +589,8 @@ HBRUSH ConvertWeightTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_LEFT_VALUE3)
 		{
-			pDC->SetBkColor(RGB(250, 250, 250));
+			pDC->SetBkColor(RGB(55, 55, 55));
+			pDC->SetTextColor(RGB(255, 255, 255));
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -640,7 +646,13 @@ HBRUSH ConvertWeightTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE3)
 		{
+			pDC->SetBkColor(RGB(77, 77, 77));
 			pDC->SetTextColor(RGB(236, 130, 60));
+			hbr = (HBRUSH)m_rightValueBrush;
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR2)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
 		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.

@@ -175,29 +175,6 @@ void CalculateButton::OnMouseLeave()
 		{
 			this->SetFaceColor(m_defaultColor);
 		}
-	
-		if (nImageID == IDB_PNG_TIMELINE_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TIMELINE_NOMAL);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
-		else if (nImageID == IDB_PNG_TRASH_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TRASH_NOMAL);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
 	}
 
 
@@ -213,28 +190,6 @@ void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 	if (m_bUseMouseEvent)
 	{
 		this->SetFaceColor(m_downColor);
-
-		if (nImageID == IDB_PNG_TIMELINE_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TIMELINE_DOWN);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-		}
-		else if (nImageID == IDB_PNG_TRASH_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TRASH_DOWN);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
 	}
 
 	CMFCButton::OnLButtonDown(nFlags, point);
@@ -248,28 +203,6 @@ void CalculateButton::OnLButtonUp(UINT nFlags, CPoint point)
 	if (m_bUseMouseEvent)
 	{
 		this->SetFaceColor(m_hoverColor);
-	
-		if (nImageID == IDB_PNG_TIMELINE_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TIMELINE_HOVER);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-		}
-		else if (nImageID == IDB_PNG_TRASH_NOMAL)
-		{
-			CPngImage pngImage;
-			pngImage.Load(IDB_PNG_TRASH_HOVER);
-			HBITMAP bitmap = (HBITMAP)pngImage.Detach();
-			this->m_bTransparent = TRUE;
-			this->m_bDrawFocus = FALSE;
-			this->SetImage(bitmap, TRUE);
-			this->SizeToContent();
-			this->Invalidate();
-		}
 	}
 
 	CMFCButton::OnLButtonUp(nFlags, point);

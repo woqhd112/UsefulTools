@@ -162,7 +162,7 @@ BOOL CGoCabinetDlg::OnInitDialog()
 	m_btn_timer_gdi.LoadHovImage(IDB_PNG_TIMER_HOVER, _T("PNG"));
 	m_btn_timer_gdi.LoadAltImage(IDB_PNG_TIMER_CLICK, _T("PNG"));
 
-	this->SetBackgroundColor(RGB(55, 55, 55));
+	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 
 	m_btn_base_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_base.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);

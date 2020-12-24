@@ -327,6 +327,24 @@
     <Image Include="res\Timer_U.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\CalculatorReport_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_B.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_U.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_C.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GoCabinet.rc">

@@ -11,6 +11,8 @@
 #include "Timer.h"
 #include "GdipButton.h" 
 
+#define BASE_BKGROUND_COLOR RGB(55, 55, 55)
+
 // CBaseCalculatorDlg 대화 상자
 class CGoCabinetDlg : public CDialogEx
 {

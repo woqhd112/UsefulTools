@@ -37,6 +37,7 @@ void DateCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_LIMITDATE, m_btn_limitdate);
 	DDX_Control(pDX, IDC_BUTTON_FOCUS, m_btn_focus);
 	DDX_Control(pDX, IDC_BUTTON_ALLRESET, m_btn_reset);
+	DDX_Control(pDX, IDC_GROUP_LIMITDATE, m_stt_group_limitdate);
 }
 
 
@@ -60,15 +61,24 @@ BOOL DateCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	this->SetBackgroundColor(RGB(255, 255, 255));
+
+	SetWindowTheme(m_stt_group_limitdate, _T(""), _T(""));
+
+	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 	m_btn_afterdate.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_limitdate.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_reset.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 
+	m_edit_baseedit.Initialize(12, _T("고딕"));
+	m_edit_afterdate.Initialize(12, _T("고딕"));
+	m_edit_afterdate_result.Initialize(12, _T("고딕"));
+	m_edit_limitdate_result.Initialize(12, _T("고딕"));
+	m_edit_limitdate.Initialize(12, _T("고딕"));
+
+	m_stt_group_limitdate.Initialize(16, _T("고딕"));
+
 	m_edit_baseedit.SetLimitText(10);
 	m_edit_limitdate.SetLimitText(10);
-	//m_edit_afterdate_result.EnableWindow(FALSE);
-	//m_edit_limitdate_result.EnableWindow(FALSE);
 
 	SetCalendar();
 
@@ -409,6 +419,25 @@ HBRUSH DateCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			{
 				pDC->SetTextColor(RGB(180, 180, 180));
 			}
+		}
+	}
+	else if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (pWnd->GetDlgCtrlID() == IDC_GROUP_LIMITDATE)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE_DATE)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_FIRST_OFFICIAL)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_LAST_OFFICIAL)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
 		}
 	}
 

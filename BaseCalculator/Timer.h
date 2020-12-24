@@ -171,7 +171,6 @@ private:
 
 	EditFocusPos efp;
 	CString strCurrentFocusText;
-	bool bTextChanged;
 
 	static UINT thrTimer(LPVOID method);
 	static UINT thrLoadSound(LPVOID method);

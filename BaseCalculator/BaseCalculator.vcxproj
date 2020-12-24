@@ -271,6 +271,12 @@
     <Image Include="res\Base_B.png" />
     <Image Include="res\Base_C.png" />
     <Image Include="res\Base_U.png" />
+    <Image Include="res\CalculatorReport_B.png" />
+    <Image Include="res\CalculatorReport_C.png" />
+    <Image Include="res\CalculatorReport_U.png" />
+    <Image Include="res\CalculatorTrash_B.png" />
+    <Image Include="res\CalculatorTrash_C.png" />
+    <Image Include="res\CalculatorTrash_U.png" />
     <Image Include="res\Converter_B.png" />
     <Image Include="res\Converter_C.png" />
     <Image Include="res\Converter_U.png" />

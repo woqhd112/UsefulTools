@@ -69,26 +69,30 @@ BOOL ConvertTimeTab::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_backBrush.CreateSolidBrush(RGB(250, 250, 250));
+	m_backBrush.CreateSolidBrush(RGB(55, 55, 55));
 
-	this->SetBackgroundColor(RGB(250, 250, 250));
+	this->SetBackgroundColor(RGB(55, 55, 55));
 	
 	m_btn_icon.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_icon.InsertImage(IDB_PNG_TIMEC_NOMAL);
 	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	
-	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test1.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseEvent = false;
-	m_btn_test2.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test2.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test2.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test2.m_bUseMouseEvent = false;
-	m_btn_test3.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test3.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test3.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test3.m_bUseMouseEvent = false;
-	m_btn_test4.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test4.Initialize(RGB(55, 55, 55), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test4.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test4.m_bUseMouseEvent = false;
+	m_btn_test1.SetTextColor(RGB(255, 255, 255));
+	m_btn_test2.SetTextColor(RGB(255, 255, 255));
+	m_btn_test3.SetTextColor(RGB(255, 255, 255));
+	m_btn_test4.SetTextColor(RGB(255, 255, 255));
 
 	m_edit_date.Initialize(18, _T("휴먼매직체"));
 	m_edit_hour.Initialize(18, _T("휴먼매직체"));
@@ -269,28 +273,28 @@ BOOL ConvertTimeTab::PreTranslateMessage(MSG* pMsg)
 		CRect rect;
 		m_edit_date.GetClientRect(rect);
 		CDC* pDC = m_edit_date.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
 	}
 	else if (m_edit_hour.m_bFocusOn)
 	{
 		CRect rect;
 		m_edit_hour.GetClientRect(rect);
 		CDC* pDC = m_edit_hour.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
 	}
 	else if (m_edit_minute.m_bFocusOn)
 	{
 		CRect rect;
 		m_edit_minute.GetClientRect(rect);
 		CDC* pDC = m_edit_minute.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
 	}
 	else if (m_edit_second.m_bFocusOn)
 	{
 		CRect rect;
 		m_edit_second.GetClientRect(rect);
 		CDC* pDC = m_edit_second.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(0, 0, 0), RGB(0, 0, 0));
+		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
 	}
 
 	if (pMsg->message == WM_LBUTTONUP)
@@ -389,22 +393,26 @@ HBRUSH ConvertTimeTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_DATE)
 		{
-			pDC->SetBkColor(RGB(250, 250, 250));
+			pDC->SetBkColor(RGB(55, 55, 55));
+			pDC->SetTextColor(RGB(255, 255, 255));
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_HOUR)
 		{
-			pDC->SetBkColor(RGB(250, 250, 250));
+			pDC->SetBkColor(RGB(55, 55, 55));
+			pDC->SetTextColor(RGB(255, 255, 255));
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_MINUTE)
 		{
-			pDC->SetBkColor(RGB(250, 250, 250));
+			pDC->SetBkColor(RGB(55, 55, 55));
+			pDC->SetTextColor(RGB(255, 255, 255));
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_SECOND)
 		{
-			pDC->SetBkColor(RGB(250, 250, 250));
+			pDC->SetBkColor(RGB(55, 55, 55));
+			pDC->SetTextColor(RGB(255, 255, 255));
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}

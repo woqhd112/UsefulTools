@@ -26,7 +26,6 @@ Timer::Timer(CWnd* pParent /*=nullptr*/)
 	nDivideMargin = 0;
 	bDivideClick = false;
 	nBkBrightness = 0;
-	bTextChanged = false;
 	efp = FOCUS_WORK_HOUR_1;
 }
 
@@ -405,7 +404,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == m_edit_work_hour_1)
 		{
-			m_edit_work_hour_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_hour_1.SetWindowTextW(_T(""));
 			m_edit_work_hour_1.HideCaret();
 			EmptyTextCondition(m_edit_work_hour_1.GetDlgCtrlID());
@@ -413,7 +411,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_hour_2)
 		{
-			m_edit_work_hour_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_hour_2.SetWindowTextW(_T(""));
 			m_edit_work_hour_2.HideCaret();
 			EmptyTextCondition(m_edit_work_hour_2.GetDlgCtrlID());
@@ -421,7 +418,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_1)
 		{
-			m_edit_work_minute_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_minute_1.SetWindowTextW(_T(""));
 			m_edit_work_minute_1.HideCaret();
 			EmptyTextCondition(m_edit_work_minute_1.GetDlgCtrlID());
@@ -429,7 +425,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_2)
 		{
-			m_edit_work_minute_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_minute_2.SetWindowTextW(_T(""));
 			m_edit_work_minute_2.HideCaret();
 			EmptyTextCondition(m_edit_work_minute_2.GetDlgCtrlID());
@@ -437,7 +432,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_1)
 		{
-			m_edit_work_second_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_second_1.SetWindowTextW(_T(""));
 			m_edit_work_second_1.HideCaret();
 			EmptyTextCondition(m_edit_work_second_1.GetDlgCtrlID());
@@ -445,7 +439,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_2)
 		{
-			m_edit_work_second_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_work_second_2.SetWindowTextW(_T(""));
 			m_edit_work_second_2.HideCaret();
 			EmptyTextCondition(m_edit_work_second_2.GetDlgCtrlID());
@@ -453,7 +446,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_1)
 		{
-			m_edit_rest_hour_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_hour_1.SetWindowTextW(_T(""));
 			m_edit_rest_hour_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_hour_1.GetDlgCtrlID());
@@ -461,7 +453,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_2)
 		{
-			m_edit_rest_hour_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_hour_2.SetWindowTextW(_T(""));
 			m_edit_rest_hour_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_hour_2.GetDlgCtrlID());
@@ -469,7 +460,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_1)
 		{
-			m_edit_rest_minute_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_minute_1.SetWindowTextW(_T(""));
 			m_edit_rest_minute_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_minute_1.GetDlgCtrlID());
@@ -477,7 +467,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_2)
 		{
-			m_edit_rest_minute_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_minute_2.SetWindowTextW(_T(""));
 			m_edit_rest_minute_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_minute_2.GetDlgCtrlID());
@@ -485,7 +474,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_1)
 		{
-			m_edit_rest_second_1.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_second_1.SetWindowTextW(_T(""));
 			m_edit_rest_second_1.HideCaret();
 			EmptyTextCondition(m_edit_rest_second_1.GetDlgCtrlID());
@@ -493,7 +481,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_2)
 		{
-			m_edit_rest_second_2.GetWindowTextW(strCurrentFocusText);
 			m_edit_rest_second_2.SetWindowTextW(_T(""));
 			m_edit_rest_second_2.HideCaret();
 			EmptyTextCondition(m_edit_rest_second_2.GetDlgCtrlID());
@@ -519,16 +506,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 
 		if (pMsg->hwnd == m_edit_work_hour_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -536,16 +523,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_hour_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -553,12 +540,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
 			else
 			{
 				return TRUE;
@@ -566,16 +553,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_minute_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -583,12 +570,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
 			else
 			{
 				return TRUE;
@@ -596,16 +583,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_work_second_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -613,16 +600,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -630,16 +617,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_hour_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -647,12 +634,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
 			else
 			{
 				return TRUE;
@@ -660,16 +647,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_minute_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;
@@ -677,12 +664,12 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_1)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
 			else
 			{
 				return TRUE;
@@ -690,16 +677,16 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->hwnd == m_edit_rest_second_2)
 		{
-			if (pMsg->wParam == L'0') { bTextChanged = true; }
-			else if (pMsg->wParam == L'1') { bTextChanged = true; }
-			else if (pMsg->wParam == L'2') { bTextChanged = true; }
-			else if (pMsg->wParam == L'3') { bTextChanged = true; }
-			else if (pMsg->wParam == L'4') { bTextChanged = true; }
-			else if (pMsg->wParam == L'5') { bTextChanged = true; }
-			else if (pMsg->wParam == L'6') { bTextChanged = true; }
-			else if (pMsg->wParam == L'7') { bTextChanged = true; }
-			else if (pMsg->wParam == L'8') { bTextChanged = true; }
-			else if (pMsg->wParam == L'9') { bTextChanged = true; }
+			if (pMsg->wParam == L'0') { strCurrentFocusText = _T("0"); }
+			else if (pMsg->wParam == L'1') { strCurrentFocusText = _T("1"); }
+			else if (pMsg->wParam == L'2') { strCurrentFocusText = _T("2"); }
+			else if (pMsg->wParam == L'3') { strCurrentFocusText = _T("3"); }
+			else if (pMsg->wParam == L'4') { strCurrentFocusText = _T("4"); }
+			else if (pMsg->wParam == L'5') { strCurrentFocusText = _T("5"); }
+			else if (pMsg->wParam == L'6') { strCurrentFocusText = _T("6"); }
+			else if (pMsg->wParam == L'7') { strCurrentFocusText = _T("7"); }
+			else if (pMsg->wParam == L'8') { strCurrentFocusText = _T("8"); }
+			else if (pMsg->wParam == L'9') { strCurrentFocusText = _T("9"); }
 			else
 			{
 				return TRUE;

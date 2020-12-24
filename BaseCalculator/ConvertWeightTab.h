@@ -49,6 +49,7 @@ private:
 	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
+	CBrush m_rightValueBrush;
 
 	bool bComboShow;
 

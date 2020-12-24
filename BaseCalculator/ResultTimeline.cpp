@@ -16,6 +16,11 @@ ResultTimeline::ResultTimeline(CWnd* pParent /*=nullptr*/)
 {
 	ResetGValue();
 	cy = 0;	// 한 페이지의 사이즈
+
+	// disable 된 editctl은 텍스트색 변경불가능이므로 생성자에서 아래 함수 호출
+	int clrIndex = COLOR_GRAYTEXT;
+	COLORREF clr = RGB(255, 255, 255);
+	SetSysColors(1, &clrIndex, &clr);
 }
 
 ResultTimeline::~ResultTimeline()
@@ -65,8 +70,8 @@ BOOL ResultTimeline::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	GetWindowRect(&thisRect);
-	this->SetBackgroundColor(RGB(245, 245, 245));
-	m_backBrush.CreateSolidBrush(RGB(220, 220, 220));
+	this->SetBackgroundColor(RGB(77, 77, 77));
+	m_backBrush.CreateSolidBrush(RGB(77, 77, 77));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -75,14 +80,14 @@ BOOL ResultTimeline::OnInitDialog()
 
 void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
 {
+	int nID = 10000 + (++nStaticEditID);
 	CalculateEdit* newEdit = new CalculateEdit;
-	newEdit->Create(WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_RIGHT | WS_DISABLED, CRect(0, 0, 0, 0), this, 10000 + (++nStaticEditID));
+	newEdit->Create(WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_RIGHT | WS_DISABLED, CRect(0, 0, 0, 0), this, nID);
 	newEdit->MoveWindow(10, 10, thisRect.Width() - 30, 10000);
 	newEdit->Initialize(20, _T("고딕"));
-	
 
 	CString strFormat;
-	strFormat.Format(_T("%s =\r\n\r\n%s"), strFormula, strResult);
+	strFormat.Format(_T("%s =\r\n%s"), strFormula, strResult);
 	newEdit->SetWindowTextW(strFormat);
 	int lineCount = newEdit->GetLineCount();
 	newEdit->MoveWindow(10, nStartEditPos, int(thisRect.Width() * 0.9), lineCount * 20);
@@ -90,9 +95,9 @@ void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
 	if (nViewHeight == 0) nViewHeight = 30;
 	nViewHeight += (lineCount * 20 + 10);
 	SetScrollSize(cy);
-
+	
 	editVector.push_back(newEdit);
-	Invalidate();
+	newEdit->Invalidate();
 }
 
 void ResultTimeline::DeleteTimeline()
@@ -118,9 +123,13 @@ HBRUSH ResultTimeline::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() >= 10001)
 		{
-			pDC->SetBkColor(RGB(220, 220, 220));
+			pDC->SetBkColor(RGB(77, 77, 77));
 			hbr = (HBRUSH)m_backBrush;
 		}
+	}
+	else
+	{
+		hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.

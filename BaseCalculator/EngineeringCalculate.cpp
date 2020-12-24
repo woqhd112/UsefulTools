@@ -105,16 +105,18 @@ BOOL EngineeringCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_backBrush.CreateSolidBrush(RGB(141, 141, 141));
+	m_backBrush.CreateSolidBrush(BASE_BKGROUND_COLOR);
 	GetWindowRect(&thisRect);
 
 	timeline.Create(IDD_DIALOG_TIMELINE, this);
 	timeline.GetWindowRect(&childRect);
 	m_btn_trash.GetClientRect(&trashRect);
-	timeline.MoveWindow(thisRect.Width(), 0, childRect.Width(), thisRect.Height() - 90);
+	timeline.MoveWindow(thisRect.Width() - 5, 20, childRect.Width(), thisRect.Height() - 120);
 	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, int(thisRect.Height() * 0.8), trashRect.Width(), trashRect.Height());
 	timeline.ShowWindow(SW_HIDE);
 	m_btn_trash.ShowWindow(SW_HIDE);
+
+	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 
 	m_btn_0.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_1.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -140,10 +142,16 @@ BOOL EngineeringCalculate::OnInitDialog()
 	m_btn_remainer.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_root.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_factorial.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_report.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_trash.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_edit_result.Initialize(25, _T("고딕"));
 	m_edit_calculate_view.Initialize(18, _T("고딕"));
+
+	m_btn_report.LoadStdImage(IDB_PNG_TIMELINE_NOMAL, _T("PNG"));
+	m_btn_report.LoadHovImage(IDB_PNG_TIMELINE_HOVER, _T("PNG"));
+	m_btn_report.LoadAltImage(IDB_PNG_TIMELINE_CLICK, _T("PNG"));
+
+	m_btn_trash.LoadStdImage(IDB_PNG_TRASH_NOMAL, _T("PNG"));
+	m_btn_trash.LoadHovImage(IDB_PNG_TRASH_HOVER, _T("PNG"));
+	m_btn_trash.LoadAltImage(IDB_PNG_TRASH_CLICK, _T("PNG"));
 
 	m_edit_calculate_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_result.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -151,9 +159,6 @@ BOOL EngineeringCalculate::OnInitDialog()
 	
 	m_edit_calculate_view.BringWindowToTop();
 	m_edit_result.BringWindowToTop();
-
-	m_btn_report.InsertImage(IDB_PNG_TIMELINE_NOMAL);
-	m_btn_trash.InsertImage(IDB_PNG_TRASH_NOMAL);
 
 	ClickEnd(_T("0"));
 	m_edit_result.SetWindowTextW(_T("0"));
@@ -1076,13 +1081,13 @@ HBRUSH EngineeringCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_CALCULATE_VIEW)
 		{
 			pDC->SetTextColor(RGB(200, 200, 200));
-			pDC->SetBkColor(RGB(141, 141, 141));
+			pDC->SetBkColor(BASE_BKGROUND_COLOR);
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RESULT)
 		{
 			pDC->SetTextColor(RGB(255, 255, 255));
-			pDC->SetBkColor(RGB(141, 141, 141));
+			pDC->SetBkColor(BASE_BKGROUND_COLOR);
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC__STATIC_CALCULATE_VIEW)

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
+#include "CalculateStatic.h"
 
 
 // DateCalculate 대화 상자
@@ -42,6 +43,7 @@ private:
 	CalculateButton m_btn_afterdate;
 	CalculateButton m_btn_limitdate;
 	CalculateButton m_btn_reset;
+	CalculateStatic m_stt_group_limitdate;
 	CButton m_btn_focus;
 
 	bool bBaseEditMax;

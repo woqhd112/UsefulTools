@@ -3,6 +3,7 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "ResultTimeline.h"
+#include "GdipButton.h" 
 #include <vector>
 
 
@@ -83,8 +84,8 @@ private:
 	CalculateButton m_btn_remainer;
 	CalculateButton m_btn_root;
 	CalculateButton m_btn_factorial;
-	CalculateButton m_btn_report;
-	CalculateButton m_btn_trash;
+	CGdipButton m_btn_report;
+	CGdipButton m_btn_trash;
 	CalculateStatic m_stt_calculate_view;
 
 	CWnd* pParent;
