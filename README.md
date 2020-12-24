@@ -18,3 +18,6 @@
 ## 5. Date calculator
  The date a few days after the set reference date is printed.
  Prints the number of days from the set reference date to that date.
+
+## 6. Timer
+ The timer can be used by setting work hours and break times, and other status colors and user time settings can be saved separately.
