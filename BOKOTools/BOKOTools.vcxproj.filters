@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CalculateButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateEdit.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateStatic.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GdipButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCalculate.cpp">
+      <Filter>BaseCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineeringCalculate.cpp">
+      <Filter>EngineeringCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula.cpp">
+      <Filter>EngineeringCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultTimeline.cpp">
+      <Filter>EngineeringCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="LapTime.cpp">
+      <Filter>StopWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatch.cpp">
+      <Filter>StopWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertBitTab.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertLengthTab.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertTimeTab.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertWeightTab.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertWidthTab.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitConverter.cpp">
+      <Filter>UnitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="DateCalculate.cpp">
+      <Filter>DateCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="NotePad.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>WorkTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="CMarkup\Markup.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
+    <ClCompile Include="CXml\Xml.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
+    <ClCompile Include="CXml\XmlNode.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
+    <ClCompile Include="CXml\XmlNodes.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
+    <ClCompile Include="CXml\Xsl.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseTimer.cpp">
+      <Filter>BaseTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldClock.cpp">
+      <Filter>WorldClock</Filter>
+    </ClCompile>
+    <ClCompile Include="BOKOTools.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="BOKOToolsDlg.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CalculateButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateEdit.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateStatic.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CGdiPlusBitmap.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MemDC.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GdipButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCalculate.h">
+      <Filter>BaseCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineeringCalculate.h">
+      <Filter>EngineeringCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula.h">
+      <Filter>EngineeringCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultTimeline.h">
+      <Filter>EngineeringCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="LapTime.h">
+      <Filter>StopWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatch.h">
+      <Filter>StopWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertBitTab.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertLengthTab.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertTimeTab.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertWeightTab.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertWidthTab.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitConverter.h">
+      <Filter>UnitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="DateCalculate.h">
+      <Filter>DateCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePad.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>WorkTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="CMarkup\Markup.h">
+      <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="CXml\Xml.h">
+      <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="CXml\XmlNode.h">
+      <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="CXml\XmlNodes.h">
+      <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="CXml\Xsl.h">
+      <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseTimer.h">
+      <Filter>BaseTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldClock.h">
+      <Filter>WorldClock</Filter>
+    </ClInclude>
+    <ClInclude Include="BOKOTools.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="BOKOToolsDlg.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvertButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Base_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Base_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Base_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\BOKOTools.ico">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Cal.ico">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ComingSoon.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertBit_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Converter_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Converter_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Converter_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertLength_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWeight_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\ConvertWidth_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\DateCal_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\DateCal_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\DateCal_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Engineering_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Engineering_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Engineering_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\load.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\NotePad_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\NotePad_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\NotePad_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\save.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\Stopwatch_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="리소스">
+      <UniqueIdentifier>{1090372d-cabc-44c3-b109-b3601dccd6f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{6911071f-b293-4a32-b498-bc0707113d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseCalculator">
+      <UniqueIdentifier>{3d987ded-8134-47ce-bcce-a9e2927766d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineeringCalculator">
+      <UniqueIdentifier>{2f9fd8b6-bfe9-46df-9089-4a273f3de49b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StopWatch">
+      <UniqueIdentifier>{483bb67c-c3d5-4078-98b0-8da50619fdf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UnitConverter">
+      <UniqueIdentifier>{75b42897-718a-4a21-b97c-8a8253507871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DateCalculator">
+      <UniqueIdentifier>{cb459329-be71-4247-9879-157ded2ba6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotePad">
+      <UniqueIdentifier>{4fb1e689-ba63-4c8f-82d1-51e01b027df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WorkTimer">
+      <UniqueIdentifier>{9ba679e3-d9f9-4503-abe9-a1d1f18f3a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMLParsor">
+      <UniqueIdentifier>{4caf8f11-11d4-456d-8912-c9ea587fd487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTimer">
+      <UniqueIdentifier>{699c67b1-4119-404a-be3b-05eb39a082c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WorldClock">
+      <UniqueIdentifier>{9aa66d35-03f1-4dc3-af40-30898f52b0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Basic">
+      <UniqueIdentifier>{d9a1cba4-23c3-4135-a0ac-2a053247eb3e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BOKOTools.rc">
+      <Filter>리소스</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\BOKOTools.rc2">
+      <Filter>리소스</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{DA4223B3-AE16-455A-A7DE-4312FD178919}</ProjectGuid>
+    <Keyword>MFCProj</Keyword>
+    <RootNamespace>GoCabinet</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>BOKOTools</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <BuildLog>
+      <Path>$(IntDir)$(ProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseCalculate.h" />
+    <ClInclude Include="BaseTimer.h" />
+    <ClInclude Include="CalculateButton.h" />
+    <ClInclude Include="CalculateEdit.h" />
+    <ClInclude Include="CalculateStatic.h" />
+    <ClInclude Include="CGdiPlusBitmap.h" />
+    <ClInclude Include="CMarkup\Markup.h" />
+    <ClInclude Include="ConvertBitTab.h" />
+    <ClInclude Include="ConvertButton.h" />
+    <ClInclude Include="ConvertLengthTab.h" />
+    <ClInclude Include="ConvertTimeTab.h" />
+    <ClInclude Include="ConvertWeightTab.h" />
+    <ClInclude Include="ConvertWidthTab.h" />
+    <ClInclude Include="CXml\Xml.h" />
+    <ClInclude Include="CXml\XmlNode.h" />
+    <ClInclude Include="CXml\XmlNodes.h" />
+    <ClInclude Include="CXml\Xsl.h" />
+    <ClInclude Include="EngineeringCalculate.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="GdipButton.h" />
+    <ClInclude Include="BOKOTools.h" />
+    <ClInclude Include="BOKOToolsDlg.h" />
+    <ClInclude Include="LapTime.h" />
+    <ClInclude Include="MemDC.h" />
+    <ClInclude Include="NotePad.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Formula.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResultTimeline.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="DateCalculate.h" />
+    <ClInclude Include="StopWatch.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="UnitConverter.h" />
+    <ClInclude Include="WorldClock.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BaseCalculate.cpp" />
+    <ClCompile Include="BaseTimer.cpp" />
+    <ClCompile Include="GdipButton.cpp" />
+    <ClCompile Include="BOKOTools.cpp" />
+    <ClCompile Include="BOKOToolsDlg.cpp" />
+    <ClCompile Include="CalculateButton.cpp" />
+    <ClCompile Include="CalculateEdit.cpp" />
+    <ClCompile Include="CalculateStatic.cpp" />
+    <ClCompile Include="CMarkup\Markup.cpp" />
+    <ClCompile Include="ConvertBitTab.cpp" />
+    <ClCompile Include="ConvertButton.cpp" />
+    <ClCompile Include="ConvertLengthTab.cpp" />
+    <ClCompile Include="ConvertTimeTab.cpp" />
+    <ClCompile Include="ConvertWeightTab.cpp" />
+    <ClCompile Include="ConvertWidthTab.cpp" />
+    <ClCompile Include="CXml\Xml.cpp" />
+    <ClCompile Include="CXml\XmlNode.cpp" />
+    <ClCompile Include="CXml\XmlNodes.cpp" />
+    <ClCompile Include="CXml\Xsl.cpp" />
+    <ClCompile Include="EngineeringCalculate.cpp" />
+    <ClCompile Include="LapTime.cpp" />
+    <ClCompile Include="NotePad.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Formula.cpp" />
+    <ClCompile Include="ResultTimeline.cpp" />
+    <ClCompile Include="DateCalculate.cpp" />
+    <ClCompile Include="StopWatch.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UnitConverter.cpp" />
+    <ClCompile Include="WorldClock.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BOKOTools.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\BOKOTools.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Base_B.png" />
+    <Image Include="res\Base_C.png" />
+    <Image Include="res\Base_U.png" />
+    <Image Include="res\Cal.ico" />
+    <Image Include="res\CalculatorReport_B.png" />
+    <Image Include="res\CalculatorReport_C.png" />
+    <Image Include="res\CalculatorReport_U.png" />
+    <Image Include="res\CalculatorTrash_B.png" />
+    <Image Include="res\CalculatorTrash_C.png" />
+    <Image Include="res\CalculatorTrash_U.png" />
+    <Image Include="res\ComingSoon.png" />
+    <Image Include="res\ConvertBit_B.png" />
+    <Image Include="res\ConvertBit_C.png" />
+    <Image Include="res\ConvertBit_U.png" />
+    <Image Include="res\Converter_B.png" />
+    <Image Include="res\Converter_C.png" />
+    <Image Include="res\Converter_U.png" />
+    <Image Include="res\ConvertLength_B.png" />
+    <Image Include="res\ConvertLength_C.png" />
+    <Image Include="res\ConvertLength_U.png" />
+    <Image Include="res\ConvertReverse_B.png" />
+    <Image Include="res\ConvertReverse_C.png" />
+    <Image Include="res\ConvertReverse_U.png" />
+    <Image Include="res\ConvertTime_B.png" />
+    <Image Include="res\ConvertTime_C.png" />
+    <Image Include="res\ConvertTime_U.png" />
+    <Image Include="res\ConvertWeight_B.png" />
+    <Image Include="res\ConvertWeight_C.png" />
+    <Image Include="res\ConvertWeight_U.png" />
+    <Image Include="res\ConvertWidth_B.png" />
+    <Image Include="res\ConvertWidth_C.png" />
+    <Image Include="res\ConvertWidth_U.png" />
+    <Image Include="res\DateCal_B.png" />
+    <Image Include="res\DateCal_C.png" />
+    <Image Include="res\DateCal_U.png" />
+    <Image Include="res\Engineering_B.png" />
+    <Image Include="res\Engineering_C.png" />
+    <Image Include="res\Engineering_U.png" />
+    <Image Include="res\BOKOTools.ico" />
+    <Image Include="res\load.png" />
+    <Image Include="res\NotePad_B.png" />
+    <Image Include="res\NotePad_C.png" />
+    <Image Include="res\NotePad_U.png" />
+    <Image Include="res\save.png" />
+    <Image Include="res\Stopwatch_B.png" />
+    <Image Include="res\Stopwatch_C.png" />
+    <Image Include="res\Stopwatch_U.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
