@@ -1,8 +1,9 @@
 ﻿#pragma once
-#include "ConvertButton.h"
+#include "CalculateButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
 #include "GdipButton.h" 
+#include "ThemeData.h"
 
 // ConvertLengthTab 대화 상자
 
@@ -11,7 +12,7 @@ class ConvertLengthTab : public CDialogEx
 	DECLARE_DYNAMIC(ConvertLengthTab)
 
 public:
-	ConvertLengthTab(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	ConvertLengthTab(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~ConvertLengthTab();
 
 // 대화 상자 데이터입니다.
@@ -29,8 +30,8 @@ public:
 private:
 	CGdipButton m_btn_icon;
 	CGdipButton m_btn_reverse;
-	ConvertButton m_btn_combo;
-	ConvertButton m_btn_test;
+	CalculateButton m_btn_combo;
+	CalculateButton m_btn_test;
 	CComboBox m_combo_left;
 	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;
@@ -52,6 +53,7 @@ private:
 
 	CBrush m_backBrush;
 	CBrush m_rightValueBrush;
+	ThemeData* currentTheme;
 
 	bool bComboShow;
 

@@ -25,7 +25,7 @@ public:
 	void SetAlignment(CMFCButton::AlignStyle style);
 
 	bool m_bClick = false;
-	bool m_bUseMouseEvent = true;
+	bool m_bUseMouseEvent = false;
 
 private:
 	bool m_bTrackMouse = false;

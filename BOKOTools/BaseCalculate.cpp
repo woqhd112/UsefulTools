@@ -14,10 +14,11 @@
 
 IMPLEMENT_DYNAMIC(BaseCalculate, CDialogEx)
 
-BaseCalculate::BaseCalculate(CWnd* pParent /*=nullptr*/)
+BaseCalculate::BaseCalculate(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 }
 
 BaseCalculate::~BaseCalculate()
@@ -55,9 +56,10 @@ BOOL BaseCalculate::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	SetWindowTheme(m_stt_group_base, _T(""), _T(""));
-	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
-	m_btn_result_select_from_base.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_result_select_from_base.SetTextColor(currentTheme->GetTextColor());
 	m_edit_input_ten_from_base.Initialize(12, _T("고딕"));
 	m_edit_output_select_from_base.Initialize(12, _T("고딕"));
 	m_stt_group_base.Initialize(16, _T("고딕"));
@@ -638,23 +640,38 @@ HBRUSH BaseCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_STATIC_GROUP_BASE)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+			}
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_SELECT_INPUT)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+			}
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_SELECT_OUTPUT)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+			}
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_INPUT_SELECT)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+			}
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_OUTPUT_RESULT)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+			}
 		}
 	}
 

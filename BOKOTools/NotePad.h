@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "ThemeData.h"
 
 
 // NotePad 대화 상자
@@ -8,7 +9,7 @@ class NotePad : public CDialogEx
 	DECLARE_DYNAMIC(NotePad)
 
 public:
-	NotePad(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	NotePad(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePad();
 
 // 대화 상자 데이터입니다.
@@ -19,6 +20,7 @@ public:
 private:
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 
 protected:

@@ -12,10 +12,11 @@
 
 IMPLEMENT_DYNAMIC(BaseTimer, CDialogEx)
 
-BaseTimer::BaseTimer(CWnd* pParent /*=nullptr*/)
+BaseTimer::BaseTimer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE_TIMER, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 	bStart = true;
 	bThread = false;
 	bMaintainThread = false;
@@ -81,17 +82,23 @@ BOOL BaseTimer::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	this->SetBackgroundColor(RGB(255, 255, 255));
-	m_backBrush.CreateSolidBrush(RGB(50, 50, 50));
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
-	m_btn_startandstop.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_m_up.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_m_down.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_s_up.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_s_down.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_m_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_m_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_s_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_s_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandstop.SetTextColor(currentTheme->GetTextColor());
+	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
+	m_btn_m_up.SetTextColor(currentTheme->GetTextColor());
+	m_btn_m_down.SetTextColor(currentTheme->GetTextColor());
+	m_btn_s_up.SetTextColor(currentTheme->GetTextColor());
+	m_btn_s_down.SetTextColor(currentTheme->GetTextColor());
 
-	m_stt_ms.Initialize(45, _T("DS-Digital"));
+	m_stt_ms.Initialize(50, _T("DS-Digital"));
 
 	m_stt_basetimer_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_ms.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -208,8 +215,8 @@ HBRUSH BaseTimer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE_TIMER_MS)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
-			pDC->SetBkColor(RGB(50, 50, 50));
+			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -360,19 +367,6 @@ void BaseTimer::StartMaintainCount()
 	int nMaintainTime = 500;
 	while (bMaintainThread)
 	{
-		Sleep(nMaintainTime);
-
-		nMaintainCount++;
-		nCountPerSecond++;
-		if (nCountPerSecond == 6)
-		{
-			nMaintainTime = 250;
-		}
-		else if (nCountPerSecond == 18)
-		{
-			nMaintainTime = 125;
-		}
-
 		switch (bs)
 		{
 		case SIGNAL_MINUTE_UP:
@@ -389,6 +383,19 @@ void BaseTimer::StartMaintainCount()
 			break;
 		default:
 			break;
+		}
+
+		Sleep(nMaintainTime);
+
+		nMaintainCount++;
+		nCountPerSecond++;
+		if (nCountPerSecond == 6)
+		{
+			nMaintainTime = 250;
+		}
+		else if (nCountPerSecond == 18)
+		{
+			nMaintainTime = 125;
 		}
 	}
 }
@@ -449,7 +456,7 @@ void BaseTimer::SecondUp()
 		nMinute++;
 		nSecond = 0;
 	}
-	else if (nMinute < 99 && nSecond < 59)
+	else if (nSecond < 59)
 	{
 		nSecond++;
 	}
@@ -477,7 +484,7 @@ void BaseTimer::SecondDown()
 		nMinute--;
 		nSecond = 59;
 	}
-	else if (nMinute > 0 && nSecond > 0)
+	else if (nSecond > 0)
 	{
 		nSecond--;
 	}

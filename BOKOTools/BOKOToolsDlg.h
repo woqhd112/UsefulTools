@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "ThemeData.h"
 #include "BaseCalculate.h"
 #include "EngineeringCalculate.h"
 #include "UnitConverter.h"
@@ -14,7 +15,7 @@
 #include "WorldClock.h"
 #include "GdipButton.h" 
 
-#define BASE_BKGROUND_COLOR RGB(55, 55, 55)
+#define BASE_BKGROUND_COLOR RGB(28, 11, 4)
 
 // CBaseCalculatorDlg 대화 상자
 class CBOKOToolsDlg : public CDialogEx
@@ -78,7 +79,16 @@ private:
 
 	//CBrush m_returnBrush;
 
+	ThemeData* currentTheme;
+	std::vector<ThemeData*> themeList;
+
 	void SetCtlPos();
+	void LoadTheme();
+	int LoadCurrnetTheme();
+	void CreateConfigFile(CString& strFullPath);
+	bool CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, int& nThemeFlags);
+	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
+	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 
 public:
 	bool bBase;
@@ -107,4 +117,6 @@ public:
 	afx_msg void OnBnClickedButtonNotepadGdi();
 	afx_msg void OnBnClickedButtonBaseTimerGdi();
 	afx_msg void OnBnClickedButtonWorldClockGdi();
+	afx_msg void OnMenuSettingTheme();
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };

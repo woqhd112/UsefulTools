@@ -12,10 +12,12 @@
 
 IMPLEMENT_DYNAMIC(EngineeringCalculate, CDialogEx)
 
-EngineeringCalculate::EngineeringCalculate(CWnd* pParent /*=nullptr*/)
+EngineeringCalculate::EngineeringCalculate(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_ENGINEERING, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
+	timeline = new ResultTimeline(currentTheme);
 	calculate = new Calculate;
 	bTimeline = false;
 }
@@ -30,7 +32,9 @@ EngineeringCalculate::~EngineeringCalculate()
 
 	if (timeline)
 	{
-		timeline.DestroyWindow();
+		timeline->DestroyWindow();
+		delete timeline;
+		timeline = nullptr;
 	}
 }
 
@@ -110,44 +114,71 @@ BOOL EngineeringCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_backBrush.CreateSolidBrush(BASE_BKGROUND_COLOR);
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 	GetWindowRect(&thisRect);
 
-	timeline.Create(IDD_DIALOG_TIMELINE, this);
-	timeline.GetWindowRect(&childRect);
-	timeline.MoveWindow(thisRect.Width() - 5, 20, childRect.Width(), thisRect.Height() - 120);
-	timeline.GetWindowRect(&childRect);
+	timeline->Create(IDD_DIALOG_TIMELINE, this);
+	timeline->GetWindowRect(&childRect);
+	timeline->MoveWindow(thisRect.Width() - 5, 20, childRect.Width(), thisRect.Height() - 120);
+	timeline->GetWindowRect(&childRect);
 	m_btn_trash.GetClientRect(&trashRect);
 	m_btn_trash.MoveWindow(thisRect.Width() + childRect.Width() - trashRect.Width() - 10, childRect.Height() + trashRect.Height(), trashRect.Width(), trashRect.Height());
-	timeline.ShowWindow(SW_HIDE);
+	timeline->ShowWindow(SW_HIDE);
 	m_btn_trash.ShowWindow(SW_HIDE);
 
-	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
-	m_btn_0.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_1.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_2.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_3.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_4.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_5.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_6.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_7.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_8.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_9.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_back.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_clear.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_divide.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_multi.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_sum.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_min.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_result.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_dot.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_openbracket.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_closebracket.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_exponentiation.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_remainer.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_root.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_factorial.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	COLORREF buttonColor = RGB(MaxRGBColor(GetRValue(currentTheme->GetButtonColor()), 20), MaxRGBColor(GetGValue(currentTheme->GetButtonColor()), 20), MaxRGBColor(GetBValue(currentTheme->GetButtonColor()), 20));
+	m_btn_0.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_1.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_2.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_3.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_4.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_5.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_6.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_7.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_8.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_9.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_back.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_clear.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_divide.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_multi.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_sum.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_min.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_result.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_dot.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_openbracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_closebracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_exponentiation.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_remainer.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_root.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_factorial.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+
+	m_btn_0.SetTextColor(currentTheme->GetTextColor());
+	m_btn_1.SetTextColor(currentTheme->GetTextColor());
+	m_btn_2.SetTextColor(currentTheme->GetTextColor());
+	m_btn_3.SetTextColor(currentTheme->GetTextColor());
+	m_btn_4.SetTextColor(currentTheme->GetTextColor());
+	m_btn_5.SetTextColor(currentTheme->GetTextColor());
+	m_btn_6.SetTextColor(currentTheme->GetTextColor());
+	m_btn_7.SetTextColor(currentTheme->GetTextColor());
+	m_btn_8.SetTextColor(currentTheme->GetTextColor());
+	m_btn_9.SetTextColor(currentTheme->GetTextColor());
+	m_btn_back.SetTextColor(currentTheme->GetTextColor());
+	m_btn_clear.SetTextColor(currentTheme->GetTextColor());
+	m_btn_divide.SetTextColor(currentTheme->GetTextColor());
+	m_btn_multi.SetTextColor(currentTheme->GetTextColor());
+	m_btn_sum.SetTextColor(currentTheme->GetTextColor());
+	m_btn_min.SetTextColor(currentTheme->GetTextColor());
+	m_btn_result.SetTextColor(currentTheme->GetTextColor());
+	m_btn_dot.SetTextColor(currentTheme->GetTextColor());
+	m_btn_openbracket.SetTextColor(currentTheme->GetTextColor());
+	m_btn_closebracket.SetTextColor(currentTheme->GetTextColor());
+	m_btn_exponentiation.SetTextColor(currentTheme->GetTextColor());
+	m_btn_remainer.SetTextColor(currentTheme->GetTextColor());
+	m_btn_root.SetTextColor(currentTheme->GetTextColor());
+	m_btn_factorial.SetTextColor(currentTheme->GetTextColor());
+
 	m_edit_result.Initialize(25, _T("고딕"));
 	m_edit_calculate_view.Initialize(18, _T("고딕"));
 
@@ -483,7 +514,7 @@ void EngineeringCalculate::OnBnClickedButtonResult()
 	CString str1, str2;
 	m_edit_calculate_view.GetWindowTextW(str1);
 	m_edit_result.GetWindowTextW(str2);
-	timeline.AppendTimeline(str1, str2);
+	timeline->AppendTimeline(str1, str2);
 }
 
 void EngineeringCalculate::ClickEnd(CString strEnd)
@@ -1099,14 +1130,22 @@ HBRUSH EngineeringCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_CALCULATE_VIEW)
 		{
-			pDC->SetTextColor(RGB(200, 200, 200));
-			pDC->SetBkColor(BASE_BKGROUND_COLOR);
+			if (currentTheme)
+			{
+				pDC->SetTextColor(RGB(MinRGBColor(GetRValue(currentTheme->GetTextColor()), 55),
+									MinRGBColor(GetGValue(currentTheme->GetTextColor()), 55),
+									MinRGBColor(GetBValue(currentTheme->GetTextColor()), 55)));
+				pDC->SetBkColor(currentTheme->GetFunctionSubColor());
+			}
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RESULT)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
-			pDC->SetBkColor(BASE_BKGROUND_COLOR);
+			if (currentTheme)
+			{
+				pDC->SetTextColor(currentTheme->GetTextColor());
+				pDC->SetBkColor(currentTheme->GetFunctionSubColor());
+			}
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC__STATIC_CALCULATE_VIEW)
@@ -1138,14 +1177,14 @@ void EngineeringCalculate::OnBnClickedButtonReport()
 	if (!bTimeline)
 	{
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width() + childRect.Width() + 30, thisRect.Height());
-		timeline.ShowWindow(SW_SHOW);
+		timeline->ShowWindow(SW_SHOW);
 		m_btn_trash.ShowWindow(SW_SHOW);
 		bTimeline = true;
 	}
 	else
 	{
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height());
-		timeline.ShowWindow(SW_HIDE);
+		timeline->ShowWindow(SW_HIDE);
 		m_btn_trash.ShowWindow(SW_HIDE);
 		bTimeline = false;
 	}
@@ -1156,7 +1195,7 @@ void EngineeringCalculate::OnBnClickedButtonReport()
 void EngineeringCalculate::OnBnClickedButtonTrash()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	timeline.DeleteTimeline();
+	timeline->DeleteTimeline();
 	m_edit_calculate_view.SetFocus();
 	m_edit_calculate_view.SetSel(-1);
 }

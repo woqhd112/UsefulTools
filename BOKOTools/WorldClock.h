@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "ThemeData.h"
 
 // WorldClock 대화 상자
 
@@ -8,7 +8,7 @@ class WorldClock : public CDialogEx
 	DECLARE_DYNAMIC(WorldClock)
 
 public:
-	WorldClock(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	WorldClock(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~WorldClock();
 
 // 대화 상자 데이터입니다.
@@ -19,6 +19,7 @@ public:
 private:
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

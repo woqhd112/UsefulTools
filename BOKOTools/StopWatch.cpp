@@ -12,10 +12,12 @@
 
 IMPLEMENT_DYNAMIC(StopWatch, CDialogEx)
 
-StopWatch::StopWatch(CWnd* pParent /*=nullptr*/)
+StopWatch::StopWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_STOPWATCH, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
+	laptime = new LapTime(currentTheme);
 	bStart = true;
 	bLaptime = false;
 	bThread = false;
@@ -27,7 +29,9 @@ StopWatch::~StopWatch()
 
 	if (laptime)
 	{
-		laptime.DestroyWindow();
+		laptime->DestroyWindow();
+		delete laptime;
+		laptime = nullptr;
 	}
 }
 
@@ -62,24 +66,28 @@ BOOL StopWatch::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	this->SetBackgroundColor(RGB(255, 255, 255));
-	m_backBrush.CreateSolidBrush(RGB(50, 50, 50));
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
 	GetWindowRect(&thisRect);
 
-	laptime.Create(IDD_DIALOG_LAPTIME, this);
-	laptime.GetWindowRect(&childRect);
-	laptime.MoveWindow(15, thisRect.Height() - 30, int(thisRect.Width() * 0.9) - 15, int(childRect.Height() * 0.9));
-	laptime.GetWindowRect(&childRect);
+	laptime->Create(IDD_DIALOG_LAPTIME, this);
+	laptime->GetWindowRect(&childRect);
+	laptime->MoveWindow(15, thisRect.Height() - 30, int(thisRect.Width() * 0.9) - 15, int(childRect.Height() * 0.9));
+	laptime->GetWindowRect(&childRect);
 	m_btn_laptime_reset.GetClientRect(&laptimeResetRect);
 	m_btn_laptime_reset.MoveWindow(thisRect.Width() / 2 - (laptimeResetRect.Width() / 2), thisRect.Height() - 30 + childRect.Height() + 5, laptimeResetRect.Width(), laptimeResetRect.Height());
 	m_btn_laptime_reset.ShowWindow(SW_HIDE);
-	laptime.ShowWindow(SW_HIDE);
+	laptime->ShowWindow(SW_HIDE);
 
-	m_btn_startandstop.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_laptime.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_laptime_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_laptime.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_laptime_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandstop.SetTextColor(currentTheme->GetTextColor());
+	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
+	m_btn_laptime.SetTextColor(currentTheme->GetTextColor());
+	m_btn_laptime_reset.SetTextColor(currentTheme->GetTextColor());
 
 	m_stt_hms.Initialize(45, _T("DS-Digital"));
 
@@ -150,14 +158,14 @@ HBRUSH StopWatch::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_HMS)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
-			pDC->SetBkColor(RGB(50, 50, 50));
+			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_MILS)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
-			pDC->SetBkColor(RGB(50, 50, 50));
+			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -285,11 +293,11 @@ void StopWatch::OnBnClickedButtonLaptime()
 	if (!bLaptime)
 	{
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + childRect.Height() + 60);
-		laptime.ShowWindow(SW_SHOW);
+		laptime->ShowWindow(SW_SHOW);
 		m_btn_laptime_reset.ShowWindow(SW_SHOW);
 		bLaptime = true;
 	}
-	laptime.AppendLapTime(strM, strS, strMils);
+	laptime->AppendLapTime(strM, strS, strMils);
 }
 
 
@@ -299,11 +307,11 @@ void StopWatch::OnBnClickedButtonLaptimeReset()
 	if (bLaptime)
 	{
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height());
-		laptime.ShowWindow(SW_HIDE);
+		laptime->ShowWindow(SW_HIDE);
 		m_btn_laptime_reset.ShowWindow(SW_HIDE);
 		bLaptime = false;
 	}
-	laptime.DeleteLapTime();
+	laptime->DeleteLapTime();
 }
 
 void StopWatch::OnMove(int x, int y)

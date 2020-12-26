@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "GeneralUtil.h"
 
 // CalculateButton
 
@@ -10,20 +11,38 @@ public:
 	CalculateButton();
 	virtual ~CalculateButton();
 
-	void Initialize(COLORREF color, FlatStyle style, CString strFontName = _T("고딕"));
+	enum FontFlag
+	{
+		DEFAULT = 0,
+		HOVER = 1,
+		CLICK = 2,
+		CLICKHOVER = 3
+	};
+
+	void Initialize(COLORREF color, FlatStyle style, CString strFontName = _T("고딕"), int nFontSize = 10);
 	void InsertImage(int nImageID);
+	void SetFont(FontFlag flag);
+	void SetAlignment(CMFCButton::AlignStyle style);
 
 	COLORREF m_defaultColor;
 	COLORREF m_hoverColor;
 	COLORREF m_downColor;
 	bool m_bUseMouseBkGroundColorEvent;
+	bool m_bClick;
+	bool m_bUseMouseTextItalicEvent;
 
 
 private:
 	bool m_bTrackMouse = false;
+	bool m_bDown;
 	int nImageID;
-	CFont font;
 	int nID;
+
+	CFont defaultFont;
+	CFont hoverFont;
+	CFont clickFont;
+	CFont clickHoverFont;
+
 
 protected:
 	DECLARE_MESSAGE_MAP()

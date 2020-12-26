@@ -12,10 +12,11 @@
 
 IMPLEMENT_DYNAMIC(UnitConverter, CDialogEx)
 
-UnitConverter::UnitConverter(CWnd* pParent /*=nullptr*/)
+UnitConverter::UnitConverter(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_CONVERTER, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 	bClickTab = false;
 }
 
@@ -88,46 +89,51 @@ BOOL UnitConverter::OnInitDialog()
 	CRect tabRect;
 	m_stt_tab.GetWindowRect(&tabRect);
 
-	m_convert_length = new ConvertLengthTab(this);
+	m_convert_length = new ConvertLengthTab(currentTheme, this);
 	m_convert_length->Create(IDD_TAB_LENGTH, &m_stt_tab);
 	m_convert_length->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_length->ShowWindow(SW_SHOW);
 
-	m_convert_width = new ConvertWidthTab(this);
+	m_convert_width = new ConvertWidthTab(currentTheme, this);
 	m_convert_width->Create(IDD_TAB_WIDTH, &m_stt_tab);
 	m_convert_width->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_width->ShowWindow(SW_HIDE);
 
-	m_convert_weight = new ConvertWeightTab(this);
+	m_convert_weight = new ConvertWeightTab(currentTheme, this);
 	m_convert_weight->Create(IDD_TAB_WEIGHT, &m_stt_tab);
 	m_convert_weight->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_weight->ShowWindow(SW_HIDE);
 
-	m_convert_time = new ConvertTimeTab(this);
+	m_convert_time = new ConvertTimeTab(currentTheme, this);
 	m_convert_time->Create(IDD_TAB_TIME, &m_stt_tab);
 	m_convert_time->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_time->ShowWindow(SW_HIDE);
 
-	m_convert_bit = new ConvertBitTab(this);
+	m_convert_bit = new ConvertBitTab(currentTheme, this);
 	m_convert_bit->Create(IDD_TAB_BIT, &m_stt_tab);
 	m_convert_bit->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_bit->ShowWindow(SW_HIDE);
 
-	m_btn_length.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_width.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_weight.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_time.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_bit.Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
-	m_btn_length.SetFaceColor(BASE_BKGROUND_COLOR);
-	m_btn_width.SetFaceColor(BASE_BKGROUND_COLOR);
-	m_btn_weight.SetFaceColor(BASE_BKGROUND_COLOR);
-	m_btn_time.SetFaceColor(BASE_BKGROUND_COLOR);
-	m_btn_bit.SetFaceColor(BASE_BKGROUND_COLOR);
-	m_btn_length.SetTextColor(RGB(255, 255, 255));
-	m_btn_width.SetTextColor(RGB(255, 255, 255));
-	m_btn_weight.SetTextColor(RGB(255, 255, 255));
-	m_btn_time.SetTextColor(RGB(255, 255, 255));
-	m_btn_bit.SetTextColor(RGB(255, 255, 255));
+	m_btn_length.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_width.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_weight.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_time.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_bit.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_length.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_length.m_bUseMouseTextItalicEvent = true;
+	m_btn_width.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_width.m_bUseMouseTextItalicEvent = true;
+	m_btn_weight.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_weight.m_bUseMouseTextItalicEvent = true;
+	m_btn_time.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_time.m_bUseMouseTextItalicEvent = true;
+	m_btn_bit.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_bit.m_bUseMouseTextItalicEvent = true;
+	m_btn_length.SetTextColor(currentTheme->GetTextColor());
+	m_btn_width.SetTextColor(currentTheme->GetTextColor());
+	m_btn_weight.SetTextColor(currentTheme->GetTextColor());
+	m_btn_time.SetTextColor(currentTheme->GetTextColor());
+	m_btn_bit.SetTextColor(currentTheme->GetTextColor());
 
 	m_btn_length.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_width.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -139,7 +145,7 @@ BOOL UnitConverter::OnInitDialog()
 	m_stt_tab.BringWindowToTop();
 
 	pointDesc = CONVERT_LENGTH_DESC;
-	m_btn_length.ConvertButton::SetFont(ConvertButton::FontFlag::CLICK);
+	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::CLICK);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -217,15 +223,15 @@ void UnitConverter::OnBnClickedButtonLength()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_btn_length.m_bClick = true;
-	m_btn_length.ConvertButton::SetFont(bClickTab ? ConvertButton::FontFlag::CLICK : ConvertButton::FontFlag::CLICKHOVER);
+	m_btn_length.CalculateButton::SetFont(bClickTab ? CalculateButton::FontFlag::CLICK : CalculateButton::FontFlag::CLICKHOVER);
 	m_btn_width.m_bClick = false;
-	m_btn_width.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_width.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_weight.m_bClick = false;
-	m_btn_weight.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_weight.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_time.m_bClick = false;
-	m_btn_time.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_time.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_bit.m_bClick = false;
-	m_btn_bit.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_bit.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 
 	m_convert_length->ShowWindow(SW_SHOW);
 	m_convert_width->ShowWindow(SW_HIDE);
@@ -242,15 +248,15 @@ void UnitConverter::OnBnClickedButtonWidth()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_btn_width.m_bClick = true;
-	m_btn_width.ConvertButton::SetFont(bClickTab ? ConvertButton::FontFlag::CLICK : ConvertButton::FontFlag::CLICKHOVER);
+	m_btn_width.CalculateButton::SetFont(bClickTab ? CalculateButton::FontFlag::CLICK : CalculateButton::FontFlag::CLICKHOVER);
 	m_btn_length.m_bClick = false;
-	m_btn_length.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_weight.m_bClick = false;
-	m_btn_weight.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_weight.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_time.m_bClick = false;
-	m_btn_time.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_time.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_bit.m_bClick = false;
-	m_btn_bit.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_bit.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 
 	m_convert_length->ShowWindow(SW_HIDE);
 	m_convert_width->ShowWindow(SW_SHOW);
@@ -267,15 +273,15 @@ void UnitConverter::OnBnClickedButtonWeight()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_btn_weight.m_bClick = true;
-	m_btn_weight.ConvertButton::SetFont(bClickTab ? ConvertButton::FontFlag::CLICK : ConvertButton::FontFlag::CLICKHOVER);
+	m_btn_weight.CalculateButton::SetFont(bClickTab ? CalculateButton::FontFlag::CLICK : CalculateButton::FontFlag::CLICKHOVER);
 	m_btn_length.m_bClick = false;
-	m_btn_length.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_width.m_bClick = false;
-	m_btn_width.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_width.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_time.m_bClick = false;
-	m_btn_time.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_time.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_bit.m_bClick = false;
-	m_btn_bit.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_bit.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 
 	m_convert_length->ShowWindow(SW_HIDE);
 	m_convert_width->ShowWindow(SW_HIDE);
@@ -292,15 +298,15 @@ void UnitConverter::OnBnClickedButtonTimec()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_btn_time.m_bClick = true;
-	m_btn_time.ConvertButton::SetFont(bClickTab ? ConvertButton::FontFlag::CLICK : ConvertButton::FontFlag::CLICKHOVER);
+	m_btn_time.CalculateButton::SetFont(bClickTab ? CalculateButton::FontFlag::CLICK : CalculateButton::FontFlag::CLICKHOVER);
 	m_btn_length.m_bClick = false;
-	m_btn_length.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_width.m_bClick = false;
-	m_btn_width.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_width.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_weight.m_bClick = false;
-	m_btn_weight.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_weight.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_bit.m_bClick = false;
-	m_btn_bit.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_bit.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 
 	m_convert_length->ShowWindow(SW_HIDE);
 	m_convert_width->ShowWindow(SW_HIDE);
@@ -317,15 +323,15 @@ void UnitConverter::OnBnClickedButtonBit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_btn_bit.m_bClick = true;
-	m_btn_bit.ConvertButton::SetFont(bClickTab ? ConvertButton::FontFlag::CLICK : ConvertButton::FontFlag::CLICKHOVER);
+	m_btn_bit.CalculateButton::SetFont(bClickTab ? CalculateButton::FontFlag::CLICK : CalculateButton::FontFlag::CLICKHOVER);
 	m_btn_length.m_bClick = false;
-	m_btn_length.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_width.m_bClick = false;
-	m_btn_width.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_width.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_weight.m_bClick = false;
-	m_btn_weight.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_weight.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 	m_btn_time.m_bClick = false;
-	m_btn_time.ConvertButton::SetFont(ConvertButton::FontFlag::DEFAULT);
+	m_btn_time.CalculateButton::SetFont(CalculateButton::FontFlag::DEFAULT);
 
 	m_convert_length->ShowWindow(SW_HIDE);
 	m_convert_width->ShowWindow(SW_HIDE);

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Formula.h"
+#include "ThemeData.h"
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "ResultTimeline.h"
@@ -15,7 +16,7 @@ class EngineeringCalculate : public CDialogEx
 	DECLARE_DYNAMIC(EngineeringCalculate)
 
 public:
-	EngineeringCalculate(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	EngineeringCalculate(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~EngineeringCalculate();
 
 // 대화 상자 데이터입니다.
@@ -89,12 +90,14 @@ private:
 	CalculateStatic m_stt_calculate_view;
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
+
 	Calculate* calculate;
 	CBrush m_backBrush;
 	CRect thisRect;
 	CRect childRect;
 	CRect trashRect;
-	ResultTimeline timeline;
+	ResultTimeline* timeline;
 	bool bTimeline;
 
 

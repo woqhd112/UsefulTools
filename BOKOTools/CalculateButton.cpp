@@ -16,6 +16,9 @@ CalculateButton::CalculateButton()
 	m_hoverColor = RGB(200, 200, 200);
 	m_downColor = RGB(150, 150, 150);
 	m_bUseMouseBkGroundColorEvent = true;
+	m_bClick = false;
+	m_bUseMouseTextItalicEvent = false;
+	m_bDown = false;
 }
 
 CalculateButton::~CalculateButton()
@@ -35,7 +38,7 @@ END_MESSAGE_MAP()
 
 // CalculateButton 메시지 처리기
 
-void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /*= _T("고딕")*/)
+void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /*= _T("고딕")*/, int nFontSize /*= 10*/)
 {
 	this->EnableWindowsTheming(FALSE);
 	this->SetFaceColor(color);
@@ -43,10 +46,10 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 
 	nID = this->GetDlgCtrlID();
 	int nFontFlag = 0;
-	int nFontSize = 0;
 	int nRv = GetRValue(color);
 	int nGv = GetGValue(color);
 	int nBv = GetBValue(color);
+
 	if (nID == IDC_BUTTON_0 ||
 		nID == IDC_BUTTON_1 ||
 		nID == IDC_BUTTON_2 ||
@@ -61,23 +64,37 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 		nFontFlag = FW_BOLD;
 		nFontSize = 15;
 		m_defaultColor = color;
-		m_hoverColor = RGB(nRv - 30, nGv - 30, nBv - 30);
-		m_downColor = RGB(nRv - 80, nGv - 80, nBv - 80);
+		m_hoverColor = RGB(MinRGBColor(nRv, 30), MinRGBColor(nGv, 30), MinRGBColor(nBv, 30));
+		m_downColor = RGB(MinRGBColor(nRv, 80), MinRGBColor(nGv, 80), MinRGBColor(nBv, 80));
 	}
 	else
 	{
 		nFontFlag = FW_NORMAL;
-		nFontSize = 10;
 		m_defaultColor = color;
-		m_hoverColor = RGB(nRv - 20, nGv - 20, nBv - 20);
-		m_downColor = RGB(nRv - 70, nGv - 70, nBv - 70);
+		m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
+		m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
 	}
 
-	font.CreateFontW(nFontSize, 0, 0, 0, nFontFlag, FALSE, FALSE, 0, DEFAULT_CHARSET,
+	defaultFont.CreateFontW(nFontSize, 0, 0, 0, nFontFlag, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
-	this->SetFont(&font);
+	hoverFont.CreateFontW(nFontSize, 0, 0, 0, FW_NORMAL, FALSE, TRUE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		strFontName);
+	clickFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		strFontName);
+	clickHoverFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, TRUE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		strFontName);
+
+	this->CMFCButton::SetFont(&defaultFont);
 	this->m_nFlatStyle = style;
+}
+
+void CalculateButton::SetAlignment(CMFCButton::AlignStyle style)
+{
+	this->m_nAlignStyle = style;
 }
 
 void CalculateButton::InsertImage(int nImageID)
@@ -123,6 +140,18 @@ void CalculateButton::OnMouseHover(UINT nFlags, CPoint point)
 		this->SetFaceColor(m_hoverColor);
 	}
 
+	if (m_bUseMouseTextItalicEvent)
+	{
+		if (m_bClick)
+		{
+			this->CMFCButton::SetFont(&clickHoverFont);
+		}
+		else
+		{
+			this->CMFCButton::SetFont(&hoverFont);
+		}
+	}
+
 	CMFCButton::OnMouseHover(nFlags, point);
 }
 
@@ -133,25 +162,20 @@ void CalculateButton::OnMouseLeave()
 	
 	if (m_bUseMouseBkGroundColorEvent)
 	{
-		if (nID == IDC_BUTTON_0 ||
-			nID == IDC_BUTTON_1 ||
-			nID == IDC_BUTTON_2 ||
-			nID == IDC_BUTTON_3 ||
-			nID == IDC_BUTTON_4 ||
-			nID == IDC_BUTTON_5 ||
-			nID == IDC_BUTTON_6 ||
-			nID == IDC_BUTTON_7 ||
-			nID == IDC_BUTTON_8 ||
-			nID == IDC_BUTTON_9)
+		this->SetFaceColor(m_defaultColor);
+	}
+
+	if (m_bUseMouseTextItalicEvent)
+	{
+		if (m_bClick)
 		{
-			this->SetFaceColor(RGB(230, 230, 230));
+			this->CMFCButton::SetFont(&clickFont);
 		}
 		else
 		{
-			this->SetFaceColor(m_defaultColor);
+			this->CMFCButton::SetFont(&defaultFont);
 		}
 	}
-
 
 	m_bTrackMouse = false;
 	CMFCButton::OnMouseLeave();
@@ -168,6 +192,11 @@ void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 		this->SetFaceColor(m_downColor);
 	}
 
+	if (m_bUseMouseTextItalicEvent)
+	{
+		m_bDown = true;
+	}
+
 
 	CMFCButton::OnLButtonDown(nFlags, point);
 }
@@ -182,6 +211,36 @@ void CalculateButton::OnLButtonUp(UINT nFlags, CPoint point)
 		this->SetFaceColor(m_hoverColor);
 	}
 
+	if (m_bUseMouseTextItalicEvent)
+	{
+		if (m_bDown)
+		{
+			m_bDown = false;
+			this->CMFCButton::SetFont(&clickFont);
+		}
+	}
+
 
 	CMFCButton::OnLButtonUp(nFlags, point);
+}
+
+void CalculateButton::SetFont(FontFlag flag)
+{
+	if (flag == FontFlag::DEFAULT)
+	{
+		this->CMFCButton::SetFont(&defaultFont);
+	}
+	else if (flag == FontFlag::HOVER)
+	{
+		this->CMFCButton::SetFont(&hoverFont);
+	}
+	else if (flag == FontFlag::CLICK)
+	{
+		this->CMFCButton::SetFont(&clickFont);
+	}
+	else if (flag == FontFlag::CLICKHOVER)
+	{
+		this->CMFCButton::SetFont(&clickHoverFont);
+	}
+
 }

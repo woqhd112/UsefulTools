@@ -11,15 +11,17 @@
 
 IMPLEMENT_DYNAMIC(LapTime, CDialogEx)
 
-LapTime::LapTime(CWnd* pParent /*=nullptr*/)
+LapTime::LapTime(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LAPTIME, pParent)
 {
 	ResetGValue();
 	cy = 0;	// 한 페이지의 사이즈
 
+	this->currentTheme = currentTheme;
+
 	// disable 된 editctl은 텍스트색 변경불가능이므로 생성자에서 아래 함수 호출
 	int clrIndex = COLOR_GRAYTEXT;
-	COLORREF clr = RGB(255, 255, 255);
+	COLORREF clr = currentTheme->GetTextColor();
 	SetSysColors(1, &clrIndex, &clr);
 }
 
@@ -73,8 +75,8 @@ BOOL LapTime::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	GetWindowRect(&thisRect);
-	this->SetBackgroundColor(RGB(77, 77, 77));
-	m_backBrush.CreateSolidBrush(RGB(77, 77, 77));
+	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -130,7 +132,7 @@ HBRUSH LapTime::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() >= 20001)
 		{
-			pDC->SetBkColor(RGB(77, 77, 77));
+			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}

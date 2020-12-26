@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include "CalculateEdit.h"
+#include "ThemeData.h"
 
 // ResultTimeline 대화 상자
 
@@ -9,7 +10,7 @@ class ResultTimeline : public CDialogEx
 	DECLARE_DYNAMIC(ResultTimeline)
 
 public:
-	ResultTimeline(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	ResultTimeline(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~ResultTimeline();
 
 // 대화 상자 데이터입니다.
@@ -27,12 +28,15 @@ public:
 	void AppendTimeline(CString strFormula, CString strResult);
 	void DeleteTimeline();
 
+
 private:
 
 	int nStartEditPos;
 	int nStaticEditID;
 	CRect thisRect;
 	CBrush m_backBrush;
+
+	ThemeData* currentTheme;
 
 	std::vector<CalculateEdit*> editVector;
 

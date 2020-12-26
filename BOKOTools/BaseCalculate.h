@@ -2,6 +2,7 @@
 #include "CalculateStatic.h"
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
+#include "ThemeData.h"
 
 // BaseCalculate 대화 상자
 
@@ -10,7 +11,7 @@ class BaseCalculate : public CDialogEx
 	DECLARE_DYNAMIC(BaseCalculate)
 
 public:
-	BaseCalculate(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	BaseCalculate(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~BaseCalculate();
 
 // 대화 상자 데이터입니다.
@@ -31,6 +32,7 @@ private:
 	CString OutputSetToTen(int nMacro);
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 	CComboBox m_select;
 	CComboBox m_result;

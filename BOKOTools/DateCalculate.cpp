@@ -12,10 +12,11 @@
 
 IMPLEMENT_DYNAMIC(DateCalculate, CDialogEx)
 
-DateCalculate::DateCalculate(CWnd* pParent /*=nullptr*/)
+DateCalculate::DateCalculate(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_TIME, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 	bBaseEditMax = false;
 	bLimitEditMax = false;
 }
@@ -64,10 +65,13 @@ BOOL DateCalculate::OnInitDialog()
 
 	SetWindowTheme(m_stt_group_limitdate, _T(""), _T(""));
 
-	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
-	m_btn_afterdate.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_limitdate.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(RGB(220, 220, 220), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
+	m_btn_afterdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_limitdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_afterdate.SetTextColor(currentTheme->GetTextColor());
+	m_btn_limitdate.SetTextColor(currentTheme->GetTextColor());
+	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
 
 	m_edit_baseedit.Initialize(12, _T("고딕"));
 	m_edit_afterdate.Initialize(12, _T("고딕"));
@@ -425,19 +429,19 @@ HBRUSH DateCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_GROUP_LIMITDATE)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE_DATE)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_FIRST_OFFICIAL)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_LAST_OFFICIAL)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 	}
 

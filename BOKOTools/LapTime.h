@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include "CalculateEdit.h"
+#include "ThemeData.h"
 
 // LapTime 대화 상자
 
@@ -9,7 +10,7 @@ class LapTime : public CDialogEx
 	DECLARE_DYNAMIC(LapTime)
 
 public:
-	LapTime(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	LapTime(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~LapTime();
 
 // 대화 상자 데이터입니다.
@@ -29,6 +30,8 @@ private:
 	int nStaticLapTimeCount;
 	CRect thisRect;
 	CBrush m_backBrush;
+
+	ThemeData* currentTheme;
 
 	std::vector<CalculateEdit*> editVector;
 

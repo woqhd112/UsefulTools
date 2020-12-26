@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CalculateButton.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CalculateEdit.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CalculateStatic.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="GdipButton.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="BaseCalculate.cpp">
       <Filter>BaseCalculator</Filter>
     </ClCompile>
@@ -88,29 +76,26 @@
     <ClCompile Include="pch.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
+    <ClCompile Include="CalculateButton.cpp">
+      <Filter>UI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateEdit.cpp">
+      <Filter>UI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateStatic.cpp">
+      <Filter>UI\Controller</Filter>
+    </ClCompile>
     <ClCompile Include="ConvertButton.cpp">
-      <Filter>UI</Filter>
+      <Filter>UI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="GdipButton.cpp">
+      <Filter>UI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ThemeData.cpp">
+      <Filter>UI\Theme</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CalculateButton.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CalculateEdit.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CalculateStatic.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CGdiPlusBitmap.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MemDC.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="GdipButton.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="BaseCalculate.h">
       <Filter>BaseCalculator</Filter>
     </ClInclude>
@@ -195,179 +180,232 @@
     <ClInclude Include="targetver.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="CalculateButton.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateEdit.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateStatic.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="CGdiPlusBitmap.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
     <ClInclude Include="ConvertButton.h">
-      <Filter>UI</Filter>
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="GdipButton.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="MemDC.h">
+      <Filter>UI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ThemeData.h">
+      <Filter>UI\Theme</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralUtil.h">
+      <Filter>Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Base_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\Base_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\Base_U.png">
-      <Filter>리소스</Filter>
-    </Image>
     <Image Include="res\BOKOTools.ico">
       <Filter>리소스</Filter>
     </Image>
     <Image Include="res\Cal.ico">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorReport_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorReport_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorReport_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorTrash_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorTrash_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\CalculatorTrash_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ComingSoon.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertBit_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertBit_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertBit_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\Converter_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\Converter_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\Converter_U.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\메인 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertLength_B.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertLength_C.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertLength_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertReverse_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertReverse_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertReverse_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertTime_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertTime_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertTime_U.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertWeight_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertWeight_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\ConvertWeight_U.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertWidth_B.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertWidth_C.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
     </Image>
     <Image Include="res\ConvertWidth_U.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
     </Image>
-    <Image Include="res\DateCal_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertWeight_B.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
     </Image>
-    <Image Include="res\DateCal_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertWeight_C.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
     </Image>
-    <Image Include="res\DateCal_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertWeight_U.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
     </Image>
-    <Image Include="res\Engineering_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertBit_B.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
     </Image>
-    <Image Include="res\Engineering_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertBit_C.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
     </Image>
-    <Image Include="res\Engineering_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\ConvertBit_U.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_B.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_C.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertTime_U.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_B.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_C.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorReport_U.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_B.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_C.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\CalculatorTrash_U.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_B.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_C.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\ConvertReverse_U.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
     </Image>
     <Image Include="res\load.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\NotePad_B.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\NotePad_C.png">
-      <Filter>리소스</Filter>
-    </Image>
-    <Image Include="res\NotePad_U.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\로드 아이콘</Filter>
     </Image>
     <Image Include="res\save.png">
-      <Filter>리소스</Filter>
+      <Filter>리소스\공통 아이콘\저장 아이콘</Filter>
     </Image>
-    <Image Include="res\BaseTimer_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\ComingSoon.png">
+      <Filter>리소스\탐정 테마\커밍순 아이콘</Filter>
     </Image>
-    <Image Include="res\BaseTimer_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Base_B.png">
+      <Filter>리소스\탐정 테마\진법계산기 아이콘</Filter>
     </Image>
-    <Image Include="res\BaseTimer_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Base_C.png">
+      <Filter>리소스\탐정 테마\진법계산기 아이콘</Filter>
     </Image>
-    <Image Include="res\WorkTimer_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Base_U.png">
+      <Filter>리소스\탐정 테마\진법계산기 아이콘</Filter>
     </Image>
-    <Image Include="res\WorkTimer_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\BaseTimer_B.png">
+      <Filter>리소스\탐정 테마\기본타이머 아이콘</Filter>
     </Image>
-    <Image Include="res\WorkTimer_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\BaseTimer_C.png">
+      <Filter>리소스\탐정 테마\기본타이머 아이콘</Filter>
     </Image>
-    <Image Include="res\WorldClock_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\BaseTimer_U.png">
+      <Filter>리소스\탐정 테마\기본타이머 아이콘</Filter>
     </Image>
-    <Image Include="res\WorldClock_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Converter_B.png">
+      <Filter>리소스\탐정 테마\단위변환기 아이콘</Filter>
     </Image>
-    <Image Include="res\WorldClock_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Converter_C.png">
+      <Filter>리소스\탐정 테마\단위변환기 아이콘</Filter>
     </Image>
-    <Image Include="res\StopWatch_B.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\Converter_U.png">
+      <Filter>리소스\탐정 테마\단위변환기 아이콘</Filter>
     </Image>
-    <Image Include="res\StopWatch_U.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\DateCal_B.png">
+      <Filter>리소스\탐정 테마\날짜계산기 아이콘</Filter>
     </Image>
-    <Image Include="res\StopWatch_C.png">
-      <Filter>리소스</Filter>
+    <Image Include="res\Theme_Detective\DateCal_C.png">
+      <Filter>리소스\탐정 테마\날짜계산기 아이콘</Filter>
     </Image>
+    <Image Include="res\Theme_Detective\DateCal_U.png">
+      <Filter>리소스\탐정 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\Engineering_B.png">
+      <Filter>리소스\탐정 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\Engineering_C.png">
+      <Filter>리소스\탐정 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\Engineering_U.png">
+      <Filter>리소스\탐정 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\Main_BK.bmp">
+      <Filter>리소스\탐정 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\NotePad_B.png">
+      <Filter>리소스\탐정 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\NotePad_C.png">
+      <Filter>리소스\탐정 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\NotePad_U.png">
+      <Filter>리소스\탐정 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\StopWatch_B.png">
+      <Filter>리소스\탐정 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\StopWatch_C.png">
+      <Filter>리소스\탐정 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\StopWatch_U.png">
+      <Filter>리소스\탐정 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorkTimer_B.png">
+      <Filter>리소스\탐정 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorkTimer_C.png">
+      <Filter>리소스\탐정 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorkTimer_U.png">
+      <Filter>리소스\탐정 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorldClock_B.png">
+      <Filter>리소스\탐정 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorldClock_C.png">
+      <Filter>리소스\탐정 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\WorldClock_U.png">
+      <Filter>리소스\탐정 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\load.png" />
+    <Image Include="res\Common\save.png" />
+    <Image Include="res\Common\CalculatorReport_B.png" />
+    <Image Include="res\Common\CalculatorReport_U.png" />
+    <Image Include="res\Common\CalculatorReport_C.png" />
+    <Image Include="res\Common\CalculatorTrash_B.png" />
+    <Image Include="res\Common\CalculatorTrash_U.png" />
+    <Image Include="res\Common\CalculatorTrash_C.png" />
+    <Image Include="res\Common\ConvertBit_B.png" />
+    <Image Include="res\Common\ConvertBit_C.png" />
+    <Image Include="res\Common\ConvertBit_U.png" />
+    <Image Include="res\Common\ConvertLength_B.png" />
+    <Image Include="res\Common\ConvertLength_C.png" />
+    <Image Include="res\Common\ConvertLength_U.png" />
+    <Image Include="res\Common\ConvertReverse_B.png" />
+    <Image Include="res\Common\ConvertReverse_C.png" />
+    <Image Include="res\Common\ConvertReverse_U.png" />
+    <Image Include="res\Common\ConvertTime_B.png" />
+    <Image Include="res\Common\ConvertTime_C.png" />
+    <Image Include="res\Common\ConvertTime_U.png" />
+    <Image Include="res\Common\ConvertWeight_B.png" />
+    <Image Include="res\Common\ConvertWeight_C.png" />
+    <Image Include="res\Common\ConvertWeight_U.png" />
+    <Image Include="res\Common\ConvertWidth_B.png" />
+    <Image Include="res\Common\ConvertWidth_C.png" />
+    <Image Include="res\Common\ConvertWidth_U.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -408,6 +446,84 @@
     </Filter>
     <Filter Include="Basic">
       <UniqueIdentifier>{d9a1cba4-23c3-4135-a0ac-2a053247eb3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Controller">
+      <UniqueIdentifier>{958664c5-02c4-4d6e-b762-40c6225f7037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Theme">
+      <UniqueIdentifier>{22c70c7c-9d4c-407d-a16c-64c2e27ac54b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마">
+      <UniqueIdentifier>{7d6c1f60-04b4-4a6c-962a-b27261151de7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\메인 배경">
+      <UniqueIdentifier>{07c4e2d9-7030-430f-b790-4537625aa6f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\메인 아이콘">
+      <UniqueIdentifier>{d7c3a7aa-09cd-47a9-9e22-354d8a992161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{8ecfa6c5-0236-4ac8-9a88-1ac3bc052b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{fe667808-dcc8-48a1-9858-de36aa4b5b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{14c0486c-7dbf-4af4-a6a5-f59d7f16bc3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{88aa6e56-0d6e-4768-a095-b85c1a8548b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{1ae91019-8fa8-45d1-99de-6c5430f3367c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{2aca4937-dc8e-432f-a338-d21bbd98b096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{aae9a43b-da8a-4eca-a916-03438f86493e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\메모장 아이콘">
+      <UniqueIdentifier>{d73bc678-4d6c-4b7a-883c-ba0fa6c0a648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\세계시계 아이콘">
+      <UniqueIdentifier>{f07ad2ac-46ca-4505-b383-08a1d22d5a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘">
+      <UniqueIdentifier>{2d4410f4-8298-4009-8a89-13c70a790fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\타임라인 아이콘">
+      <UniqueIdentifier>{a19d4ffe-70b8-44c8-955a-bb689f48ca0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\쓰레기통 아이콘">
+      <UniqueIdentifier>{0d4a0a42-e056-4180-859c-9da68eb9dc86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\변환 아이콘">
+      <UniqueIdentifier>{8ed8b9fb-ec4e-4889-8442-65e20370ce7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\로드 아이콘">
+      <UniqueIdentifier>{ddde29f2-3587-42ab-979f-0ba07d2eb600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\저장 아이콘">
+      <UniqueIdentifier>{c6ea05a5-b8fd-468f-bb87-5d78bb02fab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\커밍순 아이콘">
+      <UniqueIdentifier>{72e64ab6-d751-4286-b9d4-26c25300de29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\시간변환 아이콘">
+      <UniqueIdentifier>{419996e7-b93c-4c47-b1e7-a660d2e6c09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\비트변환 아이콘">
+      <UniqueIdentifier>{3ca252ce-18ab-4488-82c5-f2aeed010f58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\무게변환 아이콘">
+      <UniqueIdentifier>{0930ce6c-4895-4851-9b98-46f4ac9efef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\넓이변환 아이콘">
+      <UniqueIdentifier>{916babb3-53fc-4bae-90cb-a76e7be0a842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\길이변환 아이콘">
+      <UniqueIdentifier>{738a4909-e89b-4051-9f86-ad058d9c96c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

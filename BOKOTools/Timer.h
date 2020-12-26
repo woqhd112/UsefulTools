@@ -5,6 +5,7 @@
 #include "CalculateStatic.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
+#include "ThemeData.h"
 
 #pragma comment(lib, "winmm")
 #include <mmsystem.h>
@@ -20,7 +21,7 @@ class Timer : public CDialogEx
 	DECLARE_DYNAMIC(Timer)
 
 public:
-	Timer(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	Timer(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~Timer();
 
 // 대화 상자 데이터입니다.
@@ -31,6 +32,7 @@ public:
 private:
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -133,20 +135,20 @@ private:
 	CalculateButton m_btn_time_save;
 	CalculateButton m_btn_time_load;
 	CalculateButton m_btn_setting_divide;
-	ConvertButton m_btn_color_none;
-	ConvertButton m_btn_color_working;
-	ConvertButton m_btn_color_resting;
+	//ConvertButton m_btn_color_none;
+	//ConvertButton m_btn_color_working;
+	//ConvertButton m_btn_color_resting;
 	CButton m_radio_infinite;
 	CButton m_radio_custom;
 	CalculateStatic m_stt_repeat_setting;
 	CalculateStatic m_stt_work_time;
 	CalculateStatic m_stt_rest_time;
-	CalculateStatic m_stt_color_setting;
+	//CalculateStatic m_stt_color_setting;
 	CalculateStatic m_stt_time_setting;
 	CStatic m_stt_state;
-	CStatic m_stt_color_none;
-	CStatic m_stt_color_working;
-	CStatic m_stt_color_resting;
+	//CStatic m_stt_color_none;
+	//CStatic m_stt_color_working;
+	//CStatic m_stt_color_resting;
 	CStatic m_stt_time_load;
 	CStatic m_stt_time_save;
 	CStatic m_stt_work_hour;
@@ -186,23 +188,16 @@ private:
 	void SetOperateColor(COLORREF color, CString strOperateState);
 	void ResetTimerReference();
 
-	inline int MinRGBColor(int nRv, int nCalcv) 
-	{
-		if (nRv - nCalcv < 0) return 0;
-		return nRv - nCalcv;
-	}
-
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
 	bool TimeToUnderTenSecondCondition(bool isWork);
-	void LoadSettingColor();
+	//void LoadSettingColor();
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 	void CreateConfigFile(CString& strFullPath);
-	bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
+	//bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
-	void SetSettingColor(CString strOperateState, COLORREF operateColor);
-	int GetBrightness(int nRv, int nGv, int nBv);
-	void SetDivideTextColor();
+	//void SetSettingColor(CString strOperateState, COLORREF operateColor);
+	//void SetDivideTextColor();
 
 	bool bDivideClick;
 	int nDivideMargin;
@@ -233,9 +228,9 @@ public:
 	afx_msg void OnBnClickedRadioInfinite();
 	afx_msg void OnBnClickedRadioCustom();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnBnClickedButtonColorNone();
-	afx_msg void OnBnClickedButtonColorWorking();
-	afx_msg void OnBnClickedButtonColorResting();
+	//afx_msg void OnBnClickedButtonColorNone();
+	//afx_msg void OnBnClickedButtonColorWorking();
+	//afx_msg void OnBnClickedButtonColorResting();
 	afx_msg void OnBnClickedButtonTimeLoad();
 	afx_msg void OnBnClickedButtonTimeSave();
 	afx_msg void OnBnClickedButtonStop();

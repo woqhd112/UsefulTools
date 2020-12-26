@@ -12,10 +12,11 @@
 
 IMPLEMENT_DYNAMIC(NotePad, CDialogEx)
 
-NotePad::NotePad(CWnd* pParent /*=nullptr*/)
+NotePad::NotePad(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_NOTEPAD, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 }
 
 NotePad::~NotePad()

@@ -4,6 +4,7 @@
 #include "ConvertTimeTab.h"
 #include "ConvertWeightTab.h"
 #include "ConvertWidthTab.h"
+#include "ThemeData.h"
 
 // UnitConverter 대화 상자
 
@@ -12,7 +13,7 @@ class UnitConverter : public CDialogEx
 	DECLARE_DYNAMIC(UnitConverter)
 
 public:
-	UnitConverter(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	UnitConverter(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~UnitConverter();
 
 // 대화 상자 데이터입니다.
@@ -23,6 +24,7 @@ public:
 private:
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -55,11 +57,11 @@ private:
 	ConvertWidthTab* m_convert_width;
 
 
-	ConvertButton m_btn_length;
-	ConvertButton m_btn_width;
-	ConvertButton m_btn_weight;
-	ConvertButton m_btn_time;
-	ConvertButton m_btn_bit;
+	CalculateButton m_btn_length;
+	CalculateButton m_btn_width;
+	CalculateButton m_btn_weight;
+	CalculateButton m_btn_time;
+	CalculateButton m_btn_bit;
 
 	PointDescription pointDesc;
 	bool bClickTab;

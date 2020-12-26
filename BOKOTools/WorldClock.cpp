@@ -12,10 +12,11 @@
 
 IMPLEMENT_DYNAMIC(WorldClock, CDialogEx)
 
-WorldClock::WorldClock(CWnd* pParent /*=nullptr*/)
+WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_WORLD_CLOCK, pParent)
 {
 	this->pParent = pParent;
+	this->currentTheme = currentTheme;
 }
 
 WorldClock::~WorldClock()

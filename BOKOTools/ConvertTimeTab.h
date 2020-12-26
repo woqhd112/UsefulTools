@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "ConvertButton.h"
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
 #include "GdipButton.h" 
+#include "ThemeData.h"
 
 // ConvertTimeTab 대화 상자
 
@@ -12,7 +12,7 @@ class ConvertTimeTab : public CDialogEx
 	DECLARE_DYNAMIC(ConvertTimeTab)
 
 public:
-	ConvertTimeTab(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	ConvertTimeTab(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~ConvertTimeTab();
 
 // 대화 상자 데이터입니다.
@@ -29,10 +29,10 @@ public:
 	virtual BOOL OnInitDialog();
 private:
 	CGdipButton m_btn_icon;
-	ConvertButton m_btn_test1;
-	ConvertButton m_btn_test2;
-	ConvertButton m_btn_test3;
-	ConvertButton m_btn_test4;
+	CalculateButton m_btn_test1;
+	CalculateButton m_btn_test2;
+	CalculateButton m_btn_test3;
+	CalculateButton m_btn_test4;
 	CalculateButton m_btn_reset;
 	CalculateEdit m_edit_date;
 	CalculateEdit m_edit_hour;
@@ -45,6 +45,7 @@ private:
 	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
+	ThemeData* currentTheme;
 
 	void ConvertTime();
 	void SetDHMS(CString strDate, CString strHour, CString strMinute, CString strSecond);

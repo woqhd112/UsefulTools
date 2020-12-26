@@ -11,9 +11,10 @@
 
 IMPLEMENT_DYNAMIC(ConvertWidthTab, CDialogEx)
 
-ConvertWidthTab::ConvertWidthTab(CWnd* pParent /*=nullptr*/)
+ConvertWidthTab::ConvertWidthTab(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_WIDTH, pParent)
 {
+	this->currentTheme = currentTheme;
 	bComboShow = false;
 }
 
@@ -74,10 +75,10 @@ BOOL ConvertWidthTab::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_backBrush.CreateSolidBrush(RGB(55, 55, 55));
-	m_rightValueBrush.CreateSolidBrush(RGB(77, 77, 77));
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
+	m_rightValueBrush.CreateSolidBrush(currentTheme->GetFunctionSubSubColor());
 
-	this->SetBackgroundColor(RGB(55, 55, 55));
+	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
 	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WIDTH_NOMAL, _T("PNG"));
 	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WIDTH_HOVER, _T("PNG"));
@@ -88,17 +89,14 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_btn_reverse.LoadHovImage(IDB_PNG_CONVERT_REVERSE_HOVER, _T("PNG"));
 	m_btn_reverse.LoadAltImage(IDB_PNG_CONVERT_REVERSE_CLICK, _T("PNG"));
 
-	m_btn_combo.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
-	m_btn_combo.SetWindowTextW(_T("테스트"));
-	m_btn_combo.m_bUseMouseEvent = false;
-	m_btn_test1.Initialize(RGB(250, 250, 250), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"), 14);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
-	m_btn_test1.m_bUseMouseEvent = false;
-	m_btn_combo.SetFaceColor(RGB(55, 55, 55));
-	m_btn_combo.SetTextColor(RGB(255, 255, 255));
-	m_btn_test1.SetFaceColor(RGB(55, 55, 55));
-	m_btn_test1.SetTextColor(RGB(255, 255, 255));
+	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
+	m_btn_combo.SetTextColor(currentTheme->GetTextColor());
+	m_btn_test1.SetTextColor(currentTheme->GetTextColor());
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
 	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
@@ -489,7 +487,7 @@ BOOL ConvertWidthTab::PreTranslateMessage(MSG* pMsg)
 		CRect rect;
 		m_edit_left_value.GetClientRect(rect);
 		CDC* pDC = m_edit_left_value.GetWindowDC();
-		pDC->Draw3dRect(rect, RGB(255, 255, 255), RGB(255, 255, 255));
+		pDC->Draw3dRect(rect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 	}
 
 	if (pMsg->message == WM_LBUTTONUP)
@@ -572,8 +570,8 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_LEFT_VALUE2)
 		{
-			pDC->SetBkColor(RGB(55, 55, 55));
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
+			pDC->SetTextColor(currentTheme->GetTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -625,13 +623,13 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE2)
 		{
-			pDC->SetBkColor(RGB(77, 77, 77));
+			pDC->SetBkColor(currentTheme->GetFunctionSubSubColor());
 			pDC->SetTextColor(RGB(236, 130, 60));
 			hbr = (HBRUSH)m_rightValueBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR3)
 		{
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.

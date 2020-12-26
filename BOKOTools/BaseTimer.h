@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
+#include "ThemeData.h"
 
 #pragma comment(lib, "winmm")
 #include <mmsystem.h>
@@ -12,7 +13,7 @@ class BaseTimer : public CDialogEx
 	DECLARE_DYNAMIC(BaseTimer)
 
 public:
-	BaseTimer(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	BaseTimer(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~BaseTimer();
 
 // 대화 상자 데이터입니다.
@@ -46,6 +47,7 @@ private:
 	CalculateStatic m_stt_basetimer_view;
 
 	CWnd* pParent;
+	ThemeData* currentTheme;
 
 	CBrush m_backBrush;
 
