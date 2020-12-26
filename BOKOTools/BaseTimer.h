@@ -27,6 +27,15 @@ protected:
 
 private:
 
+	enum ButtonSignal
+	{
+		SIGNAL_NONE			= 0,
+		SIGNAL_MINUTE_UP	= 1,
+		SIGNAL_MINUTE_DOWN	= 2,
+		SIGNAL_SECOND_UP	= 3,
+		SIGNAL_SECOND_DOWN	= 4
+	};
+
 	CalculateButton m_btn_m_up;
 	CalculateButton m_btn_m_down;
 	CalculateButton m_btn_s_up;
@@ -42,18 +51,32 @@ private:
 
 	CWinThread* m_thread;
 	CWinThread* m_soundThread;
+	CWinThread* m_maintainThread;
+
+	ButtonSignal bs;
+
+	int nMaintainCount;
 
 	bool bThread;
+	bool bMaintainThread;
 	bool bStart;
 
 	static UINT thrBaseTimer(LPVOID method);
 	static UINT thrLoadSound(LPVOID method);
+	static UINT thrClickMaintain(LPVOID method);
 	void StartBaseTimer();
 	void StartSound(CString strSoundPath);
+	void StartMaintainCount();
 	bool DeleteMainThread();
 	void ResetDefaultValue();
 
+	void MinuteUp();
+	void MinuteDown();
+	void SecondUp();
+	void SecondDown();
+
 public:
+
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	afx_msg void OnClose();

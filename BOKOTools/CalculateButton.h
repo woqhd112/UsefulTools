@@ -16,7 +16,8 @@ public:
 	COLORREF m_defaultColor;
 	COLORREF m_hoverColor;
 	COLORREF m_downColor;
-	bool m_bUseMouseEvent;
+	bool m_bUseMouseBkGroundColorEvent;
+
 
 private:
 	bool m_bTrackMouse = false;

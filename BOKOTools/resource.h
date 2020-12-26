@@ -67,10 +67,21 @@
 #define IDB_PNG_NOTEPAD_NOMAL           249
 #define IDB_PNG_NOTEPAD_HOVER           250
 #define IDB_PNG_NOTEPAD_CLICK           251
-#define IDB_PNG_COMING_SOON             252
 #define IDD_DIALOG_BASE_TIMER           254
 #define IDD_DIALOG_WORLD_CLOCK          256
-#define IDB_PNG_STOPWATCH_NOMAL         260
+#define IDB_PNG_BASETIMER_NOMAL         261
+#define IDB_PNG_BASETIMER_HOVER         262
+#define IDB_PNG_BASETIMER_CLICK         263
+#define IDB_PNG_WORKTIMER_NOMAL         264
+#define IDB_PNG_WORKTIMER_HOVER         265
+#define IDB_PNG_WORKTIMER_CLICK         266
+#define IDB_PNG_WORLDCLOCK_NOMAL        267
+#define IDB_PNG_WORLDCLOCK_HOVER        268
+#define IDB_PNG_WORLDCLOCK_CLICK        269
+#define IDB_PNG1                        270
+#define IDB_PNG_COMINGSOON              270
+#define IDB_PNG2                        271
+#define IDB_PNG_STOPWATCH_NOMAL         271
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -334,9 +345,7 @@
 #define IDC_RICHEDIT21                  1237
 #define IDC_BUTTON_NOTEPAD_GDI          1238
 #define IDC_STATIC_NOTEPAD              1239
-#define IDC_BUTTON_COMINGSOON_GDI1      1240
 #define IDC_BUTTON_BASE_TIMER_GDI       1240
-#define IDC_BUTTON_COMINGSOON_GDI2      1241
 #define IDC_BUTTON_WORLD_CLOCK_GDI      1241
 #define IDC_STATIC_BASE_TIMER           1242
 #define IDC_STATIC_WORLD_CLOCK          1243
@@ -347,6 +356,12 @@
 #define IDC_BUTTON_BASE_TIMER_S_UP      1248
 #define IDC_BUTTON_BASE_TIMER_S_DOWM    1249
 #define IDC_STATIC_BASE_TIMER_MS        1251
+#define IDC_BUTTON2                     1252
+#define IDC_BUTTON_COMINGSOON_GDI1      1252
+#define IDC_BUTTON3                     1253
+#define IDC_BUTTON_COMINGSOON_GDI2      1253
+#define IDC_BUTTON4                     1254
+#define IDC_BUTTON_COMINGSOON_GDI3      1254
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -362,9 +377,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        261
+#define _APS_NEXT_RESOURCE_VALUE        272
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1252
+#define _APS_NEXT_CONTROL_VALUE         1255
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

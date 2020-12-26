@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include "BOKOTools.h"
-#include "CalculateButton.h"
+#include "BaseTimer.h"
 
 
 // CalculateButton
@@ -15,7 +15,7 @@ CalculateButton::CalculateButton()
 	m_defaultColor = RGB(220, 220, 220);
 	m_hoverColor = RGB(200, 200, 200);
 	m_downColor = RGB(150, 150, 150);
-	m_bUseMouseEvent = true;
+	m_bUseMouseBkGroundColorEvent = true;
 }
 
 CalculateButton::~CalculateButton()
@@ -118,7 +118,7 @@ void CalculateButton::OnMouseHover(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (m_bUseMouseEvent)
+	if (m_bUseMouseBkGroundColorEvent)
 	{
 		this->SetFaceColor(m_hoverColor);
 	}
@@ -131,7 +131,7 @@ void CalculateButton::OnMouseLeave()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (m_bUseMouseEvent)
+	if (m_bUseMouseBkGroundColorEvent)
 	{
 		if (nID == IDC_BUTTON_0 ||
 			nID == IDC_BUTTON_1 ||
@@ -158,14 +158,16 @@ void CalculateButton::OnMouseLeave()
 }
 
 
+
 void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	
-	if (m_bUseMouseEvent)
+
+	if (m_bUseMouseBkGroundColorEvent)
 	{
 		this->SetFaceColor(m_downColor);
 	}
+
 
 	CMFCButton::OnLButtonDown(nFlags, point);
 }
@@ -174,11 +176,12 @@ void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 void CalculateButton::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	
-	if (m_bUseMouseEvent)
+
+	if (m_bUseMouseBkGroundColorEvent)
 	{
 		this->SetFaceColor(m_hoverColor);
 	}
+
 
 	CMFCButton::OnLButtonUp(nFlags, point);
 }

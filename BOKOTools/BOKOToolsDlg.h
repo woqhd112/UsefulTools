@@ -62,6 +62,9 @@ private:
 	CGdipButton m_btn_notepad_gdi;
 	CGdipButton m_btn_basetimer_gdi;
 	CGdipButton m_btn_world_clock_gdi;
+	CGdipButton m_btn_comingsoon_1;
+	CGdipButton m_btn_comingsoon_2;
+	CGdipButton m_btn_comingsoon_3;
 
 	BaseCalculate* base;
 	EngineeringCalculate* engineering;

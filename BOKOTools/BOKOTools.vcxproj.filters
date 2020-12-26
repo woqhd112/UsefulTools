@@ -332,13 +332,40 @@
     <Image Include="res\save.png">
       <Filter>리소스</Filter>
     </Image>
-    <Image Include="res\Stopwatch_B.png">
+    <Image Include="res\BaseTimer_B.png">
       <Filter>리소스</Filter>
     </Image>
-    <Image Include="res\Stopwatch_C.png">
+    <Image Include="res\BaseTimer_C.png">
       <Filter>리소스</Filter>
     </Image>
-    <Image Include="res\Stopwatch_U.png">
+    <Image Include="res\BaseTimer_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorkTimer_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorkTimer_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorkTimer_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorldClock_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorldClock_C.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\WorldClock_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\StopWatch_B.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\StopWatch_U.png">
+      <Filter>리소스</Filter>
+    </Image>
+    <Image Include="res\StopWatch_C.png">
       <Filter>리소스</Filter>
     </Image>
   </ItemGroup>

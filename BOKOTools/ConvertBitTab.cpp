@@ -631,7 +631,7 @@ void ConvertBitTab::OnPaint()
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
-
+	
 	CRect divideRect;
 	m_stt_divide.GetClientRect(&divideRect);
 

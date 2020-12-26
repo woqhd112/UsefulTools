@@ -18,6 +18,9 @@ BaseTimer::BaseTimer(CWnd* pParent /*=nullptr*/)
 	this->pParent = pParent;
 	bStart = true;
 	bThread = false;
+	bMaintainThread = false;
+	nMaintainCount = 0;
+	bs = SIGNAL_NONE;
 }
 
 BaseTimer::~BaseTimer()
@@ -83,6 +86,10 @@ BOOL BaseTimer::OnInitDialog()
 
 	m_btn_startandstop.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_reset.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_m_up.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_m_down.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_s_up.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_s_down.Initialize(RGB(230, 230, 230), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 
 	m_stt_ms.Initialize(45, _T("DS-Digital"));
 
@@ -126,6 +133,56 @@ void BaseTimer::PostNcDestroy()
 BOOL BaseTimer::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_LBUTTONDOWN)
+	{
+		if (pMsg->hwnd == m_btn_m_up.m_hWnd)
+		{
+			bMaintainThread = true;
+			bs = SIGNAL_MINUTE_UP;
+			m_maintainThread = AfxBeginThread(thrClickMaintain, this);
+		}
+		else if (pMsg->hwnd == m_btn_m_down.m_hWnd)
+		{
+			bMaintainThread = true;
+			bs = SIGNAL_MINUTE_DOWN;
+			m_maintainThread = AfxBeginThread(thrClickMaintain, this);
+		}
+		else if (pMsg->hwnd == m_btn_s_up.m_hWnd)
+		{
+			bMaintainThread = true;
+			bs = SIGNAL_SECOND_UP;
+			m_maintainThread = AfxBeginThread(thrClickMaintain, this);
+		}
+		else if (pMsg->hwnd == m_btn_s_down.m_hWnd)
+		{
+			bMaintainThread = true;
+			bs = SIGNAL_SECOND_DOWN;
+			m_maintainThread = AfxBeginThread(thrClickMaintain, this);
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == m_btn_m_up.m_hWnd)
+		{
+			bMaintainThread = false;
+			bs = SIGNAL_NONE;
+		}
+		else if (pMsg->hwnd == m_btn_m_down.m_hWnd)
+		{
+			bMaintainThread = false;
+			bs = SIGNAL_NONE;
+		}
+		else if (pMsg->hwnd == m_btn_s_up.m_hWnd)
+		{
+			bMaintainThread = false;
+			bs = SIGNAL_NONE;
+		}
+		else if (pMsg->hwnd == m_btn_s_down.m_hWnd)
+		{
+			bMaintainThread = false;
+			bs = SIGNAL_NONE;
+		}
+	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
@@ -289,16 +346,61 @@ bool BaseTimer::DeleteMainThread()
 	return false;
 }
 
+UINT BaseTimer::thrClickMaintain(LPVOID method)
+{
+	BaseTimer* basetimer = (BaseTimer*)method;
+	basetimer->StartMaintainCount();
+
+	return 0;
+}
+
+void BaseTimer::StartMaintainCount()
+{
+	int nCountPerSecond = 0;
+	int nMaintainTime = 500;
+	while (bMaintainThread)
+	{
+		Sleep(nMaintainTime);
+
+		nMaintainCount++;
+		nCountPerSecond++;
+		if (nCountPerSecond == 6)
+		{
+			nMaintainTime = 250;
+		}
+		else if (nCountPerSecond == 18)
+		{
+			nMaintainTime = 125;
+		}
+
+		switch (bs)
+		{
+		case SIGNAL_MINUTE_UP:
+			MinuteUp();
+			break;
+		case SIGNAL_MINUTE_DOWN:
+			MinuteDown();
+			break;
+		case SIGNAL_SECOND_UP:
+			SecondUp();
+			break;
+		case SIGNAL_SECOND_DOWN:
+			SecondDown();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void BaseTimer::OnBnClickedButtonBaseTimerReset()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_stt_ms.SetWindowTextW(_T("00:00"));
 }
 
-
-void BaseTimer::OnBnClickedButtonBaseTimerMUp()
+void BaseTimer::MinuteUp()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strMS, strM, strS;
 	m_stt_ms.GetWindowTextW(strMS);
 	AfxExtractSubString(strM, strMS, 0, ':');
@@ -313,10 +415,8 @@ void BaseTimer::OnBnClickedButtonBaseTimerMUp()
 	m_stt_ms.SetWindowTextW(strFormat);
 }
 
-
-void BaseTimer::OnBnClickedButtonBaseTimerMDown()
+void BaseTimer::MinuteDown()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strMS, strM, strS;
 	m_stt_ms.GetWindowTextW(strMS);
 	AfxExtractSubString(strM, strMS, 0, ':');
@@ -331,10 +431,8 @@ void BaseTimer::OnBnClickedButtonBaseTimerMDown()
 	m_stt_ms.SetWindowTextW(strFormat);
 }
 
-
-void BaseTimer::OnBnClickedButtonBaseTimerSUp()
+void BaseTimer::SecondUp()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strMS, strM, strS;
 	m_stt_ms.GetWindowTextW(strMS);
 	AfxExtractSubString(strM, strMS, 0, ':');
@@ -361,10 +459,8 @@ void BaseTimer::OnBnClickedButtonBaseTimerSUp()
 	m_stt_ms.SetWindowTextW(strFormat);
 }
 
-
-void BaseTimer::OnBnClickedButtonBaseTimerSDowm()
+void BaseTimer::SecondDown()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strMS, strM, strS;
 	m_stt_ms.GetWindowTextW(strMS);
 	AfxExtractSubString(strM, strMS, 0, ':');
@@ -390,3 +486,31 @@ void BaseTimer::OnBnClickedButtonBaseTimerSDowm()
 	strFormat.Format(_T("%02d:%02d"), nMinute, nSecond);
 	m_stt_ms.SetWindowTextW(strFormat);
 }
+
+void BaseTimer::OnBnClickedButtonBaseTimerMUp()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	nMaintainCount = 0;
+}
+
+
+void BaseTimer::OnBnClickedButtonBaseTimerMDown()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	nMaintainCount = 0;
+}
+
+
+void BaseTimer::OnBnClickedButtonBaseTimerSUp()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	nMaintainCount = 0;
+}
+
+
+void BaseTimer::OnBnClickedButtonBaseTimerSDowm()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	nMaintainCount = 0;
+}
+

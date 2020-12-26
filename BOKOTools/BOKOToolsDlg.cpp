@@ -79,6 +79,9 @@ void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_BASE_TIMER, m_stt_basetimer);
 	DDX_Control(pDX, IDC_STATIC_WORLD_CLOCK, m_stt_world_clock);
 	DDX_Control(pDX, IDC_BUTTON_WORLD_CLOCK_GDI, m_btn_world_clock_gdi);
+	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI1, m_btn_comingsoon_1);
+	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI2, m_btn_comingsoon_2);
+	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI3, m_btn_comingsoon_3);
 }
 
 BEGIN_MESSAGE_MAP(CBOKOToolsDlg, CDialogEx)
@@ -170,49 +173,52 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_btn_date_gdi.LoadHovImage(IDB_PNG_DATECAL_HOVER, _T("PNG"));
 	m_btn_date_gdi.LoadAltImage(IDB_PNG_DATECAL_CLICK, _T("PNG"));
 
-	m_btn_worktimer_gdi.LoadStdImage(IDB_PNG_COMING_SOON, _T("PNG"));
-	m_btn_worktimer_gdi.LoadHovImage(IDB_PNG_COMING_SOON, _T("PNG"));
-	m_btn_worktimer_gdi.LoadAltImage(IDB_PNG_COMING_SOON, _T("PNG"));
+	m_btn_worktimer_gdi.LoadStdImage(IDB_PNG_WORKTIMER_NOMAL, _T("PNG"));
+	m_btn_worktimer_gdi.LoadHovImage(IDB_PNG_WORKTIMER_HOVER, _T("PNG"));
+	m_btn_worktimer_gdi.LoadAltImage(IDB_PNG_WORKTIMER_CLICK, _T("PNG"));
 
 	m_btn_notepad_gdi.LoadStdImage(IDB_PNG_NOTEPAD_NOMAL, _T("PNG"));
 	m_btn_notepad_gdi.LoadHovImage(IDB_PNG_NOTEPAD_HOVER, _T("PNG"));
 	m_btn_notepad_gdi.LoadAltImage(IDB_PNG_NOTEPAD_CLICK, _T("PNG"));
 
-	m_btn_basetimer_gdi.LoadStdImage(IDB_PNG_STOPWATCH_NOMAL, _T("PNG"));
-	m_btn_basetimer_gdi.LoadHovImage(IDB_PNG_STOPWATCH_HOVER, _T("PNG"));
-	m_btn_basetimer_gdi.LoadAltImage(IDB_PNG_STOPWATCH_CLICK, _T("PNG"));
+	m_btn_basetimer_gdi.LoadStdImage(IDB_PNG_BASETIMER_NOMAL, _T("PNG"));
+	m_btn_basetimer_gdi.LoadHovImage(IDB_PNG_BASETIMER_HOVER, _T("PNG"));
+	m_btn_basetimer_gdi.LoadAltImage(IDB_PNG_BASETIMER_CLICK, _T("PNG"));
 
-	m_btn_world_clock_gdi.LoadStdImage(IDB_PNG_COMING_SOON, _T("PNG"));
-	m_btn_world_clock_gdi.LoadHovImage(IDB_PNG_COMING_SOON, _T("PNG"));
-	m_btn_world_clock_gdi.LoadAltImage(IDB_PNG_COMING_SOON, _T("PNG"));
+	m_btn_world_clock_gdi.LoadStdImage(IDB_PNG_WORLDCLOCK_NOMAL, _T("PNG"));
+	m_btn_world_clock_gdi.LoadHovImage(IDB_PNG_WORLDCLOCK_HOVER, _T("PNG"));
+	m_btn_world_clock_gdi.LoadAltImage(IDB_PNG_WORLDCLOCK_CLICK, _T("PNG"));
 
+	m_btn_comingsoon_1.LoadStdImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_1.LoadHovImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_1.LoadAltImage(IDB_PNG_COMINGSOON, _T("PNG"));
+
+	m_btn_comingsoon_2.LoadStdImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_2.LoadHovImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_2.LoadAltImage(IDB_PNG_COMINGSOON, _T("PNG"));
+
+	m_btn_comingsoon_3.LoadStdImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_3.LoadHovImage(IDB_PNG_COMINGSOON, _T("PNG"));
+	m_btn_comingsoon_3.LoadAltImage(IDB_PNG_COMINGSOON, _T("PNG"));
 
 	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
 
 	m_btn_base_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_base.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_calculator_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_engineering.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_stopwatch_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_stopwatch.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_converter_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_converter.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_date_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_date.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_worktimer_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_worktimer.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_notepad_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_notepad.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_basetimer_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_basetimer.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
 	m_btn_world_clock_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_world_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
@@ -256,6 +262,7 @@ void CBOKOToolsDlg::SetCtlPos()
 	int nCtlPos_X = 0;
 	int nCtlPos_Y = 0;
 
+	// 첫재줄
 	nCtlPos_X += LEFT_MARGIN;
 	nCtlPos_Y += TOP_MARGIN;
 	m_btn_base_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
@@ -269,21 +276,21 @@ void CBOKOToolsDlg::SetCtlPos()
 	m_btn_stopwatch_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_stopwatch.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
 	m_btn_converter_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_converter.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	// 두번째줄
+	nCtlPos_X = LEFT_MARGIN;
+	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
 	m_btn_date_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_date.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
+	
 	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
 	m_btn_worktimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_worktimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
 	m_btn_notepad_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_notepad.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
@@ -291,21 +298,33 @@ void CBOKOToolsDlg::SetCtlPos()
 	m_btn_basetimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_basetimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	// 셋째줄
+	nCtlPos_X = LEFT_MARGIN;
+	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
 	m_btn_world_clock_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	m_stt_world_clock.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_comingsoon_1.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_comingsoon_2.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+	m_btn_comingsoon_3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	
 
 	CRect SystemRect;
 	CPoint pos;
 	GetClientRect(SystemRect);
 	int nVector_X = 0;
 	int nVector_Y = 0;
-	nVector_X = LEFT_MARGIN + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH + LEFT_MARGIN;
-	nVector_Y = PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+	nVector_X = LEFT_MARGIN * 2 + (PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH) * 4;	// 가로사이즈 늘리면 이부분 수정
+	nVector_Y = TOP_MARGIN * 3 + (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * 3;	// 세로사이즈 늘리면 이부분 수정
 	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
 	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
 
-	this->MoveWindow(pos.x, pos.y, nVector_X, TOP_MARGIN * 3 + nVector_Y * 3 /*이부분 동적 수정*/);
+	this->MoveWindow(pos.x, pos.y, nVector_X, nVector_Y);
 }
 
 void CBOKOToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)

@@ -276,6 +276,9 @@
     <None Include="res\BOKOTools.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\BaseTimer_B.png" />
+    <Image Include="res\BaseTimer_C.png" />
+    <Image Include="res\BaseTimer_U.png" />
     <Image Include="res\Base_B.png" />
     <Image Include="res\Base_C.png" />
     <Image Include="res\Base_U.png" />
@@ -320,9 +323,15 @@
     <Image Include="res\NotePad_C.png" />
     <Image Include="res\NotePad_U.png" />
     <Image Include="res\save.png" />
-    <Image Include="res\Stopwatch_B.png" />
-    <Image Include="res\Stopwatch_C.png" />
-    <Image Include="res\Stopwatch_U.png" />
+    <Image Include="res\StopWatch_B.png" />
+    <Image Include="res\StopWatch_C.png" />
+    <Image Include="res\StopWatch_U.png" />
+    <Image Include="res\WorkTimer_B.png" />
+    <Image Include="res\WorkTimer_C.png" />
+    <Image Include="res\WorkTimer_U.png" />
+    <Image Include="res\WorldClock_B.png" />
+    <Image Include="res\WorldClock_C.png" />
+    <Image Include="res\WorldClock_U.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
