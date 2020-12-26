@@ -47,6 +47,11 @@ private:
 	CBrush m_backBrush;
 	ThemeData* currentTheme;
 
+	CRect drawBorderRect1;
+	CRect drawBorderRect2;
+	CRect drawBorderRect3;
+	CRect drawBorderRect4;
+
 	void ConvertTime();
 	void SetDHMS(CString strDate, CString strHour, CString strMinute, CString strSecond);
 	void SetHMS(CString strDate, CString strHour, CString strMinute, CString strSecond);

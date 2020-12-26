@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(StopWatch, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_LAPTIME, &StopWatch::OnBnClickedButtonLaptime)
 	ON_WM_MOVE()
 	ON_BN_CLICKED(IDC_BUTTON_LAPTIME_RESET, &StopWatch::OnBnClickedButtonLaptimeReset)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -97,6 +98,12 @@ BOOL StopWatch::OnInitDialog()
 	m_stt_hms.BringWindowToTop();
 
 	m_btn_laptime.EnableWindow(FALSE);
+
+	CRect borderRect;
+	m_stt_stopwatch_view.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -325,3 +332,17 @@ void StopWatch::OnMove(int x, int y)
 }
 
 
+
+
+void StopWatch::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+
+	CBrush *pOld = dc.SelectObject(&m_backBrush);
+	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);
+	dc.SelectObject(pOld);
+}

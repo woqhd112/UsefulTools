@@ -132,6 +132,28 @@ BOOL ConvertTimeTab::OnInitDialog()
 
 	ConvertTime();
 
+	CRect borderRect, thisRect;
+	this->GetWindowRect(thisRect);
+	m_btn_test1.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 2);
+	int nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect1 = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_test2.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect2 = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_test3.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect3 = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_test4.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect4 = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -532,7 +554,7 @@ void ConvertTimeTab::CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMar
 	LOGBRUSH lb;
 
 	lb.lbStyle = BS_SOLID;
-	lb.lbColor = RGB(200, 200, 200);
+	lb.lbColor = currentTheme->GetFunctionRectBorderColor();
 
 	CPen arNewPen;
 	CPen* pOldPen = NULL;
@@ -563,4 +585,9 @@ void ConvertTimeTab::OnPaint()
 	int nDivideMargin = divideToMargin2.top - divideToMargin1.bottom;
 
 	CalcDrawLine(&dc, divideRect.top + divideRect.Height(), nDivideMargin);
+
+	dc.Draw3dRect(drawBorderRect1, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect2, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect3, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect4, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 }

@@ -34,6 +34,8 @@ private:
 	CWnd* pParent;
 	ThemeData* currentTheme;
 
+	CRect drawBorderRect;
+
 	CComboBox m_select;
 	CComboBox m_result;
 
@@ -41,7 +43,9 @@ private:
 	CalculateButton m_btn_result_select_from_base;
 	CalculateEdit m_edit_input_ten_from_base;
 	CalculateEdit m_edit_output_select_from_base;
-	CalculateStatic m_stt_group_base;
+	//CalculateStatic m_stt_group_base;
+	CalculateStatic m_stt_base_view;
+	CalculateStatic m_stt_base;
 	CStatic m_stt_input_select;
 	CStatic m_stt_output_result;
 
@@ -56,4 +60,5 @@ public:
 	afx_msg void OnClose();
 	virtual void PostNcDestroy();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
 };

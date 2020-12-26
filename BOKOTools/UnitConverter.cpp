@@ -84,7 +84,7 @@ BOOL UnitConverter::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	this->SetBackgroundColor(BASE_BKGROUND_COLOR);
+	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
 	CRect tabRect;
 	m_stt_tab.GetWindowRect(&tabRect);
@@ -342,3 +342,4 @@ void UnitConverter::OnBnClickedButtonBit()
 	pointDesc = CONVERT_BIT_DESC;
 	bClickTab = false;
 }
+

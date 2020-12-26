@@ -2,6 +2,7 @@
 #include "atlstr.h"
 
 #define THEME_DETECTIVE	0
+#define THEME_CLOUD 1
 
 class ThemeData
 {

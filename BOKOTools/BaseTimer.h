@@ -51,6 +51,8 @@ private:
 
 	CBrush m_backBrush;
 
+	CRect drawBorderRect;
+
 	CWinThread* m_thread;
 	CWinThread* m_soundThread;
 	CWinThread* m_maintainThread;
@@ -91,4 +93,5 @@ public:
 	afx_msg void OnBnClickedButtonBaseTimerMDown();
 	afx_msg void OnBnClickedButtonBaseTimerSUp();
 	afx_msg void OnBnClickedButtonBaseTimerSDowm();
+	afx_msg void OnPaint();
 };

@@ -60,6 +60,7 @@ private:
 	CRect thisRect;
 	CRect childRect;
 	CRect laptimeResetRect;
+	CRect drawBorderRect;
 
 	static UINT thrStopWatch(LPVOID method);
 	void StartStopWatch();
@@ -72,4 +73,5 @@ public:
 	afx_msg void OnBnClickedButtonLaptime();
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnBnClickedButtonLaptimeReset();
+	afx_msg void OnPaint();
 };

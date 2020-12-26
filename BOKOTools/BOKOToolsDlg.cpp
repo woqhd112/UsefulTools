@@ -255,13 +255,19 @@ void CBOKOToolsDlg::LoadTheme()
 {
 	// 테마 추가되면 설정하기
 	ThemeData* theme1 = new ThemeData(THEME_DETECTIVE);
+	ThemeData* theme2 = new ThemeData(THEME_CLOUD);
 
 	themeList.push_back(theme1);
+	themeList.push_back(theme2);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
 	{
 		currentTheme = theme1;
+	}
+	else if (nFlags == THEME_CLOUD)
+	{
+		currentTheme = theme2;
 	}
 }
 
@@ -751,7 +757,11 @@ HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CBOKOToolsDlg::OnMenuSettingTheme()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	TRACE("!\n");
+	SettingTheme settingtheme(this);
+	if (settingtheme.DoModal() == IDCANCEL)
+	{
+		
+	}
 }
 
 

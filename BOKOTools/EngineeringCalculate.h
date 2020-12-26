@@ -88,6 +88,7 @@ private:
 	CGdipButton m_btn_report;
 	CGdipButton m_btn_trash;
 	CalculateStatic m_stt_calculate_view;
+	CalculateStatic m_stt_btn_calculate_view;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
@@ -97,6 +98,8 @@ private:
 	CRect thisRect;
 	CRect childRect;
 	CRect trashRect;
+	CRect drawBorderRect;
+	CRect drawButtonBorderRect;
 	ResultTimeline* timeline;
 	bool bTimeline;
 
@@ -114,4 +117,5 @@ public:
 	
 	afx_msg void OnBnClickedButtonTrash();
 	afx_msg void OnMove(int x, int y);
+	afx_msg void OnPaint();
 };

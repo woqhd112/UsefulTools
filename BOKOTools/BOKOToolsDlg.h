@@ -4,6 +4,7 @@
 
 #pragma once
 #include "ThemeData.h"
+#include "SettingTheme.h"
 #include "BaseCalculate.h"
 #include "EngineeringCalculate.h"
 #include "UnitConverter.h"

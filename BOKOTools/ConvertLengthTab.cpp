@@ -204,6 +204,18 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_combo_left.ShowWindow(SW_HIDE);
 	m_combo_right.ShowWindow(SW_HIDE);
 
+	CRect borderRect, thisRect;
+	m_btn_test.GetWindowRect(borderRect);
+	this->GetWindowRect(thisRect);
+	int nLeft = int(borderRect.left - thisRect.left - 2);
+	int nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_combo.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawComboBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -765,7 +777,7 @@ void ConvertLengthTab::CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartM
 	LOGBRUSH lb;
 
 	lb.lbStyle = BS_SOLID;
-	lb.lbColor = RGB(200, 200, 200);
+	lb.lbColor = currentTheme->GetFunctionRectBorderColor();
 
 	CPen arNewPen;
 	CPen* pOldPen = NULL;
@@ -797,4 +809,7 @@ void ConvertLengthTab::OnPaint()
 	int nDivideMargin = divideToMargin2.top - divideToMargin1.bottom;
 
 	CalcDrawLine(&dc, divideRect.top + divideRect.Height(), nDivideMargin);
+
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawComboBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 }

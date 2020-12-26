@@ -38,7 +38,9 @@ void DateCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_LIMITDATE, m_btn_limitdate);
 	DDX_Control(pDX, IDC_BUTTON_FOCUS, m_btn_focus);
 	DDX_Control(pDX, IDC_BUTTON_ALLRESET, m_btn_reset);
-	DDX_Control(pDX, IDC_GROUP_LIMITDATE, m_stt_group_limitdate);
+	DDX_Control(pDX, IDC_STATIC_LIMITDATE_VIEW, m_stt_limitdate_view);
+	DDX_Control(pDX, IDC_STATIC_LIMITDATE_DIVIDE_VIEW, m_stt_limitdate_divide_view);
+	DDX_Control(pDX, IDC_STATIC_LIMITDATE, m_stt_limitdate);
 }
 
 
@@ -51,6 +53,7 @@ BEGIN_MESSAGE_MAP(DateCalculate, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_AFTERDATE, &DateCalculate::OnBnClickedButtonAfterdate)
 	ON_BN_CLICKED(IDC_BUTTON_LIMITDATE, &DateCalculate::OnBnClickedButtonLimitdate)
 	ON_BN_CLICKED(IDC_BUTTON_ALLRESET, &DateCalculate::OnBnClickedButtonAllreset)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -62,8 +65,6 @@ BOOL DateCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-
-	SetWindowTheme(m_stt_group_limitdate, _T(""), _T(""));
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_btn_afterdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -79,12 +80,24 @@ BOOL DateCalculate::OnInitDialog()
 	m_edit_limitdate_result.Initialize(12, _T("고딕"));
 	m_edit_limitdate.Initialize(12, _T("고딕"));
 
-	m_stt_group_limitdate.Initialize(16, _T("고딕"));
+	m_stt_limitdate.Initialize(16, _T("고딕"));
 
 	m_edit_baseedit.SetLimitText(10);
 	m_edit_limitdate.SetLimitText(10);
 
 	SetCalendar();
+
+	CRect borderRect, thisRect;
+	this->GetWindowRect(thisRect);
+	m_stt_limitdate_view.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect1 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_stt_limitdate_divide_view.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 10);
+	nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect2 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -427,7 +440,7 @@ HBRUSH DateCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	}
 	else if (nCtlColor == CTLCOLOR_STATIC)
 	{
-		if (pWnd->GetDlgCtrlID() == IDC_GROUP_LIMITDATE)
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_LIMITDATE)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
@@ -642,4 +655,15 @@ void DateCalculate::OnBnClickedButtonAllreset()
 
 	m_cal_calendar.SetCurSel(CTime::GetCurrentTime());
 	SetCalendar();
+}
+
+
+void DateCalculate::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect1, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect2, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 }

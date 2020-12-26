@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(BaseTimer, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_BASE_TIMER_M_DOWN, &BaseTimer::OnBnClickedButtonBaseTimerMDown)
 	ON_BN_CLICKED(IDC_BUTTON_BASE_TIMER_S_UP, &BaseTimer::OnBnClickedButtonBaseTimerSUp)
 	ON_BN_CLICKED(IDC_BUTTON_BASE_TIMER_S_DOWM, &BaseTimer::OnBnClickedButtonBaseTimerSDowm)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -104,6 +105,13 @@ BOOL BaseTimer::OnInitDialog()
 	m_stt_ms.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_stt_ms.BringWindowToTop();
+
+	CRect borderRect, thisRect;
+	this->GetWindowRect(thisRect);
+	m_stt_basetimer_view.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -521,3 +529,15 @@ void BaseTimer::OnBnClickedButtonBaseTimerSDowm()
 	nMaintainCount = 0;
 }
 
+void BaseTimer::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+
+	CBrush *pOld = dc.SelectObject(&m_backBrush);
+	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);
+	dc.SelectObject(pOld);
+}

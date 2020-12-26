@@ -51,6 +51,9 @@ private:
 	CBrush m_rightValueBrush;
 	ThemeData* currentTheme;
 
+	CRect drawBorderRect;
+	CRect drawComboBorderRect;
+
 	bool bComboShow;
 
 	void ConvertBit();

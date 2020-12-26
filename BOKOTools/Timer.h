@@ -145,6 +145,10 @@ private:
 	CalculateStatic m_stt_rest_time;
 	//CalculateStatic m_stt_color_setting;
 	CalculateStatic m_stt_time_setting;
+	CalculateStatic m_stt_repeat_setting_view;
+	CalculateStatic m_stt_work_time_view;
+	CalculateStatic m_stt_rest_time_view;
+	CalculateStatic m_stt_time_setting_view;
 	CStatic m_stt_state;
 	//CStatic m_stt_color_none;
 	//CStatic m_stt_color_working;
@@ -159,6 +163,12 @@ private:
 	CStatic m_stt_rest_second;
 
 	CBrush m_returnBrush;
+
+	CRect drawBorderRect1;
+	CRect drawBorderRect2;
+	CRect drawBorderRect3;
+	CRect drawBorderRect4;
+
 	int nBkBrightness;
 	
 	TimerReference tr;
@@ -235,4 +245,5 @@ public:
 	afx_msg void OnBnClickedButtonTimeSave();
 	afx_msg void OnBnClickedButtonStop();
 	afx_msg void OnBnClickedButtonSettingDivide();
+	afx_msg void OnPaint();
 };

@@ -70,6 +70,7 @@ void EngineeringCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC__STATIC_CALCULATE_VIEW, m_stt_calculate_view);
 	DDX_Control(pDX, IDC_BUTTON_REPORT, m_btn_report);
 	DDX_Control(pDX, IDC_BUTTON_TRASH, m_btn_trash);
+	DDX_Control(pDX, IDC_STATIC_BUTTON_CALCULATE_VIEW, m_stt_btn_calculate_view);
 }
 
 
@@ -103,6 +104,7 @@ BEGIN_MESSAGE_MAP(EngineeringCalculate, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_REPORT, &EngineeringCalculate::OnBnClickedButtonReport)
 	ON_BN_CLICKED(IDC_BUTTON_TRASH, &EngineeringCalculate::OnBnClickedButtonTrash)
 	ON_WM_MOVE()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -199,6 +201,17 @@ BOOL EngineeringCalculate::OnInitDialog()
 
 	ClickEnd(_T("0"));
 	m_edit_result.SetWindowTextW(_T("0"));
+
+	CRect borderRect;
+	m_stt_calculate_view.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_stt_btn_calculate_view.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 10);
+	nTop = int(borderRect.top - thisRect.top - 35);
+	drawButtonBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 	
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -1210,4 +1223,21 @@ void EngineeringCalculate::OnMove(int x, int y)
 	CRect changeRect;
 	GetWindowRect(&changeRect);
 	thisRect.SetRect(changeRect.left, changeRect.top, thisRect.right + (changeRect.left - thisRect.left), thisRect.bottom + (changeRect.top - thisRect.top));
+}
+
+
+void EngineeringCalculate::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawButtonBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+
+	CBrush *pOld = dc.SelectObject(&m_backBrush);
+	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);
+	dc.PatBlt(drawButtonBorderRect.left + 1, drawButtonBorderRect.top + 1, drawButtonBorderRect.Width() - 2, drawButtonBorderRect.Height() - 2, PATCOPY);
+	dc.SelectObject(pOld);
+
 }

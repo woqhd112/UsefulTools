@@ -111,6 +111,10 @@ void Timer::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_REST_HOUR, m_stt_rest_hour);
 	DDX_Control(pDX, IDC_STATIC_REST_MINUTE, m_stt_rest_minute);
 	DDX_Control(pDX, IDC_STATIC_REST_SECOND, m_stt_rest_second);
+	DDX_Control(pDX, IDC_STATIC_REPEAT_SETTING_VIEW, m_stt_repeat_setting_view);
+	DDX_Control(pDX, IDC_STATIC_WORK_TIME_VIEW, m_stt_work_time_view);
+	DDX_Control(pDX, IDC_STATIC_REST_TIME_VIEW, m_stt_rest_time_view);
+	DDX_Control(pDX, IDC_STATIC_TIME_SETTING_VIEW, m_stt_time_setting_view);
 }
 
 
@@ -140,6 +144,7 @@ BEGIN_MESSAGE_MAP(Timer, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_TIME_SAVE, &Timer::OnBnClickedButtonTimeSave)
 	ON_BN_CLICKED(IDC_BUTTON_STOP, &Timer::OnBnClickedButtonStop)
 	ON_BN_CLICKED(IDC_BUTTON_SETTING_DIVIDE, &Timer::OnBnClickedButtonSettingDivide)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -262,6 +267,27 @@ BOOL Timer::OnInitDialog()
 	m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
 	m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
 
+	CRect borderRect, thisRect;
+	this->GetWindowRect(thisRect);
+	m_stt_repeat_setting_view.GetWindowRect(borderRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect1 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_stt_work_time_view.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 10);
+	nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect2 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_stt_rest_time_view.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 10);
+	nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect3 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_stt_time_setting_view.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 10);
+	nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect4 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -2334,9 +2360,6 @@ void Timer::OnBnClickedButtonTimeSave()
 	}
 }
 
-
-
-
 void Timer::OnBnClickedButtonSettingDivide()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -2356,4 +2379,16 @@ void Timer::OnBnClickedButtonSettingDivide()
 		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + nDivideMargin);
 		bDivideClick = false;
 	}
+}
+
+void Timer::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect1, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect2, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect3, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect4, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 }

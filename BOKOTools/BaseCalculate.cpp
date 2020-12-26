@@ -35,7 +35,9 @@ void BaseCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_INPUT_10_FROM2, m_edit_input_ten_from_base);
 	DDX_Control(pDX, IDC_OUTPUT_2_FROM2, m_edit_output_select_from_base);
 	DDX_Control(pDX, IDC_BUTTON_RESULT_TWO_FROM2, m_btn_result_select_from_base);
-	DDX_Control(pDX, IDC_STATIC_GROUP_BASE, m_stt_group_base);
+	//DDX_Control(pDX, IDC_STATIC_GROUP_BASE, m_stt_group_base);
+	DDX_Control(pDX, IDC_STATIC_BASE_VIEW, m_stt_base_view);
+	DDX_Control(pDX, IDC_STATIC_BASE, m_stt_base);
 }
 
 
@@ -44,6 +46,7 @@ BEGIN_MESSAGE_MAP(BaseCalculate, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_RESULT, &BaseCalculate::OnCbnSelchangeComboResult)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
  
@@ -55,16 +58,23 @@ BOOL BaseCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	SetWindowTheme(m_stt_group_base, _T(""), _T(""));
+	//SetWindowTheme(m_stt_group_base, _T(""), _T(""));
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
 	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_result_select_from_base.SetTextColor(currentTheme->GetTextColor());
 	m_edit_input_ten_from_base.Initialize(12, _T("고딕"));
 	m_edit_output_select_from_base.Initialize(12, _T("고딕"));
-	m_stt_group_base.Initialize(16, _T("고딕"));
+	m_stt_base.Initialize(16, _T("고딕"));
 
 	SetComboBox();
+
+	CRect borderRect, thisRect;
+	m_stt_base_view.GetWindowRect(borderRect);
+	this->GetWindowRect(thisRect);
+	int nLeft = int(borderRect.left - thisRect.left - 10);
+	int nTop = int(borderRect.top - thisRect.top - 35);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -638,7 +648,7 @@ HBRUSH BaseCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  여기서 DC의 특성을 변경합니다.
 	if (nCtlColor == CTLCOLOR_STATIC)
 	{
-		if (pWnd->GetDlgCtrlID() == IDC_STATIC_GROUP_BASE)
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE)
 		{
 			if (currentTheme)
 			{
@@ -673,8 +683,33 @@ HBRUSH BaseCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(currentTheme->GetTextColor());
 			}
 		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_OUTPUT_RESULT)
+		{
+			if (currentTheme)
+			{
+				pDC->SetBkColor(RGB(255, 255, 255));
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_BASE_VIEW)
+		{
+			/*CRect rect;
+			m_stt_base_view.GetClientRect(rect);
+			
+			m_stt_base_view.GetWindowDC()->Draw3dRect(rect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());*/
+			//hbr = (HBRUSH)borderBrush;
+		}
 	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
+}
+
+
+void BaseCalculate::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
 }

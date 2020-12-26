@@ -44,10 +44,15 @@ private:
 	CalculateButton m_btn_afterdate;
 	CalculateButton m_btn_limitdate;
 	CalculateButton m_btn_reset;
-	CalculateStatic m_stt_group_limitdate;
 	CButton m_btn_focus;
+	CalculateStatic m_stt_limitdate_view;
+	CalculateStatic m_stt_limitdate_divide_view;
+	CalculateStatic m_stt_limitdate;
 
 	ThemeData* currentTheme;
+
+	CRect drawBorderRect1;
+	CRect drawBorderRect2;
 
 	bool bBaseEditMax;
 	bool bLimitEditMax;
@@ -65,4 +70,5 @@ public:
 	afx_msg void OnBnClickedButtonLimitdate();
 
 	afx_msg void OnBnClickedButtonAllreset();
+	afx_msg void OnPaint();
 };
