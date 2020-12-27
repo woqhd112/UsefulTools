@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CalculateButton.h"
+#include "GdipButton.h"
 #include "ConvertButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
@@ -87,6 +88,7 @@ private:
 	{
 		bool bStart = true;				// 시작버튼 클릭 유무, 시작상태 = true
 		bool bThread = false;			// 타이머스레드 동작 상태, 동작 = true
+		bool bSoundThread = false;
 		bool bPause = false;			// 일시정지 상태, 일시정지 = true
 		bool bWorkEnd = false;			// 업무 한 사이클 완료 상태, 완료 = true
 		bool bRestEnd = false;			// 휴식 한 사이클 완료 상태, 완료 = true
@@ -132,27 +134,20 @@ private:
 	CalculateButton m_btn_rest_minute_down;
 	CalculateButton m_btn_rest_second_up;
 	CalculateButton m_btn_rest_second_down;
-	CalculateButton m_btn_time_save;
-	CalculateButton m_btn_time_load;
 	CalculateButton m_btn_setting_divide;
-	//ConvertButton m_btn_color_none;
-	//ConvertButton m_btn_color_working;
-	//ConvertButton m_btn_color_resting;
+	CGdipButton m_btn_time_save;
+	CGdipButton m_btn_time_load;
 	CButton m_radio_infinite;
 	CButton m_radio_custom;
 	CalculateStatic m_stt_repeat_setting;
 	CalculateStatic m_stt_work_time;
 	CalculateStatic m_stt_rest_time;
-	//CalculateStatic m_stt_color_setting;
 	CalculateStatic m_stt_time_setting;
 	CalculateStatic m_stt_repeat_setting_view;
 	CalculateStatic m_stt_work_time_view;
 	CalculateStatic m_stt_rest_time_view;
 	CalculateStatic m_stt_time_setting_view;
 	CStatic m_stt_state;
-	//CStatic m_stt_color_none;
-	//CStatic m_stt_color_working;
-	//CStatic m_stt_color_resting;
 	CStatic m_stt_time_load;
 	CStatic m_stt_time_save;
 	CStatic m_stt_work_hour;
@@ -201,13 +196,9 @@ private:
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
 	bool TimeToUnderTenSecondCondition(bool isWork);
-	//void LoadSettingColor();
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 	void CreateConfigFile(CString& strFullPath);
-	//bool CreateDefaultColorXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
-	//void SetSettingColor(CString strOperateState, COLORREF operateColor);
-	//void SetDivideTextColor();
 
 	bool bDivideClick;
 	int nDivideMargin;
@@ -238,9 +229,6 @@ public:
 	afx_msg void OnBnClickedRadioInfinite();
 	afx_msg void OnBnClickedRadioCustom();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//afx_msg void OnBnClickedButtonColorNone();
-	//afx_msg void OnBnClickedButtonColorWorking();
-	//afx_msg void OnBnClickedButtonColorResting();
 	afx_msg void OnBnClickedButtonTimeLoad();
 	afx_msg void OnBnClickedButtonTimeSave();
 	afx_msg void OnBnClickedButtonStop();

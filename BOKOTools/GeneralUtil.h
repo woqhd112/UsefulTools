@@ -12,6 +12,7 @@ inline int MaxRGBColor(int nRv, int nCalcv)
 	return nRv + nCalcv;
 }
 
+// 명도가 높으면 밝은색 낮으면 어두운색
 inline int GetBrightness(int nRv, int nGv, int nBv)
 {
 	int nMax = nRv;

@@ -26,7 +26,7 @@ Timer::Timer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	this->currentTheme = currentTheme;
 	nDivideMargin = 0;
 	bDivideClick = false;
-	nBkBrightness = 0;
+	//nBkBrightness = 0;
 	efp = FOCUS_WORK_HOUR_1;
 }
 
@@ -38,11 +38,15 @@ Timer::~Timer()
 		tr.bThread = false;
 		DWORD nExitCode = NULL;
 		DWORD nExitSoundCode = NULL;
-		GetExitCodeThread(tr.m_soundThread->m_hThread, &nExitSoundCode);
-		if (TerminateThread(tr.m_soundThread->m_hThread, nExitSoundCode) != 0)
+		if (tr.bSoundThread)
 		{
-			delete tr.m_soundThread;
-			tr.m_soundThread = nullptr;
+			tr.bSoundThread = false;
+			GetExitCodeThread(tr.m_soundThread->m_hThread, &nExitSoundCode);
+			if (TerminateThread(tr.m_soundThread->m_hThread, nExitSoundCode) != 0)
+			{
+				delete tr.m_soundThread;
+				tr.m_soundThread = nullptr;
+			}
 		}
 
 		GetExitCodeThread(tr.m_thread->m_hThread, &nExitCode);
@@ -87,9 +91,6 @@ void Timer::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO_CUSTOM, m_radio_custom);
 	DDX_Control(pDX, IDC_EDIT_CUSTOM_COUNT, m_edit_custom_count);
 	DDX_Control(pDX, IDC_EDIT_STATE, m_edit_state);
-	//DDX_Control(pDX, IDC_BUTTON_COLOR_NONE, m_btn_color_none);
-	//DDX_Control(pDX, IDC_BUTTON_COLOR_WORKING, m_btn_color_working);
-	//DDX_Control(pDX, IDC_BUTTON_COLOR_RESTING, m_btn_color_resting);
 	DDX_Control(pDX, IDC_BUTTON_TIME_SAVE, m_btn_time_save);
 	DDX_Control(pDX, IDC_BUTTON_TIME_LOAD, m_btn_time_load);
 	DDX_Control(pDX, IDC_BUTTON_STOP, m_btn_stop);
@@ -97,12 +98,8 @@ void Timer::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_REPEAT_SETTING, m_stt_repeat_setting);
 	DDX_Control(pDX, IDC_STATIC_WORK_TIME, m_stt_work_time);
 	DDX_Control(pDX, IDC_STATIC_REST_TIME, m_stt_rest_time);
-	//DDX_Control(pDX, IDC_STATIC_COLOR_SETTING, m_stt_color_setting);
 	DDX_Control(pDX, IDC_STATIC_TIME_SETTING, m_stt_time_setting);
 	DDX_Control(pDX, IDC_STATIC_STATE, m_stt_state);
-	//DDX_Control(pDX, IDC_STATIC_COLOR_NONE, m_stt_color_none);
-	//DDX_Control(pDX, IDC_STATIC_COLOR_WORKING, m_stt_color_working);
-	//DDX_Control(pDX, IDC_STATIC_COLOR_RESTING, m_stt_color_resting);
 	DDX_Control(pDX, IDC_STATIC_TIME_LOAD, m_stt_time_load);
 	DDX_Control(pDX, IDC_STATIC_TIME_SAVE, m_stt_time_save);
 	DDX_Control(pDX, IDC_STATIC_WORK_HOUR, m_stt_work_hour);
@@ -137,9 +134,6 @@ BEGIN_MESSAGE_MAP(Timer, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_INFINITE, &Timer::OnBnClickedRadioInfinite)
 	ON_BN_CLICKED(IDC_RADIO_CUSTOM, &Timer::OnBnClickedRadioCustom)
 	ON_WM_CTLCOLOR()
-	//ON_BN_CLICKED(IDC_BUTTON_COLOR_NONE, &Timer::OnBnClickedButtonColorNone)
-	//ON_BN_CLICKED(IDC_BUTTON_COLOR_WORKING, &Timer::OnBnClickedButtonColorWorking)
-	//ON_BN_CLICKED(IDC_BUTTON_COLOR_RESTING, &Timer::OnBnClickedButtonColorResting)
 	ON_BN_CLICKED(IDC_BUTTON_TIME_LOAD, &Timer::OnBnClickedButtonTimeLoad)
 	ON_BN_CLICKED(IDC_BUTTON_TIME_SAVE, &Timer::OnBnClickedButtonTimeSave)
 	ON_BN_CLICKED(IDC_BUTTON_STOP, &Timer::OnBnClickedButtonStop)
@@ -156,17 +150,11 @@ BOOL Timer::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	SetWindowTheme(m_stt_repeat_setting, _T(""), _T(""));
-	//SetWindowTheme(m_stt_color_setting, _T(""), _T(""));
-	SetWindowTheme(m_stt_time_setting, _T(""), _T(""));
-	SetWindowTheme(m_stt_work_time, _T(""), _T(""));
-	SetWindowTheme(m_stt_rest_time, _T(""), _T(""));
 	SetWindowTheme(m_radio_infinite, _T(""), _T(""));
 	SetWindowTheme(m_radio_custom, _T(""), _T(""));
 
-	//LoadSettingColor();
 	tr.none_color = currentTheme->GetFunctionBkColor();
-	tr.work_color = currentTheme->GetFunctionSubColor();
+	tr.work_color = RGB(150, 150, 150);
 	tr.rest_color = currentTheme->GetFunctionSubSubColor();
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
@@ -187,9 +175,26 @@ BOOL Timer::OnInitDialog()
 	m_btn_rest_minute_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_rest_second_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_rest_second_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_time_save.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
-	m_btn_time_load.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_FLAT);
 	m_btn_setting_divide.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
+
+	nBkBrightness = GetBrightness(GetRValue(tr.none_color), GetGValue(tr.none_color), GetBValue(tr.none_color));
+	
+	if (nBkBrightness > 120)
+	{
+		m_btn_time_save.LoadStdImage(IDB_PNG_SAVE_NOMAL, _T("PNG"));
+		m_btn_time_load.LoadStdImage(IDB_PNG_LOAD_NOMAL, _T("PNG"));
+		m_btn_time_save.LoadAltImage(IDB_PNG_SAVE_CLICK, _T("PNG"));
+		m_btn_time_load.LoadAltImage(IDB_PNG_LOAD_CLICK, _T("PNG"));
+	}
+	else
+	{
+		m_btn_time_save.LoadStdImage(IDB_PNG_SAVE_CLICK, _T("PNG"));
+		m_btn_time_load.LoadStdImage(IDB_PNG_LOAD_CLICK, _T("PNG"));
+		m_btn_time_save.LoadAltImage(IDB_PNG_SAVE_NOMAL, _T("PNG"));
+		m_btn_time_load.LoadAltImage(IDB_PNG_LOAD_NOMAL, _T("PNG"));
+	}
+	m_btn_time_save.LoadHovImage(IDB_PNG_SAVE_HOVER, _T("PNG"));
+	m_btn_time_load.LoadHovImage(IDB_PNG_LOAD_HOVER, _T("PNG"));
 
 	m_btn_startandpause.SetTextColor(currentTheme->GetTextColor());
 	m_btn_stop.SetTextColor(currentTheme->GetTextColor());
@@ -208,10 +213,6 @@ BOOL Timer::OnInitDialog()
 	m_btn_rest_second_down.SetTextColor(currentTheme->GetTextColor());
 	m_btn_setting_divide.SetTextColor(currentTheme->GetTextColor());
 
-	//m_btn_color_none.Initialize(tr.none_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	//m_btn_color_working.Initialize(tr.work_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-	//m_btn_color_resting.Initialize(tr.rest_color, CMFCButton::FlatStyle::BUTTONSTYLE_3D);
-
 	m_edit_work_hour_1.Initialize(25, _T("고딕"));
 	m_edit_work_hour_2.Initialize(25, _T("고딕"));
 	m_edit_work_minute_1.Initialize(25, _T("고딕"));
@@ -228,13 +229,9 @@ BOOL Timer::OnInitDialog()
 	m_edit_state.Initialize(20, _T("고딕"));
 
 	m_stt_repeat_setting.Initialize(16, _T("고딕"));
-	//m_stt_color_setting.Initialize(16, _T("고딕"));
 	m_stt_time_setting.Initialize(16, _T("고딕"));
 	m_stt_work_time.Initialize(16, _T("고딕"));
 	m_stt_rest_time.Initialize(16, _T("고딕"));
-
-	m_btn_time_save.InsertImage(IDB_PNG_SAVE);
-	m_btn_time_load.InsertImage(IDB_PNG_LOAD);
 
 	m_edit_work_hour_1.SetLimitText(1);
 	m_edit_work_hour_2.SetLimitText(1);
@@ -300,54 +297,6 @@ void Timer::SetDivideMargin()
 	this->GetWindowRect(thisRect);
 	nDivideMargin = thisRect.bottom - divideRect.bottom - divideRect.Height() + 10;
 }
-//
-//void Timer::LoadSettingColor()
-//{
-//	// 파일, xml파일 불러오기 함수
-//	bool bSavedXml = false;
-//	CMarkup markUp;
-//	CString strFullPath = _T("Config\\WorkTimer\\ColorSetting.conf");
-//	if (markUp.Load(strFullPath))
-//	{
-//		markUp.FindElem(_T("Timer"));
-//		markUp.IntoElem();
-//		while (markUp.FindElem(_T("Color")))
-//		{
-//			CString strColorState = markUp.GetAttrib(_T("name"));
-//			CString strColorRed = markUp.GetAttrib(_T("redv"));
-//			CString strColorGreen = markUp.GetAttrib(_T("greenv"));
-//			CString strColorBlue = markUp.GetAttrib(_T("bluev"));
-//			int nRedColor = _ttoi(strColorRed);
-//			int nGreenColor = _ttoi(strColorGreen);
-//			int nBlueColor = _ttoi(strColorBlue);
-//			if (strColorState == _T("none"))
-//			{
-//				tr.none_color = RGB(nRedColor, nGreenColor, nBlueColor);
-//				nBkBrightness = GetBrightness(nRedColor, nGreenColor, nBlueColor);
-//			}
-//			else if (strColorState == _T("working"))
-//			{
-//				tr.work_color = RGB(nRedColor, nGreenColor, nBlueColor);
-//			}
-//			else if (strColorState == _T("resting"))
-//			{
-//				tr.rest_color = RGB(nRedColor, nGreenColor, nBlueColor);
-//			}
-//			bSavedXml = true;
-//		}
-//	}
-//	else
-//	{
-//		CString szRoot = _T("");
-//
-//		CreateConfigFile(szRoot);
-//		if (CreateDefaultColorXml(&markUp, szRoot)) bSavedXml = true;
-//	}
-//	if (bSavedXml)
-//	{
-//		SaveXml(&markUp, strFullPath);
-//	}
-//}
 
 void Timer::CreateConfigFile(CString& strFullPath)
 {
@@ -381,44 +330,6 @@ void Timer::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
 	}
 	findPath.Close();
 }
-
-//bool Timer::CreateDefaultColorXml(CMarkup* markUp, CString strFilePath)
-//{
-//	bool bReturn = false;
-//	CFileFind xmlFind;
-//	strFilePath += _T("\\ColorSetting.conf");
-//	if (!xmlFind.FindFile(strFilePath))
-//	{
-//		markUp->AddElem(_T("Timer"));
-//		markUp->IntoElem();
-//		markUp->AddElem(_T("Color"));
-//		markUp->AddAttrib(_T("name"), _T("none"));
-//		markUp->AddAttrib(_T("redv"), _T("241"));
-//		markUp->AddAttrib(_T("greenv"), _T("209"));
-//		markUp->AddAttrib(_T("bluev"), _T("85"));
-//		markUp->AddElem(_T("Color"));
-//		markUp->AddAttrib(_T("name"), _T("working"));
-//		markUp->AddAttrib(_T("redv"), _T("101"));
-//		markUp->AddAttrib(_T("greenv"), _T("179"));
-//		markUp->AddAttrib(_T("bluev"), _T("97"));
-//		markUp->AddElem(_T("Color"));
-//		markUp->AddAttrib(_T("name"), _T("resting"));
-//		markUp->AddAttrib(_T("redv"), _T("215"));
-//		markUp->AddAttrib(_T("greenv"), _T("70"));
-//		markUp->AddAttrib(_T("bluev"), _T("57"));
-//		tr.none_color = BACKGROUND_COLOR_YELLOW;
-//		tr.work_color = BACKGROUND_COLOR_GREEN;
-//		tr.rest_color = BACKGROUND_COLOR_RED;
-//		int nRv = GetRValue(tr.none_color);
-//		int nGv = GetGValue(tr.none_color);
-//		int nBv = GetBValue(tr.none_color);
-//		nBkBrightness = GetBrightness(nRv, nGv, nBv);
-//		bReturn = true;
-//	}
-//	xmlFind.Close();
-//
-//	return bReturn;
-//}
 
 void Timer::OnOK()
 {
@@ -740,21 +651,6 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 				return TRUE;
 			}
 		}
-		/*else if (pMsg->wParam == VK_TAB)
-		{
-			if (pMsg->hwnd == m_edit_work_hour_1)
-			{
-				TRACE("!\n");
-			}
-			else if (pMsg->hwnd == m_edit_work_hour_2)
-			{
-				TRACE("!\n");
-			}
-			else if (pMsg->hwnd == m_edit_work_minute_1)
-			{
-				TRACE("!\n");
-			}
-		}*/
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -1306,9 +1202,6 @@ void Timer::SetEnabledCtrl(BOOL bEnabled)
 	m_btn_rest_second_down.EnableWindow(bEnabled);
 	m_radio_infinite.EnableWindow(bEnabled);
 	m_radio_custom.EnableWindow(bEnabled);
-	//m_btn_color_none.EnableWindow(bEnabled);
-	//m_btn_color_working.EnableWindow(bEnabled);
-	//m_btn_color_resting.EnableWindow(bEnabled);
 	m_btn_time_save.EnableWindow(bEnabled);
 	m_btn_time_load.EnableWindow(bEnabled);
 	m_btn_stop.EnableWindow(!bEnabled);
@@ -1513,6 +1406,7 @@ UINT Timer::thrLoadSound(LPVOID method)
 	{
 		timer->StartSound(strSoundPath);
 	}
+	timer->tr.bSoundThread = false;
 
 	return 0;
 }
@@ -1646,6 +1540,7 @@ void Timer::StartTimer()
 					// 마무리 멘트 알람 함수
 					// func
 					tr.ps = PROGRESS_STATE_WORKING_END_ALL;
+					tr.bSoundThread = true;
 					tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
 					
 					break;
@@ -1952,7 +1847,6 @@ void Timer::SetOperateColor(COLORREF color, CString strOperateState)
 	m_btn_setting_divide.m_defaultColor = color;
 	m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
 	m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
-	//SetDivideTextColor();
 }
 
 void Timer::OnBnClickedButtonReset2()
@@ -2025,18 +1919,6 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
-		/*else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_NONE)
-		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
-		}
-		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_WORKING)
-		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
-		}
-		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_RESTING)
-		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
-		}*/
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_LOAD)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
@@ -2072,27 +1954,22 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REPEAT_SETTING)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WORK_TIME)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_TIME)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
 		}
-		/*else if (pWnd->GetDlgCtrlID() == IDC_STATIC_COLOR_SETTING)
-		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
-		}*/
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_TIME_SETTING)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_REST_MINUTE)
+		{
+			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_RADIO_INFINITE)
 		{
@@ -2112,118 +1989,6 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
-
-//
-//void Timer::OnBnClickedButtonColorNone()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	CColorDialog none_color_dlg(tr.none_color, CC_FULLOPEN, this);
-//	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
-//	for (int i = 3; i < 16; i++)
-//	{
-//		user_color_list[i] = RGB(255, 255, 255);
-//	}
-//	none_color_dlg.m_cc.lpCustColors = user_color_list;
-//
-//	if (none_color_dlg.DoModal())
-//	{
-//		tr.none_color = none_color_dlg.GetColor();
-//		m_btn_color_none.SetFaceColor(tr.none_color);
-//		this->SetBackgroundColor(tr.none_color);
-//		int nRv = GetRValue(tr.none_color);
-//		int nGv = GetGValue(tr.none_color);
-//		int nBv = GetBValue(tr.none_color);
-//		m_btn_setting_divide.m_defaultColor = tr.none_color;
-//		m_btn_setting_divide.m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
-//		m_btn_setting_divide.m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
-//		m_btn_setting_divide.SetFaceColor(tr.none_color);
-//
-//		SetSettingColor(_T("none"), tr.none_color);
-//	
-//		nBkBrightness = GetBrightness(nRv, nGv, nBv);
-//		SetDivideTextColor();
-//		Invalidate();
-//	}
-//}
-//
-//void Timer::SetDivideTextColor()
-//{
-//	if (nBkBrightness > 120) m_btn_setting_divide.SetTextColor(RGB(0, 0, 0));
-//	else m_btn_setting_divide.SetTextColor(RGB(255, 255, 255));
-//	m_btn_setting_divide.Invalidate();
-//}
-//
-//void Timer::OnBnClickedButtonColorWorking()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	CColorDialog work_color_dlg(tr.work_color, CC_FULLOPEN, this);
-//	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
-//	for (int i = 3; i < 16; i++)
-//	{
-//		user_color_list[i] = RGB(255, 255, 255);
-//	}
-//	work_color_dlg.m_cc.lpCustColors = user_color_list;
-//
-//	if (work_color_dlg.DoModal())
-//	{
-//		tr.work_color = work_color_dlg.GetColor();
-//		int nRv = GetRValue(tr.work_color);
-//		int nGv = GetGValue(tr.work_color);
-//		int nBv = GetBValue(tr.work_color);
-//		m_btn_color_working.SetFaceColor(tr.work_color);
-//
-//		SetSettingColor(_T("working"), tr.work_color);
-//		nBkBrightness = GetBrightness(nRv, nGv, nBv);
-//	}
-//}
-//
-//
-//void Timer::OnBnClickedButtonColorResting()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	CColorDialog rest_color_dlg(tr.rest_color, CC_FULLOPEN, this);
-//	COLORREF user_color_list[16] = { BACKGROUND_COLOR_YELLOW , BACKGROUND_COLOR_GREEN , BACKGROUND_COLOR_RED , };
-//	for (int i = 3; i < 16; i++)
-//	{
-//		user_color_list[i] = RGB(255, 255, 255);
-//	}
-//	rest_color_dlg.m_cc.lpCustColors = user_color_list;
-//
-//	if (rest_color_dlg.DoModal())
-//	{
-//		tr.rest_color = rest_color_dlg.GetColor();
-//		int nRv = GetRValue(tr.rest_color);
-//		int nGv = GetGValue(tr.rest_color);
-//		int nBv = GetBValue(tr.rest_color);
-//		m_btn_color_resting.SetFaceColor(tr.rest_color);
-//
-//		SetSettingColor(_T("resting"), tr.rest_color);
-//		nBkBrightness = GetBrightness(nRv, nGv, nBv);
-//	}
-//}
-//
-//void Timer::SetSettingColor(CString strOperateState, COLORREF operateColor)
-//{
-//	CMarkup markUp;
-//	CString strFullPath = _T("Config\\WorkTimer\\ColorSetting.conf");
-//	if (markUp.Load(strFullPath))
-//	{
-//		markUp.FindElem(_T("Timer"));
-//		markUp.IntoElem();
-//		while (markUp.FindElem(_T("Color")))
-//		{
-//			CString strColorState = markUp.GetAttrib(_T("name"));
-//
-//			if (strColorState == strOperateState)
-//			{
-//				markUp.SetAttrib(_T("redv"), GetRValue(operateColor));
-//				markUp.SetAttrib(_T("greenv"), GetGValue(operateColor));
-//				markUp.SetAttrib(_T("bluev"), GetBValue(operateColor));
-//			}
-//		}
-//	}
-//	SaveXml(&markUp, strFullPath);
-//}
 
 void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
 {

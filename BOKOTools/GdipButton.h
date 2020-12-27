@@ -26,6 +26,8 @@
 
 #pragma once
 
+#pragma comment(lib, "winmm")
+#include <mmsystem.h>
 // GdipButton.h : header file
 //
 
@@ -50,9 +52,9 @@ public:
 	// sets the image type
 	void SetImage(int type);
 
-	BOOL LoadAltImage(UINT id, LPCTSTR pType);
-	BOOL LoadStdImage(UINT id, LPCTSTR pType);
-	BOOL LoadHovImage(UINT id, LPCTSTR pType);
+	BOOL LoadAltImage(UINT id, LPCTSTR pType, BOOL bHavMinSize = FALSE);
+	BOOL LoadStdImage(UINT id, LPCTSTR pType, BOOL bHavMinSize = FALSE);
+	BOOL LoadHovImage(UINT id, LPCTSTR pType, BOOL bHavMinSize = FALSE);
 
 	// if false, disables the press state and uses grayscale image if it exists
 	void EnableButton(BOOL bEnable = TRUE) { m_bIsDisabled = !bEnable; }
@@ -69,6 +71,9 @@ public:
 	void SetToolTipText(UINT nId, BOOL bActivate = TRUE);
 	void SetHorizontal(bool ImagesAreLaidOutHorizontally = FALSE);
 	void DeleteToolTip();
+	void SetClickSound(CString strSoundPath);
+	void StartSound();
+	void DisConnect();
 
 
 protected:
@@ -84,6 +89,9 @@ protected:
 	BOOL	m_bIsHovering;
 	BOOL	m_bIsTracking;
 
+	BOOL	m_bHaveMinSize;
+	BOOL	m_bUseClickSoundEvent;
+
 	int		m_nCurType;
 
 	CGdiPlusBitmapResource* m_pAltImage;
@@ -93,6 +101,8 @@ protected:
 	CString			m_tooltext;
 	CToolTipCtrl*	m_pToolTip;
 	
+	CString strSoundPath;
+
 	void	InitToolTip();
 
 	virtual void PreSubclassWindow();
@@ -129,5 +139,11 @@ private:
 
 	CDC*	m_pCurBtn;		// current pointer to one of the above
 
+	CWinThread* m_soundThread;
 
+	static UINT thrLoadSound(LPVOID method);
+
+public:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };

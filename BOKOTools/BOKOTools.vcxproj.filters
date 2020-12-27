@@ -293,12 +293,6 @@
     <Image Include="res\ConvertReverse_U.png">
       <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
     </Image>
-    <Image Include="res\load.png">
-      <Filter>리소스\공통 아이콘\로드 아이콘</Filter>
-    </Image>
-    <Image Include="res\save.png">
-      <Filter>리소스\공통 아이콘\저장 아이콘</Filter>
-    </Image>
     <Image Include="res\Theme_Detective\ComingSoon.png">
       <Filter>리소스\탐정 테마\커밍순 아이콘</Filter>
     </Image>
@@ -473,6 +467,153 @@
     <Image Include="res\Teme_Cloud\ComingSoon.png">
       <Filter>리소스\구름 테마\커밍순 아이콘</Filter>
     </Image>
+    <Image Include="res\Common\R_1.png">
+      <Filter>리소스\공통 아이콘\로드 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\R_2.png">
+      <Filter>리소스\공통 아이콘\로드 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\R_3.png">
+      <Filter>리소스\공통 아이콘\로드 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\S_1.png">
+      <Filter>리소스\공통 아이콘\저장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\S_2.png">
+      <Filter>리소스\공통 아이콘\저장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\S_3.png">
+      <Filter>리소스\공통 아이콘\저장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorReport_B.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorReport_U.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorReport_C.png">
+      <Filter>리소스\공통 아이콘\타임라인 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorTrash_B.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorTrash_C.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\CalculatorTrash_U.png">
+      <Filter>리소스\공통 아이콘\쓰레기통 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertBit_B.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertBit_C.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertBit_U.png">
+      <Filter>리소스\공통 아이콘\비트변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertLength_B.png">
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertLength_C.png">
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertLength_U.png">
+      <Filter>리소스\공통 아이콘\길이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertReverse_B.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertReverse_C.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertReverse_U.png">
+      <Filter>리소스\공통 아이콘\변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertTime_B.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertTime_C.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertTime_U.png">
+      <Filter>리소스\공통 아이콘\시간변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWeight_B.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWeight_C.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWeight_U.png">
+      <Filter>리소스\공통 아이콘\무게변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWidth_B.png">
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWidth_C.png">
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\ConvertWidth_U.png">
+      <Filter>리소스\공통 아이콘\넓이변환 아이콘</Filter>
+    </Image>
+    <Image Include="res\Teme_Cloud\ThemaChange_B.png">
+      <Filter>리소스\구름 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Teme_Cloud\ThemaChange_C.png">
+      <Filter>리소스\구름 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Teme_Cloud\ThemaChange_U.png">
+      <Filter>리소스\구름 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Teme_Cloud\ThemaChoice_BK.bmp">
+      <Filter>리소스\구름 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\ThemaChoice_BK.bmp">
+      <Filter>리소스\탐정 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\ThemaChange_B.png">
+      <Filter>리소스\탐정 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\ThemaChange_C.png">
+      <Filter>리소스\탐정 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Detective\ThemaChange_U.png">
+      <Filter>리소스\탐정 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Light\Main_BK.bmp" />
+    <Image Include="res\Theme_Light\ThemaChoice_BK.bmp" />
+    <Image Include="res\Theme_Light\Base_B.png" />
+    <Image Include="res\Theme_Light\Base_C.png" />
+    <Image Include="res\Theme_Light\Base_U.png" />
+    <Image Include="res\Theme_Light\ThemaChange_B.png" />
+    <Image Include="res\Theme_Light\ThemaChange_C.png" />
+    <Image Include="res\Theme_Light\ThemaChange_U.png" />
+    <Image Include="res\Theme_Light\BaseTimer_B.png" />
+    <Image Include="res\Theme_Light\BaseTimer_C.png" />
+    <Image Include="res\Theme_Light\BaseTimer_U.png" />
+    <Image Include="res\Theme_Light\ComingSoon.png" />
+    <Image Include="res\Theme_Light\Converter_B.png" />
+    <Image Include="res\Theme_Light\Converter_C.png" />
+    <Image Include="res\Theme_Light\Converter_U.png" />
+    <Image Include="res\Theme_Light\DateCal_B.png" />
+    <Image Include="res\Theme_Light\DateCal_C.png" />
+    <Image Include="res\Theme_Light\DateCal_U.png" />
+    <Image Include="res\Theme_Light\Engineering_B.png" />
+    <Image Include="res\Theme_Light\Engineering_C.png" />
+    <Image Include="res\Theme_Light\Engineering_U.png" />
+    <Image Include="res\Theme_Light\NotePad_B.png" />
+    <Image Include="res\Theme_Light\NotePad_C.png" />
+    <Image Include="res\Theme_Light\NotePad_U.png" />
+    <Image Include="res\Theme_Light\StopWatch_B.png" />
+    <Image Include="res\Theme_Light\StopWatch_C.png" />
+    <Image Include="res\Theme_Light\StopWatch_U.png" />
+    <Image Include="res\Theme_Light\WorkTimer_B.png" />
+    <Image Include="res\Theme_Light\WorkTimer_C.png" />
+    <Image Include="res\Theme_Light\WorkTimer_U.png" />
+    <Image Include="res\Theme_Light\WorldClock_B.png" />
+    <Image Include="res\Theme_Light\WorldClock_C.png" />
+    <Image Include="res\Theme_Light\WorldClock_U.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -627,6 +768,18 @@
     </Filter>
     <Filter Include="리소스\구름 테마\커밍순 아이콘">
       <UniqueIdentifier>{7dc9c68c-89b8-481c-b602-31ceeeed0729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\구름 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{c4cc0c22-fdfb-4ac2-be7b-8e2e71cb2b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\구름 테마\테마세팅 배경">
+      <UniqueIdentifier>{f8397abf-892f-49f6-a14f-c17643caca9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\테마세팅 배경">
+      <UniqueIdentifier>{7f36c259-a68c-46f2-9987-76dc13a44f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\탐정 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{063e7b72-aac6-4a1d-8240-e23c82e593e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

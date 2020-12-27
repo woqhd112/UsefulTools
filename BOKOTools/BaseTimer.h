@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CalculateButton.h"
+#include "CalculateEdit.h"
 #include "CalculateStatic.h"
 #include "ThemeData.h"
 
@@ -43,8 +44,10 @@ private:
 	CalculateButton m_btn_s_down;
 	CalculateButton m_btn_startandstop;
 	CalculateButton m_btn_reset;
-	CalculateStatic m_stt_ms;
 	CalculateStatic m_stt_basetimer_view;
+	CalculateEdit m_edit_basetimer_m;
+	CalculateEdit m_edit_basetimer_s;
+	CalculateStatic m_stt_basetimer_colon;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
@@ -62,6 +65,7 @@ private:
 	int nMaintainCount;
 
 	bool bThread;
+	bool bSoundThread;
 	bool bMaintainThread;
 	bool bStart;
 

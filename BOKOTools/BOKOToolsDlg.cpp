@@ -157,57 +157,8 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_basetimer.Initialize(15, _T("고딕"));
 	m_stt_world_clock.Initialize(15, _T("고딕"));
 
-	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
-	m_btn_base_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
-	m_btn_base_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
-
-	m_btn_calculator_gdi.LoadStdImage(currentTheme->GetEngineeringIcon().nNormalID, _T("PNG"));
-	m_btn_calculator_gdi.LoadHovImage(currentTheme->GetEngineeringIcon().nHoverID, _T("PNG"));
-	m_btn_calculator_gdi.LoadAltImage(currentTheme->GetEngineeringIcon().nClickID, _T("PNG"));
-
-	m_btn_stopwatch_gdi.LoadStdImage(currentTheme->GetStopWatchIcon().nNormalID, _T("PNG"));
-	m_btn_stopwatch_gdi.LoadHovImage(currentTheme->GetStopWatchIcon().nHoverID, _T("PNG"));
-	m_btn_stopwatch_gdi.LoadAltImage(currentTheme->GetStopWatchIcon().nClickID, _T("PNG"));
+	LoadUserInterface(currentTheme);
 	
-	m_btn_converter_gdi.LoadStdImage(currentTheme->GetConverterIcon().nNormalID, _T("PNG"));
-	m_btn_converter_gdi.LoadHovImage(currentTheme->GetConverterIcon().nHoverID, _T("PNG"));
-	m_btn_converter_gdi.LoadAltImage(currentTheme->GetConverterIcon().nClickID, _T("PNG"));
-
-	m_btn_date_gdi.LoadStdImage(currentTheme->GetDateCalIcon().nNormalID, _T("PNG"));
-	m_btn_date_gdi.LoadHovImage(currentTheme->GetDateCalIcon().nHoverID, _T("PNG"));
-	m_btn_date_gdi.LoadAltImage(currentTheme->GetDateCalIcon().nClickID, _T("PNG"));
-
-	m_btn_worktimer_gdi.LoadStdImage(currentTheme->GetWorkTimerIcon().nNormalID, _T("PNG"));
-	m_btn_worktimer_gdi.LoadHovImage(currentTheme->GetWorkTimerIcon().nHoverID, _T("PNG"));
-	m_btn_worktimer_gdi.LoadAltImage(currentTheme->GetWorkTimerIcon().nClickID, _T("PNG"));
-
-	m_btn_notepad_gdi.LoadStdImage(currentTheme->GetNotePadIcon().nNormalID, _T("PNG"));
-	m_btn_notepad_gdi.LoadHovImage(currentTheme->GetNotePadIcon().nHoverID, _T("PNG"));
-	m_btn_notepad_gdi.LoadAltImage(currentTheme->GetNotePadIcon().nClickID, _T("PNG"));
-
-	m_btn_basetimer_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
-	m_btn_basetimer_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
-	m_btn_basetimer_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
-
-	m_btn_world_clock_gdi.LoadStdImage(currentTheme->GetWorldClockIcon().nNormalID, _T("PNG"));
-	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
-	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
-
-	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_1.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_1.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-
-	m_btn_comingsoon_2.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_2.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_2.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-
-	m_btn_comingsoon_3.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-
-	//this->SetBackgroundColor(BASE_BKGROUND_COLOR);
-	this->SetBackgroundImage(currentTheme->GetMainBkIconID());
-
 	m_btn_base_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_base.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_calculator_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -251,14 +202,93 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
+void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
+{
+	this->SetBackgroundImage(currentTheme->GetMainBkIconID());
+
+	m_btn_base_gdi.DisConnect();
+	m_btn_calculator_gdi.DisConnect();
+	m_btn_stopwatch_gdi.DisConnect();
+	m_btn_converter_gdi.DisConnect();
+	m_btn_date_gdi.DisConnect();
+	m_btn_worktimer_gdi.DisConnect();
+	m_btn_notepad_gdi.DisConnect();
+	m_btn_basetimer_gdi.DisConnect();
+	m_btn_world_clock_gdi.DisConnect();
+	m_btn_comingsoon_1.DisConnect();
+	m_btn_comingsoon_2.DisConnect();
+	m_btn_comingsoon_3.DisConnect();
+
+	m_btn_base_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseIcon().nNormalID, _T("PNG"));
+	m_btn_base_gdi.LoadHovImage(currentTheme->GetBaseIcon().nHoverID, _T("PNG"));
+	m_btn_base_gdi.LoadAltImage(currentTheme->GetBaseIcon().nClickID, _T("PNG"));
+
+	m_btn_calculator_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_calculator_gdi.LoadStdImage(currentTheme->GetEngineeringIcon().nNormalID, _T("PNG"));
+	m_btn_calculator_gdi.LoadHovImage(currentTheme->GetEngineeringIcon().nHoverID, _T("PNG"));
+	m_btn_calculator_gdi.LoadAltImage(currentTheme->GetEngineeringIcon().nClickID, _T("PNG"));
+
+	m_btn_stopwatch_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_stopwatch_gdi.LoadStdImage(currentTheme->GetStopWatchIcon().nNormalID, _T("PNG"));
+	m_btn_stopwatch_gdi.LoadHovImage(currentTheme->GetStopWatchIcon().nHoverID, _T("PNG"));
+	m_btn_stopwatch_gdi.LoadAltImage(currentTheme->GetStopWatchIcon().nClickID, _T("PNG"));
+
+	m_btn_converter_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_converter_gdi.LoadStdImage(currentTheme->GetConverterIcon().nNormalID, _T("PNG"));
+	m_btn_converter_gdi.LoadHovImage(currentTheme->GetConverterIcon().nHoverID, _T("PNG"));
+	m_btn_converter_gdi.LoadAltImage(currentTheme->GetConverterIcon().nClickID, _T("PNG"));
+
+	m_btn_date_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_date_gdi.LoadStdImage(currentTheme->GetDateCalIcon().nNormalID, _T("PNG"));
+	m_btn_date_gdi.LoadHovImage(currentTheme->GetDateCalIcon().nHoverID, _T("PNG"));
+	m_btn_date_gdi.LoadAltImage(currentTheme->GetDateCalIcon().nClickID, _T("PNG"));
+
+	m_btn_worktimer_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_worktimer_gdi.LoadStdImage(currentTheme->GetWorkTimerIcon().nNormalID, _T("PNG"));
+	m_btn_worktimer_gdi.LoadHovImage(currentTheme->GetWorkTimerIcon().nHoverID, _T("PNG"));
+	m_btn_worktimer_gdi.LoadAltImage(currentTheme->GetWorkTimerIcon().nClickID, _T("PNG"));
+
+	m_btn_notepad_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_notepad_gdi.LoadStdImage(currentTheme->GetNotePadIcon().nNormalID, _T("PNG"));
+	m_btn_notepad_gdi.LoadHovImage(currentTheme->GetNotePadIcon().nHoverID, _T("PNG"));
+	m_btn_notepad_gdi.LoadAltImage(currentTheme->GetNotePadIcon().nClickID, _T("PNG"));
+
+	m_btn_basetimer_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_basetimer_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
+	m_btn_basetimer_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
+	m_btn_basetimer_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
+
+	m_btn_world_clock_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_world_clock_gdi.LoadStdImage(currentTheme->GetWorldClockIcon().nNormalID, _T("PNG"));
+	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
+	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
+
+	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_1.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_1.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+
+	m_btn_comingsoon_2.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_2.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_2.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+
+	m_btn_comingsoon_3.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+
+	Invalidate();
+}
+
 void CBOKOToolsDlg::LoadTheme()
 {
 	// 테마 추가되면 설정하기
 	ThemeData* theme1 = new ThemeData(THEME_DETECTIVE);
 	ThemeData* theme2 = new ThemeData(THEME_CLOUD);
+	ThemeData* theme3 = new ThemeData(THEME_LIGHT);
 
 	themeList.push_back(theme1);
 	themeList.push_back(theme2);
+	themeList.push_back(theme3);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
@@ -268,6 +298,10 @@ void CBOKOToolsDlg::LoadTheme()
 	else if (nFlags == THEME_CLOUD)
 	{
 		currentTheme = theme2;
+	}
+	else if (nFlags == THEME_LIGHT)
+	{
+		currentTheme = theme3;
 	}
 }
 
@@ -283,7 +317,6 @@ int CBOKOToolsDlg::LoadCurrnetTheme()
 		markUp.IntoElem();
 		if (markUp.FindElem(_T("class")))
 		{
-			CString strThemeName = markUp.GetAttrib(_T("name"));
 			CString strThemeFlags = markUp.GetAttrib(_T("value"));
 			nThemeFlags = _ttoi(strThemeFlags);
 		}
@@ -357,7 +390,6 @@ bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, 
 		markUp->AddElem(_T("Theme"));
 		markUp->IntoElem();
 		markUp->AddElem(_T("class"));
-		markUp->AddAttrib(_T("name"), _T("THEME_DETECTIVE"));
 		markUp->AddAttrib(_T("value"), _T("0"));
 		nThemeFlags = 0;
 		bReturn = true;
@@ -681,7 +713,7 @@ void CBOKOToolsDlg::OnBnClickedButtonWorldClockGdi()
 HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
-
+	
 	// TODO:  여기서 DC의 특성을 변경합니다.
 	if (nCtlColor == CTLCOLOR_STATIC)
 	{
@@ -757,7 +789,7 @@ HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CBOKOToolsDlg::OnMenuSettingTheme()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SettingTheme settingtheme(this);
+	SettingTheme settingtheme(themeList, currentTheme, this);
 	if (settingtheme.DoModal() == IDCANCEL)
 	{
 		
@@ -774,8 +806,15 @@ void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)
 	CMenu* pPopupMenu = mainMenu.GetSubMenu(0);
 
 	this->ClientToScreen(&point);
-
+	
 	pPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
 
 	CDialogEx::OnRButtonDown(nFlags, point);
+}
+
+void CBOKOToolsDlg::ExecuteSelectTheme(ThemeData* selectTheme)
+{
+	currentTheme = selectTheme;
+	LoadUserInterface(currentTheme);
+
 }

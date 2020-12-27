@@ -3,6 +3,7 @@
 
 #define THEME_DETECTIVE	0
 #define THEME_CLOUD 1
+#define THEME_LIGHT 2
 
 class ThemeData
 {
@@ -22,6 +23,8 @@ private:
 	};
 
 	CString strThemeName;
+	CString strButtonSoundPath;
+	FunctionIcon themeButtonIcon;
 	FunctionIcon baseIcon;
 	FunctionIcon engineeringIcon;
 	FunctionIcon stopwatchIcon;
@@ -39,10 +42,15 @@ private:
 	COLORREF buttonColor;
 	int nCommingSoonIconID;
 	int nMainBkIconID;
+	int nSettingThemeBkIconID;
+	int nThemeFlags;
 
 public:
 
+	int GetThemeFlags();
 	CString GetThemeName();
+	CString GetButtonSoundPath();
+	FunctionIcon GetThemeButtonIcon();
 	FunctionIcon GetBaseIcon();
 	FunctionIcon GetEngineeringIcon();
 	FunctionIcon GetStopWatchIcon();
@@ -59,6 +67,7 @@ public:
 	COLORREF GetFunctionRectBorderColor();
 	COLORREF GetButtonColor();
 	int GetCommingSoonIconID();
+	int GetSettingThemeBkIconID();
 	int GetMainBkIconID();
 
 };
