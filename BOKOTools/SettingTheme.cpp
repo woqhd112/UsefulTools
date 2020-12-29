@@ -19,11 +19,6 @@ SettingTheme::SettingTheme(std::vector<ThemeData*> themeList, ThemeData* current
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
 
-	cy = 0;
-	m_nBasic = 64;	// 스크롤 위아래 버튼 클릭 시 스크롤 간격
-	nViewHeight = 0;	// 스크롤 전체 출력 화면
-	nScrollPos = 0;	// 현재 스크롤의 위치
-	nPageSize = 0;	// 한페이지의 사이즈
 }
 
 SettingTheme::~SettingTheme()
@@ -36,18 +31,24 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_DETECTIVE, m_btn_theme_detective);
 	DDX_Control(pDX, IDC_BUTTON_THEME_CLOUD, m_btn_theme_cloud);
 	DDX_Control(pDX, IDC_BUTTON_THEME_LIGHT, m_btn_theme_light);
-	DDX_Control(pDX, IDC_BUTTON_THEME_NONE2, m_btn_theme_none2);
+	DDX_Control(pDX, IDC_BUTTON_THEME_MAGNIFIER, m_btn_theme_magnifier);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE3, m_btn_theme_none3);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE4, m_btn_theme_none4);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE5, m_btn_theme_none5);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE6, m_btn_theme_none6);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE7, m_btn_theme_none7);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE8, m_btn_theme_none8);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE9, m_btn_theme_none9);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE10, m_btn_theme_none10);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE11, m_btn_theme_none11);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE12, m_btn_theme_none12);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE_13, m_btn_theme_none13);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NONE_14, m_btn_theme_none14);
 }
 
 
 BEGIN_MESSAGE_MAP(SettingTheme, CDialogEx)
 	ON_WM_CTLCOLOR()
-	ON_WM_SIZE()
 	ON_WM_VSCROLL()
 	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
@@ -63,7 +64,7 @@ BOOL SettingTheme::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundImage(currentTheme->GetSettingThemeBkIconID());
-
+	
 	m_btn_theme_detective.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_DETECTIVE, _T("PNG"), true);
 	m_btn_theme_detective.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_DETECTIVE, _T("PNG"), true);
 	m_btn_theme_detective.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_DETECTIVE, _T("PNG"), true);
@@ -76,9 +77,9 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_light.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_LIGHT, _T("PNG"), true);
 	m_btn_theme_light.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_LIGHT, _T("PNG"), true);
 
-	m_btn_theme_none2.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none2.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none2.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_magnifier.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_MAGNIFIER, _T("PNG"), true);
+	m_btn_theme_magnifier.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_MAGNIFIER, _T("PNG"), true);
+	m_btn_theme_magnifier.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_MAGNIFIER, _T("PNG"), true);
 
 	m_btn_theme_none3.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
 	m_btn_theme_none3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
@@ -100,6 +101,34 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_none7.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
 	m_btn_theme_none7.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
 
+	m_btn_theme_none8.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none8.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none8.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none9.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none9.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none9.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none10.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none10.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none10.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none11.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none11.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none11.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none12.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none12.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none12.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none13.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none13.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none13.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
+	m_btn_theme_none14.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none14.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none14.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+
 	m_btn_theme_detective.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_theme_cloud.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
@@ -116,58 +145,100 @@ BOOL SettingTheme::OnInitDialog()
 
 void SettingTheme::SetCtlPos()
 {
+	scroll.Create(this);
+	CustomScroll::CustomScrollInfo csi;
+	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.nAllPageSize = 0;
+	csi.nKindOfScrollFlags = SB_VERT;
+	csi.nOnePageSize = 400 - 30 + 9;
+	csi.nScrollPos = 0;
+	scroll.Initialize(csi);
+
 	const int PICTURE_WIDTH = 64;
 	const int PICTURE_HEIGHT = 64;
-	const int LEFT_MARGIN = 20;
+	const int LEFT_MARGIN = 30;
 	const int TOP_MARGIN = 30;
 	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
 	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
 
-	// 첫재줄
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += TOP_MARGIN;
-	m_btn_theme_detective.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	// 첫번째 페이지, 페이지당 4줄
+	{
+		// 첫재줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += TOP_MARGIN;
+		m_btn_theme_detective.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_cloud.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_cloud.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_light.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_light.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	// 두번째줄
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-	m_btn_theme_none2.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		// 두번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_magnifier.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_none3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_none4.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none4.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	// 세번째줄
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-	m_btn_theme_none5.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		// 세번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_none5.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_none6.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none6.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_theme_none7.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none7.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		// 네번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_none8.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none9.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none10.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
+	scroll.LineEnd();
+
+	// 두번째 페이지, 페이지당 4줄
+	{
+		// 다섯번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_none11.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none12.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_none13.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		// 여섯번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_none14.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
+	scroll.LineEnd();
 
 	CRect SystemRect;
 	CPoint pos;
 	GetClientRect(SystemRect);
-	int nVector_Y = TOP_MARGIN * 4 + (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * 3;	
 	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
 	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
 
-	this->MoveWindow(pos.x, pos.y, 300, 300);
-	nViewHeight += nVector_Y;
-	SetScrollSize(cy);
-}
+	this->MoveWindow(pos.x, pos.y, MARGIN_X(300), MARGIN_Y(400));
 
+	scroll.ExecuteScrollPos(currentTheme);
+}
 
 void SettingTheme::OnOK()
 {
@@ -215,6 +286,17 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 		}
+		else if (pMsg->hwnd == m_btn_theme_magnifier.m_hWnd)
+		{
+			if (currentTheme->GetSettingThemeBkIconID() != IDB_BITMAP_CHOICE_BK_THEME_MAGNIFIER)
+			{
+				if (!bButtonHover)
+				{
+					bButtonHover = true;
+					InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_MAGNIFIER, themeList.at(3));
+				}
+			}
+		}
 		else
 		{
 			if (bButtonHover)
@@ -238,6 +320,10 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 		{
 			ExecuteSelectTheme(THEME_LIGHT);
 		}
+		else if (pMsg->hwnd == m_btn_theme_magnifier.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_MAGNIFIER);
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -247,16 +333,24 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 {
 	this->SetBackgroundImage(nSettingThemeBkIconID);
 	this->hoverTheme = hoverTheme;
+	scroll.ThemeChange(hoverTheme);
 	Invalidate();
 	m_btn_theme_detective.DisConnect();
 	m_btn_theme_cloud.DisConnect();
 	m_btn_theme_light.DisConnect();
-	m_btn_theme_none2.DisConnect();
+	m_btn_theme_magnifier.DisConnect();
 	m_btn_theme_none3.DisConnect();
 	m_btn_theme_none4.DisConnect();
 	m_btn_theme_none5.DisConnect();
 	m_btn_theme_none6.DisConnect();
 	m_btn_theme_none7.DisConnect();
+	m_btn_theme_none8.DisConnect();
+	m_btn_theme_none9.DisConnect();
+	m_btn_theme_none10.DisConnect();
+	m_btn_theme_none11.DisConnect();
+	m_btn_theme_none12.DisConnect();
+	m_btn_theme_none13.DisConnect();
+	m_btn_theme_none14.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)
@@ -270,6 +364,7 @@ void SettingTheme::ExecuteSelectTheme(int nThemeFlags)
 			currentTheme = themeList.at(i);	// 현재 테마를 설정한 테마로 바꾼다.
 		}
 	}
+	scroll.ThemeChange(currentTheme);
 	SaveCurrnetTheme();	// 테마 config 파일에 설정한 테마로 저장한다.
 	CBOKOToolsDlg* parent = (CBOKOToolsDlg*)pParent;
 	parent->ExecuteSelectTheme(currentTheme);	// 변경된 테마를 메인다이얼로그에 보낸다.
@@ -319,80 +414,11 @@ HBRUSH SettingTheme::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
-void SettingTheme::OnSize(UINT nType, int cx, int cy)
-{
-	CDialogEx::OnSize(nType, cx, cy);
-	this->cy = cy;
-	SetScrollSize(cy);
-
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-}
-
-void SettingTheme::SetScrollSize(int nThisHeight)
-{
-	//nViewHeight = nStartEditSize;// rect.Height() + 120;
-	int nScrollMax = 0;
-	if (nThisHeight < nViewHeight)
-	{
-		nScrollMax = nViewHeight - 1;
-		nPageSize = nThisHeight;
-		nScrollPos = min(nScrollPos, nViewHeight - nPageSize - 1);
-	}
-
-
-	SCROLLINFO si;
-	si.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
-	si.nMin = 0;
-	si.nMax = nScrollMax;
-	si.nPos = nScrollPos;
-	si.nPage = nPageSize;
-	SetScrollInfo(SB_VERT, &si, TRUE);
-}
-
 void SettingTheme::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	int delta = 0;
-	switch (nSBCode)
+	if (scroll.OperateScroll(nSBCode, nPos))
 	{
-	case SB_LINEUP:
-		delta = -m_nBasic;
-		break;
-	case SB_PAGEUP:
-		delta = -nPageSize;
-		break;
-	case SB_THUMBTRACK:
-		delta = static_cast<int>(nPos) - nScrollPos;
-		break;
-	case SB_PAGEDOWN:
-		delta = nPageSize;
-		break;
-	case SB_LINEDOWN:
-		delta = m_nBasic;
-		break;
-	default:
-		return;
-	}
-	int scrollpos = nScrollPos + delta;
-	int nMaxPos = nViewHeight - nPageSize;
-
-	if (scrollpos < 0)
-	{
-		delta = -nScrollPos;
-	}
-	else
-	{
-		if (scrollpos > nMaxPos)
-		{
-			delta = nMaxPos - nScrollPos;
-		}
-	}
-
-	if (delta != 0)
-	{
-		nScrollPos += delta;
-		SetScrollPos(SB_VERT, nScrollPos, TRUE);
-		ScrollWindow(0, -delta);
 		InvalidateTheme(hoverTheme->GetSettingThemeBkIconID(), hoverTheme);
 	}
 	//CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
@@ -402,16 +428,8 @@ void SettingTheme::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 BOOL SettingTheme::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	UINT nFlag;
-	if (zDelta > 0)	// 위스크롤
-	{
-		nFlag = SB_LINEUP;
-	}
-	else // 아래스크롤
-	{
-		nFlag = SB_LINEDOWN;
-	}
-
+	UINT nFlag = scroll.OperateWheel(zDelta);
 	OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT));
+
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

@@ -395,9 +395,13 @@ void BaseTimer::StartBaseTimer()
 			// 종료 소리 실행 함수
 			// func
 			bSoundThread = true;
-			m_soundThread = AfxBeginThread(thrLoadSound, this);
 			m_edit_basetimer_m.SetWindowTextW(_T("00"));
 			m_edit_basetimer_s.SetWindowTextW(_T("00"));
+			for (int i = 0; i < 20; i++)
+			{
+				m_soundThread = AfxBeginThread(thrLoadSound, this);
+				Sleep(6000);
+			}
 			ResetDefaultValue();
 			break;
 		}
@@ -415,6 +419,7 @@ void BaseTimer::StartBaseTimer()
 
 bool BaseTimer::DeleteMainThread()
 {
+	PlaySound(NULL, AfxGetInstanceHandle(), NULL);
 	DWORD nExitCode = NULL;
 
 	GetExitCodeThread(m_thread->m_hThread, &nExitCode);

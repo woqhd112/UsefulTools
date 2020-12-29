@@ -74,7 +74,10 @@ public:
 	void SetClickSound(CString strSoundPath);
 	void StartSound();
 	void DisConnect();
+	void UseHoverEvent();
+	void UserLeaveEvent();
 
+	bool m_bUseMouseEvent;
 
 protected:
 

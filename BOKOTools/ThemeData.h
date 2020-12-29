@@ -4,6 +4,7 @@
 #define THEME_DETECTIVE	0
 #define THEME_CLOUD 1
 #define THEME_LIGHT 2
+#define THEME_MAGNIFIER 3
 
 class ThemeData
 {
@@ -34,6 +35,7 @@ private:
 	FunctionIcon notepadIcon;
 	FunctionIcon basetimerIcon;
 	FunctionIcon worldclockIcon;
+	FunctionIcon scrollIcon;
 	COLORREF textColor;
 	COLORREF functionBkColor;
 	COLORREF functionSubColor;
@@ -60,6 +62,7 @@ public:
 	FunctionIcon GetNotePadIcon();
 	FunctionIcon GetBaseTimerIcon();
 	FunctionIcon GetWorldClockIcon();
+	FunctionIcon GetScrollIcon();
 	COLORREF GetTextColor();
 	COLORREF GetFunctionBkColor();
 	COLORREF GetFunctionSubColor();

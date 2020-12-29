@@ -62,6 +62,8 @@ CGdipButton::CGdipButton()
 
 	m_bHaveMinSize = FALSE;
 	m_bUseClickSoundEvent = FALSE;
+
+	m_bUseMouseEvent = true;
 }
 
 CGdipButton::~CGdipButton()
@@ -615,9 +617,7 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	PaintBtn(pDC);
 }
 
-//=============================================================================
-LRESULT CGdipButton::OnMouseHover(WPARAM wparam, LPARAM lparam) 
-//=============================================================================
+void CGdipButton::UseHoverEvent()
 {
 	m_bIsHovering = TRUE;
 	Invalidate();
@@ -634,6 +634,23 @@ LRESULT CGdipButton::OnMouseHover(WPARAM wparam, LPARAM lparam)
 			m_pToolTip->Update();
 		}
 	}
+}
+
+void CGdipButton::UserLeaveEvent()
+{
+	m_bIsTracking = FALSE;
+	m_bIsHovering = FALSE;
+	Invalidate();
+}
+
+//=============================================================================
+LRESULT CGdipButton::OnMouseHover(WPARAM wparam, LPARAM lparam) 
+//=============================================================================
+{
+	if (m_bUseMouseEvent)
+	{
+		UseHoverEvent();
+	}
 
 	return 0;
 }
@@ -643,9 +660,10 @@ LRESULT CGdipButton::OnMouseHover(WPARAM wparam, LPARAM lparam)
 LRESULT CGdipButton::OnMouseLeave(WPARAM wparam, LPARAM lparam)
 //=============================================================================
 {
-	m_bIsTracking = FALSE;
-	m_bIsHovering = FALSE;
-	Invalidate();
+	if (m_bUseMouseEvent)
+	{
+		UserLeaveEvent();
+	}
 	return 0;
 }
 

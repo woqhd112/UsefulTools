@@ -10,6 +10,8 @@
 
 #include "resource.h"		// 주 기호입니다.
 
+#define MARGIN_X(Width)	{Width + 18}
+#define MARGIN_Y(Height) {Height + 47}
 
 // CBOKOToolsApp:
 // 이 클래스의 구현에 대해서는 BOKOTools.cpp을(를) 참조하세요.

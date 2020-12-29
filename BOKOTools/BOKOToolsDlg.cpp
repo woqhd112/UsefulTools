@@ -99,6 +99,10 @@ BEGIN_MESSAGE_MAP(CBOKOToolsDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_WORLD_CLOCK_GDI, &CBOKOToolsDlg::OnBnClickedButtonWorldClockGdi)
 	ON_COMMAND(ID_MENU_SETTING_THEME, &CBOKOToolsDlg::OnMenuSettingTheme)
 	ON_WM_RBUTTONDOWN()
+	ON_COMMAND(ID_MENU_SORT_ICON, &CBOKOToolsDlg::OnMenuSortIcon)
+	ON_WM_CLOSE()
+	ON_WM_VSCROLL()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -136,6 +140,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
 	LoadTheme();
+
 
 	bBase = false;
 	bEngineering = false;
@@ -276,7 +281,19 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
 	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
 
-	Invalidate();
+	m_btn_base_gdi.Invalidate();
+	m_btn_calculator_gdi.Invalidate();
+	m_btn_stopwatch_gdi.Invalidate();
+	m_btn_converter_gdi.Invalidate();
+	m_btn_date_gdi.Invalidate();
+	m_btn_worktimer_gdi.Invalidate();
+	m_btn_notepad_gdi.Invalidate();
+	m_btn_basetimer_gdi.Invalidate();
+	m_btn_world_clock_gdi.Invalidate();
+	m_btn_comingsoon_1.Invalidate();
+	m_btn_comingsoon_2.Invalidate();
+	m_btn_comingsoon_3.Invalidate();
+
 }
 
 void CBOKOToolsDlg::LoadTheme()
@@ -285,10 +302,12 @@ void CBOKOToolsDlg::LoadTheme()
 	ThemeData* theme1 = new ThemeData(THEME_DETECTIVE);
 	ThemeData* theme2 = new ThemeData(THEME_CLOUD);
 	ThemeData* theme3 = new ThemeData(THEME_LIGHT);
+	ThemeData* theme4 = new ThemeData(THEME_MAGNIFIER);
 
 	themeList.push_back(theme1);
 	themeList.push_back(theme2);
 	themeList.push_back(theme3);
+	themeList.push_back(theme4);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
@@ -302,6 +321,10 @@ void CBOKOToolsDlg::LoadTheme()
 	else if (nFlags == THEME_LIGHT)
 	{
 		currentTheme = theme3;
+	}
+	else if (nFlags == THEME_MAGNIFIER)
+	{
+		currentTheme = theme4;
 	}
 }
 
@@ -402,6 +425,15 @@ bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, 
 
 void CBOKOToolsDlg::SetCtlPos()
 {
+	scroll.Create(this);
+	CustomScroll::CustomScrollInfo csi;
+	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.nAllPageSize = 0;
+	csi.nKindOfScrollFlags = SB_VERT;
+	csi.nOnePageSize = 597 - 30 + 9;
+	csi.nScrollPos = 0;
+	scroll.Initialize(csi);
+
 	CRect rect;
 	m_stt_base.GetWindowRect(rect);
 
@@ -416,57 +448,65 @@ void CBOKOToolsDlg::SetCtlPos()
 	int nCtlPos_X = 0;
 	int nCtlPos_Y = 0;
 
-	// 첫재줄
-	nCtlPos_X += LEFT_MARGIN;
-	nCtlPos_Y += TOP_MARGIN;
-	m_btn_base_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_base.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+	// 첫번째 페이지
+	{
+		// 첫재줄
+		nCtlPos_X += LEFT_MARGIN;
+		nCtlPos_Y += TOP_MARGIN;
+		m_btn_base_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_base.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_calculator_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_engineering.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_calculator_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_engineering.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_stopwatch_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_stopwatch.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_stopwatch_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_stopwatch.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_converter_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_converter.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		// 두번째줄
+		nCtlPos_X = LEFT_MARGIN;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_converter_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_converter.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	// 두번째줄
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-	m_btn_date_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_date.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_date_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_date.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 	
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_worktimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_worktimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_worktimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_worktimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_notepad_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_notepad.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		// 셋째줄
+		nCtlPos_X = LEFT_MARGIN;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_notepad_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_notepad.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_basetimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_basetimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_basetimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_basetimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
 
-	// 셋째줄
-	nCtlPos_X = LEFT_MARGIN;
-	nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-	m_btn_world_clock_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	m_stt_world_clock.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_world_clock_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_stt_world_clock.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+	}
+	scroll.LineEnd();
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_comingsoon_1.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	// 두번째 페이지
+	{
+		nCtlPos_X = LEFT_MARGIN;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + 47 + 60 - 6;
+		m_btn_comingsoon_1.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_comingsoon_2.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_comingsoon_2.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
-	nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-	m_btn_comingsoon_3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_comingsoon_3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
+	scroll.LineEnd();
 
 	CRect SystemRect;
 	CPoint pos;
@@ -478,7 +518,12 @@ void CBOKOToolsDlg::SetCtlPos()
 	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
 	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
 
-	this->MoveWindow(pos.x, pos.y, nVector_X, nVector_Y);
+	// 윈도우의 다이얼로그 사이즈는 양옆 위아래로 9씩의 마진값과 상단 타이틀의 38의 마진값을 가진다.
+	// 그래서 사이즈 조정시 넓이 + 18, 높이 + 47을 입력해야한다.
+	//this->MoveWindow(pos.x, pos.y, nVector_X, nVector_Y);
+	this->MoveWindow(pos.x, pos.y, MARGIN_X(730), MARGIN_Y(550));
+
+	scroll.ExecuteScrollPos(currentTheme);
 }
 
 void CBOKOToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -790,21 +835,33 @@ void CBOKOToolsDlg::OnMenuSettingTheme()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	SettingTheme settingtheme(themeList, currentTheme, this);
-	if (settingtheme.DoModal() == IDCANCEL)
-	{
-		
-	}
+	settingtheme.DoModal();
 }
 
+void CBOKOToolsDlg::OnMenuSortIcon()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	SortIcon sorticon(currentTheme, this);
+	sorticon.DoModal();
+}
 
 void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
 	CMenu mainMenu;
 	mainMenu.LoadMenuW(IDR_MENU_MAIN);
 
 	CMenu* pPopupMenu = mainMenu.GetSubMenu(0);
 
+	/*MENUINFO MenuInfo = { 0 };
+	MenuInfo.cbSize = sizeof(MENUINFO);
+	pPopupMenu->GetMenuInfo(&MenuInfo);
+	MenuInfo.hbrBack = ::CreateSolidBrush(currentTheme->GetFunctionSubColor());
+	MenuInfo.fMask = MIM_BACKGROUND | MIM_STYLE;
+	MenuInfo.dwStyle = MIM_APPLYTOSUBMENUS;
+	pPopupMenu->SetMenuInfo(&MenuInfo);*/
+	
 	this->ClientToScreen(&point);
 	
 	pPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
@@ -816,5 +873,40 @@ void CBOKOToolsDlg::ExecuteSelectTheme(ThemeData* selectTheme)
 {
 	currentTheme = selectTheme;
 	LoadUserInterface(currentTheme);
+	scroll.ThemeChange(currentTheme);
+	Invalidate();
+}
 
+
+
+void CBOKOToolsDlg::OnClose()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	if (bBase || bEngineering || bConverter || bDate || bStopWatch || bTimer || bNotepad || bBaseTimer || bWorldClock)
+	{
+		if (MessageBox(_T("도구가 열려있습니다. 정말 종료하겠습니까?"), _T("종료"), MB_ICONQUESTION | MB_OKCANCEL) != IDOK)
+		{
+			return;
+		}
+	}
+
+	CDialogEx::OnClose();
+}
+
+
+void CBOKOToolsDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	scroll.OperateScroll(nSBCode, nPos);
+	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+BOOL CBOKOToolsDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	UINT nFlag = scroll.OperateWheel(zDelta);
+	OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT));
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

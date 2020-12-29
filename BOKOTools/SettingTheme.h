@@ -4,6 +4,7 @@
 #include "CalculateStatic.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
+#include "CustomScroll.h"
 #include <vector>
 
 // SettingTheme 대화 상자
@@ -26,12 +27,19 @@ private:
 	CGdipButton m_btn_theme_detective;
 	CGdipButton m_btn_theme_cloud;
 	CGdipButton m_btn_theme_light;
-	CGdipButton m_btn_theme_none2;
+	CGdipButton m_btn_theme_magnifier;
 	CGdipButton m_btn_theme_none3;
 	CGdipButton m_btn_theme_none4;
 	CGdipButton m_btn_theme_none5;
 	CGdipButton m_btn_theme_none6;
 	CGdipButton m_btn_theme_none7;
+	CGdipButton m_btn_theme_none8;
+	CGdipButton m_btn_theme_none9;
+	CGdipButton m_btn_theme_none10;
+	CGdipButton m_btn_theme_none11;
+	CGdipButton m_btn_theme_none12;
+	CGdipButton m_btn_theme_none13;
+	CGdipButton m_btn_theme_none14;
 
 	CWnd* pParent;
 	std::vector<ThemeData*> themeList;
@@ -39,16 +47,12 @@ private:
 	ThemeData* hoverTheme;
 
 	bool bButtonHover;
-	int nViewHeight;
-	int nScrollPos;
-	int nPageSize;
-	int m_nBasic;
-	int cy;
 
 	int nCtlPos_X = 0;
 	int nCtlPos_Y = 0;
 
-	void SetScrollSize(int nThisHeight);;
+	CustomScroll scroll;
+
 	void SetCtlPos();
 	void ExecuteSelectTheme(int nThemeFlags);
 	void InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTheme);
@@ -65,7 +69,6 @@ public:
 	virtual void OnOK();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };

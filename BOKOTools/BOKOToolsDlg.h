@@ -5,6 +5,7 @@
 #pragma once
 #include "ThemeData.h"
 #include "SettingTheme.h"
+#include "SortIcon.h"
 #include "BaseCalculate.h"
 #include "EngineeringCalculate.h"
 #include "UnitConverter.h"
@@ -80,6 +81,7 @@ private:
 
 	std::vector<ThemeData*> themeList;
 	ThemeData* currentTheme;
+	CustomScroll scroll;
 
 	void SetCtlPos();
 	void LoadTheme();
@@ -121,4 +123,8 @@ public:
 	afx_msg void OnBnClickedButtonWorldClockGdi();
 	afx_msg void OnMenuSettingTheme();
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMenuSortIcon();
+	afx_msg void OnClose();
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
