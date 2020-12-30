@@ -165,13 +165,13 @@ HBRUSH StopWatch::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_HMS)
 		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_MILS)
 		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
@@ -340,7 +340,7 @@ void StopWatch::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
 
 	CBrush *pOld = dc.SelectObject(&m_backBrush);
 	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);

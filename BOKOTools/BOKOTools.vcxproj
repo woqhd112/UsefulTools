@@ -196,6 +196,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AllButtonList.h" />
     <ClInclude Include="BaseCalculate.h" />
     <ClInclude Include="BaseTimer.h" />
     <ClInclude Include="CalculateButton.h" />
@@ -214,6 +215,7 @@
     <ClInclude Include="CXml\XmlNode.h" />
     <ClInclude Include="CXml\XmlNodes.h" />
     <ClInclude Include="CXml\Xsl.h" />
+    <ClInclude Include="DragDialog.h" />
     <ClInclude Include="EngineeringCalculate.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GdipButton.h" />
@@ -228,6 +230,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResultTimeline.h" />
     <ClInclude Include="SettingTheme.h" />
+    <ClInclude Include="SortButtonList.h" />
     <ClInclude Include="SortIcon.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="DateCalculate.h" />
@@ -238,9 +241,11 @@
     <ClInclude Include="WorldClock.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AllButtonList.cpp" />
     <ClCompile Include="BaseCalculate.cpp" />
     <ClCompile Include="BaseTimer.cpp" />
     <ClCompile Include="CustomScroll.cpp" />
+    <ClCompile Include="DragDialog.cpp" />
     <ClCompile Include="GdipButton.cpp" />
     <ClCompile Include="BOKOTools.cpp" />
     <ClCompile Include="BOKOToolsDlg.cpp" />
@@ -271,6 +276,7 @@
     <ClCompile Include="ResultTimeline.cpp" />
     <ClCompile Include="DateCalculate.cpp" />
     <ClCompile Include="SettingTheme.cpp" />
+    <ClCompile Include="SortButtonList.cpp" />
     <ClCompile Include="SortIcon.cpp" />
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="ThemeData.cpp" />
@@ -411,6 +417,41 @@
     <Image Include="res\Theme_Detective\WorldClock_B.png" />
     <Image Include="res\Theme_Detective\WorldClock_C.png" />
     <Image Include="res\Theme_Detective\WorldClock_U.png" />
+    <Image Include="res\Theme_Ink\BaseTimer_B.png" />
+    <Image Include="res\Theme_Ink\BaseTimer_C.png" />
+    <Image Include="res\Theme_Ink\BaseTimer_U.png" />
+    <Image Include="res\Theme_Ink\Base_B.png" />
+    <Image Include="res\Theme_Ink\Base_C.png" />
+    <Image Include="res\Theme_Ink\Base_U.png" />
+    <Image Include="res\Theme_Ink\ComingSoon.png" />
+    <Image Include="res\Theme_Ink\Converter_B.png" />
+    <Image Include="res\Theme_Ink\Converter_C.png" />
+    <Image Include="res\Theme_Ink\Converter_U.png" />
+    <Image Include="res\Theme_Ink\DateCal_B.png" />
+    <Image Include="res\Theme_Ink\DateCal_C.png" />
+    <Image Include="res\Theme_Ink\DateCal_U.png" />
+    <Image Include="res\Theme_Ink\Engineering_B.png" />
+    <Image Include="res\Theme_Ink\Engineering_C.png" />
+    <Image Include="res\Theme_Ink\Engineering_U.png" />
+    <Image Include="res\Theme_Ink\Main_BK.bmp" />
+    <Image Include="res\Theme_Ink\NotePad_B.png" />
+    <Image Include="res\Theme_Ink\NotePad_C.png" />
+    <Image Include="res\Theme_Ink\NotePad_U.png" />
+    <Image Include="res\Theme_Ink\Scroll_icon_A.png" />
+    <Image Include="res\Theme_Ink\Scroll_icon_B.png" />
+    <Image Include="res\Theme_Ink\StopWatch_B.png" />
+    <Image Include="res\Theme_Ink\StopWatch_C.png" />
+    <Image Include="res\Theme_Ink\StopWatch_U.png" />
+    <Image Include="res\Theme_Ink\ThemaChange_B.png" />
+    <Image Include="res\Theme_Ink\ThemaChange_C.png" />
+    <Image Include="res\Theme_Ink\ThemaChange_U.png" />
+    <Image Include="res\Theme_Ink\ThemaChoice_BK.bmp" />
+    <Image Include="res\Theme_Ink\WorkTimer_B.png" />
+    <Image Include="res\Theme_Ink\WorkTimer_C.png" />
+    <Image Include="res\Theme_Ink\WorkTimer_U.png" />
+    <Image Include="res\Theme_Ink\WorldClock_B.png" />
+    <Image Include="res\Theme_Ink\WorldClock_C.png" />
+    <Image Include="res\Theme_Ink\WorldClock_U.png" />
     <Image Include="res\Theme_Light\BaseTimer_B.png" />
     <Image Include="res\Theme_Light\BaseTimer_C.png" />
     <Image Include="res\Theme_Light\BaseTimer_U.png" />

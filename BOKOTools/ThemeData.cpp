@@ -20,13 +20,15 @@ ThemeData::ThemeData(int nThemeFlags)
 		basetimerIcon = { IDB_PNG_BASETIMER_NOMAL_THEME_DETECTIVE, IDB_PNG_BASETIMER_HOVER_THEME_DETECTIVE, IDB_PNG_BASETIMER_CLICK_THEME_DETECTIVE };
 		worldclockIcon = { IDB_PNG_WORLDCLOCK_NOMAL_THEME_DETECTIVE, IDB_PNG_WORLDCLOCK_HOVER_THEME_DETECTIVE, IDB_PNG_WORLDCLOCK_CLICK_THEME_DETECTIVE };
 		scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_DETECTIVE, IDB_PNG_SCROLL_SIGNAL_THEME_DETECTIVE, IDB_PNG_SCROLL_NONSIGNAL_THEME_DETECTIVE };
+		commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_DETECTIVE, IDB_PNG_COMINGSOON_THEME_DETECTIVE, IDB_PNG_COMINGSOON_THEME_DETECTIVE };
 		textColor = RGB(255, 255, 255);
-		functionBkColor = RGB(49, 20, 6);
-		functionSubColor = RGB(77, 32, 11);
-		functionSubSubColor = RGB(122, 51, 16);
-		functionRectBorderColor = RGB(255, 255, 255);
+		functionTextColor = RGB(0, 0, 0);
+		functionBkColor = RGB(0, 0, 0);//RGB(49, 20, 6);
+		functionSubColor = RGB(255, 255, 255);//RGB(77, 32, 11);
+		rectBorderColor = RGB(255, 255, 255);
+		functionRectBorderColor = RGB(0, 0, 0);
+		functionSubSubColor = RGB(0, 0, 0);
 		buttonColor = RGB(50, 50, 50);
-		nCommingSoonIconID = IDB_PNG_COMINGSOON_THEME_DETECTIVE;
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_DETECTIVE;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_DETECTIVE;
 	}
@@ -46,13 +48,15 @@ ThemeData::ThemeData(int nThemeFlags)
 		basetimerIcon = { IDB_PNG_BASETIMER_NOMAL_THEME_CLOUD, IDB_PNG_BASETIMER_HOVER_THEME_CLOUD, IDB_PNG_BASETIMER_CLICK_THEME_CLOUD };
 		worldclockIcon = { IDB_PNG_WORLDCLOCK_NOMAL_THEME_CLOUD, IDB_PNG_WORLDCLOCK_HOVER_THEME_CLOUD, IDB_PNG_WORLDCLOCK_CLICK_THEME_CLOUD };
 		scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_CLOUD, IDB_PNG_SCROLL_SIGNAL_THEME_CLOUD, IDB_PNG_SCROLL_NONSIGNAL_THEME_CLOUD };
-		textColor = RGB(20, 27, 37);
+		commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_CLOUD, IDB_PNG_COMINGSOON_THEME_CLOUD, IDB_PNG_COMINGSOON_THEME_CLOUD };
+		textColor = RGB(44, 51, 61);
+		functionTextColor = RGB(81, 153, 177);
 		functionBkColor = RGB(99, 177, 198);
-		functionSubColor = RGB(118, 189, 207);
+		functionSubColor = RGB(255, 255, 255);
 		functionSubSubColor = RGB(137, 202, 217);
+		rectBorderColor = RGB(255, 255, 255);
 		functionRectBorderColor = RGB(255, 255, 255);
 		buttonColor = RGB(147, 212, 227);
-		nCommingSoonIconID = IDB_PNG_COMINGSOON_THEME_CLOUD;
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_CLOUD;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_CLOUD;
 	}
@@ -72,13 +76,15 @@ ThemeData::ThemeData(int nThemeFlags)
 		basetimerIcon = { IDB_PNG_BASETIMER_NOMAL_THEME_LIGHT, IDB_PNG_BASETIMER_HOVER_THEME_LIGHT, IDB_PNG_BASETIMER_CLICK_THEME_LIGHT };
 		worldclockIcon = { IDB_PNG_WORLDCLOCK_NOMAL_THEME_LIGHT, IDB_PNG_WORLDCLOCK_HOVER_THEME_LIGHT, IDB_PNG_WORLDCLOCK_CLICK_THEME_LIGHT };
 		scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_LIGHT, IDB_PNG_SCROLL_SIGNAL_THEME_LIGHT, IDB_PNG_SCROLL_NONSIGNAL_THEME_LIGHT };
-		textColor = RGB(255, 255, 255);
+		commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_LIGHT, IDB_PNG_COMINGSOON_THEME_LIGHT, IDB_PNG_COMINGSOON_THEME_LIGHT };
+		textColor = RGB(217, 183, 130);
+		functionTextColor = RGB(21, 20, 20);
 		functionBkColor = RGB(21, 20, 20); 
-		functionSubColor = RGB(45, 26, 20); 
+		functionSubColor = RGB(77, 40, 30); 
 		functionSubSubColor = RGB(60, 39, 23); 
-		functionRectBorderColor = RGB(255, 255, 255);
+		rectBorderColor = RGB(77, 40, 30);
+		functionRectBorderColor = RGB(21, 20, 20);
 		buttonColor = RGB(80, 59, 43);	//130, 109, 93
-		nCommingSoonIconID = IDB_PNG_COMINGSOON_THEME_LIGHT;
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_LIGHT;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_LIGHT;
 	}
@@ -98,15 +104,45 @@ ThemeData::ThemeData(int nThemeFlags)
 		basetimerIcon = { IDB_PNG_BASETIMER_NOMAL_THEME_MAGNIFIER, IDB_PNG_BASETIMER_HOVER_THEME_MAGNIFIER, IDB_PNG_BASETIMER_CLICK_THEME_MAGNIFIER };
 		worldclockIcon = { IDB_PNG_WORLDCLOCK_NOMAL_THEME_MAGNIFIER, IDB_PNG_WORLDCLOCK_HOVER_THEME_MAGNIFIER, IDB_PNG_WORLDCLOCK_CLICK_THEME_MAGNIFIER };
 		scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_MAGNIFIER, IDB_PNG_SCROLL_SIGNAL_THEME_MAGNIFIER, IDB_PNG_SCROLL_NONSIGNAL_THEME_MAGNIFIER };
-		textColor = RGB(2, 2, 2);
-		functionBkColor = RGB(78, 67, 66);
-		functionSubColor = RGB(101, 88, 78);
+		commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_MAGNIFIER, IDB_PNG_COMINGSOON_THEME_MAGNIFIER, IDB_PNG_COMINGSOON_THEME_MAGNIFIER };
+		textColor = RGB(3, 3, 3);
+		functionTextColor = RGB(255, 255, 255);
+		functionBkColor = RGB(133, 118, 102);
+		functionSubColor = RGB(3, 3, 3);
 		functionSubSubColor = RGB(134, 120, 104);
-		functionRectBorderColor = RGB(81, 48, 46);
+		rectBorderColor = RGB(3, 3, 3);
+		functionRectBorderColor = RGB(255, 255, 255);
 		buttonColor = RGB(134, 120, 104);
-		nCommingSoonIconID = IDB_PNG_COMINGSOON_THEME_MAGNIFIER;
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_MAGNIFIER;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_MAGNIFIER;
+	}
+	else if (nThemeFlags == THEME_INK)
+	{
+	strThemeName = _T("¼ö¹¬ Å×¸¶");
+	this->nThemeFlags = nThemeFlags;
+	strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Ink\\MouseClick.wav");
+	themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_INK, IDB_PNG_CHANGE_HOVER_THEME_INK, IDB_PNG_CHANGE_CLICK_THEME_INK };
+	baseIcon = { IDB_PNG_BASE_NOMAL_THEME_INK, IDB_PNG_BASE_HOVER_THEME_INK, IDB_PNG_BASE_CLICK_THEME_INK };
+	engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_INK, IDB_PNG_ENGINEERING_HOVER_THEME_INK, IDB_PNG_ENGINEERING_CLICK_THEME_INK };
+	stopwatchIcon = { IDB_PNG_STOPWATCH_NOMAL_THEME_INK, IDB_PNG_STOPWATCH_HOVER_THEME_INK, IDB_PNG_STOPWATCH_CLICK_THEME_INK };
+	converterIcon = { IDB_PNG_CONVERTER_NOMAL_THEME_INK, IDB_PNG_CONVERTER_HOVER_THEME_INK, IDB_PNG_CONVERTER_CLICK_THEME_INK };
+	datecalIcon = { IDB_PNG_DATECAL_NOMAL_THEME_INK, IDB_PNG_DATECAL_HOVER_THEME_INK, IDB_PNG_DATECAL_CLICK_THEME_INK };
+	worktimerIcon = { IDB_PNG_WORKTIMER_NOMAL_THEME_INK, IDB_PNG_WORKTIMER_HOVER_THEME_INK, IDB_PNG_WORKTIMER_CLICK_THEME_INK };
+	notepadIcon = { IDB_PNG_NOTEPAD_NOMAL_THEME_INK, IDB_PNG_NOTEPAD_HOVER_THEME_INK, IDB_PNG_NOTEPAD_CLICK_THEME_INK };
+	basetimerIcon = { IDB_PNG_BASETIMER_NOMAL_THEME_INK, IDB_PNG_BASETIMER_HOVER_THEME_INK, IDB_PNG_BASETIMER_CLICK_THEME_INK };
+	worldclockIcon = { IDB_PNG_WORLDCLOCK_NOMAL_THEME_INK, IDB_PNG_WORLDCLOCK_HOVER_THEME_INK, IDB_PNG_WORLDCLOCK_CLICK_THEME_INK };
+	scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_INK, IDB_PNG_SCROLL_SIGNAL_THEME_INK, IDB_PNG_SCROLL_NONSIGNAL_THEME_INK };
+	commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_INK, IDB_PNG_COMINGSOON_THEME_INK, IDB_PNG_COMINGSOON_THEME_INK };
+	textColor = RGB(17, 17, 17);
+	functionTextColor = RGB(238, 238, 238);
+	functionBkColor = RGB(238, 238, 238);
+	functionSubColor = RGB(17, 17, 17);
+	functionSubSubColor = RGB(255, 255, 255);
+	rectBorderColor = RGB(17, 17, 17);
+	functionRectBorderColor = RGB(238, 238, 238);
+	buttonColor = RGB(115, 115, 115);
+	nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_INK;
+	nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_INK;
 	}
 }
 
@@ -190,6 +226,11 @@ COLORREF ThemeData::GetTextColor()
 	return textColor;
 }
 
+COLORREF ThemeData::GetFunctionTextColor()
+{
+	return functionTextColor;
+}
+
 COLORREF ThemeData::GetFunctionBkColor()
 {
 	return functionBkColor;
@@ -205,6 +246,11 @@ COLORREF ThemeData::GetFunctionSubSubColor()
 	return functionSubSubColor;
 }
 
+COLORREF ThemeData::GetRectBorderColor()
+{
+	return rectBorderColor;
+}
+
 COLORREF ThemeData::GetFunctionRectBorderColor()
 {
 	return functionRectBorderColor;
@@ -215,9 +261,9 @@ COLORREF ThemeData::GetButtonColor()
 	return buttonColor;
 }
 
-int ThemeData::GetCommingSoonIconID()
+ThemeData::FunctionIcon ThemeData::GetCommingSoonIcon()
 {
-	return nCommingSoonIconID;
+	return commingSoonIcon;
 }
 
 int ThemeData::GetSettingThemeBkIconID()

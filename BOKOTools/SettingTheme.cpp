@@ -32,7 +32,7 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_CLOUD, m_btn_theme_cloud);
 	DDX_Control(pDX, IDC_BUTTON_THEME_LIGHT, m_btn_theme_light);
 	DDX_Control(pDX, IDC_BUTTON_THEME_MAGNIFIER, m_btn_theme_magnifier);
-	DDX_Control(pDX, IDC_BUTTON_THEME_NONE3, m_btn_theme_none3);
+	DDX_Control(pDX, IDC_BUTTON_THEME_INK, m_btn_theme_ink);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE4, m_btn_theme_none4);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE5, m_btn_theme_none5);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NONE6, m_btn_theme_none6);
@@ -81,53 +81,53 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_magnifier.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_MAGNIFIER, _T("PNG"), true);
 	m_btn_theme_magnifier.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_MAGNIFIER, _T("PNG"), true);
 
-	m_btn_theme_none3.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none3.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_ink.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_INK, _T("PNG"), true);
+	m_btn_theme_ink.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_INK, _T("PNG"), true);
+	m_btn_theme_ink.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_INK, _T("PNG"), true);
 
-	m_btn_theme_none4.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none4.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none4.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none4.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none4.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none4.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none5.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none5.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none5.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none5.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none5.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none5.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none6.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none6.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none6.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none6.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none6.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none6.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none7.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none7.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none7.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none7.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none7.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none7.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none8.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none8.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none8.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none8.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none8.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none8.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none9.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none9.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none9.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none9.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none9.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none9.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none10.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none10.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none10.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none10.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none10.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none10.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none11.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none11.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none11.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none11.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none11.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none11.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none12.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none12.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none12.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none12.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none12.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none12.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none13.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none13.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none13.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none13.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none13.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none13.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
-	m_btn_theme_none14.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none14.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
-	m_btn_theme_none14.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"), true);
+	m_btn_theme_none14.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none14.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
+	m_btn_theme_none14.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"), true);
 
 	m_btn_theme_detective.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_theme_cloud.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -180,7 +180,7 @@ void SettingTheme::SetCtlPos()
 		m_btn_theme_magnifier.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_none3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_btn_theme_ink.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
 		m_btn_theme_none4.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
@@ -297,6 +297,17 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 		}
+		else if (pMsg->hwnd == m_btn_theme_ink.m_hWnd)
+		{
+			if (currentTheme->GetSettingThemeBkIconID() != IDB_BITMAP_CHOICE_BK_THEME_INK)
+			{
+				if (!bButtonHover)
+				{
+					bButtonHover = true;
+					InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_INK, themeList.at(4));
+				}
+			}
+		}
 		else
 		{
 			if (bButtonHover)
@@ -324,6 +335,10 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 		{
 			ExecuteSelectTheme(THEME_MAGNIFIER);
 		}
+		else if (pMsg->hwnd == m_btn_theme_ink.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_INK);
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -339,7 +354,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_cloud.DisConnect();
 	m_btn_theme_light.DisConnect();
 	m_btn_theme_magnifier.DisConnect();
-	m_btn_theme_none3.DisConnect();
+	m_btn_theme_ink.DisConnect();
 	m_btn_theme_none4.DisConnect();
 	m_btn_theme_none5.DisConnect();
 	m_btn_theme_none6.DisConnect();
@@ -428,8 +443,12 @@ void SettingTheme::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 BOOL SettingTheme::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	UINT nFlag = scroll.OperateWheel(zDelta);
-	OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT));
-
+	if (scroll.GetLineCount() > 1)
+	{
+		UINT nFlag = scroll.OperateWheel(zDelta);
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
+	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

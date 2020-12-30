@@ -64,6 +64,11 @@ CGdipButton::CGdipButton()
 	m_bUseClickSoundEvent = FALSE;
 
 	m_bUseMouseEvent = true;
+	m_nStateMouseEvent = 0;
+
+	nStdImageID = 0;
+	nHovImageID = 0;
+	nAltImageID = 0;
 }
 
 CGdipButton::~CGdipButton()
@@ -115,6 +120,7 @@ BOOL CGdipButton::LoadStdImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FAL
 {
 	CPngImage png;
 	png.Load(id);
+	nStdImageID = id;
 	this->m_bHaveMinSize = bHavMinSize;
 	m_pStdImage = new CGdiPlusBitmapResource;
 	return m_pStdImage->Load(id, pType);
@@ -141,6 +147,7 @@ BOOL CGdipButton::LoadStdImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FAL
 BOOL CGdipButton::LoadAltImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FALSE*/)
 {
 	//m_bHaveAltImage = TRUE;
+	nAltImageID = id;
 	this->m_bHaveMinSize = bHavMinSize;
 	m_pAltImage = new CGdiPlusBitmapResource;
 	return (m_pAltImage->Load(id, pType));
@@ -148,6 +155,7 @@ BOOL CGdipButton::LoadAltImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FAL
 
 BOOL CGdipButton::LoadHovImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FALSE*/)
 {
+	nHovImageID = id;
 	this->m_bHaveMinSize = bHavMinSize;
 	m_pHovImage = new CGdiPlusBitmapResource;
 	return (m_pHovImage->Load(id, pType));
@@ -574,6 +582,7 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 	if(bIsPressed)
 	{
+		m_nStateMouseEvent = 2;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcAlt; 
@@ -587,7 +596,7 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	}
 	else if(m_bIsHovering)
 	{
-
+		m_nStateMouseEvent = 1;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcHov;
@@ -601,6 +610,7 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	}
 	else
 	{
+		m_nStateMouseEvent = 0;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcStd;

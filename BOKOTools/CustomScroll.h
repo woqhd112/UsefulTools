@@ -28,6 +28,7 @@ public:
 	};
 
 	void Create(CWnd* pDialogCtl);
+	void Destroy();
 	void Initialize(CustomScrollInfo csi);
 	void LineEnd();
 	void LoadScroll(int nThisHeight);
@@ -37,6 +38,9 @@ public:
 
 	bool OperateScroll(int nSBCode, int nPos);
 	UINT OperateWheel(short zDelta);
+
+	int GetLineCount();
+	int GetCurrentLinePos();
 
 private:
 

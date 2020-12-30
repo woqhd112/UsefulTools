@@ -92,10 +92,10 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_btn_test4.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
 	m_btn_test4.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test4.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test1.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test2.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test3.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test4.SetTextColor(currentTheme->GetTextColor());
+	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
+	m_btn_test2.SetTextColor(currentTheme->GetFunctionTextColor());
+	m_btn_test3.SetTextColor(currentTheme->GetFunctionTextColor());
+	m_btn_test4.SetTextColor(currentTheme->GetFunctionTextColor());
 
 	m_edit_date.Initialize(18, _T("휴먼매직체"));
 	m_edit_hour.Initialize(18, _T("휴먼매직체"));
@@ -427,25 +427,25 @@ HBRUSH ConvertTimeTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_DATE)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_HOUR)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_MINUTE)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_SECOND)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}

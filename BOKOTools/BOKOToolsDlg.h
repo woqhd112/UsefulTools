@@ -83,14 +83,29 @@ private:
 	ThemeData* currentTheme;
 	CustomScroll scroll;
 
-	void SetCtlPos();
+	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void LoadTheme();
 	int LoadCurrnetTheme();
+	void LoadButtonPos();
 	void LoadUserInterface(ThemeData* currentTheme);
-	void CreateConfigFile(CString& strFullPath);
+	void CreateConfigPosFile(CString& strFullPath);
+	bool CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector);
+	void CreateConfigThemeFile(CString& strFullPath);
 	bool CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, int& nThemeFlags);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
+	void ButtonCtlDisConnect();
+	void ResetScrollAndButton();
+
+	const int PICTURE_WIDTH = 128;
+	const int PICTURE_HEIGHT = 128;
+	const int LEFT_MARGIN = 30;
+	const int TOP_MARGIN = 30;
+	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
+	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
+	const int STATIC_HEIGHT = 18;
+	int nPageCount;
+	int nCtlItemCount;
 
 public:
 	bool bBase;
@@ -104,6 +119,9 @@ public:
 	bool bWorldClock;
 
 	void ExecuteSelectTheme(ThemeData* selectTheme);
+	void SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y);
+
+	std::vector<std::vector<int>> ctlItemVector;
 
 public:
 

@@ -149,6 +149,8 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	bStopWatch = false;
 	bTimer = false;
 	bNotepad = false;
+	nPageCount = 0;
+	nCtlItemCount = 0;
 
 	//m_returnBrush.CreateSolidBrush(RGB(35, 35, 35));
 
@@ -199,7 +201,8 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_basetimer.BringWindowToTop();
 	m_stt_world_clock.BringWindowToTop();
 
-	SetCtlPos();
+	//SetCtlPos();
+	LoadButtonPos();
 
 	AfxEnableControlContainer();
 	AfxInitRichEdit2();
@@ -207,22 +210,69 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
+void CBOKOToolsDlg::LoadButtonPos()
+{
+	// xml 미존재시 creat 존재시 load
+	// setctlpos에서 lineend 설정 
+
+	int nThemeFlags = 0;
+	bool bSavedXml = false;
+	CMarkup markUp;
+
+	CString szRoot = _T("");
+	CreateConfigPosFile(szRoot);
+
+	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
+
+	std::vector<std::vector<int>> buttonCtlPosVector;
+
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Position"));
+		markUp.IntoElem();
+		while (markUp.FindElem(_T("button")))
+		{
+			int nButtonCtlID = _ttoi(markUp.GetAttrib(_T("bid")));
+			int nStaticCtlID = _ttoi(markUp.GetAttrib(_T("sid")));
+			int nButtonPos_x = _ttoi(markUp.GetAttrib(_T("posx")));
+			int nButtonPos_y = _ttoi(markUp.GetAttrib(_T("posy")));
+
+			std::vector<int> pos;
+			pos.push_back(nButtonCtlID);
+			pos.push_back(nStaticCtlID);
+			pos.push_back(nButtonPos_x);
+			pos.push_back(nButtonPos_y);
+			buttonCtlPosVector.push_back(pos);
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CreateConfigPosFile(szRoot);
+		if (CreateDefaultPosXml(&markUp, szRoot, buttonCtlPosVector)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			SaveXml(&markUp, szRoot + _T("\\ButtonPos.conf"));
+		}
+	}
+
+	SetCtlPos(buttonCtlPosVector);
+}
+
+void CBOKOToolsDlg::ResetScrollAndButton()
+{
+	scroll.Destroy();
+	ctlItemVector.clear();
+	nCtlItemCount = 0;
+	nPageCount = 0;
+}
+
 void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 {
 	this->SetBackgroundImage(currentTheme->GetMainBkIconID());
 
-	m_btn_base_gdi.DisConnect();
-	m_btn_calculator_gdi.DisConnect();
-	m_btn_stopwatch_gdi.DisConnect();
-	m_btn_converter_gdi.DisConnect();
-	m_btn_date_gdi.DisConnect();
-	m_btn_worktimer_gdi.DisConnect();
-	m_btn_notepad_gdi.DisConnect();
-	m_btn_basetimer_gdi.DisConnect();
-	m_btn_world_clock_gdi.DisConnect();
-	m_btn_comingsoon_1.DisConnect();
-	m_btn_comingsoon_2.DisConnect();
-	m_btn_comingsoon_3.DisConnect();
+	ButtonCtlDisConnect();
 
 	m_btn_base_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
 	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseIcon().nNormalID, _T("PNG"));
@@ -269,31 +319,17 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
 
-	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_1.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_1.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_1.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_1.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 
-	m_btn_comingsoon_2.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_2.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_2.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
+	m_btn_comingsoon_2.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_2.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_2.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 
-	m_btn_comingsoon_3.LoadStdImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIconID(), _T("PNG"));
-
-	m_btn_base_gdi.Invalidate();
-	m_btn_calculator_gdi.Invalidate();
-	m_btn_stopwatch_gdi.Invalidate();
-	m_btn_converter_gdi.Invalidate();
-	m_btn_date_gdi.Invalidate();
-	m_btn_worktimer_gdi.Invalidate();
-	m_btn_notepad_gdi.Invalidate();
-	m_btn_basetimer_gdi.Invalidate();
-	m_btn_world_clock_gdi.Invalidate();
-	m_btn_comingsoon_1.Invalidate();
-	m_btn_comingsoon_2.Invalidate();
-	m_btn_comingsoon_3.Invalidate();
-
+	m_btn_comingsoon_3.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
+	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 }
 
 void CBOKOToolsDlg::LoadTheme()
@@ -303,11 +339,13 @@ void CBOKOToolsDlg::LoadTheme()
 	ThemeData* theme2 = new ThemeData(THEME_CLOUD);
 	ThemeData* theme3 = new ThemeData(THEME_LIGHT);
 	ThemeData* theme4 = new ThemeData(THEME_MAGNIFIER);
+	ThemeData* theme5 = new ThemeData(THEME_INK);
 
 	themeList.push_back(theme1);
 	themeList.push_back(theme2);
 	themeList.push_back(theme3);
 	themeList.push_back(theme4);
+	themeList.push_back(theme5);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
@@ -325,6 +363,10 @@ void CBOKOToolsDlg::LoadTheme()
 	else if (nFlags == THEME_MAGNIFIER)
 	{
 		currentTheme = theme4;
+	}
+	else if (nFlags == THEME_INK)
+	{
+		currentTheme = theme5;
 	}
 }
 
@@ -348,11 +390,11 @@ int CBOKOToolsDlg::LoadCurrnetTheme()
 	{
 		CString szRoot = _T("");
 
-		CreateConfigFile(szRoot);
+		CreateConfigThemeFile(szRoot);
 		if (CreateDefaultThemeXml(&markUp, szRoot, nThemeFlags)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			SaveXml(&markUp, strFullPath);
+			SaveXml(&markUp, szRoot + _T("\\ThemeSetting.conf"));
 		}
 	}
 	return nThemeFlags;
@@ -370,7 +412,119 @@ void CBOKOToolsDlg::SaveXml(CMarkup* markup, CString strSaveFullPath)
 	CoUninitialize();
 }
 
-void CBOKOToolsDlg::CreateConfigFile(CString& strFullPath)
+void CBOKOToolsDlg::CreateConfigPosFile(CString& strFullPath)
+{
+	TCHAR chFilePath[256] = { 0, };
+	GetModuleFileName(NULL, chFilePath, 256);
+	strFullPath = (LPCTSTR)chFilePath;
+	int nLen = strFullPath.ReverseFind('\\');
+
+	if (nLen > 0)
+	{
+		strFullPath = strFullPath.Left(nLen);
+	}
+
+	CFileFind rootFind;
+	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
+		strFullPath += _T("\\BOKOTools");
+	}
+	rootFind.Close();
+
+	CreateDefaultDirectory(strFullPath, _T("\\Config"));
+	CreateDefaultDirectory(strFullPath, _T("\\ButtonPos"));
+}
+
+bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\ButtonPos.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Position"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CALCULATOR_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_ENGINEERING);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_STOPWATCH_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_STOPWATCH);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CONVERTER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_CONVERTER);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_DATE_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_DATE);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_TIMER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_TIMER1);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_NOTEPAD_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_NOTEPAD);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 3);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_TIMER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE_TIMER);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 3);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_WORLD_CLOCK_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_WORLD_CLOCK);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 3);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI1);
+		markUp->AddAttrib(_T("sid"), 0);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 4);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI2);
+		markUp->AddAttrib(_T("sid"), 0);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 4);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI3);
+		markUp->AddAttrib(_T("sid"), 0);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 4);
+
+		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_GDI ,IDC_STATIC_BASE, 1, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_CALCULATOR_GDI ,IDC_STATIC_ENGINEERING, 2, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_STOPWATCH_GDI ,IDC_STATIC_STOPWATCH, 3, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_CONVERTER_GDI ,IDC_STATIC_CONVERTER, 1, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_DATE_GDI ,IDC_STATIC_DATE, 2, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_TIMER_GDI ,IDC_STATIC_TIMER1, 3, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_NOTEPAD_GDI ,IDC_STATIC_NOTEPAD, 1, 3 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_TIMER_GDI ,IDC_STATIC_BASE_TIMER, 2, 3 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_WORLD_CLOCK_GDI ,IDC_STATIC_WORLD_CLOCK, 3, 3 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI1 ,0, 1, 4 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI2 ,0, 2, 4 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI3 ,0, 3, 4 });
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+void CBOKOToolsDlg::CreateConfigThemeFile(CString& strFullPath)
 {
 	TCHAR chFilePath[256] = { 0, };
 	GetModuleFileName(NULL, chFilePath, 256);
@@ -422,9 +576,36 @@ bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, 
 	return bReturn;
 }
 
-
-void CBOKOToolsDlg::SetCtlPos()
+void CBOKOToolsDlg::SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y)
 {
+	int nCtlPos_X = LEFT_MARGIN;
+	int nCtlPos_Y = TOP_MARGIN;
+
+	nCtlPos_X += (PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH) * (nPos_x - 1);
+	nCtlPos_Y += (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * (nPos_y - 1);
+
+	if (nPageCount >= 9 && nPageCount < 12)
+	{
+		nCtlPos_Y -= (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT);
+		nCtlPos_Y += (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + 47 + 60 - 6);
+	}
+
+	if (nButtonCtlID != 0) this->GetDlgItem(nButtonCtlID)->MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	if (nStaticCtlId != 0) this->GetDlgItem(nStaticCtlId)->MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, STATIC_HEIGHT);
+	
+	if (nPageCount == 11) nPageCount = 2;
+
+	nCtlItemCount++;
+	nPageCount++;
+
+	std::vector<int> ctlVector = { nButtonCtlID , nStaticCtlId , nCtlItemCount };
+	ctlItemVector.push_back(ctlVector);
+}
+
+void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
+{
+	ResetScrollAndButton();
+
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
@@ -434,87 +615,140 @@ void CBOKOToolsDlg::SetCtlPos()
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);
 
-	CRect rect;
-	m_stt_base.GetWindowRect(rect);
+	m_btn_base_gdi.ShowWindow(SW_HIDE);
+	m_btn_calculator_gdi.ShowWindow(SW_HIDE);
+	m_btn_stopwatch_gdi.ShowWindow(SW_HIDE);
+	m_btn_converter_gdi.ShowWindow(SW_HIDE);
+	m_btn_date_gdi.ShowWindow(SW_HIDE);
+	m_btn_worktimer_gdi.ShowWindow(SW_HIDE);
+	m_btn_notepad_gdi.ShowWindow(SW_HIDE);
+	m_btn_basetimer_gdi.ShowWindow(SW_HIDE);
+	m_btn_world_clock_gdi.ShowWindow(SW_HIDE);
+	m_btn_comingsoon_1.ShowWindow(SW_HIDE);
+	m_btn_comingsoon_2.ShowWindow(SW_HIDE);
+	m_btn_comingsoon_3.ShowWindow(SW_HIDE);
+	m_stt_engineering.ShowWindow(SW_HIDE);
+	m_stt_base.ShowWindow(SW_HIDE);
+	m_stt_converter.ShowWindow(SW_HIDE);
+	m_stt_date.ShowWindow(SW_HIDE);
+	m_stt_stopwatch.ShowWindow(SW_HIDE);
+	m_stt_worktimer.ShowWindow(SW_HIDE);
+	m_stt_notepad.ShowWindow(SW_HIDE);
+	m_stt_basetimer.ShowWindow(SW_HIDE);
+	m_stt_world_clock.ShowWindow(SW_HIDE);
 
-	const int PICTURE_WIDTH = 128;
-	const int PICTURE_HEIGHT = 128;
-	const int LEFT_MARGIN = 30;
-	const int TOP_MARGIN = 30;
-	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
-	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
-	int nStaticHeight = rect.Height();
-
-	int nCtlPos_X = 0;
-	int nCtlPos_Y = 0;
-
-	// 첫번째 페이지
+	for (int i = 0; i < (int)buttonCtlPosVector.size(); i++)
 	{
-		// 첫재줄
-		nCtlPos_X += LEFT_MARGIN;
-		nCtlPos_Y += TOP_MARGIN;
-		m_btn_base_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_base.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		SetWhichSelectCtlItemPos(buttonCtlPosVector.at(i).at(0), buttonCtlPosVector.at(i).at(1), buttonCtlPosVector.at(i).at(2), buttonCtlPosVector.at(i).at(3));
 
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_calculator_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_engineering.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_BASE_GDI)
+		{
+			m_btn_base_gdi.ShowWindow(SW_SHOW);
+			m_stt_base.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_CALCULATOR_GDI)
+		{
+			m_btn_calculator_gdi.ShowWindow(SW_SHOW);
+			m_stt_engineering.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_STOPWATCH_GDI)
+		{
+			m_btn_stopwatch_gdi.ShowWindow(SW_SHOW);
+			m_stt_stopwatch.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_CONVERTER_GDI)
+		{
+			m_btn_converter_gdi.ShowWindow(SW_SHOW);
+			m_stt_converter.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_DATE_GDI)
+		{
+			m_btn_date_gdi.ShowWindow(SW_SHOW);
+			m_stt_date.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_DATE_GDI)
+		{
+			m_btn_date_gdi.ShowWindow(SW_SHOW);
+			m_stt_date.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_TIMER_GDI)
+		{
+			m_btn_worktimer_gdi.ShowWindow(SW_SHOW);
+			m_stt_worktimer.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_NOTEPAD_GDI)
+		{
+			m_btn_notepad_gdi.ShowWindow(SW_SHOW);
+			m_stt_notepad.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_BASE_TIMER_GDI)
+		{
+			m_btn_basetimer_gdi.ShowWindow(SW_SHOW);
+			m_stt_basetimer.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_WORLD_CLOCK_GDI)
+		{
+			m_btn_world_clock_gdi.ShowWindow(SW_SHOW);
+			m_stt_world_clock.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_COMINGSOON_GDI1)
+		{
+			m_btn_comingsoon_1.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_COMINGSOON_GDI2)
+		{
+			m_btn_comingsoon_2.ShowWindow(SW_SHOW);
+		}
+		else if (buttonCtlPosVector.at(i).at(0) == IDC_BUTTON_COMINGSOON_GDI3)
+		{
+			m_btn_comingsoon_3.ShowWindow(SW_SHOW);
+		}
 
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_stopwatch_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_stopwatch.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
-		// 두번째줄
-		nCtlPos_X = LEFT_MARGIN;
-		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-		m_btn_converter_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_converter.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_date_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_date.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-	
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_worktimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_worktimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
-		// 셋째줄
-		nCtlPos_X = LEFT_MARGIN;
-		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-		m_btn_notepad_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_notepad.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_basetimer_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_basetimer.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_world_clock_gdi.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-		m_stt_world_clock.MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, nStaticHeight);
+		bool bEnd = true;
+		if ((i + 1) % 9 == 0)
+		{
+			bEnd = false;
+			scroll.LineEnd();
+		}
+		if (bEnd)
+		{
+			if (i == (int)buttonCtlPosVector.size() - 1)
+			{
+				scroll.LineEnd();
+			}
+		}
 	}
-	scroll.LineEnd();
 
-	// 두번째 페이지
-	{
-		nCtlPos_X = LEFT_MARGIN;
-		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + 47 + 60 - 6;
-		m_btn_comingsoon_1.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	//// 첫번째 페이지
+	//{
+	//	// 첫재줄
+	//	SetWhichSelectCtlItemPos(m_btn_base_gdi.GetDlgCtrlID(), m_stt_base.GetDlgCtrlID(), 1, 1);
+	//	SetWhichSelectCtlItemPos(m_btn_calculator_gdi.GetDlgCtrlID(), m_stt_engineering.GetDlgCtrlID(), 2, 1);
+	//	SetWhichSelectCtlItemPos(m_btn_stopwatch_gdi.GetDlgCtrlID(), m_stt_stopwatch.GetDlgCtrlID(), 3, 1);
 
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_comingsoon_2.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	//	// 두번째줄
+	//	SetWhichSelectCtlItemPos(m_btn_converter_gdi.GetDlgCtrlID(), m_stt_converter.GetDlgCtrlID(), 1, 2);
+	//	SetWhichSelectCtlItemPos(m_btn_date_gdi.GetDlgCtrlID(), m_stt_date.GetDlgCtrlID(), 2, 2);
+	//	SetWhichSelectCtlItemPos(m_btn_worktimer_gdi.GetDlgCtrlID(), m_stt_worktimer.GetDlgCtrlID(), 3, 2);
 
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_comingsoon_3.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-	}
-	scroll.LineEnd();
+	//	// 셋째줄
+	//	SetWhichSelectCtlItemPos(m_btn_notepad_gdi.GetDlgCtrlID(), m_stt_notepad.GetDlgCtrlID(), 1, 3);
+	//	SetWhichSelectCtlItemPos(m_btn_basetimer_gdi.GetDlgCtrlID(), m_stt_basetimer.GetDlgCtrlID(), 2, 3);
+	//	SetWhichSelectCtlItemPos(m_btn_world_clock_gdi.GetDlgCtrlID(), m_stt_world_clock.GetDlgCtrlID(), 3, 3);
+	//}
+	//scroll.LineEnd();
+
+	//// 두번째 페이지
+	//{
+	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_1.GetDlgCtrlID(), 0, 1, 4);
+	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_2.GetDlgCtrlID(), 0, 2, 4);
+	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_3.GetDlgCtrlID(), 0, 3, 4);
+	//}
+	//scroll.LineEnd();
 
 	CRect SystemRect;
 	CPoint pos;
 	GetClientRect(SystemRect);
-	int nVector_X = 0;
-	int nVector_Y = 0;
-	nVector_X = LEFT_MARGIN * 2 + (PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH) * 4;	// 가로사이즈 늘리면 이부분 수정
-	nVector_Y = TOP_MARGIN * 4 + (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * 3;	// 세로사이즈 늘리면 이부분 수정
 	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
 	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
 
@@ -841,7 +1075,7 @@ void CBOKOToolsDlg::OnMenuSettingTheme()
 void CBOKOToolsDlg::OnMenuSortIcon()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SortIcon sorticon(currentTheme, this);
+	SortIcon sorticon(ctlItemVector, currentTheme, this);
 	sorticon.DoModal();
 }
 
@@ -853,14 +1087,6 @@ void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)
 	mainMenu.LoadMenuW(IDR_MENU_MAIN);
 
 	CMenu* pPopupMenu = mainMenu.GetSubMenu(0);
-
-	/*MENUINFO MenuInfo = { 0 };
-	MenuInfo.cbSize = sizeof(MENUINFO);
-	pPopupMenu->GetMenuInfo(&MenuInfo);
-	MenuInfo.hbrBack = ::CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	MenuInfo.fMask = MIM_BACKGROUND | MIM_STYLE;
-	MenuInfo.dwStyle = MIM_APPLYTOSUBMENUS;
-	pPopupMenu->SetMenuInfo(&MenuInfo);*/
 	
 	this->ClientToScreen(&point);
 	
@@ -872,8 +1098,8 @@ void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)
 void CBOKOToolsDlg::ExecuteSelectTheme(ThemeData* selectTheme)
 {
 	currentTheme = selectTheme;
-	LoadUserInterface(currentTheme);
 	scroll.ThemeChange(currentTheme);
+	LoadUserInterface(currentTheme);
 	Invalidate();
 }
 
@@ -894,11 +1120,28 @@ void CBOKOToolsDlg::OnClose()
 	CDialogEx::OnClose();
 }
 
+void CBOKOToolsDlg::ButtonCtlDisConnect()
+{
+	m_btn_base_gdi.DisConnect();
+	m_btn_calculator_gdi.DisConnect();
+	m_btn_stopwatch_gdi.DisConnect();
+	m_btn_converter_gdi.DisConnect();
+	m_btn_date_gdi.DisConnect();
+	m_btn_worktimer_gdi.DisConnect();
+	m_btn_notepad_gdi.DisConnect();
+	m_btn_basetimer_gdi.DisConnect();
+	m_btn_world_clock_gdi.DisConnect();
+	m_btn_comingsoon_1.DisConnect();
+	m_btn_comingsoon_2.DisConnect();
+	m_btn_comingsoon_3.DisConnect();
+}
 
 void CBOKOToolsDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	scroll.OperateScroll(nSBCode, nPos);
+	ButtonCtlDisConnect();
+	Invalidate();
 	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -906,7 +1149,12 @@ void CBOKOToolsDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 BOOL CBOKOToolsDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	UINT nFlag = scroll.OperateWheel(zDelta);
-	OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT));
+	if (scroll.GetLineCount() > 1)
+	{
+		UINT nFlag = scroll.OperateWheel(zDelta);
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
+	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

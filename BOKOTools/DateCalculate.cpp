@@ -664,6 +664,6 @@ void DateCalculate::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	dc.Draw3dRect(drawBorderRect1, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
-	dc.Draw3dRect(drawBorderRect2, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect1, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(drawBorderRect2, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
 }

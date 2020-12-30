@@ -1,0 +1,98 @@
+﻿// DragDialog.cpp: 구현 파일
+//
+
+#include "pch.h"
+#include "BOKOTools.h"
+#include "DragDialog.h"
+#include "afxdialogex.h"
+
+
+// DragDialog 대화 상자
+
+IMPLEMENT_DYNAMIC(DragDialog, CDialogEx)
+
+DragDialog::DragDialog(ThemeData* currentTheme, CGdipButton* eventButton, CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_DIALOG_DRAG, pParent)
+{
+	this->hoverButton = eventButton;
+	this->currentTheme = currentTheme;
+	this->pParent = pParent;
+}
+
+DragDialog::~DragDialog()
+{
+	if (newButton)
+	{
+		newButton->ShowWindow(SW_HIDE);
+		delete newButton;
+		newButton = nullptr;
+	}
+}
+
+void DragDialog::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+}
+
+
+BEGIN_MESSAGE_MAP(DragDialog, CDialogEx)
+	ON_WM_CTLCOLOR()
+END_MESSAGE_MAP()
+
+
+// DragDialog 메시지 처리기
+
+
+BOOL DragDialog::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+
+	newButton = new CGdipButton;
+	newButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, 50000);
+
+	int nStd = hoverButton->nStdImageID;
+	int nHov = hoverButton->nHovImageID;
+	int nAlt = hoverButton->nStdImageID;
+
+	newButton->LoadStdImage(nStd, _T("PNG"));
+	newButton->LoadHovImage(nHov, _T("PNG"));
+	newButton->LoadAltImage(nAlt, _T("PNG"));
+	newButton->ShowWindow(SW_SHOW);
+	newButton->MoveWindow(0, 0, 128, 128);
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void DragDialog::Initialize(ThemeData* currentTheme, CGdipButton* eventButton)
+{
+	this->hoverButton = eventButton;
+	this->currentTheme = currentTheme;
+}
+
+void DragDialog::OnOK()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	//CDialogEx::OnOK();
+}
+
+
+HBRUSH DragDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  여기서 DC의 특성을 변경합니다.
+	if (nCtlColor == CTLCOLOR_DLG) // 다이얼로그일 경우
+	{
+		CBrush B;
+		B.CreateStockObject(NULL_BRUSH);
+		pDC->SetBkMode(TRANSPARENT); // 투명 설정 
+
+		return B;
+	}
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
+}

@@ -95,8 +95,8 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"), 14);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_combo.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test1.SetTextColor(currentTheme->GetTextColor());
+	m_btn_combo.SetTextColor(currentTheme->GetFunctionTextColor());
+	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
 	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
@@ -583,7 +583,7 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() == IDC_EDIT_LEFT_VALUE2)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -641,7 +641,7 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR3)
 		{
-			pDC->SetTextColor(currentTheme->GetTextColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.

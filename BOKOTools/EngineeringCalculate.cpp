@@ -204,13 +204,13 @@ BOOL EngineeringCalculate::OnInitDialog()
 
 	CRect borderRect;
 	m_stt_calculate_view.GetWindowRect(borderRect);
-	int nLeft = int(borderRect.left - thisRect.left - 10);
-	int nTop = int(borderRect.top - thisRect.top - 35);
+	int nLeft = int(borderRect.left - thisRect.left - 9);
+	int nTop = int(borderRect.top - thisRect.top - 38);
 	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	m_stt_btn_calculate_view.GetWindowRect(borderRect);
-	nLeft = int(borderRect.left - thisRect.left - 10);
-	nTop = int(borderRect.top - thisRect.top - 35);
+	nLeft = int(borderRect.left - thisRect.left - 9);
+	nTop = int(borderRect.top - thisRect.top - 38);
 	drawButtonBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 	
 	return FALSE;  // return TRUE unless you set the focus to a control
@@ -1145,9 +1145,7 @@ HBRUSH EngineeringCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			if (currentTheme)
 			{
-				pDC->SetTextColor(RGB(MinRGBColor(GetRValue(currentTheme->GetTextColor()), 55),
-									MinRGBColor(GetGValue(currentTheme->GetTextColor()), 55),
-									MinRGBColor(GetBValue(currentTheme->GetTextColor()), 55)));
+				pDC->SetTextColor(RGB(150, 150, 150));
 				pDC->SetBkColor(currentTheme->GetFunctionSubColor());
 			}
 			hbr = (HBRUSH)m_backBrush;
@@ -1156,7 +1154,7 @@ HBRUSH EngineeringCalculate::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			if (currentTheme)
 			{
-				pDC->SetTextColor(currentTheme->GetTextColor());
+				pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 				pDC->SetBkColor(currentTheme->GetFunctionSubColor());
 			}
 			hbr = (HBRUSH)m_backBrush;
@@ -1232,8 +1230,8 @@ void EngineeringCalculate::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
-	dc.Draw3dRect(drawButtonBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetFunctionRectBorderColor());
+	dc.Draw3dRect(drawBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(drawButtonBorderRect, currentTheme->GetFunctionRectBorderColor(), currentTheme->GetRectBorderColor());
 
 	CBrush *pOld = dc.SelectObject(&m_backBrush);
 	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);

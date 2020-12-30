@@ -8,6 +8,22 @@ CustomScroll::CustomScroll()
 
 CustomScroll::~CustomScroll()
 {
+	Destroy();
+}
+
+void CustomScroll::Destroy()
+{
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, 0, 0, 0, 0, SB_VERT };
+	for (int i = 0; i < (int)buttonVector.size(); i++)
+	{
+		CGdipButton* button = buttonVector.at(i);
+		delete button;
+		button = nullptr;
+	}
+	buttonVector.clear();
+	buttonRect.clear();
+	nLineCount = 0;
+	nCurrentLinePos = 0;
 }
 
 void CustomScroll::Create(CWnd* pDialogCtl)
@@ -35,6 +51,8 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 	this->currentTheme = currentTheme;
 	if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
 	{
+		if (nLineCount == 0) return;
+
 		CRect dialogRect;
 		thisCtlDialog->GetWindowRect(dialogRect);
 
@@ -47,26 +65,33 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 		int nButtonPos_x = 10;
 		int nButtonPos_y = 20;
 
-		for (int i = 1; i <= nLineCount; i++)
+		if (nLineCount > 1)
 		{
-			button = new CGdipButton;
-			button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
-			button->ShowWindow(SW_SHOW);
+			for (int i = 1; i <= nLineCount; i++)
+			{
+				button = new CGdipButton;
+				button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
+				button->ShowWindow(SW_SHOW);
 
-			nButtonPos_y += 12;
+				nButtonPos_y += 12;
 
-			CRect scrollPos;
-			scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
-			buttonVector.push_back(button);
-			buttonRect.push_back(scrollPos);
+				CRect scrollPos;
+				scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
+				buttonVector.push_back(button);
+				buttonRect.push_back(scrollPos);
 
-			button->MoveWindow(scrollPos);
-			button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-			button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
-			button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-			button->m_bUseMouseEvent = false;
+				button->MoveWindow(scrollPos);
+				button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+				button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
+				button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+				button->m_bUseMouseEvent = false;
+			}
+			buttonVector.at(0)->UseHoverEvent();
 		}
-		buttonVector.at(0)->UseHoverEvent();
+	}
+	else
+	{
+		LoadScroll(csi.nOnePageSize);
 	}
 }
 
@@ -137,10 +162,13 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 			nCurrentLinePos = 0;
 			return false;
 		}
-		if (nCurrentLinePos >= nLineCount)
+		if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
 		{
-			nCurrentLinePos = nLineCount - 1;
-			return false;
+			if (nCurrentLinePos >= nLineCount)
+			{
+				nCurrentLinePos = nLineCount - 1;
+				return false;
+			}
 		}
 
 		int scrollpos = csi.nScrollPos + delta;
@@ -179,6 +207,10 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 					buttonVector.at(i)->MoveWindow(buttonRect.at(i));
 				}
 			}
+			else
+			{
+
+			}
 
 			return true;
 		}
@@ -210,4 +242,14 @@ UINT CustomScroll::OperateWheel(short zDelta)
 	}
 
 	return nFlag;
+}
+
+int CustomScroll::GetLineCount()
+{
+	return nLineCount;
+}
+
+int CustomScroll::GetCurrentLinePos()
+{
+	return nCurrentLinePos + 1;
 }

@@ -5,6 +5,8 @@
 #define THEME_CLOUD 1
 #define THEME_LIGHT 2
 #define THEME_MAGNIFIER 3
+#define THEME_INK	4
+
 
 class ThemeData
 {
@@ -15,6 +17,8 @@ public:
 
 
 private:
+
+	friend class AllButtonList;
 
 	struct FunctionIcon
 	{
@@ -36,13 +40,15 @@ private:
 	FunctionIcon basetimerIcon;
 	FunctionIcon worldclockIcon;
 	FunctionIcon scrollIcon;
+	FunctionIcon commingSoonIcon;
 	COLORREF textColor;
+	COLORREF functionTextColor;
 	COLORREF functionBkColor;
 	COLORREF functionSubColor;
 	COLORREF functionSubSubColor;
+	COLORREF rectBorderColor;
 	COLORREF functionRectBorderColor;
 	COLORREF buttonColor;
-	int nCommingSoonIconID;
 	int nMainBkIconID;
 	int nSettingThemeBkIconID;
 	int nThemeFlags;
@@ -63,13 +69,15 @@ public:
 	FunctionIcon GetBaseTimerIcon();
 	FunctionIcon GetWorldClockIcon();
 	FunctionIcon GetScrollIcon();
+	FunctionIcon GetCommingSoonIcon();
 	COLORREF GetTextColor();
+	COLORREF GetFunctionTextColor();
 	COLORREF GetFunctionBkColor();
 	COLORREF GetFunctionSubColor();
 	COLORREF GetFunctionSubSubColor();
+	COLORREF GetRectBorderColor();
 	COLORREF GetFunctionRectBorderColor();
 	COLORREF GetButtonColor();
-	int GetCommingSoonIconID();
 	int GetSettingThemeBkIconID();
 	int GetMainBkIconID();
 

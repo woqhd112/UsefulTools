@@ -28,7 +28,7 @@ private:
 	CGdipButton m_btn_theme_cloud;
 	CGdipButton m_btn_theme_light;
 	CGdipButton m_btn_theme_magnifier;
-	CGdipButton m_btn_theme_none3;
+	CGdipButton m_btn_theme_ink;
 	CGdipButton m_btn_theme_none4;
 	CGdipButton m_btn_theme_none5;
 	CGdipButton m_btn_theme_none6;

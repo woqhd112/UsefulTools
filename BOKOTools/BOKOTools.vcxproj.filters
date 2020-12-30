@@ -103,6 +103,15 @@
     <ClCompile Include="CustomScroll.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="SortButtonList.cpp">
+      <Filter>MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="AllButtonList.cpp">
+      <Filter>MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="DragDialog.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -223,6 +232,15 @@
       <Filter>MainMenu</Filter>
     </ClInclude>
     <ClInclude Include="CustomScroll.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SortButtonList.h">
+      <Filter>MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="AllButtonList.h">
+      <Filter>MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="DragDialog.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -815,6 +833,111 @@
     <Image Include="res\Theme_Magnifier\Scroll_icon_A.png">
       <Filter>리소스\돋보기 테마\스크롤 아이콘</Filter>
     </Image>
+    <Image Include="res\Theme_Ink\Base_B.png">
+      <Filter>리소스\수묵 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Base_C.png">
+      <Filter>리소스\수묵 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Base_U.png">
+      <Filter>리소스\수묵 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\BaseTimer_B.png">
+      <Filter>리소스\수묵 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\BaseTimer_C.png">
+      <Filter>리소스\수묵 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\BaseTimer_U.png">
+      <Filter>리소스\수묵 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\ComingSoon.png">
+      <Filter>리소스\수묵 테마\커밍순 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Converter_B.png">
+      <Filter>리소스\수묵 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Converter_C.png">
+      <Filter>리소스\수묵 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Converter_U.png">
+      <Filter>리소스\수묵 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\DateCal_B.png">
+      <Filter>리소스\수묵 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\DateCal_C.png">
+      <Filter>리소스\수묵 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\DateCal_U.png">
+      <Filter>리소스\수묵 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Engineering_B.png">
+      <Filter>리소스\수묵 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Engineering_C.png">
+      <Filter>리소스\수묵 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Engineering_U.png">
+      <Filter>리소스\수묵 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Main_BK.bmp">
+      <Filter>리소스\수묵 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\NotePad_B.png">
+      <Filter>리소스\수묵 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\NotePad_C.png">
+      <Filter>리소스\수묵 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\NotePad_U.png">
+      <Filter>리소스\수묵 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Scroll_icon_A.png">
+      <Filter>리소스\수묵 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\Scroll_icon_B.png">
+      <Filter>리소스\수묵 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\StopWatch_B.png">
+      <Filter>리소스\수묵 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\StopWatch_C.png">
+      <Filter>리소스\수묵 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\StopWatch_U.png">
+      <Filter>리소스\수묵 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\ThemaChange_B.png">
+      <Filter>리소스\수묵 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\ThemaChange_C.png">
+      <Filter>리소스\수묵 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\ThemaChange_U.png">
+      <Filter>리소스\수묵 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\ThemaChoice_BK.bmp">
+      <Filter>리소스\수묵 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorkTimer_B.png">
+      <Filter>리소스\수묵 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorkTimer_C.png">
+      <Filter>리소스\수묵 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorkTimer_U.png">
+      <Filter>리소스\수묵 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorldClock_B.png">
+      <Filter>리소스\수묵 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorldClock_C.png">
+      <Filter>리소스\수묵 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Ink\WorldClock_U.png">
+      <Filter>리소스\수묵 테마\세계시계 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1080,6 +1203,51 @@
     </Filter>
     <Filter Include="리소스\돋보기 테마\스크롤 아이콘">
       <UniqueIdentifier>{9dcdcf69-7f6a-40a0-9fce-11efa0793fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마">
+      <UniqueIdentifier>{c07781ab-a5fe-4482-9bc0-f10d07f3c714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{0a204b05-07aa-4133-821b-8f8cc178cbb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{b5b24b1b-02fc-4428-94c8-6e90e65c430a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{0f8ebeda-f065-46f0-b4ef-28ffd6938b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{3338913d-9015-428c-aee8-30748b5001c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\메모장 아이콘">
+      <UniqueIdentifier>{e10368a4-1482-40c7-9180-397c4c310c0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\메인 배경">
+      <UniqueIdentifier>{07acb326-e153-4fff-8fb9-e676ebaa4438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\세계시계 아이콘">
+      <UniqueIdentifier>{0417db46-e084-4e32-914f-f499a9d73738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\스크롤 아이콘">
+      <UniqueIdentifier>{689bb8d5-2da0-4e21-92d6-f4a6de00290a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{206a6e22-a1f4-465c-baf6-a9982747a0c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{a6c8ddff-de25-46b1-a8d7-1de08cc4cd9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{262221ce-cdfb-49f8-997c-b5ada6d72b51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\커밍순 아이콘">
+      <UniqueIdentifier>{80a2e591-ab94-4eba-a221-3e039e650176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\테마세팅 배경">
+      <UniqueIdentifier>{664bf425-11f1-41c7-9328-b58518a194e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\수묵 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{8558c228-47cc-4b59-b379-0d828144c196}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
