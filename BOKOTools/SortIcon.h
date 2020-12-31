@@ -36,6 +36,10 @@ private:
 
 	int nButtonID;
 
+public:
+
+	CRect dragRect;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
@@ -46,4 +50,5 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
+	afx_msg void OnMove(int x, int y);
 };

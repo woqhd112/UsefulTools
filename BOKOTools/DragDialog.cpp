@@ -11,11 +11,10 @@
 
 IMPLEMENT_DYNAMIC(DragDialog, CDialogEx)
 
-DragDialog::DragDialog(ThemeData* currentTheme, CGdipButton* eventButton, CWnd* pParent /*=nullptr*/)
+DragDialog::DragDialog(CGdipButton* eventButton, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_DRAG, pParent)
 {
 	this->hoverButton = eventButton;
-	this->currentTheme = currentTheme;
 	this->pParent = pParent;
 }
 
@@ -37,6 +36,7 @@ void DragDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(DragDialog, CDialogEx)
 	ON_WM_CTLCOLOR()
+	ON_WM_MOVE()
 END_MESSAGE_MAP()
 
 
@@ -66,11 +66,11 @@ BOOL DragDialog::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void DragDialog::Initialize(ThemeData* currentTheme, CGdipButton* eventButton)
-{
-	this->hoverButton = eventButton;
-	this->currentTheme = currentTheme;
-}
+//void DragDialog::Initialize(ThemeData* currentTheme, CGdipButton* eventButton)
+//{
+//	this->hoverButton = eventButton;
+//	this->currentTheme = currentTheme;
+//}
 
 void DragDialog::OnOK()
 {
@@ -95,4 +95,17 @@ HBRUSH DragDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
+}
+
+
+void DragDialog::OnMove(int x, int y)
+{
+	CDialogEx::OnMove(x, y);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	if (newButton)
+	{
+		Invalidate();
+		newButton->DisConnect();
+	}
 }

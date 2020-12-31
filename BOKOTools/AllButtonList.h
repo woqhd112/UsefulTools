@@ -8,6 +8,8 @@
 
 // AllButtonList 대화 상자
 
+class SortIcon;
+
 class AllButtonList : public CDialogEx
 {
 	DECLARE_DYNAMIC(AllButtonList)
@@ -52,22 +54,36 @@ private:
 	bool bComingSoon2;
 	bool bComingSoon3;
 
+	SortIcon* sorticon;
+
 	void LoadAllButton();
 	void StackCountCondition();
 	void HoverSignal(bool bSignal, bool* bSignalItem);
 	void CtlToTop();
 	void CreateExitButton(int nButtonID);
 	ThemeData::FunctionIcon GetFunctionIconByButtonID(int nButtonID);
-	CString AllButtonList::GetButtonNameByButtonID(int nButtonID);
+	CString GetButtonNameByButtonID(int nButtonID);
+
+
+	void CreateDragButton(CGdipButton* currentClickButton);
+	BOOL DragActivation(POINT mousePoint);
+
 
 public:
 
 	//CGdipButton* hoverButton;
 	DragDialog* dragDlg;
+	bool bDragActivation;
+	bool bBottomDragChange;
+	bool bRightDragChange;
+
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };

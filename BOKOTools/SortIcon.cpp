@@ -46,6 +46,7 @@ void SortIcon::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(SortIcon, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_WM_MOVE()
 END_MESSAGE_MAP()
 
 
@@ -90,7 +91,7 @@ BOOL SortIcon::OnInitDialog()
 	allButtonList->MoveWindow(0, 0, 730 - (nStartPos_x + 474 - 10 + 30 + 5) - 10, 504 - 10);
 	allButtonList->ShowWindow(SW_SHOW);
 
-
+	GetWindowRect(dragRect);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -159,4 +160,20 @@ void SortIcon::OnPaint()
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+}
+
+
+void SortIcon::OnMove(int x, int y)
+{
+	CDialogEx::OnMove(x, y);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	CRect changeRect;
+	GetWindowRect(&changeRect);
+	dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
+	if (allButtonList)
+	{
+		allButtonList->bBottomDragChange = false;
+		allButtonList->bRightDragChange = false;
+	}
 }
