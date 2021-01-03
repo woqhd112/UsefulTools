@@ -40,6 +40,8 @@ void SortIcon::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_STATIC_SORT_VIEW, m_stt_sort_view);
 	DDX_Control(pDX, IDC_STATIC_ALL_VIEW, m_stt_all_view);
+	DDX_Control(pDX, IDC_BUTTON_SORT_SCROLL_LINE, m_btn_sort_scroll_line);
+	DDX_Control(pDX, IDC_BUTTON_SORT_SAVE, m_btn_sort_save);
 }
 
 
@@ -47,6 +49,8 @@ BEGIN_MESSAGE_MAP(SortIcon, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_MOVE()
+	ON_BN_CLICKED(IDC_BUTTON_SORT_SCROLL_LINE, &SortIcon::OnBnClickedButtonSortScrollLine)
+	ON_BN_CLICKED(IDC_BUTTON_SORT_SAVE, &SortIcon::OnBnClickedButtonSortSave)
 END_MESSAGE_MAP()
 
 
@@ -92,6 +96,16 @@ BOOL SortIcon::OnInitDialog()
 	allButtonList->ShowWindow(SW_SHOW);
 
 	GetWindowRect(dragRect);
+
+	m_btn_sort_scroll_line.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_sort_scroll_line.SetTextColor(currentTheme->GetTextColor());
+	m_btn_sort_save.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_sort_save.SetTextColor(currentTheme->GetTextColor());
+
+	m_btn_sort_scroll_line.MoveWindow(nStartPos_x, nStartPos_y + 504 - 10 + 5, 474 - 10 + 30, 25);
+	m_btn_sort_save.MoveWindow(nStartPos_x + 474 - 10 + 30 + 5, nStartPos_y + 504 - 10 + 5, 730 - (nStartPos_x + 474 - 10 + 30 + 5) - 10, 25);
+
+	parentDlg = (CBOKOToolsDlg*)pParent;
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -171,9 +185,35 @@ void SortIcon::OnMove(int x, int y)
 	CRect changeRect;
 	GetWindowRect(&changeRect);
 	dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
-	if (allButtonList)
+}
+
+
+void SortIcon::OnBnClickedButtonSortScrollLine()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (sortButtonList->scroll.GetLineCount() > sortButtonList->scroll.GetCurrentLinePos())
 	{
-		allButtonList->bBottomDragChange = false;
-		allButtonList->bRightDragChange = false;
+		// 스크롤 한단 내리기
+		sortButtonList->SendMessageW(WM_VSCROLL, SB_PAGEDOWN, 0);
 	}
+	else
+	{
+		// 스크롤 하나 추가하고 한단 내리기
+		sortButtonList->scroll.IncreaseScroll();
+		sortButtonList->SendMessageW(WM_VSCROLL, SB_PAGEDOWN, 0);
+	}
+	
+}
+
+
+void SortIcon::OnBnClickedButtonSortSave()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	sortButtonList->ctlVector.clear();
+	allButtonList->ctlVector.clear();
+	ctlVector.clear();
+	sortButtonList->ctlVector = sortButtonList->saveCtlVector;
+	allButtonList->ctlVector = sortButtonList->saveCtlVector;
+	ctlVector = sortButtonList->saveCtlVector;
+	parentDlg->SaveButtonCtlPos(ctlVector);
 }

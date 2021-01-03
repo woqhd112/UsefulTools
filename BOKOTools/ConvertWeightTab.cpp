@@ -28,10 +28,8 @@ void ConvertWeightTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_ICON_WEIGHT, m_btn_icon);
 	DDX_Control(pDX, IDC_BUTTON_COMBO3, m_btn_combo);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE3, m_edit_left_value);
-	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE3, m_edit_right_value);
 	DDX_Control(pDX, IDC_BUTTON_CONTAINER3, m_btn_test1);
 	DDX_Control(pDX, IDC_COMBO_LEFT3, m_combo_left);
-	DDX_Control(pDX, IDC_COMBO_RIGHT3, m_combo_right);
 	DDX_Control(pDX, IDC_STATIC_MG, m_stt_mg);
 	DDX_Control(pDX, IDC_STATIC_G, m_stt_g);
 	DDX_Control(pDX, IDC_STATIC_KG, m_stt_kg);
@@ -44,7 +42,6 @@ void ConvertWeightTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_NYANG, m_stt_nyang);
 	DDX_Control(pDX, IDC_STATIC_GEUN, m_stt_geun);
 	DDX_Control(pDX, IDC_STATIC_GUAN, m_stt_guan);
-	DDX_Control(pDX, IDC_BUTTON_REVERSE2, m_btn_reverse);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE3, m_stt_divide);
 }
 
@@ -55,7 +52,6 @@ BEGIN_MESSAGE_MAP(ConvertWeightTab, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT3, &ConvertWeightTab::OnCbnSelchangeComboRight3)
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE3, &ConvertWeightTab::OnEnChangeEditLeftValue3)
 	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_BUTTON_REVERSE2, &ConvertWeightTab::OnBnClickedButtonReverse2)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
@@ -87,10 +83,6 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WEIGHT_CLICK, _T("PNG"));
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_reverse.LoadStdImage(IDB_PNG_CONVERT_REVERSE_NOMAL, _T("PNG"));
-	m_btn_reverse.LoadHovImage(IDB_PNG_CONVERT_REVERSE_HOVER, _T("PNG"));
-	m_btn_reverse.LoadAltImage(IDB_PNG_CONVERT_REVERSE_CLICK, _T("PNG"));
-
 	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
@@ -101,7 +93,6 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
 
 	m_stt_mg.Initialize(15, _T("휴먼매직체"));
 	m_stt_g.Initialize(15, _T("휴먼매직체"));
@@ -129,29 +120,14 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_combo_left.InsertString(10, _T("근"));
 	m_combo_left.InsertString(11, _T("관"));
 
-	m_combo_right.InsertString(0, _T("밀리그램 (mg)"));
-	m_combo_right.InsertString(1, _T("그램 (g)"));
-	m_combo_right.InsertString(2, _T("킬로그램 (kg)"));
-	m_combo_right.InsertString(3, _T("톤 (t)"));
-	m_combo_right.InsertString(4, _T("킬로톤 (kt)"));
-	m_combo_right.InsertString(5, _T("그레인 (gr)"));
-	m_combo_right.InsertString(6, _T("온스 (oz)"));
-	m_combo_right.InsertString(7, _T("파운드 (lb)"));
-	m_combo_right.InsertString(8, _T("돈"));
-	m_combo_right.InsertString(9, _T("냥"));
-	m_combo_right.InsertString(10, _T("근"));
-	m_combo_right.InsertString(11, _T("관"));
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_combo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_stt_mg.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_g.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -180,13 +156,10 @@ BOOL ConvertWeightTab::OnInitDialog()
 	m_stt_geun.BringWindowToTop();
 	m_stt_guan.BringWindowToTop();
 	m_edit_left_value.BringWindowToTop();
-	m_edit_right_value.BringWindowToTop();
 	m_combo_left.BringWindowToTop();
-	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
 
 	m_combo_left.SetCurSel(1);
-	m_combo_right.SetCurSel(0);
 
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
@@ -195,7 +168,6 @@ BOOL ConvertWeightTab::OnInitDialog()
 	ConvertWeight();
 
 	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
 
 	CRect borderRect, thisRect;
 	m_btn_test1.GetWindowRect(borderRect);
@@ -217,11 +189,7 @@ void ConvertWeightTab::ConvertWeight()
 {
 	CString strSymbol;
 	double dFirstResult = ConvertLeftToKGram();
-	double dLastResult = ConvertKGramToRight(dFirstResult, strSymbol);
-
-	CString strResult;
-	strResult.Format(_T("%g %s"), dLastResult, strSymbol);
-	m_edit_right_value.SetWindowTextW(strResult);
+	SetStaticValue(dFirstResult);
 }
 
 double ConvertWeightTab::ConvertLeftToKGram()
@@ -336,87 +304,15 @@ void ConvertWeightTab::SetStaticValue(double dFirstValue)
 	m_stt_guan.SetWindowTextW(strFormat);
 }
 
-double ConvertWeightTab::ConvertKGramToRight(double dFirstResult, CString& strSymbol)
-{
-	double dResult = 0;
-	int nSel = m_combo_right.GetCurSel();
-	// 처리
-	if (nSel == 0)	// kg -> mg
-	{
-		dResult = dFirstResult * 1000000;
-		strSymbol = _T("mg");
-	}
-	else if (nSel == 1) // kg -> g
-	{
-		dResult = dFirstResult * 1000;
-		strSymbol = _T("g");
-	}
-	else if (nSel == 2) // kg -> kg
-	{
-		dResult = dFirstResult;
-		strSymbol = _T("kg");
-	}
-	else if (nSel == 3) // kg -> t
-	{
-		dResult = dFirstResult / 1000;
-		strSymbol = _T("t");
-	}
-	else if (nSel == 4) // kg -> kt
-	{
-		dResult = dFirstResult / 1000000;
-		strSymbol = _T("kt");
-	}
-	else if (nSel == 5) // kg -> gr
-	{
-		dResult = dFirstResult * 15432.3584;
-		strSymbol = _T("gr");
-	}
-	else if (nSel == 6) // kg -> oz
-	{
-		dResult = dFirstResult * 35.2739619;
-		strSymbol = _T("oz");
-	}
-	else if (nSel == 7) // kg -> lb
-	{
-		dResult = dFirstResult * 2.20462262;
-		strSymbol = _T("lb");
-	}
-	else if (nSel == 8) // kg -> 돈
-	{
-		dResult = dFirstResult * 266.666667;
-		strSymbol = _T("돈");
-	}
-	else if (nSel == 9) // kg -> 냥
-	{
-		dResult = dFirstResult * 26.6666667;
-		strSymbol = _T("냥");
-	}
-	else if (nSel == 10) // kg -> 근
-	{
-		dResult = dFirstResult * 1.66666667;
-		strSymbol = _T("근");
-	}
-	else if (nSel == 11) // kg -> 관
-	{
-		dResult = dFirstResult * 0.266666667;
-		strSymbol = _T("관");
-	}
-
-	SetStaticValue(dFirstResult);
-
-	return dResult;
-}
 
 void ConvertWeightTab::SetComboButtonText(CString strSymbol)
 {
-	CString strFormatText, strLeftText, strRightText;
+	CString strFormatText, strLeftText;
 	int nLeftIdx = m_combo_left.GetCurSel();
-	int nRightIdx = m_combo_right.GetCurSel();
 
 	m_combo_left.GetLBText(nLeftIdx, strLeftText);
-	m_combo_right.GetLBText(nRightIdx, strRightText);
 
-	strFormatText.Format(_T("%s   ⇒   %s         %s"), strLeftText, strRightText, strSymbol);
+	strFormatText.Format(_T("%s        %s"), strLeftText, strSymbol);
 	m_btn_combo.SetWindowTextW(strFormatText);
 }
 
@@ -478,14 +374,12 @@ void ConvertWeightTab::OnBnClickedButtonCombo3()
 	if (!bComboShow)
 	{
 		m_combo_left.ShowWindow(SW_SHOW);
-		m_combo_right.ShowWindow(SW_SHOW);
 		bComboShow = true;
 		SetComboButtonText(_T("▲"));
 	}
 	else
 	{
 		m_combo_left.ShowWindow(SW_HIDE);
-		m_combo_right.ShowWindow(SW_HIDE);
 		bComboShow = false;
 		SetComboButtonText(_T("▼"));
 	}
@@ -505,7 +399,6 @@ void ConvertWeightTab::OnCbnSelchangeComboRight3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
 	bComboShow = false;
 
 	SetComboButtonText(_T("▼"));
@@ -545,19 +438,10 @@ BOOL ConvertWeightTab::PreTranslateMessage(MSG* pMsg)
 			m_edit_left_value.m_bFocusOn = false;
 			m_edit_left_value.HideCaret();
 		}
-		if (pMsg->hwnd == m_edit_right_value)
-		{
-			m_edit_right_value.HideCaret();
-		}
 	}
 	else if (pMsg->message == WM_MOUSEMOVE)
 	{
 		if (pMsg->hwnd == m_btn_icon)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reverse)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
@@ -672,33 +556,9 @@ HBRUSH ConvertWeightTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(RGB(236, 130, 60));
 		}
-		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE3)
-		{
-			pDC->SetBkColor(currentTheme->GetFunctionSubSubColor());
-			pDC->SetTextColor(RGB(236, 130, 60));
-			hbr = (HBRUSH)m_rightValueBrush;
-		}
-		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR2)
-		{
-			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
-		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
-}
-
-
-void ConvertWeightTab::OnBnClickedButtonReverse2()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	int nLeftSel = m_combo_left.GetCurSel();
-	int nRightSel = m_combo_right.GetCurSel();
-
-	m_combo_left.SetCurSel(nRightSel);
-	m_combo_right.SetCurSel(nLeftSel);
-	SetComboButtonText(_T("▼"));
-	SetTestButtonText();
-	ConvertWeight();
 }
 
 void ConvertWeightTab::CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth /* = 1*/)

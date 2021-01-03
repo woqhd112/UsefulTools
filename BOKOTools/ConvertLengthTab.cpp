@@ -28,9 +28,7 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_ICON_LENGTH, m_btn_icon);
 	DDX_Control(pDX, IDC_BUTTON_COMBO, m_btn_combo);
 	DDX_Control(pDX, IDC_COMBO_LEFT, m_combo_left);
-	DDX_Control(pDX, IDC_COMBO_RIGHT, m_combo_right);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE, m_edit_left_value);
-	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE, m_edit_right_value);
 	DDX_Control(pDX, IDC_BUTTON_CONTAINER, m_btn_test);
 	DDX_Control(pDX, IDC_STATIC_MM, m_stt_mm);
 	DDX_Control(pDX, IDC_STATIC_CM, m_stt_cm);
@@ -45,7 +43,6 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_JUNG, m_stt_jung);
 	DDX_Control(pDX, IDC_STATIC_LEE, m_stt_lee);
 	DDX_Control(pDX, IDC_STATIC_HAELEE, m_stt_haelee);
-	DDX_Control(pDX, IDC_BUTTON_REVERSE, m_btn_reverse);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE, m_stt_divide);
 }
 
@@ -53,11 +50,9 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ConvertLengthTab, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_COMBO, &ConvertLengthTab::OnBnClickedButtonCombo)
 	ON_CBN_SELCHANGE(IDC_COMBO_LEFT, &ConvertLengthTab::OnCbnSelchangeComboLeft)
-	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT, &ConvertLengthTab::OnCbnSelchangeComboRight)
 	ON_WM_CTLCOLOR()
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE, &ConvertLengthTab::OnEnChangeEditLeftValue)
-	ON_BN_CLICKED(IDC_BUTTON_REVERSE, &ConvertLengthTab::OnBnClickedButtonReverse)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
@@ -89,9 +84,6 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_LENGTH_CLICK, _T("PNG"));
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_reverse.LoadStdImage(IDB_PNG_CONVERT_REVERSE_NOMAL, _T("PNG"));
-	m_btn_reverse.LoadHovImage(IDB_PNG_CONVERT_REVERSE_HOVER, _T("PNG"));
-	m_btn_reverse.LoadAltImage(IDB_PNG_CONVERT_REVERSE_CLICK, _T("PNG"));
 
 	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
@@ -103,7 +95,6 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_btn_test.SetTextColor(currentTheme->GetFunctionTextColor());
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
 	
 	m_stt_mm.Initialize(15, _T("휴먼매직체"));
 	m_stt_cm.Initialize(15, _T("휴먼매직체"));
@@ -133,30 +124,14 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_combo_left.InsertString(11, _T("리 (里)"));
 	m_combo_left.InsertString(12, _T("해리 (海里)"));
 
-	m_combo_right.InsertString(0, _T("밀리미터 (mm)"));
-	m_combo_right.InsertString(1, _T("센티미터 (cm)"));
-	m_combo_right.InsertString(2, _T("미터 (m)"));
-	m_combo_right.InsertString(3, _T("킬로미터 (km)"));
-	m_combo_right.InsertString(4, _T("인치 (in)"));
-	m_combo_right.InsertString(5, _T("피트 (ft)"));
-	m_combo_right.InsertString(6, _T("야드 (yd)"));
-	m_combo_right.InsertString(7, _T("마일 (mile)"));
-	m_combo_right.InsertString(8, _T("자 (尺)"));
-	m_combo_right.InsertString(9, _T("간 (間)"));
-	m_combo_right.InsertString(10, _T("정 (町)"));
-	m_combo_right.InsertString(11, _T("리 (里)"));
-	m_combo_right.InsertString(12, _T("해리 (海里)"));
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_combo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_btn_test.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_stt_mm.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_cm.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -187,13 +162,10 @@ BOOL ConvertLengthTab::OnInitDialog()
 	m_stt_lee.BringWindowToTop();
 	m_stt_haelee.BringWindowToTop();
 	m_edit_left_value.BringWindowToTop();
-	m_edit_right_value.BringWindowToTop();
 	m_combo_left.BringWindowToTop();
-	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
 
 	m_combo_left.SetCurSel(0);
-	m_combo_right.SetCurSel(4);
 	
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
@@ -202,7 +174,6 @@ BOOL ConvertLengthTab::OnInitDialog()
 	ConvertLength();
 
 	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
 
 	CRect borderRect, thisRect;
 	m_btn_test.GetWindowRect(borderRect);
@@ -227,14 +198,12 @@ void ConvertLengthTab::OnBnClickedButtonCombo()
 	if (!bComboShow)
 	{
 		m_combo_left.ShowWindow(SW_SHOW);
-		m_combo_right.ShowWindow(SW_SHOW);
 		bComboShow = true;
 		SetComboButtonText(_T("▲"));
 	}
 	else
 	{
 		m_combo_left.ShowWindow(SW_HIDE);
-		m_combo_right.ShowWindow(SW_HIDE);
 		bComboShow = false;
 		SetComboButtonText(_T("▼"));
 	}
@@ -251,27 +220,11 @@ void ConvertLengthTab::OnCbnSelchangeComboLeft()
 }
 
 
-void ConvertLengthTab::OnCbnSelchangeComboRight()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
-	bComboShow = false;
-
-	SetComboButtonText(_T("▼"));
-	ConvertLength();
-}
-
 void ConvertLengthTab::ConvertLength()
 {
 	CString strSymbol;
 	double dFirstResult = ConvertLeftToMeter();
-	double dLastResult = ConvertMeterToRight(dFirstResult, strSymbol);
-
-	CString strResult;
-	strResult.Format(_T("%g %s"), dLastResult, strSymbol);
-	m_edit_right_value.SetWindowTextW(strResult);
+	SetStaticValue(dFirstResult);
 }
 
 double ConvertLengthTab::ConvertLeftToMeter()
@@ -350,82 +303,6 @@ double ConvertLengthTab::ConvertLeftToMeter()
 	return dResult;
 }
 
-double ConvertLengthTab::ConvertMeterToRight(double dFirstResult, CString& strSymbol)
-{
-	double dResult = 0;
-	int nSel = m_combo_right.GetCurSel();
-
-	if (nSel == 0) // m -> mm
-	{
-		dResult = dFirstResult * 100 * 10;
-		strSymbol = _T("mm");
-	}
-	else if (nSel == 1) // m -> cm
-	{
-		dResult = dFirstResult * 100;
-		strSymbol = _T("cm");
-	}
-	else if (nSel == 2) // m -> m
-	{
-		dResult = dFirstResult;
-		strSymbol = _T("m");
-	}
-	else if (nSel == 3) // m -> km
-	{
-		dResult = dFirstResult / 1000;
-		strSymbol = _T("km");
-	}
-	else if (nSel == 4) // m -> inch
-	{
-		dResult = dFirstResult * 39.370079;
-		strSymbol = _T("in");
-	}
-	else if (nSel == 5) // m -> feet
-	{
-		dResult = dFirstResult * 3.28084;
-		strSymbol = _T("ft");
-	}
-	else if (nSel == 6) // m -> yard
-	{
-		dResult = dFirstResult * 1.093613;
-		strSymbol = _T("yd");
-	}
-	else if (nSel == 7) // m -> mile
-	{
-		dResult = (dFirstResult * 0.621371) / 1000;
-		strSymbol = _T("mile");
-	}
-	else if (nSel == 8) // m -> ja
-	{
-		dResult = dFirstResult * 3.3;
-		strSymbol = _T("尺");
-	}
-	else if (nSel == 9) // m -> gan
-	{
-		dResult = dFirstResult * 0.55;
-		strSymbol = _T("間");
-	}
-	else if (nSel == 10) // m -> jung
-	{
-		dResult = (dFirstResult * 9.166667) / 1000;
-		strSymbol = _T("町");
-	}
-	else if (nSel == 11) // m -> lee
-	{
-		dResult = (dFirstResult * 2.546296) / 1000;
-		strSymbol = _T("里");
-	}
-	else // m -> haelee
-	{
-		dResult = (dFirstResult * 0.539957) / 1000;
-		strSymbol = _T("海里");
-	}
-
-	SetStaticValue(dFirstResult);
-
-	return dResult;
-}
-
 void ConvertLengthTab::SetStaticValue(double dFirstValue)
 {
 	CString strFormat;
@@ -472,14 +349,12 @@ void ConvertLengthTab::SetStaticValue(double dFirstValue)
 
 void ConvertLengthTab::SetComboButtonText(CString strSymbol)
 {
-	CString strFormatText, strLeftText, strRightText;
+	CString strFormatText, strLeftText;
 	int nLeftIdx = m_combo_left.GetCurSel();
-	int nRightIdx = m_combo_right.GetCurSel();
 
 	m_combo_left.GetLBText(nLeftIdx, strLeftText);
-	m_combo_right.GetLBText(nRightIdx, strRightText);
 
-	strFormatText.Format(_T("%s   ⇒   %s         %s"), strLeftText, strRightText, strSymbol);
+	strFormatText.Format(_T("%s       %s"), strLeftText, strSymbol);
 	m_btn_combo.SetWindowTextW(strFormatText);
 }
 
@@ -561,19 +436,10 @@ BOOL ConvertLengthTab::PreTranslateMessage(MSG* pMsg)
 			m_edit_left_value.m_bFocusOn = false;
 			m_edit_left_value.HideCaret();
 		}
-		if (pMsg->hwnd == m_edit_right_value)
-		{
-			m_edit_right_value.HideCaret();
-		}
 	}
 	else if (pMsg->message == WM_MOUSEMOVE)
 	{
 		if (pMsg->hwnd == m_btn_icon)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reverse)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
@@ -692,16 +558,6 @@ HBRUSH ConvertLengthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(RGB(236, 130, 60));
 		}
-		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE)
-		{
-			pDC->SetBkColor(currentTheme->GetFunctionSubSubColor());
-			pDC->SetTextColor(RGB(236, 130, 60));
-			hbr = (HBRUSH)m_rightValueBrush;
-		}
-		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR1)
-		{
-			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
-		}
 	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -721,20 +577,6 @@ void ConvertLengthTab::OnEnChangeEditLeftValue()
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
-
-
-void ConvertLengthTab::OnBnClickedButtonReverse()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	int nLeftSel = m_combo_left.GetCurSel();
-	int nRightSel = m_combo_right.GetCurSel();
-
-	m_combo_left.SetCurSel(nRightSel);
-	m_combo_right.SetCurSel(nLeftSel);
-	SetComboButtonText(_T("▼"));
-	SetTestButtonText();
-	ConvertLength();
-}
 
 void ConvertLengthTab::CalcDrawLine(CPaintDC* dc, int nStartValue_y, int nStartMargin, int nDepth /* = 1*/)
 {

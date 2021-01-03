@@ -29,13 +29,10 @@ public:
 	virtual BOOL OnInitDialog();
 private:
 	CGdipButton m_btn_icon;
-	CGdipButton m_btn_reverse;
 	CalculateButton m_btn_combo;
 	CalculateButton m_btn_test1;
 	CComboBox m_combo_left;
-	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;
-	CalculateEdit m_edit_right_value;
 	CalculateStatic m_stt_squared_m;
 	CalculateStatic m_stt_are;
 	CalculateStatic m_stt_hectare;
@@ -60,7 +57,6 @@ private:
 
 	void ConvertWidth();
 	double ConvertLeftToSquaredKMeter();
-	double ConvertSquaredKMeterToRight(double dFirstResult, CString& strSymbol);
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
@@ -73,7 +69,6 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnEnChangeEditLeftValue2();
-	afx_msg void OnBnClickedButtonReverse3();
 	
 	afx_msg void OnPaint();
 };

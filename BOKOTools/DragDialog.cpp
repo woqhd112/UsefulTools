@@ -56,11 +56,12 @@ BOOL DragDialog::OnInitDialog()
 	int nHov = hoverButton->nHovImageID;
 	int nAlt = hoverButton->nStdImageID;
 
-	newButton->LoadStdImage(nStd, _T("PNG"));
-	newButton->LoadHovImage(nHov, _T("PNG"));
-	newButton->LoadAltImage(nAlt, _T("PNG"));
+	newButton->strButtonName = hoverButton->strButtonName;
+	newButton->LoadStdImage(nStd, _T("PNG"), true);
+	newButton->LoadHovImage(nHov, _T("PNG"), true);
+	newButton->LoadAltImage(nAlt, _T("PNG"), true);
 	newButton->ShowWindow(SW_SHOW);
-	newButton->MoveWindow(0, 0, 128, 128);
+	newButton->MoveWindow(0, 0, 64, 64);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

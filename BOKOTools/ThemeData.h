@@ -1,12 +1,13 @@
 #pragma once
 #include "atlstr.h"
 
+#define THEME_MAIN_TIME_POS_UP	0
+#define THEME_MAIN_TIME_POS_DOWN	370
 #define THEME_DETECTIVE	0
 #define THEME_CLOUD 1
 #define THEME_LIGHT 2
 #define THEME_MAGNIFIER 3
 #define THEME_INK	4
-
 
 class ThemeData
 {
@@ -19,6 +20,7 @@ public:
 private:
 
 	friend class AllButtonList;
+	friend class SortButtonList;
 
 	struct FunctionIcon
 	{
@@ -52,6 +54,7 @@ private:
 	int nMainBkIconID;
 	int nSettingThemeBkIconID;
 	int nThemeFlags;
+	int nMainTimePosMargin;
 
 public:
 
@@ -80,6 +83,6 @@ public:
 	COLORREF GetButtonColor();
 	int GetSettingThemeBkIconID();
 	int GetMainBkIconID();
-
+	int GetMainTimePosMargin();
 };
 

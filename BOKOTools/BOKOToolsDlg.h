@@ -4,12 +4,11 @@
 
 #pragma once
 #include "ThemeData.h"
-#include "SettingTheme.h"
-#include "SortIcon.h"
 #include "BaseCalculate.h"
 #include "EngineeringCalculate.h"
 #include "UnitConverter.h"
 #include "DateCalculate.h"
+#include "CustomScroll.h"
 #include "StopWatch.h"
 #include "Timer.h"
 #include "NotePad.h"
@@ -23,6 +22,7 @@ class CBOKOToolsDlg : public CDialogEx
 // 생성입니다.
 public:
 	CBOKOToolsDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
+	~CBOKOToolsDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -45,8 +45,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 
-	CalculateStatic m_stt_engineering;
+	CalculateStatic m_stt_ampm;
+	CalculateStatic m_stt_week;
+	CalculateStatic m_stt_current_time;
+
 	CalculateStatic m_stt_base;
+	CalculateStatic m_stt_engineering;
 	CalculateStatic m_stt_converter;
 	CalculateStatic m_stt_date;
 	CalculateStatic m_stt_stopwatch;
@@ -77,7 +81,7 @@ private:
 	BaseTimer* basetimer;
 	WorldClock* worldclock;
 
-	//CBrush m_returnBrush;
+	CBrush m_returnBrush;
 
 	std::vector<ThemeData*> themeList;
 	ThemeData* currentTheme;
@@ -96,6 +100,18 @@ private:
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 	void ButtonCtlDisConnect();
 	void ResetScrollAndButton();
+	int ConvertVectorToPos(int x, int y);
+	std::vector<int> ConvertPosToVector(int nPos);
+	void SavePosXml(std::vector<std::vector<int>> ctlItemVector);
+	void ChangeBackBrush();
+
+
+	CWinThread* m_curtimeThread;
+	bool bCurTimeThread;
+
+	static UINT thrStartCurrentTime(LPVOID method);
+	void StartCurrentTime();
+	void ShowCurrentTime();
 
 	const int PICTURE_WIDTH = 128;
 	const int PICTURE_HEIGHT = 128;
@@ -120,6 +136,7 @@ public:
 
 	void ExecuteSelectTheme(ThemeData* selectTheme);
 	void SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y);
+	void SaveButtonCtlPos(std::vector<std::vector<int>> saveCtlItemVector);
 
 	std::vector<std::vector<int>> ctlItemVector;
 

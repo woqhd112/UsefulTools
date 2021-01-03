@@ -42,13 +42,18 @@ public:
 	int GetLineCount();
 	int GetCurrentLinePos();
 
+	void IncreaseScroll();
+
 private:
 
 	ThemeData* currentTheme;
 	CustomScrollInfo csi;
 	CWnd* thisCtlDialog;
+	int nButtonID;
 	int nLineCount;
 	int nCurrentLinePos;
+
+	bool bOneButtonLight;
 
 	std::vector<CGdipButton*> buttonVector;
 	std::vector<CRect> buttonRect;

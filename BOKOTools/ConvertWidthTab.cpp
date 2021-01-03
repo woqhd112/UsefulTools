@@ -28,10 +28,8 @@ void ConvertWidthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_ICON_WIDTH, m_btn_icon);
 	DDX_Control(pDX, IDC_BUTTON_COMBO2, m_btn_combo);
 	DDX_Control(pDX, IDC_COMBO_LEFT2, m_combo_left);
-	DDX_Control(pDX, IDC_COMBO_RIGHT2, m_combo_right);
 	DDX_Control(pDX, IDC_BUTTON_CONTAINER2, m_btn_test1);
 	DDX_Control(pDX, IDC_EDIT_LEFT_VALUE2, m_edit_left_value);
-	DDX_Control(pDX, IDC_EDIT_RIGHT_VALUE2, m_edit_right_value);
 	DDX_Control(pDX, IDC_STATIC_SQUAREDM, m_stt_squared_m);
 	DDX_Control(pDX, IDC_STATIC_ARE, m_stt_are);
 	DDX_Control(pDX, IDC_STATIC_HECTARE, m_stt_hectare);
@@ -43,7 +41,6 @@ void ConvertWidthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_SQUARE, m_stt_square);
 	DDX_Control(pDX, IDC_STATIC_DANBO, m_stt_danbo);
 	DDX_Control(pDX, IDC_STATIC_JUNGBO, m_stt_jungbo);
-	DDX_Control(pDX, IDC_BUTTON_REVERSE3, m_btn_reverse);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE2, m_stt_divide);
 }
 
@@ -54,7 +51,6 @@ BEGIN_MESSAGE_MAP(ConvertWidthTab, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_RIGHT2, &ConvertWidthTab::OnCbnSelchangeComboRight2)
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_LEFT_VALUE2, &ConvertWidthTab::OnEnChangeEditLeftValue2)
-	ON_BN_CLICKED(IDC_BUTTON_REVERSE3, &ConvertWidthTab::OnBnClickedButtonReverse3)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
@@ -85,10 +81,6 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WIDTH_CLICK, _T("PNG"));
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_reverse.LoadStdImage(IDB_PNG_CONVERT_REVERSE_NOMAL, _T("PNG"));
-	m_btn_reverse.LoadHovImage(IDB_PNG_CONVERT_REVERSE_HOVER, _T("PNG"));
-	m_btn_reverse.LoadAltImage(IDB_PNG_CONVERT_REVERSE_CLICK, _T("PNG"));
-
 	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
@@ -99,7 +91,6 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
 
 	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
-	m_edit_right_value.Initialize(20, _T("휴먼매직체"));
 
 	m_stt_squared_m.Initialize(15, _T("휴먼매직체"));
 	m_stt_are.Initialize(15, _T("휴먼매직체"));
@@ -125,28 +116,14 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_combo_left.InsertString(9, _T("단보"));
 	m_combo_left.InsertString(10, _T("정보"));
 
-	m_combo_right.InsertString(0, _T("제곱미터 (m²)"));
-	m_combo_right.InsertString(1, _T("아르 (a)"));
-	m_combo_right.InsertString(2, _T("헥타르 (ha)"));
-	m_combo_right.InsertString(3, _T("제곱킬로미터 (km²)"));
-	m_combo_right.InsertString(4, _T("제곱피트 (ft²)"));
-	m_combo_right.InsertString(5, _T("제곱야드 (yd²)"));
-	m_combo_right.InsertString(6, _T("에이커 (ac)"));
-	m_combo_right.InsertString(7, _T("평방자"));
-	m_combo_right.InsertString(8, _T("평"));
-	m_combo_right.InsertString(9, _T("단보"));
-	m_combo_right.InsertString(10, _T("정보"));
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_combo.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_edit_left_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_edit_right_value.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_combo_left.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_combo_right.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
 	m_stt_squared_m.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_are.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -173,13 +150,10 @@ BOOL ConvertWidthTab::OnInitDialog()
 	m_stt_danbo.BringWindowToTop();
 	m_stt_jungbo.BringWindowToTop();
 	m_edit_left_value.BringWindowToTop();
-	m_edit_right_value.BringWindowToTop();
 	m_combo_left.BringWindowToTop();
-	m_combo_right.BringWindowToTop();
 	m_btn_combo.BringWindowToTop();
 
 	m_combo_left.SetCurSel(0);
-	m_combo_right.SetCurSel(3);
 
 	SetComboButtonText(_T("▼"));
 	SetTestButtonText();
@@ -188,7 +162,6 @@ BOOL ConvertWidthTab::OnInitDialog()
 	ConvertWidth();
 
 	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
 
 	CRect borderRect, thisRect;
 	m_btn_test1.GetWindowRect(borderRect);
@@ -210,11 +183,7 @@ void ConvertWidthTab::ConvertWidth()
 {
 	CString strSymbol;
 	double dFirstResult = ConvertLeftToSquaredKMeter();
-	double dLastResult = ConvertSquaredKMeterToRight(dFirstResult, strSymbol);
-
-	CString strResult;
-	strResult.Format(_T("%g %s"), dLastResult, strSymbol);
-	m_edit_right_value.SetWindowTextW(strResult);
+	SetStaticValue(dFirstResult);
 }
 
 double ConvertWidthTab::ConvertLeftToSquaredKMeter()
@@ -321,82 +290,14 @@ void ConvertWidthTab::SetStaticValue(double dFirstValue)
 	m_stt_jungbo.SetWindowTextW(strFormat);
 }
 
-double ConvertWidthTab::ConvertSquaredKMeterToRight(double dFirstResult, CString& strSymbol)
-{
-	double dResult = 0;
-	int nSel = m_combo_right.GetCurSel();
-	// 처리
-	if (nSel == 0)	// km² -> m²
-	{
-		dResult = dFirstResult * 1000000;
-		strSymbol = _T("m²");
-	}
-	else if (nSel == 1) // km² -> a
-	{
-		dResult = dFirstResult * 10000;
-		strSymbol = _T("a");
-	}
-	else if (nSel == 2) // km² -> ha
-	{
-		dResult = dFirstResult * 100;
-		strSymbol = _T("ha");
-	}
-	else if (nSel == 3) // km² -> km²
-	{
-		dResult = dFirstResult;
-		strSymbol = _T("km²");
-	}
-	else if (nSel == 4) // km² -> ft²
-	{
-		dResult = dFirstResult * 10763910.4;
-		strSymbol = _T("ft²");
-	}
-	else if (nSel == 5) // km² -> yd²
-	{
-		dResult = dFirstResult * 1195990.05;
-		strSymbol = _T("yd²");
-	}
-	else if (nSel == 6) // km² -> ac
-	{
-		dResult = dFirstResult * 247.105381;
-		strSymbol = _T("ac");
-	}
-	else if (nSel == 7) // km² -> 평방자
-	{
-		dResult = dFirstResult * 10890000;
-		strSymbol = _T("평방자");
-	}
-	else if (nSel == 8) // km² -> 평
-	{
-		dResult = dFirstResult * 302500;
-		strSymbol = _T("평");
-	}
-	else if (nSel == 9) // km² -> 단보
-	{
-		dResult = dFirstResult * 1008.33333;
-		strSymbol = _T("단보");
-	}
-	else if (nSel == 10) // km² -> 정보
-	{
-		dResult = dFirstResult * 100.833333;
-		strSymbol = _T("정보");
-	}
-
-	SetStaticValue(dFirstResult);
-
-	return dResult;
-}
-
 void ConvertWidthTab::SetComboButtonText(CString strSymbol)
 {
-	CString strFormatText, strLeftText, strRightText;
+	CString strFormatText, strLeftText;
 	int nLeftIdx = m_combo_left.GetCurSel();
-	int nRightIdx = m_combo_right.GetCurSel();
 
 	m_combo_left.GetLBText(nLeftIdx, strLeftText);
-	m_combo_right.GetLBText(nRightIdx, strRightText);
 
-	strFormatText.Format(_T("%s   ⇒   %s         %s"), strLeftText, strRightText, strSymbol);
+	strFormatText.Format(_T("%s        %s"), strLeftText, strSymbol);
 	m_btn_combo.SetWindowTextW(strFormatText);
 }
 
@@ -455,14 +356,12 @@ void ConvertWidthTab::OnBnClickedButtonCombo2()
 	if (!bComboShow)
 	{
 		m_combo_left.ShowWindow(SW_SHOW);
-		m_combo_right.ShowWindow(SW_SHOW);
 		bComboShow = true;
 		SetComboButtonText(_T("▲"));
 	}
 	else
 	{
 		m_combo_left.ShowWindow(SW_HIDE);
-		m_combo_right.ShowWindow(SW_HIDE);
 		bComboShow = false;
 		SetComboButtonText(_T("▼"));
 	}
@@ -482,7 +381,6 @@ void ConvertWidthTab::OnCbnSelchangeComboRight2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_combo_left.ShowWindow(SW_HIDE);
-	m_combo_right.ShowWindow(SW_HIDE);
 	bComboShow = false;
 
 	SetComboButtonText(_T("▼"));
@@ -510,19 +408,10 @@ BOOL ConvertWidthTab::PreTranslateMessage(MSG* pMsg)
 			m_edit_left_value.m_bFocusOn = false;
 			m_edit_left_value.HideCaret();
 		}
-		if (pMsg->hwnd == m_edit_right_value)
-		{
-			m_edit_right_value.HideCaret();
-		}
 	}
 	else if (pMsg->message == WM_MOUSEMOVE)
 	{
 		if (pMsg->hwnd == m_btn_icon)
-		{
-			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
-			SetCursor(hCursor);
-		}
-		else if (pMsg->hwnd == m_btn_reverse)
 		{
 			HCURSOR hCursor = AfxGetApp()->LoadStandardCursor(IDC_HAND);
 			SetCursor(hCursor);
@@ -633,16 +522,6 @@ HBRUSH ConvertWidthTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(RGB(236, 130, 60));
 		}
-		else if (pWnd->GetDlgCtrlID() == IDC_EDIT_RIGHT_VALUE2)
-		{
-			pDC->SetBkColor(currentTheme->GetFunctionSubSubColor());
-			pDC->SetTextColor(RGB(236, 130, 60));
-			hbr = (HBRUSH)m_rightValueBrush;
-		}
-		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_EQUAR3)
-		{
-			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
-		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
@@ -658,20 +537,6 @@ void ConvertWidthTab::OnEnChangeEditLeftValue2()
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	ConvertWidth();
-}
-
-
-void ConvertWidthTab::OnBnClickedButtonReverse3()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	int nLeftSel = m_combo_left.GetCurSel();
-	int nRightSel = m_combo_right.GetCurSel();
-
-	m_combo_left.SetCurSel(nRightSel);
-	m_combo_right.SetCurSel(nLeftSel);
-	SetComboButtonText(_T("▼"));
-	SetTestButtonText();
 	ConvertWidth();
 }
 

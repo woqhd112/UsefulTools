@@ -64,7 +64,6 @@ CGdipButton::CGdipButton()
 	m_bUseClickSoundEvent = FALSE;
 
 	m_bUseMouseEvent = true;
-	m_nStateMouseEvent = 0;
 
 	nStdImageID = 0;
 	nHovImageID = 0;
@@ -582,7 +581,6 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 	if(bIsPressed)
 	{
-		m_nStateMouseEvent = 2;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcAlt; 
@@ -596,7 +594,6 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	}
 	else if(m_bIsHovering)
 	{
-		m_nStateMouseEvent = 1;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcHov;
@@ -610,7 +607,6 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	}
 	else
 	{
-		m_nStateMouseEvent = 0;
 		if (m_nCurType == STD_TYPE)
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcStd;

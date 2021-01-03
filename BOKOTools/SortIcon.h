@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "CalculateStatic.h"
+#include "CalculateButton.h"
 #include "SortButtonList.h"
 #include "AllButtonList.h"
+#include "BOKOToolsDlg.h"
 #include "DragDialog.h"
 
 // SortIcon 대화 상자
+
 
 class SortIcon : public CDialogEx
 {
@@ -23,15 +26,14 @@ private:
 
 	CalculateStatic m_stt_sort_view;
 	CalculateStatic m_stt_all_view;
+	CalculateButton m_btn_sort_save;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
 	std::vector<std::vector<int>> ctlVector;
 	std::vector<CGdipButton*> sortButtonVector;
 
-	SortButtonList* sortButtonList;
-	AllButtonList* allButtonList;
-
+	CBOKOToolsDlg* parentDlg;
 	DragDialog* dragDlg;
 
 	int nButtonID;
@@ -39,6 +41,9 @@ private:
 public:
 
 	CRect dragRect;
+	SortButtonList* sortButtonList;
+	AllButtonList* allButtonList;
+	CalculateButton m_btn_sort_scroll_line;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -51,4 +56,6 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnMove(int x, int y);
+	afx_msg void OnBnClickedButtonSortScrollLine();
+	afx_msg void OnBnClickedButtonSortSave();
 };

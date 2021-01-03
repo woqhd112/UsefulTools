@@ -30,13 +30,10 @@ public:
 	virtual BOOL OnInitDialog();
 private:
 	CGdipButton m_btn_icon;
-	CGdipButton m_btn_reverse;
 	CalculateButton m_btn_combo;
 	CalculateButton m_btn_container;
 	CComboBox m_combo_left;
-	CComboBox m_combo_right;
 	CalculateEdit m_edit_left_value;
-	CalculateEdit m_edit_right_value;
 	CalculateStatic m_stt_bit;
 	CalculateStatic m_stt_byte;
 	CalculateStatic m_stt_kbyte;
@@ -58,7 +55,6 @@ private:
 
 	void ConvertBit();
 	double ConvertLeftToMByte();
-	double ConvertMByteToRight(double dFirstResult, CString& strSymbol);
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
@@ -71,7 +67,6 @@ public:
 	afx_msg void OnCbnSelchangeComboRight4();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnBnClickedButtonReverse4();
 
 	afx_msg void OnPaint();
 };

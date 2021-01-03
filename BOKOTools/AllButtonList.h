@@ -32,13 +32,14 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
-	std::vector<std::vector<int>> ctlVector;
-	std::vector<CGdipButton*> allButtonVector;
+	CGdipButton* downButton;
 
 	CustomScroll scroll;
 
 	int nButtonStackCount;
 	int nButtonID;
+
+	bool bLineEnd;
 	
 	bool bButtonHover;
 	bool bHoverBase;
@@ -55,9 +56,14 @@ private:
 	bool bComingSoon3;
 
 	SortIcon* sorticon;
+	
+	bool bTopOverDetect;
+	bool bLeftOverDetect;
+	bool bBottomOverDetect;
+	bool bRightOverDetect;
 
-	void LoadAllButton();
-	void StackCountCondition();
+	bool bSortButtonHoverEvent;
+
 	void HoverSignal(bool bSignal, bool* bSignalItem);
 	void CtlToTop();
 	void CreateExitButton(int nButtonID);
@@ -69,14 +75,23 @@ private:
 	BOOL DragActivation(POINT mousePoint);
 
 
+	bool bScrollButtonDetect;
+	/*bool bScrollThread;
+	int nScrollButtonDetectCount;
+	CWinThread* m_scrollThread;
+	static UINT thrScrollDetect(LPVOID method);
+	void StartScrollThread();*/
+
+
 public:
 
-	//CGdipButton* hoverButton;
+	std::vector<std::vector<int>> ctlVector;
+	std::vector<CGdipButton*> allButtonVector;
 	DragDialog* dragDlg;
 	bool bDragActivation;
-	bool bBottomDragChange;
-	bool bRightDragChange;
 
+	void LoadAllButton();
+	void DeleteAllButton();
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnInitDialog();

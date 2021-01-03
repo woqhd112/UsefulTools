@@ -30,6 +30,7 @@ public:
 	bool m_bUseMouseBkGroundColorEvent;
 	bool m_bClick;
 	bool m_bUseMouseTextItalicEvent;
+	bool m_bUseMouseTextBoldEvent;
 
 
 private:

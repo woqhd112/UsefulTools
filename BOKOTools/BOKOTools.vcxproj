@@ -225,6 +225,7 @@
     <ClInclude Include="LapTime.h" />
     <ClInclude Include="MemDC.h" />
     <ClInclude Include="NotePad.h" />
+    <ClInclude Include="NotePadList.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Resource.h" />
@@ -239,6 +240,8 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitConverter.h" />
     <ClInclude Include="WorldClock.h" />
+    <ClInclude Include="WorldClockList.h" />
+    <ClInclude Include="WorldSearchList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AllButtonList.cpp" />
@@ -266,6 +269,7 @@
     <ClCompile Include="EngineeringCalculate.cpp" />
     <ClCompile Include="LapTime.cpp" />
     <ClCompile Include="NotePad.cpp" />
+    <ClCompile Include="NotePadList.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -283,6 +287,8 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitConverter.cpp" />
     <ClCompile Include="WorldClock.cpp" />
+    <ClCompile Include="WorldClockList.cpp" />
+    <ClCompile Include="WorldSearchList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BOKOTools.rc" />
@@ -322,6 +328,8 @@
     <Image Include="res\Common\ConvertWidth_B.png" />
     <Image Include="res\Common\ConvertWidth_C.png" />
     <Image Include="res\Common\ConvertWidth_U.png" />
+    <Image Include="res\Common\IconMoveSpot_B.png" />
+    <Image Include="res\Common\IconMoveSpot_U.png" />
     <Image Include="res\Common\R_1.png" />
     <Image Include="res\Common\R_2.png" />
     <Image Include="res\Common\R_3.png" />

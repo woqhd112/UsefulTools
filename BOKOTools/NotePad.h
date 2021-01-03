@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "ThemeData.h"
+#include "CalculateButton.h"
+#include "CalculateStatic.h"
+#include "NotePadList.h"
 
 
 // NotePad 대화 상자
@@ -19,8 +22,19 @@ public:
 
 private:
 
+	CalculateButton m_btn_edit_bold;
+	CalculateButton m_btn_edit_italic;
+	CalculateButton m_btn_edit_underline;
+	CalculateButton m_btn_report;
+	CalculateStatic m_stt_notepad_list;
+	CRichEditCtrl m_richedit_note;
+
+	CFont thisFont;
+
 	CWnd* pParent;
 	ThemeData* currentTheme;
+
+	NotePadList* notepadlist;
 
 
 protected:
@@ -34,4 +48,8 @@ public:
 	virtual void PostNcDestroy();
 	afx_msg void OnClose();
 	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButtonEditBold();
+	afx_msg void OnBnClickedButtonEditItalic();
+	afx_msg void OnBnClickedButtonEditUnderline();
+	afx_msg void OnBnClickedButtonNotepadReport();
 };

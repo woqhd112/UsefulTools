@@ -121,14 +121,19 @@ BOOL UnitConverter::OnInitDialog()
 	m_btn_bit.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
 	m_btn_length.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_length.m_bUseMouseTextItalicEvent = true;
+	m_btn_length.m_bUseMouseTextBoldEvent = true;
 	m_btn_width.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_width.m_bUseMouseTextItalicEvent = true;
+	m_btn_width.m_bUseMouseTextBoldEvent = true;
 	m_btn_weight.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_weight.m_bUseMouseTextItalicEvent = true;
+	m_btn_weight.m_bUseMouseTextBoldEvent = true;
 	m_btn_time.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_time.m_bUseMouseTextItalicEvent = true;
+	m_btn_time.m_bUseMouseTextBoldEvent = true;
 	m_btn_bit.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_bit.m_bUseMouseTextItalicEvent = true;
+	m_btn_bit.m_bUseMouseTextBoldEvent = true;
 	m_btn_length.SetTextColor(currentTheme->GetTextColor());
 	m_btn_width.SetTextColor(currentTheme->GetTextColor());
 	m_btn_weight.SetTextColor(currentTheme->GetTextColor());
@@ -144,6 +149,7 @@ BOOL UnitConverter::OnInitDialog()
 
 	m_stt_tab.BringWindowToTop();
 
+	m_btn_length.m_bClick = true;
 	pointDesc = CONVERT_LENGTH_DESC;
 	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::CLICK);
 

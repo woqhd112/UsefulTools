@@ -29,13 +29,10 @@ public:
 	virtual BOOL OnInitDialog();
 private:
 	CGdipButton m_btn_icon;
-	CGdipButton m_btn_reverse;
 	CalculateButton m_btn_combo;
 	CalculateButton m_btn_test1;
 	CalculateEdit m_edit_left_value;
-	CalculateEdit m_edit_right_value;
 	CComboBox m_combo_left;
-	CComboBox m_combo_right;
 	CalculateStatic m_stt_mg;
 	CalculateStatic m_stt_g;
 	CalculateStatic m_stt_kg;
@@ -61,7 +58,6 @@ private:
 
 	void ConvertWeight();
 	double ConvertLeftToKGram();
-	double ConvertKGramToRight(double dFirstResult, CString& strSymbol);
 	void SetComboButtonText(CString strSymbol);
 	void SetTestButtonText();
 	void SetStaticValue(double dFirstValue);
@@ -75,6 +71,5 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	
-	afx_msg void OnBnClickedButtonReverse2();
 	afx_msg void OnPaint();
 };

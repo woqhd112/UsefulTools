@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "framework.h"
 #include "BOKOTools.h"
+#include "SortIcon.h"
+#include "SettingTheme.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
@@ -57,6 +59,22 @@ CBOKOToolsDlg::CBOKOToolsDlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
+CBOKOToolsDlg::~CBOKOToolsDlg()
+{
+	if (bCurTimeThread)
+	{
+		bCurTimeThread = false;
+		DWORD nExitCode = NULL;
+
+		GetExitCodeThread(m_curtimeThread->m_hThread, &nExitCode);
+		if (TerminateThread(m_curtimeThread->m_hThread, nExitCode) != 0)
+		{
+			delete m_curtimeThread;
+			m_curtimeThread = nullptr;
+		}
+	}
+}
+
 void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -81,6 +99,9 @@ void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI1, m_btn_comingsoon_1);
 	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI2, m_btn_comingsoon_2);
 	DDX_Control(pDX, IDC_BUTTON_COMINGSOON_GDI3, m_btn_comingsoon_3);
+	DDX_Control(pDX, IDC_STATIC_AMPM, m_stt_ampm);
+	DDX_Control(pDX, IDC_STATIC_WEEK, m_stt_week);
+	DDX_Control(pDX, IDC_STATIC_CURRENT_TIME, m_stt_current_time);
 }
 
 BEGIN_MESSAGE_MAP(CBOKOToolsDlg, CDialogEx)
@@ -149,10 +170,9 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	bStopWatch = false;
 	bTimer = false;
 	bNotepad = false;
-	nPageCount = 0;
-	nCtlItemCount = 0;
+	bCurTimeThread = false;
 
-	//m_returnBrush.CreateSolidBrush(RGB(35, 35, 35));
+	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
@@ -163,6 +183,9 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_notepad.Initialize(15, _T("고딕"));
 	m_stt_basetimer.Initialize(15, _T("고딕"));
 	m_stt_world_clock.Initialize(15, _T("고딕"));
+	m_stt_ampm.Initialize(15, _T("DS-Digital"));
+	m_stt_week.Initialize(15, _T("DS-Digital"));
+	m_stt_current_time.Initialize(40, _T("DS-Digital"));
 
 	LoadUserInterface(currentTheme);
 	
@@ -203,11 +226,98 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	//SetCtlPos();
 	LoadButtonPos();
+	ShowCurrentTime();
 
-	AfxEnableControlContainer();
-	AfxInitRichEdit2();
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
+}
+
+void CBOKOToolsDlg::ShowCurrentTime()
+{
+	m_stt_ampm.MoveWindow(491, 46 + currentTheme->GetMainTimePosMargin(), 50, 23);
+	m_stt_week.MoveWindow(491, 72 + currentTheme->GetMainTimePosMargin(), 50, 23);
+	m_stt_current_time.MoveWindow(544, 46 + currentTheme->GetMainTimePosMargin(), 145, 49);
+
+	// 현재시간 구하는 스레드 추가
+	bCurTimeThread = true;
+	m_curtimeThread = AfxBeginThread(thrStartCurrentTime, this);
+}
+
+UINT CBOKOToolsDlg::thrStartCurrentTime(LPVOID method)
+{
+	CBOKOToolsDlg* thisDlg = (CBOKOToolsDlg*)method;
+	thisDlg->StartCurrentTime();
+
+	return 0;
+}
+
+void CBOKOToolsDlg::StartCurrentTime()
+{
+	int nAmPmHour = 0;
+	int nWeek = 0;
+	CString strCurTime;
+	CString strAMPM;
+	CString strWeek;
+
+	while (bCurTimeThread)
+	{
+		CTime cTime = CTime::GetCurrentTime();
+
+
+		nWeek = cTime.GetDayOfWeek();
+		switch (nWeek)
+		{
+		case 1:
+			strWeek = _T("Sun");
+			break;
+
+		case 2:
+			strWeek = _T("Mon");
+			break;
+
+		case 3:
+			strWeek = _T("Tue");
+			break;
+
+		case 4:
+			strWeek = _T("Wed");
+			break;
+
+		case 5:
+			strWeek = _T("Thu");
+			break;
+
+		case 6:
+			strWeek = _T("Fri");
+			break;
+
+		case 7:
+			strWeek = _T("Sat");
+			break; 
+
+		default:
+			strWeek = _T("");
+			break;
+		}
+
+		if (cTime.GetHour() - 12 > 0)
+		{
+			nAmPmHour = cTime.GetHour() - 12;
+			strAMPM = _T("PM");
+		}
+		else
+		{
+			nAmPmHour = cTime.GetHour();
+			strAMPM = _T("AM");
+		}
+
+		strCurTime.Format(_T("%02d : %02d"), nAmPmHour, cTime.GetMinute());
+
+		m_stt_current_time.SetWindowTextW(strCurTime);
+		m_stt_ampm.SetWindowTextW(strAMPM);
+		m_stt_week.SetWindowTextW(strWeek);
+		Sleep(1000);
+	}
 }
 
 void CBOKOToolsDlg::LoadButtonPos()
@@ -253,7 +363,7 @@ void CBOKOToolsDlg::LoadButtonPos()
 		if (CreateDefaultPosXml(&markUp, szRoot, buttonCtlPosVector)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			SaveXml(&markUp, szRoot + _T("\\ButtonPos.conf"));
+			SaveXml(&markUp, strFullPath);
 		}
 	}
 
@@ -264,8 +374,6 @@ void CBOKOToolsDlg::ResetScrollAndButton()
 {
 	scroll.Destroy();
 	ctlItemVector.clear();
-	nCtlItemCount = 0;
-	nPageCount = 0;
 }
 
 void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
@@ -488,21 +596,6 @@ bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, st
 		markUp->AddAttrib(_T("sid"), IDC_STATIC_WORLD_CLOCK);
 		markUp->AddAttrib(_T("posx"), 3);
 		markUp->AddAttrib(_T("posy"), 3);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI1);
-		markUp->AddAttrib(_T("sid"), 0);
-		markUp->AddAttrib(_T("posx"), 1);
-		markUp->AddAttrib(_T("posy"), 4);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI2);
-		markUp->AddAttrib(_T("sid"), 0);
-		markUp->AddAttrib(_T("posx"), 2);
-		markUp->AddAttrib(_T("posy"), 4);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_COMINGSOON_GDI3);
-		markUp->AddAttrib(_T("sid"), 0);
-		markUp->AddAttrib(_T("posx"), 3);
-		markUp->AddAttrib(_T("posy"), 4);
 
 		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_GDI ,IDC_STATIC_BASE, 1, 1 });
 		buttonCtlPosVector.push_back({ IDC_BUTTON_CALCULATOR_GDI ,IDC_STATIC_ENGINEERING, 2, 1 });
@@ -513,9 +606,6 @@ bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, st
 		buttonCtlPosVector.push_back({ IDC_BUTTON_NOTEPAD_GDI ,IDC_STATIC_NOTEPAD, 1, 3 });
 		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_TIMER_GDI ,IDC_STATIC_BASE_TIMER, 2, 3 });
 		buttonCtlPosVector.push_back({ IDC_BUTTON_WORLD_CLOCK_GDI ,IDC_STATIC_WORLD_CLOCK, 3, 3 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI1 ,0, 1, 4 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI2 ,0, 2, 4 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_COMINGSOON_GDI3 ,0, 3, 4 });
 
 		bReturn = true;
 	}
@@ -584,22 +674,31 @@ void CBOKOToolsDlg::SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId,
 	nCtlPos_X += (PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH) * (nPos_x - 1);
 	nCtlPos_Y += (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * (nPos_y - 1);
 
-	if (nPageCount >= 9 && nPageCount < 12)
+	int nPos = ConvertVectorToPos(nPos_x, nPos_y);
+	if (nPos > 9)
 	{
-		nCtlPos_Y -= (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT);
-		nCtlPos_Y += (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + 47 + 60 - 6);
+		nCtlPos_Y -= ((PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * ((nPos - 1) / 9));
+		nCtlPos_Y += ((PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT + 47 + 60 - 6) * ((nPos - 1) / 9));
 	}
 
 	if (nButtonCtlID != 0) this->GetDlgItem(nButtonCtlID)->MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 	if (nStaticCtlId != 0) this->GetDlgItem(nStaticCtlId)->MoveWindow(nCtlPos_X, nCtlPos_Y + PICTURE_HEIGHT, PICTURE_WIDTH, STATIC_HEIGHT);
 	
-	if (nPageCount == 11) nPageCount = 2;
-
-	nCtlItemCount++;
-	nPageCount++;
-
-	std::vector<int> ctlVector = { nButtonCtlID , nStaticCtlId , nCtlItemCount };
+	std::vector<int> ctlVector = { nButtonCtlID , nStaticCtlId , nPos };
 	ctlItemVector.push_back(ctlVector);
+}
+
+int CBOKOToolsDlg::ConvertVectorToPos(int x, int y)
+{
+	return x + (3 * (y - 1));
+}
+
+std::vector<int> CBOKOToolsDlg::ConvertPosToVector(int nPos)
+{
+	std::vector<int> convertVector;
+	convertVector.push_back((nPos - 1) % 3 + 1);
+	convertVector.push_back((nPos - 1) / 3 + 1);
+	return convertVector;
 }
 
 void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
@@ -636,6 +735,8 @@ void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
 	m_stt_notepad.ShowWindow(SW_HIDE);
 	m_stt_basetimer.ShowWindow(SW_HIDE);
 	m_stt_world_clock.ShowWindow(SW_HIDE);
+
+	std::vector<std::vector<int>> switchPosVector;
 
 	for (int i = 0; i < (int)buttonCtlPosVector.size(); i++)
 	{
@@ -704,47 +805,24 @@ void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
 			m_btn_comingsoon_3.ShowWindow(SW_SHOW);
 		}
 
-		bool bEnd = true;
-		if ((i + 1) % 9 == 0)
-		{
-			bEnd = false;
-			scroll.LineEnd();
-		}
-		if (bEnd)
-		{
-			if (i == (int)buttonCtlPosVector.size() - 1)
-			{
-				scroll.LineEnd();
-			}
-		}
+		int nConvertPos = ConvertVectorToPos(buttonCtlPosVector.at(i).at(2), buttonCtlPosVector.at(i).at(3));
+		std::vector<int> convertVector = { buttonCtlPosVector.at(i).at(0), buttonCtlPosVector.at(i).at(1), nConvertPos };
+		switchPosVector.push_back(convertVector);
 	}
 
-	//// 첫번째 페이지
-	//{
-	//	// 첫재줄
-	//	SetWhichSelectCtlItemPos(m_btn_base_gdi.GetDlgCtrlID(), m_stt_base.GetDlgCtrlID(), 1, 1);
-	//	SetWhichSelectCtlItemPos(m_btn_calculator_gdi.GetDlgCtrlID(), m_stt_engineering.GetDlgCtrlID(), 2, 1);
-	//	SetWhichSelectCtlItemPos(m_btn_stopwatch_gdi.GetDlgCtrlID(), m_stt_stopwatch.GetDlgCtrlID(), 3, 1);
-
-	//	// 두번째줄
-	//	SetWhichSelectCtlItemPos(m_btn_converter_gdi.GetDlgCtrlID(), m_stt_converter.GetDlgCtrlID(), 1, 2);
-	//	SetWhichSelectCtlItemPos(m_btn_date_gdi.GetDlgCtrlID(), m_stt_date.GetDlgCtrlID(), 2, 2);
-	//	SetWhichSelectCtlItemPos(m_btn_worktimer_gdi.GetDlgCtrlID(), m_stt_worktimer.GetDlgCtrlID(), 3, 2);
-
-	//	// 셋째줄
-	//	SetWhichSelectCtlItemPos(m_btn_notepad_gdi.GetDlgCtrlID(), m_stt_notepad.GetDlgCtrlID(), 1, 3);
-	//	SetWhichSelectCtlItemPos(m_btn_basetimer_gdi.GetDlgCtrlID(), m_stt_basetimer.GetDlgCtrlID(), 2, 3);
-	//	SetWhichSelectCtlItemPos(m_btn_world_clock_gdi.GetDlgCtrlID(), m_stt_world_clock.GetDlgCtrlID(), 3, 3);
-	//}
-	//scroll.LineEnd();
-
-	//// 두번째 페이지
-	//{
-	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_1.GetDlgCtrlID(), 0, 1, 4);
-	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_2.GetDlgCtrlID(), 0, 2, 4);
-	//	SetWhichSelectCtlItemPos(m_btn_comingsoon_3.GetDlgCtrlID(), 0, 3, 4);
-	//}
-	//scroll.LineEnd();
+	int nMax = switchPosVector.at(0).at(2) - 1;
+	for (int i = 0; i < switchPosVector.size(); i++)
+	{
+		if (switchPosVector.at(i).at(2) - 1 > nMax)
+		{
+			nMax = switchPosVector.at(i).at(2) - 1;
+		}
+	}
+	int nLineEndCount = nMax / 9;
+	for (int i = 0; i <= nLineEndCount; i++)
+	{
+		scroll.LineEnd();
+	}
 
 	CRect SystemRect;
 	CPoint pos;
@@ -801,6 +879,14 @@ void CBOKOToolsDlg::OnPaint()
 		CDialogEx::OnPaint();
 	}
 
+	CClientDC dc(this);
+	dc.Draw3dRect(488, 43 + currentTheme->GetMainTimePosMargin(), 204, 55, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(543, 45 + currentTheme->GetMainTimePosMargin(), 147, 51, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(490, 45 + currentTheme->GetMainTimePosMargin(), 52, 25, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(490, 71 + currentTheme->GetMainTimePosMargin(), 52, 25, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	m_stt_ampm.MoveWindow(491, 46 + currentTheme->GetMainTimePosMargin(), 50, 23);
+	m_stt_week.MoveWindow(491, 72 + currentTheme->GetMainTimePosMargin(), 50, 23);
+	m_stt_current_time.MoveWindow(544, 46 + currentTheme->GetMainTimePosMargin(), 145, 49);
 }
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
@@ -1059,6 +1145,33 @@ HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(currentTheme->GetTextColor());
 			}
 		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_CURRENT_TIME)
+		{
+			if (currentTheme)
+			{
+				pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+				pDC->SetTextColor(currentTheme->GetTextColor());
+				hbr = (HBRUSH)m_returnBrush;
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_AMPM)
+		{
+			if (currentTheme)
+			{
+				pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+				pDC->SetTextColor(currentTheme->GetTextColor());
+				hbr = (HBRUSH)m_returnBrush;
+			}
+		}
+		else if (pWnd->GetDlgCtrlID() == IDC_STATIC_WEEK)
+		{
+			if (currentTheme)
+			{
+				pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+				pDC->SetTextColor(currentTheme->GetTextColor());
+				hbr = (HBRUSH)m_returnBrush;
+			}
+		}
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
@@ -1100,10 +1213,15 @@ void CBOKOToolsDlg::ExecuteSelectTheme(ThemeData* selectTheme)
 	currentTheme = selectTheme;
 	scroll.ThemeChange(currentTheme);
 	LoadUserInterface(currentTheme);
+	ChangeBackBrush();
 	Invalidate();
 }
 
-
+void CBOKOToolsDlg::ChangeBackBrush()
+{
+	m_returnBrush.DeleteObject();
+	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
+}
 
 void CBOKOToolsDlg::OnClose()
 {
@@ -1157,4 +1275,42 @@ BOOL CBOKOToolsDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
 	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+void CBOKOToolsDlg::SaveButtonCtlPos(std::vector<std::vector<int>> saveCtlItemVector)
+{
+	ctlItemVector.clear();
+	std::vector<std::vector<int>> newCtlItemVector;
+	for (int i = 0; i < saveCtlItemVector.size(); i++)
+	{
+		std::vector<int> ctlPosVector = saveCtlItemVector.at(i);
+		std::vector<int> convertVector = ConvertPosToVector(ctlPosVector.at(2));
+		std::vector<int> newPosVector = { ctlPosVector.at(0), ctlPosVector.at(1), convertVector.at(0), convertVector.at(1) };
+		newCtlItemVector.push_back(newPosVector);
+	}
+	ctlItemVector = saveCtlItemVector;
+	SetCtlPos(newCtlItemVector);
+
+	SavePosXml(newCtlItemVector);
+}
+
+void CBOKOToolsDlg::SavePosXml(std::vector<std::vector<int>> ctlItemVector)
+{
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CreateConfigPosFile(szRoot);
+	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
+
+	markUp.AddElem(_T("Position"));
+	markUp.IntoElem();
+	for (int i = 0; i < ctlItemVector.size(); i++)
+	{
+		markUp.AddElem(_T("button"));
+		markUp.AddAttrib(_T("bid"), ctlItemVector.at(i).at(0));
+		markUp.AddAttrib(_T("sid"), ctlItemVector.at(i).at(1));
+		markUp.AddAttrib(_T("posx"), ctlItemVector.at(i).at(2));
+		markUp.AddAttrib(_T("posy"), ctlItemVector.at(i).at(3));
+	}
+
+	SaveXml(&markUp, strFullPath);
 }

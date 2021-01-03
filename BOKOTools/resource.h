@@ -242,6 +242,12 @@
 #define IDB_BITMAP_MAIN_BK_THEME_INK    474
 #define IDB_BITMAP_CHOICE_BK_THEME_INK  475
 #define IDD_DIALOG_DRAG                 476
+#define IDB_PNG_ICON_MOVE_NOMAL         478
+#define IDB_PNG3                        479
+#define IDB_PNG_ICON_MOVE_HOVER         479
+#define IDD_DIALOG_NOTEPAD_LIST         481
+#define IDD_DIALOG_WORLD_LIST           484
+#define IDD_DIALOG_SEARCH_LIST          486
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -274,6 +280,8 @@
 #define IDC_BUTTON_WORK_HOUR_UP         1022
 #define IDC_BUTTON_NOTEPAD_REPORT       1022
 #define IDC_BUTTON_BASE_TIMER_STARTANDSTOP 1022
+#define IDC_BUTTON_SORT_SAVE            1022
+#define IDC_BUTTON_WORLD_SEARCH         1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_BUTTON_RESET                1023
@@ -501,6 +509,7 @@
 #define IDC_BUTTON_LAPTIME              1235
 #define IDC_BUTTON_LAPTIME_RESET        1236
 #define IDC_RICHEDIT21                  1237
+#define IDC_RICHEDIT_NOTEPAD            1237
 #define IDC_BUTTON_NOTEPAD_GDI          1238
 #define IDC_STATIC_NOTEPAD              1239
 #define IDC_BUTTON_BASE_TIMER_GDI       1240
@@ -550,9 +559,20 @@
 #define IDC_BUTTON_COMINGSOON_GDI1      1282
 #define IDC_BUTTON_COMINGSOON_GDI2      1283
 #define IDC_BUTTON_COMINGSOON_GDI3      1284
+#define IDC_BUTTON_SORT_SCROLL_LINE     1284
 #define IDC_STATIC_SORT_VIEW            1285
 #define IDC_EDIT_HOUR                   1285
 #define IDC_STATIC_ALL_VIEW             1286
+#define IDC_STATIC_AMPM                 1286
+#define IDC_STATIC_WEEK                 1287
+#define IDC_STATIC_                     1288
+#define IDC_STATIC_CURRENT_TIME         1288
+#define IDC_BUTTON_EDIT_BOLD            1289
+#define IDC_BUTTON_EDIT_ITALIC          1290
+#define IDC_BUTTON_EDIT_UNDERLINE       1291
+#define IDC_STATIC_NOTEPAD_LIST         1292
+#define IDC_EDIT_WORLD_SEARCH           1293
+#define IDC_STATIC_RESULT_VIEW          1302
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -573,9 +593,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        478
+#define _APS_NEXT_RESOURCE_VALUE        488
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1284
+#define _APS_NEXT_CONTROL_VALUE         1303
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

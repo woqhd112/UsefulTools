@@ -112,6 +112,15 @@
     <ClCompile Include="DragDialog.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="NotePadList.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldClockList.cpp">
+      <Filter>WorldClock</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldSearchList.cpp">
+      <Filter>WorldClock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -242,6 +251,15 @@
     </ClInclude>
     <ClInclude Include="DragDialog.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePadList.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldClockList.h">
+      <Filter>WorldClock</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSearchList.h">
+      <Filter>WorldClock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -938,6 +956,12 @@
     <Image Include="res\Theme_Ink\WorldClock_U.png">
       <Filter>리소스\수묵 테마\세계시계 아이콘</Filter>
     </Image>
+    <Image Include="res\Common\IconMoveSpot_B.png">
+      <Filter>리소스\공통 아이콘\정렬 테두리 아이콘</Filter>
+    </Image>
+    <Image Include="res\Common\IconMoveSpot_U.png">
+      <Filter>리소스\공통 아이콘\정렬 테두리 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1248,6 +1272,9 @@
     </Filter>
     <Filter Include="리소스\수묵 테마\테마세팅 아이콘">
       <UniqueIdentifier>{8558c228-47cc-4b59-b379-0d828144c196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\정렬 테두리 아이콘">
+      <UniqueIdentifier>{e031d0a8-19e3-4ce8-a4da-3a531ddb688a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

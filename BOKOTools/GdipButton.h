@@ -78,7 +78,6 @@ public:
 	void UserLeaveEvent();
 
 	bool m_bUseMouseEvent;
-	bool m_nStateMouseEvent;
 	CString strButtonName;
 
 	int nStdImageID;

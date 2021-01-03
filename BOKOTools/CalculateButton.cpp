@@ -18,6 +18,7 @@ CalculateButton::CalculateButton()
 	m_bUseMouseBkGroundColorEvent = true;
 	m_bClick = false;
 	m_bUseMouseTextItalicEvent = false;
+	m_bUseMouseTextBoldEvent = false;
 	m_bDown = false;
 }
 
@@ -192,7 +193,7 @@ void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 		this->SetFaceColor(m_downColor);
 	}
 
-	if (m_bUseMouseTextItalicEvent)
+	if (m_bUseMouseTextBoldEvent)
 	{
 		m_bDown = true;
 	}
@@ -211,7 +212,7 @@ void CalculateButton::OnLButtonUp(UINT nFlags, CPoint point)
 		this->SetFaceColor(m_hoverColor);
 	}
 
-	if (m_bUseMouseTextItalicEvent)
+	if (m_bUseMouseTextBoldEvent)
 	{
 		if (m_bDown)
 		{

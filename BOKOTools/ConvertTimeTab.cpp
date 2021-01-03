@@ -80,16 +80,16 @@ BOOL ConvertTimeTab::OnInitDialog()
 
 	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test2.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test2.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
 	m_btn_test2.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test2.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test3.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test3.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
 	m_btn_test3.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test3.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test4.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 12);
+	m_btn_test4.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
 	m_btn_test4.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test4.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());

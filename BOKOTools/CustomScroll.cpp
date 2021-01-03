@@ -24,6 +24,7 @@ void CustomScroll::Destroy()
 	buttonRect.clear();
 	nLineCount = 0;
 	nCurrentLinePos = 0;
+	bOneButtonLight = false;
 }
 
 void CustomScroll::Create(CWnd* pDialogCtl)
@@ -32,6 +33,8 @@ void CustomScroll::Create(CWnd* pDialogCtl)
 	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, 0, 0, 0, 0, SB_VERT };
 	nLineCount = 0;
 	nCurrentLinePos = 0;
+	nButtonID = 30000;
+	bOneButtonLight = false;
 }
 
 void CustomScroll::Initialize(CustomScrollInfo csi)
@@ -43,6 +46,48 @@ void CustomScroll::LineEnd()
 {
 	csi.nAllPageSize += csi.nOnePageSize;
 	nLineCount++;
+}
+
+void CustomScroll::IncreaseScroll()
+{
+	LineEnd();
+	CGdipButton* button = new CGdipButton;
+	button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
+	button->ShowWindow(SW_SHOW);
+
+	CRect dialogRect;
+	thisCtlDialog->GetWindowRect(dialogRect);
+
+	int nButtonWidth = 10;
+	int nButtonHeight = 10;
+	int nButtonPos = (dialogRect.Height() - 10 - 47) / nLineCount;
+	int nButtonPos_x = 10;
+	int nButtonPos_y = 20;
+
+	for (int i = 0; i < nLineCount; i++)
+	{
+		nButtonPos_y += 12;
+	}
+
+	CRect scrollPos;
+	scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
+	buttonVector.push_back(button);
+	buttonRect.push_back(scrollPos);
+
+	button->MoveWindow(scrollPos);
+	button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+	button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
+	button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+	button->m_bUseMouseEvent = false;
+
+	if (bOneButtonLight)
+	{
+		bOneButtonLight = false;
+		for (int i = 0; i < buttonVector.size(); i++)
+		{
+			buttonVector.at(i)->ShowWindow(SW_SHOW);
+		}
+	}
 }
 
 // CustomScrollType이 버튼인경우만 사용할것.
@@ -57,7 +102,7 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 		thisCtlDialog->GetWindowRect(dialogRect);
 
 		CGdipButton* button;
-		static int nButtonID = 30000;
+		
 
 		int nButtonWidth = 10;
 		int nButtonHeight = 10;
@@ -65,28 +110,33 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 		int nButtonPos_x = 10;
 		int nButtonPos_y = 20;
 
-		if (nLineCount > 1)
+		for (int i = 1; i <= nLineCount; i++)
 		{
-			for (int i = 1; i <= nLineCount; i++)
+			button = new CGdipButton;
+			button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
+			button->ShowWindow(SW_SHOW);
+
+			nButtonPos_y += 12;
+
+			CRect scrollPos;
+			scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
+			buttonVector.push_back(button);
+			buttonRect.push_back(scrollPos);
+
+			button->MoveWindow(scrollPos);
+			button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+			button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
+			button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+			button->m_bUseMouseEvent = false;
+		}
+		buttonVector.at(0)->UseHoverEvent();
+		if (nLineCount == 1)
+		{
+			for (int i = 0; i < buttonVector.size(); i++)
 			{
-				button = new CGdipButton;
-				button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
-				button->ShowWindow(SW_SHOW);
-
-				nButtonPos_y += 12;
-
-				CRect scrollPos;
-				scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
-				buttonVector.push_back(button);
-				buttonRect.push_back(scrollPos);
-
-				button->MoveWindow(scrollPos);
-				button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-				button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
-				button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-				button->m_bUseMouseEvent = false;
+				buttonVector.at(i)->ShowWindow(SW_HIDE);
+				bOneButtonLight = true;
 			}
-			buttonVector.at(0)->UseHoverEvent();
 		}
 	}
 	else
