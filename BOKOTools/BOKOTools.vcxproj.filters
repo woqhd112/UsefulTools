@@ -261,9 +261,6 @@
     <ClInclude Include="WorldSearchList.h">
       <Filter>WorldClock</Filter>
     </ClInclude>
-    <ClInclude Include="WorldClockData.h">
-      <Filter>WorldClock</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BOKOTools.ico">

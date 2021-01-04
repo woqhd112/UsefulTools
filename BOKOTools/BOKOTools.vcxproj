@@ -240,7 +240,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitConverter.h" />
     <ClInclude Include="WorldClock.h" />
-    <ClInclude Include="WorldClockData.h" />
     <ClInclude Include="WorldClockList.h" />
     <ClInclude Include="WorldSearchList.h" />
   </ItemGroup>

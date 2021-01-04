@@ -105,6 +105,7 @@ void WorldClock::PostNcDestroy()
 BOOL WorldClock::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	// 에딧 마우스 좌클릭시 worldsearchlist sw_show 처리 (현재 edit 텍스트값 뽑아서 SearchClockListFromInputText() 함수 호출)
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
@@ -141,4 +142,23 @@ void WorldClock::OnEnChangeEditWorldSearch()
 
 	// 동적으로 입력한 텍스트를 worldsearchlist에서 로드된 시간데이터와 비교하여 같은값만 worldsearchlist 화면에 출력
 	// 입력한 값이 존재하면 worldsearchlist의 화면을 sh_show 하고 없으면 sh_hide 한다
+
+	CString strSearchText;
+	m_edit_search.GetWindowTextW(strSearchText);
+
+	if (strSearchText.IsEmpty())
+	{
+		worldsearchlist->ShowWindow(SW_HIDE);
+		return;
+	}
+
+	if (worldsearchlist->SearchClockListFromInputText(strSearchText))
+	{
+		worldsearchlist->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		worldsearchlist->ShowWindow(SW_HIDE);
+	}
+	
 }
