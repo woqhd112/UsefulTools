@@ -69,8 +69,12 @@ BOOL WorldClock::OnInitDialog()
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);
 	worldsearchlist->ShowWindow(SW_HIDE);
-	TRACE(L"width : %d\n", dynamicSearchRect.Width());
-	TRACE(L"height : %d\n", dynamicSearchRect.Height());
+	
+	m_edit_search.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_stt_result_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	worldsearchlist->BringWindowToTop();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -107,6 +111,29 @@ BOOL WorldClock::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	// 에딧 마우스 좌클릭시 worldsearchlist sw_show 처리 (현재 edit 텍스트값 뽑아서 SearchClockListFromInputText() 함수 호출)
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == this->m_hWnd)
+		{
+			worldsearchlist->ShowWindow(SW_HIDE);
+		}
+		else if (pMsg->hwnd == m_edit_search.m_hWnd)
+		{
+			CString strSearchText;
+			m_edit_search.GetWindowTextW(strSearchText);
+
+			if (worldsearchlist->SearchClockListFromInputText(strSearchText))
+			{
+				worldsearchlist->ShowWindow(SW_SHOW);
+			}
+			else
+			{
+				worldsearchlist->ShowWindow(SW_HIDE);
+			}
+			m_edit_search.SetFocus();
+		}
+	}
+
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
@@ -146,7 +173,6 @@ void WorldClock::OnEnChangeEditWorldSearch()
 
 	CString strSearchText;
 	m_edit_search.GetWindowTextW(strSearchText);
-
 	if (strSearchText.IsEmpty())
 	{
 		worldsearchlist->ShowWindow(SW_HIDE);
@@ -161,5 +187,6 @@ void WorldClock::OnEnChangeEditWorldSearch()
 	{
 		worldsearchlist->ShowWindow(SW_HIDE);
 	}
+	m_edit_search.SetFocus();
 	
 }

@@ -181,7 +181,7 @@ private:
 		return worldclock;
 	}
 	void LoadWorldClockList();
-	void CreateWorldDataButton(int nWorldFind, int nCityFind, WorldClockData wcd);
+	void CreateWorldDataButton(WorldClockData wcd);
 	void DeleteButtonVector();
 
 protected:

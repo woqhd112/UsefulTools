@@ -19,7 +19,7 @@ WorldSearchList::WorldSearchList(ThemeData* currentTheme, CWnd* pParent /*=nullp
 	nWorldButtonID = 55000;
 	nSearchButtonPos_x = 2;
 	nSearchButtonPos_y = 2;
-	nSearchButtonWidth = 228;
+	nSearchButtonWidth = 267;
 	nSearchButtonHeight = 28;
 	nButtonCount = 0;
 }
@@ -69,52 +69,53 @@ BOOL WorldSearchList::OnInitDialog()
 
 void WorldSearchList::LoadWorldClockList()
 {
-	worldVector.push_back(GetGreenWichWorldClockData(COSTARICA_SANJOSE));
-	worldVector.push_back(GetGreenWichWorldClockData(MEXICO_MEXICOCITY));
-	worldVector.push_back(GetGreenWichWorldClockData(COLUMBIA_SANTAFEDEBOGOTA));
-	worldVector.push_back(GetGreenWichWorldClockData(USA_WASHINGTONDC));
-	worldVector.push_back(GetGreenWichWorldClockData(CANADA_OTTAWA));
-	worldVector.push_back(GetGreenWichWorldClockData(CHILE_SANTIAGO));
-	worldVector.push_back(GetGreenWichWorldClockData(BRAZIL_BRASILIA));
-	worldVector.push_back(GetGreenWichWorldClockData(IRELAND_DUBLIN));
-	worldVector.push_back(GetGreenWichWorldClockData(PORTUGAL_LISBON));
-	worldVector.push_back(GetGreenWichWorldClockData(ISLAND_REYKJAVIK));
-	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_LONDON));
-	worldVector.push_back(GetGreenWichWorldClockData(DENMARK_COPENHAGEN));
+	worldVector.push_back(GetGreenWichWorldClockData(GREECE_ATHENS));
+	worldVector.push_back(GetGreenWichWorldClockData(REPUBLICOFSOUTHAFRICA_PRETORIA));
+	worldVector.push_back(GetGreenWichWorldClockData(NETHERLANDS_AMSTERDAM));
 	worldVector.push_back(GetGreenWichWorldClockData(NORWAY_OSLO));
-	worldVector.push_back(GetGreenWichWorldClockData(SPAIN_MADRID));
-	worldVector.push_back(GetGreenWichWorldClockData(FRANCE_PARIS));
-	worldVector.push_back(GetGreenWichWorldClockData(BELGIUM_BRUSSELS));
+	worldVector.push_back(GetGreenWichWorldClockData(NEWZEALAND_WELLINGTON));
+	worldVector.push_back(GetGreenWichWorldClockData(TAIWAN_TAIPEI));
+	worldVector.push_back(GetGreenWichWorldClockData(SOUTHKOREA_SEOUL));
+	worldVector.push_back(GetGreenWichWorldClockData(DENMARK_COPENHAGEN));
 	worldVector.push_back(GetGreenWichWorldClockData(GERMANY_BERLIN));
+	worldVector.push_back(GetGreenWichWorldClockData(LATVIA_RIGA));
+	worldVector.push_back(GetGreenWichWorldClockData(RUSIA_MOSKVA));
+	worldVector.push_back(GetGreenWichWorldClockData(LUXEMBOURG_LUXEMBOURG));
+	worldVector.push_back(GetGreenWichWorldClockData(LITHUANIA_VILNIUS));
+	worldVector.push_back(GetGreenWichWorldClockData(MEXICO_MEXICOCITY));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_WASHINGTONDC));
+	worldVector.push_back(GetGreenWichWorldClockData(NORTHKOREA_PYONGYANG));
+	worldVector.push_back(GetGreenWichWorldClockData(BRAZIL_BRASILIA));
+	worldVector.push_back(GetGreenWichWorldClockData(BELGIUM_BRUSSELS));
 	worldVector.push_back(GetGreenWichWorldClockData(SWEDEN_STOCKHOLM));
 	worldVector.push_back(GetGreenWichWorldClockData(SWISS_BERN));
-	worldVector.push_back(GetGreenWichWorldClockData(AUSTRIA_WIEN));
-	worldVector.push_back(GetGreenWichWorldClockData(NETHERLANDS_AMSTERDAM));
-	worldVector.push_back(GetGreenWichWorldClockData(LUXEMBOURG_LUXEMBOURG));
-	worldVector.push_back(GetGreenWichWorldClockData(ITALY_ROME));
-	worldVector.push_back(GetGreenWichWorldClockData(CZECH_PRAGUE));
-	worldVector.push_back(GetGreenWichWorldClockData(HUNGARY_BUDAPEST));
-	worldVector.push_back(GetGreenWichWorldClockData(POLAND_WARSZAWA));
+	worldVector.push_back(GetGreenWichWorldClockData(SPAIN_MADRID));
 	worldVector.push_back(GetGreenWichWorldClockData(SLOVAKIA_BRATISLAVA));
 	worldVector.push_back(GetGreenWichWorldClockData(SLOVENIA_LJUBLJANA));
-	worldVector.push_back(GetGreenWichWorldClockData(GREECE_ATHENS));
-	worldVector.push_back(GetGreenWichWorldClockData(FINLAND_HELSINKI));
-	worldVector.push_back(GetGreenWichWorldClockData(ISRAEL_JERUSALEM));
+	worldVector.push_back(GetGreenWichWorldClockData(ISLAND_REYKJAVIK));
+	worldVector.push_back(GetGreenWichWorldClockData(IRELAND_DUBLIN));
+	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_LONDON));
 	worldVector.push_back(GetGreenWichWorldClockData(ESTONIA_TALLINN));
-	worldVector.push_back(GetGreenWichWorldClockData(LITHUANIA_VILNIUS));
-	worldVector.push_back(GetGreenWichWorldClockData(REPUBLICOFSOUTHAFRICA_PRETORIA));
-	worldVector.push_back(GetGreenWichWorldClockData(TURKEY_ANKARA));
-	worldVector.push_back(GetGreenWichWorldClockData(RUSIA_MOSKVA));
-	worldVector.push_back(GetGreenWichWorldClockData(NEWZEALAND_WELLINGTON));
+	worldVector.push_back(GetGreenWichWorldClockData(AUSTRIA_WIEN));
+	worldVector.push_back(GetGreenWichWorldClockData(ISRAEL_JERUSALEM));
+	worldVector.push_back(GetGreenWichWorldClockData(ITALY_ROME));
 	worldVector.push_back(GetGreenWichWorldClockData(INDIA_NEWDELHI));
-	worldVector.push_back(GetGreenWichWorldClockData(AUSTRALIA_CANBERRA));
-	worldVector.push_back(GetGreenWichWorldClockData(CHINA_BEIJING));
-	worldVector.push_back(GetGreenWichWorldClockData(TAIWAN_TAIPEI));
-	worldVector.push_back(GetGreenWichWorldClockData(PHILIPPINES_MANILA));
 	worldVector.push_back(GetGreenWichWorldClockData(INDONESIA_JAKARTA));
-	worldVector.push_back(GetGreenWichWorldClockData(NORTHKOREA_PYONGYANG));
-	worldVector.push_back(GetGreenWichWorldClockData(SOUTHKOREA_SEOUL));
 	worldVector.push_back(GetGreenWichWorldClockData(JAPAN_TOKYO));
+	worldVector.push_back(GetGreenWichWorldClockData(CHINA_BEIJING));
+	worldVector.push_back(GetGreenWichWorldClockData(CZECH_PRAGUE));
+	worldVector.push_back(GetGreenWichWorldClockData(CHILE_SANTIAGO));
+	worldVector.push_back(GetGreenWichWorldClockData(CANADA_OTTAWA));
+	worldVector.push_back(GetGreenWichWorldClockData(COSTARICA_SANJOSE));
+	worldVector.push_back(GetGreenWichWorldClockData(COLUMBIA_SANTAFEDEBOGOTA));
+	worldVector.push_back(GetGreenWichWorldClockData(TURKEY_ANKARA));
+	worldVector.push_back(GetGreenWichWorldClockData(PORTUGAL_LISBON));
+	worldVector.push_back(GetGreenWichWorldClockData(POLAND_WARSZAWA));
+	worldVector.push_back(GetGreenWichWorldClockData(FRANCE_PARIS));
+	worldVector.push_back(GetGreenWichWorldClockData(FINLAND_HELSINKI));
+	worldVector.push_back(GetGreenWichWorldClockData(PHILIPPINES_MANILA));
+	worldVector.push_back(GetGreenWichWorldClockData(HUNGARY_BUDAPEST));
+	worldVector.push_back(GetGreenWichWorldClockData(AUSTRALIA_CANBERRA));
 }
 
 bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
@@ -129,8 +130,9 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
 	csi.nAllPageSize = 0;
 	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = 100;
-	csi.nScrollPos = 20;
+	csi.nOnePageSize = 90;
+	csi.nScrollPos = 0;
+	csi.nWheelValue = 30;
 	scroll.Initialize(csi);
 
 	for (int i = 0; i < (int)worldVector.size(); i++)
@@ -157,30 +159,31 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 
 			if (nWorldNameFind != -1 || nCityNameFind != -1)
 			{
-				CreateWorldDataButton(nWorldNameFind, nCityNameFind, worldVector.at(i));
+				CreateWorldDataButton(worldVector.at(i));
 			}
 		}
+	}
+	// 여기에 나라이름, 도시이름 정렬
+
+	for (int i = 0; i < ((int)worldDataButtonVector.size() - 1) / 3 + 1; i++)
+	{
+		scroll.LineEnd();
 	}
 	scroll.ExecuteScrollPos(currentTheme);
 	return bFind;
 }
 
-void WorldSearchList::CreateWorldDataButton(int nWorldFind, int nCityFind, WorldClockData wcd)
+void WorldSearchList::CreateWorldDataButton(WorldClockData wcd)
 {
-	// 버튼을 create 하여 worldDataButtonVector에 push_back하고
-	// movewindow로 위치값 설정한다음 sw_show 한다
-	// 생성된버튼은 find의값이 적은것부터해서 정렬
 	CalculateButton* newSearchButton = new CalculateButton;
 	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	newSearchButton->MoveWindow(nSearchButtonPos_x, nSearchButtonPos_y + ((2 + nSearchButtonHeight) * nButtonCount), nSearchButtonWidth, nSearchButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
 	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-
-	// ?? 버튼클릭위치가 이상함;;
+	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
+	newSearchButton->Invalidate();
 	worldDataButtonVector.push_back(newSearchButton);
 	nButtonCount++;
-	if ((nButtonCount + 1) % 3 == 0) scroll.LineEnd();
-
 }
 
 void WorldSearchList::DeleteButtonVector()
@@ -188,7 +191,6 @@ void WorldSearchList::DeleteButtonVector()
 	for (int i = 0; i < (int)worldDataButtonVector.size(); i++)
 	{
 		CalculateButton* deleteButton = worldDataButtonVector.at(i);
-		//deleteButton->ShowWindow(SW_HIDE);
 		deleteButton->DestroyWindow();
 		delete deleteButton;
 		deleteButton = nullptr;
@@ -242,6 +244,7 @@ void WorldSearchList::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	scroll.OperateScroll(nSBCode, nPos);
 	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
+	Invalidate();
 }
 
 

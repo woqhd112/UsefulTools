@@ -41,6 +41,8 @@ private:
 	CRect dynamicSearchRect;
 
 	WorldClockList* worldclocklist;
+
+public:
 	WorldSearchList* worldsearchlist;
 
 public:

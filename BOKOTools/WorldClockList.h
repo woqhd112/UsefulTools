@@ -5,6 +5,8 @@
 
 // WorldClockList 대화 상자
 
+class WorldClock;
+
 class WorldClockList : public CDialogEx
 {
 	DECLARE_DYNAMIC(WorldClockList)
@@ -22,6 +24,8 @@ private:
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
+
+	WorldClock* worldclock;
 
 	int nBrightness;
 	COLORREF bkBorderColor;
