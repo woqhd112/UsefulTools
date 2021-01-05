@@ -17,10 +17,16 @@ WorldSearchList::WorldSearchList(ThemeData* currentTheme, CWnd* pParent /*=nullp
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
 	nWorldButtonID = 55000;
+	nSearchButtonPos_x = 2;
+	nSearchButtonPos_y = 2;
+	nSearchButtonWidth = 228;
+	nSearchButtonHeight = 28;
+	nButtonCount = 0;
 }
 
 WorldSearchList::~WorldSearchList()
 {
+	DeleteButtonVector();
 }
 
 void WorldSearchList::DoDataExchange(CDataExchange* pDX)
@@ -32,6 +38,8 @@ void WorldSearchList::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(WorldSearchList, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_WM_VSCROLL()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -112,6 +120,19 @@ void WorldSearchList::LoadWorldClockList()
 bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 {
 	bool bFind = false;
+
+	DeleteButtonVector();
+	scroll.Destroy();
+
+	scroll.Create(this);
+	CustomScroll::CustomScrollInfo csi;
+	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
+	csi.nAllPageSize = 0;
+	csi.nKindOfScrollFlags = SB_VERT;
+	csi.nOnePageSize = 100;
+	csi.nScrollPos = 20;
+	scroll.Initialize(csi);
+
 	for (int i = 0; i < (int)worldVector.size(); i++)
 	{
 		CString strFullName = worldVector.at(i).strWorldName;
@@ -140,26 +161,26 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 			}
 		}
 	}
+	scroll.ExecuteScrollPos(currentTheme);
 	return bFind;
 }
 
 void WorldSearchList::CreateWorldDataButton(int nWorldFind, int nCityFind, WorldClockData wcd)
 {
-	DeleteButtonVector();
-	scroll.Destroy();
-
-	scroll.Create(this);
-	CustomScroll::CustomScrollInfo csi;
-	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
-	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = 149;
-	csi.nScrollPos = 20;
-	scroll.Initialize(csi);
-
 	// 버튼을 create 하여 worldDataButtonVector에 push_back하고
 	// movewindow로 위치값 설정한다음 sw_show 한다
 	// 생성된버튼은 find의값이 적은것부터해서 정렬
+	CalculateButton* newSearchButton = new CalculateButton;
+	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	newSearchButton->MoveWindow(nSearchButtonPos_x, nSearchButtonPos_y + ((2 + nSearchButtonHeight) * nButtonCount), nSearchButtonWidth, nSearchButtonHeight);
+	newSearchButton->ShowWindow(SW_SHOW);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+
+	// ?? 버튼클릭위치가 이상함;;
+	worldDataButtonVector.push_back(newSearchButton);
+	nButtonCount++;
+	if ((nButtonCount + 1) % 3 == 0) scroll.LineEnd();
+
 }
 
 void WorldSearchList::DeleteButtonVector()
@@ -167,13 +188,14 @@ void WorldSearchList::DeleteButtonVector()
 	for (int i = 0; i < (int)worldDataButtonVector.size(); i++)
 	{
 		CalculateButton* deleteButton = worldDataButtonVector.at(i);
-		deleteButton->ShowWindow(SW_HIDE);
+		//deleteButton->ShowWindow(SW_HIDE);
 		deleteButton->DestroyWindow();
 		delete deleteButton;
 		deleteButton = nullptr;
 	}
 	worldDataButtonVector.clear();
 	nWorldButtonID = 55000;
+	nButtonCount = 0;
 }
 
 void WorldSearchList::OnOK()
@@ -212,4 +234,26 @@ void WorldSearchList::OnPaint()
 	CRect thisRect;
 	GetWindowRect(thisRect);
 	dc.Draw3dRect(0, 0, thisRect.Width(), thisRect.Height(), bkBorderColor, bkBorderColor);
+}
+
+
+void WorldSearchList::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	scroll.OperateScroll(nSBCode, nPos);
+	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+BOOL WorldSearchList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (scroll.GetLineCount() > 1)
+	{
+		UINT nFlag = scroll.OperateWheel(zDelta);
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
+	}
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

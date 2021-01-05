@@ -166,9 +166,14 @@ private:
 
 	int nWorldButtonID;
 
-	//std::map<CString, GreenWichWorldClockData> worldMap;
 	std::vector<WorldClockData> worldVector;
 	std::vector<CalculateButton*> worldDataButtonVector;
+
+	int nSearchButtonPos_x;
+	int nSearchButtonPos_y;
+	int nSearchButtonWidth;
+	int nSearchButtonHeight;
+	int nButtonCount;
 
 	inline WorldClockData GetGreenWichWorldClockData(GreenWichWorldClockData cwcd)
 	{
@@ -192,4 +197,6 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };

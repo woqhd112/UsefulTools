@@ -64,12 +64,13 @@ BOOL WorldClock::OnInitDialog()
 	worldclocklist->MoveWindow(0, 0, listViewRect.Width(), listViewRect.Height());
 	worldclocklist->ShowWindow(SW_SHOW);
 
-	dynamicSearchRect = { editRect.left - thisRect.left - 8, editRect.top - thisRect.top - 38 + editRect.Height() + 1, editRect.left - thisRect.left - 8 + editRect.Width() - 2,editRect.top - thisRect.top - 38 + editRect.Height() + 1 + 100 };
+	dynamicSearchRect = { editRect.left - thisRect.left - 8, editRect.top - thisRect.top - 38 + editRect.Height() + 9, editRect.left - thisRect.left - 8 + editRect.Width() - 2,editRect.top - thisRect.top - 38 + editRect.Height() + 1 + 100 };
 	worldsearchlist = new WorldSearchList(currentTheme, this);
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);
 	worldsearchlist->ShowWindow(SW_HIDE);
-
+	TRACE(L"width : %d\n", dynamicSearchRect.Width());
+	TRACE(L"height : %d\n", dynamicSearchRect.Height());
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
