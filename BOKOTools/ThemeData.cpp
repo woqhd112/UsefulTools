@@ -151,7 +151,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	}
 	else if (nThemeFlags == THEME_SEXY)
 	{
-	strThemeName = _T("물궁디 테마");
+	strThemeName = _T("물방울 테마");
 	this->nThemeFlags = nThemeFlags;
 	strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Sexy\\MouseClick.wav");
 	themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_SEXY, IDB_PNG_CHANGE_HOVER_THEME_SEXY, IDB_PNG_CHANGE_CLICK_THEME_SEXY };

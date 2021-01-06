@@ -962,41 +962,111 @@
     <Image Include="res\Common\IconMoveSpot_U.png">
       <Filter>리소스\공통 아이콘\정렬 테두리 아이콘</Filter>
     </Image>
-    <Image Include="res\Theme_Sexy\Base_B.png" />
-    <Image Include="res\Theme_Sexy\Base_C.png" />
-    <Image Include="res\Theme_Sexy\Base_U.png" />
-    <Image Include="res\Theme_Sexy\BaseTimer_B.png" />
-    <Image Include="res\Theme_Sexy\BaseTimer_C.png" />
-    <Image Include="res\Theme_Sexy\BaseTimer_U.png" />
-    <Image Include="res\Theme_Sexy\ComingSoon.png" />
-    <Image Include="res\Theme_Sexy\Converter_B.png" />
-    <Image Include="res\Theme_Sexy\Converter_C.png" />
-    <Image Include="res\Theme_Sexy\Converter_U.png" />
-    <Image Include="res\Theme_Sexy\DateCal_B.png" />
-    <Image Include="res\Theme_Sexy\DateCal_C.png" />
-    <Image Include="res\Theme_Sexy\DateCal_U.png" />
-    <Image Include="res\Theme_Sexy\Engineering_B.png" />
-    <Image Include="res\Theme_Sexy\Engineering_C.png" />
-    <Image Include="res\Theme_Sexy\Engineering_U.png" />
-    <Image Include="res\Theme_Sexy\Main_BK_2.bmp" />
-    <Image Include="res\Theme_Sexy\NotePad_B.png" />
-    <Image Include="res\Theme_Sexy\NotePad_C.png" />
-    <Image Include="res\Theme_Sexy\NotePad_U.png" />
-    <Image Include="res\Theme_Sexy\Scroll_icon_A.png" />
-    <Image Include="res\Theme_Sexy\Scroll_icon_B.png" />
-    <Image Include="res\Theme_Sexy\StopWatch_B.png" />
-    <Image Include="res\Theme_Sexy\StopWatch_C.png" />
-    <Image Include="res\Theme_Sexy\StopWatch_U.png" />
-    <Image Include="res\Theme_Sexy\ThemaChange_B.png" />
-    <Image Include="res\Theme_Sexy\ThemaChange_C.png" />
-    <Image Include="res\Theme_Sexy\ThemaChange_U.png" />
-    <Image Include="res\Theme_Sexy\ThemaChoice_BK_2.bmp" />
-    <Image Include="res\Theme_Sexy\WorkTimer_B.png" />
-    <Image Include="res\Theme_Sexy\WorkTimer_C.png" />
-    <Image Include="res\Theme_Sexy\WorkTimer_U.png" />
-    <Image Include="res\Theme_Sexy\WorldClock_B.png" />
-    <Image Include="res\Theme_Sexy\WorldClock_C.png" />
-    <Image Include="res\Theme_Sexy\WorldClock_U.png" />
+    <Image Include="res\Theme_Sexy\Base_B.png">
+      <Filter>리소스\물방울 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Base_C.png">
+      <Filter>리소스\물방울 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Base_U.png">
+      <Filter>리소스\물방울 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\BaseTimer_B.png">
+      <Filter>리소스\물방울 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\BaseTimer_C.png">
+      <Filter>리소스\물방울 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\BaseTimer_U.png">
+      <Filter>리소스\물방울 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\ComingSoon.png">
+      <Filter>리소스\물방울 테마\커밍순 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Converter_B.png">
+      <Filter>리소스\물방울 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Converter_C.png">
+      <Filter>리소스\물방울 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Converter_U.png">
+      <Filter>리소스\물방울 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\DateCal_B.png">
+      <Filter>리소스\물방울 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\DateCal_C.png">
+      <Filter>리소스\물방울 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\DateCal_U.png">
+      <Filter>리소스\물방울 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Engineering_B.png">
+      <Filter>리소스\물방울 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Engineering_C.png">
+      <Filter>리소스\물방울 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Engineering_U.png">
+      <Filter>리소스\물방울 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Main_BK_2.bmp">
+      <Filter>리소스\물방울 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\NotePad_B.png">
+      <Filter>리소스\물방울 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\NotePad_C.png">
+      <Filter>리소스\물방울 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\NotePad_U.png">
+      <Filter>리소스\물방울 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Scroll_icon_A.png">
+      <Filter>리소스\물방울 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\Scroll_icon_B.png">
+      <Filter>리소스\물방울 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\StopWatch_B.png">
+      <Filter>리소스\물방울 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\StopWatch_C.png">
+      <Filter>리소스\물방울 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\StopWatch_U.png">
+      <Filter>리소스\물방울 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\ThemaChange_B.png">
+      <Filter>리소스\물방울 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\ThemaChange_C.png">
+      <Filter>리소스\물방울 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\ThemaChange_U.png">
+      <Filter>리소스\물방울 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\ThemaChoice_BK_2.bmp">
+      <Filter>리소스\물방울 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorkTimer_B.png">
+      <Filter>리소스\물방울 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorkTimer_C.png">
+      <Filter>리소스\물방울 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorkTimer_U.png">
+      <Filter>리소스\물방울 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorldClock_B.png">
+      <Filter>리소스\물방울 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorldClock_C.png">
+      <Filter>리소스\물방울 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Sexy\WorldClock_U.png">
+      <Filter>리소스\물방울 테마\세계시계 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1310,6 +1380,51 @@
     </Filter>
     <Filter Include="리소스\공통 아이콘\정렬 테두리 아이콘">
       <UniqueIdentifier>{e031d0a8-19e3-4ce8-a4da-3a531ddb688a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마">
+      <UniqueIdentifier>{11f60002-a6f2-4544-bdac-fb99ead05502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{43a7539f-daab-4568-832a-1c3c2d61fafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\테마세팅 배경">
+      <UniqueIdentifier>{149c15f9-46ab-4aa7-9086-ee0489e37081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\커밍순 아이콘">
+      <UniqueIdentifier>{ad56e407-e804-4b48-97c2-39a8527d3775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{3b5a3fd5-aee7-4580-9a55-a42465dd3916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{d428bda7-ccda-4b91-a37c-4198c8af063f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{ae772e09-7966-4489-ba1b-46e6821cdcdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\스크롤 아이콘">
+      <UniqueIdentifier>{e54723fb-08ed-4faa-9457-8c152e894daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\세계시계 아이콘">
+      <UniqueIdentifier>{bf8f3d71-bd88-40f8-b130-423c39791c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\메인 배경">
+      <UniqueIdentifier>{f21d5f29-ae93-4e12-a56c-6244656e1999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\메모장 아이콘">
+      <UniqueIdentifier>{ad3b8564-ef79-4763-ac61-62ea3ac9084c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{168544c4-2921-47f3-adfa-bccb9eebf8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{ed497709-31e5-41ea-882a-8bc3a0a7f660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{3e5da2f4-cc4d-4668-bb99-0d9ad316be41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\물방울 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{c2e130de-b40c-4636-afed-953384d039c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
