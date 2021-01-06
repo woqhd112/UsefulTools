@@ -63,6 +63,7 @@ BOOL WorldClock::OnInitDialog()
 	worldclocklist->Create(IDD_DIALOG_WORLD_LIST, &m_stt_result_view);
 	worldclocklist->MoveWindow(0, 0, listViewRect.Width(), listViewRect.Height());
 	worldclocklist->ShowWindow(SW_SHOW);
+	TRACE(L"height : %d\n", listViewRect.Height());
 
 	dynamicSearchRect = { editRect.left - thisRect.left - 8, editRect.top - thisRect.top - 38 + editRect.Height() + 9, editRect.left - thisRect.left - 8 + editRect.Width() - 2,editRect.top - thisRect.top - 38 + editRect.Height() + 1 + 100 };
 	worldsearchlist = new WorldSearchList(currentTheme, this);
@@ -79,6 +80,15 @@ BOOL WorldClock::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
+WorldClockList* WorldClock::GetClockInstance() const
+{
+	return worldclocklist;
+}
+
+WorldSearchList* WorldClock::GetSearchInstance() const
+{
+	return worldsearchlist;
+}
 
 void WorldClock::OnOK()
 {

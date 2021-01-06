@@ -41,11 +41,15 @@ private:
 	CRect dynamicSearchRect;
 
 	WorldClockList* worldclocklist;
-
-public:
 	WorldSearchList* worldsearchlist;
 
 public:
+
+public:
+
+	WorldClockList* GetClockInstance() const;
+	WorldSearchList* GetSearchInstance() const;
+
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	afx_msg void OnClose();

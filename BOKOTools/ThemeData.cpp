@@ -156,132 +156,132 @@ ThemeData::~ThemeData()
 
 }
 
-int ThemeData::GetThemeFlags()
+int ThemeData::GetThemeFlags() const
 {
 	return nThemeFlags;
 }
 
-CString ThemeData::GetThemeName()
+CString ThemeData::GetThemeName() const
 {
 	return strThemeName;
 }
 
-CString ThemeData::GetButtonSoundPath()
+CString ThemeData::GetButtonSoundPath() const
 {
 	return strButtonSoundPath;
 }
 
-ThemeData::FunctionIcon ThemeData::GetThemeButtonIcon()
+ThemeData::FunctionIcon ThemeData::GetThemeButtonIcon() const
 {
 	return themeButtonIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetBaseIcon()
+ThemeData::FunctionIcon ThemeData::GetBaseIcon() const
 {
 	return baseIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetEngineeringIcon()
+ThemeData::FunctionIcon ThemeData::GetEngineeringIcon() const
 {
 	return engineeringIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetStopWatchIcon()
+ThemeData::FunctionIcon ThemeData::GetStopWatchIcon() const
 {
 	return stopwatchIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetConverterIcon()
+ThemeData::FunctionIcon ThemeData::GetConverterIcon() const
 {
 	return converterIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetDateCalIcon()
+ThemeData::FunctionIcon ThemeData::GetDateCalIcon() const
 {
 	return datecalIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetWorkTimerIcon()
+ThemeData::FunctionIcon ThemeData::GetWorkTimerIcon() const
 {
 	return worktimerIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetNotePadIcon()
+ThemeData::FunctionIcon ThemeData::GetNotePadIcon() const
 {
 	return notepadIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetBaseTimerIcon()
+ThemeData::FunctionIcon ThemeData::GetBaseTimerIcon() const
 {
 	return basetimerIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetWorldClockIcon()
+ThemeData::FunctionIcon ThemeData::GetWorldClockIcon() const
 {
 	return worldclockIcon;
 }
 
-ThemeData::FunctionIcon ThemeData::GetScrollIcon()
+ThemeData::FunctionIcon ThemeData::GetScrollIcon() const
 {
 	return scrollIcon;
 }
 
-COLORREF ThemeData::GetTextColor()
+COLORREF ThemeData::GetTextColor() const
 {
 	return textColor;
 }
 
-COLORREF ThemeData::GetFunctionTextColor()
+COLORREF ThemeData::GetFunctionTextColor() const
 {
 	return functionTextColor;
 }
 
-COLORREF ThemeData::GetFunctionBkColor()
+COLORREF ThemeData::GetFunctionBkColor() const
 {
 	return functionBkColor;
 }
 
-COLORREF ThemeData::GetFunctionSubColor()
+COLORREF ThemeData::GetFunctionSubColor() const
 {
 	return functionSubColor;
 }
 
-COLORREF ThemeData::GetFunctionSubSubColor()
+COLORREF ThemeData::GetFunctionSubSubColor() const
 {
 	return functionSubSubColor;
 }
 
-COLORREF ThemeData::GetRectBorderColor()
+COLORREF ThemeData::GetRectBorderColor() const
 {
 	return rectBorderColor;
 }
 
-COLORREF ThemeData::GetFunctionRectBorderColor()
+COLORREF ThemeData::GetFunctionRectBorderColor() const
 {
 	return functionRectBorderColor;
 }
 
-COLORREF ThemeData::GetButtonColor()
+COLORREF ThemeData::GetButtonColor() const
 {
 	return buttonColor;
 }
 
-ThemeData::FunctionIcon ThemeData::GetCommingSoonIcon()
+ThemeData::FunctionIcon ThemeData::GetCommingSoonIcon() const
 {
 	return commingSoonIcon;
 }
-
-int ThemeData::GetSettingThemeBkIconID()
+ 
+int ThemeData::GetSettingThemeBkIconID() const
 {
 	return nSettingThemeBkIconID;
 }
 
-int ThemeData::GetMainBkIconID()
+int ThemeData::GetMainBkIconID() const
 {
 	return nMainBkIconID;
 }
 
-int ThemeData::GetMainTimePosMargin()
+int ThemeData::GetMainTimePosMargin() const
 {
 	return nMainTimePosMargin;
 }

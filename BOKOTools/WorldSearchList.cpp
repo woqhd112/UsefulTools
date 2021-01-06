@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "WorldSearchList.h"
+#include "WorldClock.h"
 #include "afxdialogex.h"
 
 
@@ -21,7 +22,6 @@ WorldSearchList::WorldSearchList(ThemeData* currentTheme, CWnd* pParent /*=nullp
 	nSearchButtonPos_y = 2;
 	nSearchButtonWidth = 267;
 	nSearchButtonHeight = 28;
-	nButtonCount = 0;
 }
 
 WorldSearchList::~WorldSearchList()
@@ -62,6 +62,8 @@ BOOL WorldSearchList::OnInitDialog()
 		bkBorderColor = RGB(255, 255, 255);
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
+
+	worldclock = (WorldClock*)pParent;
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -148,24 +150,22 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 			AfxExtractSubString(strCityName, strFullName, 1, '-');
 			int nWorldNameFind = strWorldName.Find(strInputText);
 			int nCityNameFind = strCityName.Find(strInputText);
-			if (nWorldNameFind != -1)
-			{
-				bFind = true;
-			}
-			if (nCityNameFind != -1)
-			{
-				bFind = true;
-			}
+			if (nWorldNameFind != -1) { bFind = true; }
+			if (nCityNameFind != -1) { bFind = true; }
 
-			if (nWorldNameFind != -1 || nCityNameFind != -1)
+			if (nWorldNameFind != -1)
 			{
 				CreateWorldDataButton(worldVector.at(i));
 			}
+			else if (nCityNameFind != -1)
+			{
+				CreateCityDataButton(worldVector.at(i));
+			}
 		}
 	}
-	// 여기에 나라이름, 도시이름 정렬
+	SetApsorptionToButtonPos();
 
-	for (int i = 0; i < ((int)worldDataButtonVector.size() - 1) / 3 + 1; i++)
+	for (int i = 0; i < ((int)allDataButtonVector.size() - 1) / 3 + 1; i++)
 	{
 		scroll.LineEnd();
 	}
@@ -173,31 +173,52 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	return bFind;
 }
 
+void WorldSearchList::SetApsorptionToButtonPos()
+{
+	for (int i = 0; i < (int)worldDataButtonVector.size(); i++) { allDataButtonVector.push_back(worldDataButtonVector.at(i)); }
+	for (int i = 0; i < (int)cityDataButtonVector.size(); i++) { allDataButtonVector.push_back(cityDataButtonVector.at(i)); }
+	for (int i = 0; i < allDataButtonVector.size(); i++)
+	{
+		CalculateButton* newSearchButton = allDataButtonVector.at(i);
+		newSearchButton->MoveWindow(nSearchButtonPos_x, nSearchButtonPos_y + ((2 + nSearchButtonHeight) * i), nSearchButtonWidth, nSearchButtonHeight);
+	}
+}
+
+void WorldSearchList::CreateCityDataButton(WorldClockData wcd)
+{
+	CalculateButton* newSearchButton = new CalculateButton;
+	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	newSearchButton->ShowWindow(SW_SHOW);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
+	newSearchButton->Invalidate();
+	cityDataButtonVector.push_back(newSearchButton);
+}
+
 void WorldSearchList::CreateWorldDataButton(WorldClockData wcd)
 {
 	CalculateButton* newSearchButton = new CalculateButton;
 	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
-	newSearchButton->MoveWindow(nSearchButtonPos_x, nSearchButtonPos_y + ((2 + nSearchButtonHeight) * nButtonCount), nSearchButtonWidth, nSearchButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
 	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	worldDataButtonVector.push_back(newSearchButton);
-	nButtonCount++;
 }
 
 void WorldSearchList::DeleteButtonVector()
 {
-	for (int i = 0; i < (int)worldDataButtonVector.size(); i++)
+	for (int i = 0; i < (int)allDataButtonVector.size(); i++)
 	{
-		CalculateButton* deleteButton = worldDataButtonVector.at(i);
+		CalculateButton* deleteButton = allDataButtonVector.at(i);
 		deleteButton->DestroyWindow();
 		delete deleteButton;
 		deleteButton = nullptr;
 	}
+	allDataButtonVector.clear();
+	cityDataButtonVector.clear();
 	worldDataButtonVector.clear();
 	nWorldButtonID = 55000;
-	nButtonCount = 0;
 }
 
 void WorldSearchList::OnOK()
@@ -259,4 +280,20 @@ BOOL WorldSearchList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
 	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+BOOL WorldSearchList::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	CString strCaption;
+	CalculateButton* button = (CalculateButton*)GetDlgItem((int)wParam);
+	button->GetWindowTextW(strCaption);
+
+	if (MessageBox(_T("선택한 국가를 추가 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+	{
+		worldclock->GetClockInstance()->AddClock(GetGMPCalcValue(GetWorldClockData(strCaption)), strCaption);
+	}
+
+	return CDialogEx::OnCommand(wParam, lParam);
 }

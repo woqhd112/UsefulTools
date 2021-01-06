@@ -58,31 +58,31 @@ private:
 
 public:
 
-	int GetThemeFlags();
-	CString GetThemeName();
-	CString GetButtonSoundPath();
-	FunctionIcon GetThemeButtonIcon();
-	FunctionIcon GetBaseIcon();
-	FunctionIcon GetEngineeringIcon();
-	FunctionIcon GetStopWatchIcon();
-	FunctionIcon GetConverterIcon();
-	FunctionIcon GetDateCalIcon();
-	FunctionIcon GetWorkTimerIcon();
-	FunctionIcon GetNotePadIcon();
-	FunctionIcon GetBaseTimerIcon();
-	FunctionIcon GetWorldClockIcon();
-	FunctionIcon GetScrollIcon();
-	FunctionIcon GetCommingSoonIcon();
-	COLORREF GetTextColor();
-	COLORREF GetFunctionTextColor();
-	COLORREF GetFunctionBkColor();
-	COLORREF GetFunctionSubColor();
-	COLORREF GetFunctionSubSubColor();
-	COLORREF GetRectBorderColor();
-	COLORREF GetFunctionRectBorderColor();
-	COLORREF GetButtonColor();
-	int GetSettingThemeBkIconID();
-	int GetMainBkIconID();
-	int GetMainTimePosMargin();
+	int GetThemeFlags() const;
+	CString GetThemeName() const;
+	CString GetButtonSoundPath() const;
+	FunctionIcon GetThemeButtonIcon() const;
+	FunctionIcon GetBaseIcon() const;
+	FunctionIcon GetEngineeringIcon() const;
+	FunctionIcon GetStopWatchIcon() const;
+	FunctionIcon GetConverterIcon() const;
+	FunctionIcon GetDateCalIcon() const;
+	FunctionIcon GetWorkTimerIcon() const;
+	FunctionIcon GetNotePadIcon() const;
+	FunctionIcon GetBaseTimerIcon() const;
+	FunctionIcon GetWorldClockIcon() const;
+	FunctionIcon GetScrollIcon() const;
+	FunctionIcon GetCommingSoonIcon() const;
+	COLORREF GetTextColor() const;
+	COLORREF GetFunctionTextColor() const;
+	COLORREF GetFunctionBkColor() const;
+	COLORREF GetFunctionSubColor() const;
+	COLORREF GetFunctionSubSubColor() const;
+	COLORREF GetRectBorderColor() const;
+	COLORREF GetFunctionRectBorderColor() const;
+	COLORREF GetButtonColor() const;
+	int GetSettingThemeBkIconID() const;
+	int GetMainBkIconID() const;
+	int GetMainTimePosMargin() const;
 };
 

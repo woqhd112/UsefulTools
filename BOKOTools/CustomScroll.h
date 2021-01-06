@@ -44,10 +44,11 @@ public:
 
 	void IncreaseScroll();
 
+	CustomScrollInfo csi;
+
 private:
 
 	ThemeData* currentTheme;
-	CustomScrollInfo csi;
 	CWnd* thisCtlDialog;
 	int nButtonID;
 	int nLineCount;
