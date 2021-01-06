@@ -8,6 +8,7 @@
 #define THEME_LIGHT 2
 #define THEME_MAGNIFIER 3
 #define THEME_INK	4
+#define THEME_SEXY	5
 
 class ThemeData
 {

@@ -29,6 +29,7 @@ private:
 	CGdipButton m_btn_theme_light;
 	CGdipButton m_btn_theme_magnifier;
 	CGdipButton m_btn_theme_ink;
+	CGdipButton m_btn_theme_sexy;
 
 	CWnd* pParent;
 	std::vector<ThemeData*> themeList;

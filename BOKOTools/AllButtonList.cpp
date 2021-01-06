@@ -207,6 +207,7 @@ void AllButtonList::LoadAllButton()
 	//csi.nOnePageSize = 20 + 128;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = 30;
+	csi.bLikeButtonEvent = false;
 	scroll.Initialize(csi);
 
 

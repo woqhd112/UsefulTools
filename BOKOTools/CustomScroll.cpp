@@ -51,42 +51,49 @@ void CustomScroll::LineEnd()
 void CustomScroll::IncreaseScroll()
 {
 	LineEnd();
-	CGdipButton* button = new CGdipButton;
-	button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
-	button->ShowWindow(SW_SHOW);
-
-	CRect dialogRect;
-	thisCtlDialog->GetWindowRect(dialogRect);
-
-	int nButtonWidth = 10;
-	int nButtonHeight = 10;
-	int nButtonPos = (dialogRect.Height() - 10 - 47) / nLineCount;
-	int nButtonPos_x = 10;
-	int nButtonPos_y = 20;
-
-	for (int i = 0; i < nLineCount; i++)
+	if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
 	{
-		nButtonPos_y += 12;
-	}
+		CGdipButton* button = new CGdipButton;
+		button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
+		button->ShowWindow(SW_SHOW);
 
-	CRect scrollPos;
-	scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
-	buttonVector.push_back(button);
-	buttonRect.push_back(scrollPos);
+		CRect dialogRect;
+		thisCtlDialog->GetWindowRect(dialogRect);
 
-	button->MoveWindow(scrollPos);
-	button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-	button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
-	button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
-	button->m_bUseMouseEvent = false;
+		int nButtonWidth = 10;
+		int nButtonHeight = 10;
+		int nButtonPos = (dialogRect.Height() - 10 - 47) / nLineCount;
+		int nButtonPos_x = 10;
+		int nButtonPos_y = 20;
 
-	if (bOneButtonLight)
-	{
-		bOneButtonLight = false;
-		for (int i = 0; i < buttonVector.size(); i++)
+		for (int i = 0; i < nLineCount; i++)
 		{
-			buttonVector.at(i)->ShowWindow(SW_SHOW);
+			nButtonPos_y += 12;
 		}
+
+		CRect scrollPos;
+		scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
+		buttonVector.push_back(button);
+		buttonRect.push_back(scrollPos);
+
+		button->MoveWindow(scrollPos);
+		button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+		button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
+		button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
+		button->m_bUseMouseEvent = false;
+
+		if (bOneButtonLight)
+		{
+			bOneButtonLight = false;
+			for (int i = 0; i < buttonVector.size(); i++)
+			{
+				buttonVector.at(i)->ShowWindow(SW_SHOW);
+			}
+		}
+	}
+	else
+	{
+
 	}
 }
 
@@ -212,7 +219,7 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 			nCurrentLinePos = 0;
 			return false;
 		}
-		if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
+		if (csi.bLikeButtonEvent)
 		{
 			if (nCurrentLinePos >= nLineCount)
 			{

@@ -135,6 +135,7 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	csi.nOnePageSize = 90;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = 30;
+	csi.bLikeButtonEvent = false;
 	scroll.Initialize(csi);
 
 	for (int i = 0; i < (int)worldVector.size(); i++)

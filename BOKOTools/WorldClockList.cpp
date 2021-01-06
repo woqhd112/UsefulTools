@@ -20,7 +20,7 @@ WorldClockList::WorldClockList(ThemeData* currentTheme, CWnd* pParent /*=nullptr
 	nWorldButtonID = 58000;
 	nClockButtonPos_x = 2;
 	nClockButtonPos_y = 2;
-	nClockButtonWidth = 260;
+	nClockButtonWidth = 240;
 	nClockButtonHeight = 37;
 	nButtonCount = 0;
 	nDetectHeight = 0;
@@ -63,6 +63,16 @@ BOOL WorldClockList::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
 	worldclock = (WorldClock*)pParent;
+
+	scroll.Create(this);
+	CustomScroll::CustomScrollInfo csi;
+	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
+	csi.nAllPageSize = 0;
+	csi.nKindOfScrollFlags = SB_VERT;
+	csi.nOnePageSize = 236;
+	csi.nScrollPos = 0;
+	csi.nWheelValue = 234;
+	scroll.Initialize(csi);
 
 	// 로드 xml로 설정
 	AddClock(8, _T("대한민국 - 서울"));
@@ -124,7 +134,7 @@ void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
 	// 여기에 시간값 넣는 함수 추가
 	CalculateButton* newSearchButton = new CalculateButton;
 	newSearchButton->Create(strWorldClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
-	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * nButtonCount) - ((2 + nClockButtonHeight) * (scroll.GetCurrentLinePos() - 1));
+	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * (nButtonCount - (6 * (scroll.GetCurrentLinePos() - 1))));
 	newSearchButton->MoveWindow(nClockButtonPos_x, nDetectHeight, nClockButtonWidth, nClockButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
 	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -138,22 +148,26 @@ void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
 void WorldClockList::SizeToScrollDetect()
 {
 
-	scroll.Destroy();
+	//scroll.Destroy();
 
-	scroll.Create(this);
-	CustomScroll::CustomScrollInfo csi;
-	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
-	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = 39;
-	csi.nScrollPos = 0;
-	csi.nWheelValue = 39;
-	scroll.Initialize(csi);
-
-	for (int i = 0; i < (int)clockButtonVector.size() + 1 - 6; i++)
+	//scroll.Create(this);
+	//CustomScroll::CustomScrollInfo csi;
+	//csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
+	//csi.nAllPageSize = 0;
+	//csi.nKindOfScrollFlags = SB_VERT;
+	//csi.nOnePageSize = 236;
+	//csi.nScrollPos = 0;
+	//csi.nWheelValue = 236;
+	//scroll.Initialize(csi);
+	if (((int)clockButtonVector.size() - 1) % 6 == 0)
 	{
 		scroll.LineEnd();
 	}
+/*
+	for (int i = 0; i < (int)clockButtonVector.size() + 1 - 6; i++)
+	{
+		scroll.LineEnd();
+	}*/
 	/*scroll.LineEnd();
 	scroll.LoadScroll(scroll.csi.nOnePageSize);*/
 	scroll.ExecuteScrollPos(currentTheme);

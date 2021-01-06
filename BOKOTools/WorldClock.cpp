@@ -56,14 +56,15 @@ BOOL WorldClock::OnInitDialog()
 
 	CRect listViewRect, editRect, thisRect;
 	m_stt_result_view.GetWindowRect(listViewRect);
+	//m_stt_result_view.SetWindowPos(NULL, 0, 0, 260, 236, SWP_NOMOVE);
 	m_edit_search.GetWindowRect(editRect);
 	this->GetWindowRect(thisRect);
 
 	worldclocklist = new WorldClockList(currentTheme, this);
 	worldclocklist->Create(IDD_DIALOG_WORLD_LIST, &m_stt_result_view);
 	worldclocklist->MoveWindow(0, 0, listViewRect.Width(), listViewRect.Height());
+	//worldclocklist->MoveWindow(0, 0, 260, 236);
 	worldclocklist->ShowWindow(SW_SHOW);
-	TRACE(L"height : %d\n", listViewRect.Height());
 
 	dynamicSearchRect = { editRect.left - thisRect.left - 8, editRect.top - thisRect.top - 38 + editRect.Height() + 9, editRect.left - thisRect.left - 8 + editRect.Width() - 2,editRect.top - thisRect.top - 38 + editRect.Height() + 1 + 100 };
 	worldsearchlist = new WorldSearchList(currentTheme, this);

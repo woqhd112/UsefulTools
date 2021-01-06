@@ -25,6 +25,7 @@ public:
 		int nAllPageSize;
 		int nOnePageSize;
 		int nScrollPos;
+		bool bLikeButtonEvent = true;
 	};
 
 	void Create(CWnd* pDialogCtl);

@@ -33,6 +33,7 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_LIGHT, m_btn_theme_light);
 	DDX_Control(pDX, IDC_BUTTON_THEME_MAGNIFIER, m_btn_theme_magnifier);
 	DDX_Control(pDX, IDC_BUTTON_THEME_INK, m_btn_theme_ink);
+	DDX_Control(pDX, IDC_BUTTON_THEME_SEXY, m_btn_theme_sexy);
 }
 
 
@@ -73,6 +74,10 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_ink.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_INK, _T("PNG"), true);
 	m_btn_theme_ink.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_INK, _T("PNG"), true);
 	m_btn_theme_ink.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_INK, _T("PNG"), true);
+
+	m_btn_theme_sexy.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_SEXY, _T("PNG"), true);
+	m_btn_theme_sexy.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_SEXY, _T("PNG"), true);
+	m_btn_theme_sexy.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_SEXY, _T("PNG"), true);
 
 
 	/*m_btn_theme_detective.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -128,6 +133,9 @@ void SettingTheme::SetCtlPos()
 		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
 		m_btn_theme_ink.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_sexy.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
 	}
 	scroll.LineEnd();
 
@@ -181,6 +189,11 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 			ExecuteSelectTheme(THEME_INK);
 			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_INK, themeList.at(4));
 		}
+		else if (pMsg->hwnd == m_btn_theme_sexy.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_SEXY);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_SEXY, themeList.at(5));
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -197,6 +210,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_light.DisConnect();
 	m_btn_theme_magnifier.DisConnect();
 	m_btn_theme_ink.DisConnect();
+	m_btn_theme_sexy.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)
