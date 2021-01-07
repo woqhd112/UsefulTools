@@ -20,7 +20,7 @@ WorldSearchList::WorldSearchList(ThemeData* currentTheme, CWnd* pParent /*=nullp
 	nWorldButtonID = 55000;
 	nSearchButtonPos_x = 2;
 	nSearchButtonPos_y = 2;
-	nSearchButtonWidth = 267;
+	nSearchButtonWidth = 228;
 	nSearchButtonHeight = 28;
 }
 

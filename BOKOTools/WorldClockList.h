@@ -45,7 +45,6 @@ private:
 
 
 	int nDetectHeight;
-	void SizeToScrollDetect();
 
 
 protected:
@@ -63,4 +62,5 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };

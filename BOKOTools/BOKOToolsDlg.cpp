@@ -174,6 +174,50 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
+	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+
+	HRSRC res = FindResource(hResInstanceBold,
+		MAKEINTRESOURCE(IDF_FONT_DIGITAL), L"Font");
+
+	if (res)
+	{
+		HGLOBAL mem = LoadResource(hResInstanceBold, res);
+		void *data = LockResource(mem);
+		size_t len = SizeofResource(hResInstanceBold, res);
+
+		DWORD nFonts;
+		m_fonthandle = AddFontMemResourceEx(
+			data,       // font resource
+			(DWORD)len,       // number of bytes in font resource 
+			NULL,          // Reserved. Must be 0.
+			&nFonts      // number of fonts installed
+		);
+
+		if (m_fonthandle == 0)
+		{
+			TRACE("실패");
+		}
+	}
+	CFont fnt;
+	LOGFONT lf;
+	::ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = 15;
+	lf.lfWeight = FW_BOLD;
+	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
+	fnt.CreateFontIndirect(&lf);
+	m_stt_ampm.SetFont(&fnt);
+	m_stt_week.SetFont(&fnt);
+	fnt.Detach();
+
+	::ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = 40;
+	lf.lfWeight = FW_BOLD;
+	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
+	fnt.CreateFontIndirect(&lf);
+	m_stt_current_time.SetFont(&fnt);
+	fnt.Detach();
+
 	m_stt_engineering.Initialize(15, _T("고딕"));
 	m_stt_base.Initialize(15, _T("고딕"));
 	m_stt_converter.Initialize(15, _T("고딕"));
@@ -183,9 +227,9 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_notepad.Initialize(15, _T("고딕"));
 	m_stt_basetimer.Initialize(15, _T("고딕"));
 	m_stt_world_clock.Initialize(15, _T("고딕"));
-	m_stt_ampm.Initialize(15, _T("DS-Digital"));
-	m_stt_week.Initialize(15, _T("DS-Digital"));
-	m_stt_current_time.Initialize(40, _T("DS-Digital"));
+	//m_stt_ampm.Initialize(15, _T("DS-Digital"));
+	//m_stt_week.Initialize(15, _T("DS-Digital"));
+	//m_stt_current_time.Initialize(40, _T("DS-Digital"));
 
 	LoadUserInterface(currentTheme);
 	
@@ -448,7 +492,8 @@ void CBOKOToolsDlg::LoadTheme()
 	ThemeData* theme3 = new ThemeData(THEME_LIGHT);
 	ThemeData* theme4 = new ThemeData(THEME_MAGNIFIER);
 	ThemeData* theme5 = new ThemeData(THEME_INK);
-	ThemeData* theme6 = new ThemeData(THEME_SEXY);
+	ThemeData* theme6 = new ThemeData(THEME_WATERDROP);
+	ThemeData* theme7 = new ThemeData(THEME_PLANET);
 
 	themeList.push_back(theme1);
 	themeList.push_back(theme2);
@@ -456,6 +501,7 @@ void CBOKOToolsDlg::LoadTheme()
 	themeList.push_back(theme4);
 	themeList.push_back(theme5);
 	themeList.push_back(theme6);
+	themeList.push_back(theme7);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
@@ -478,9 +524,13 @@ void CBOKOToolsDlg::LoadTheme()
 	{
 		currentTheme = theme5;
 	}
-	else if (nFlags == THEME_SEXY)
+	else if (nFlags == THEME_WATERDROP)
 	{
 		currentTheme = theme6;
+	}
+	else if (nFlags == THEME_PLANET)
+	{
+		currentTheme = theme7;
 	}
 }
 
@@ -830,16 +880,7 @@ void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
 		scroll.LineEnd();
 	}
 
-	CRect SystemRect;
-	CPoint pos;
-	GetClientRect(SystemRect);
-	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
-	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
-
-	// 윈도우의 다이얼로그 사이즈는 양옆 위아래로 9씩의 마진값과 상단 타이틀의 38의 마진값을 가진다.
-	// 그래서 사이즈 조정시 넓이 + 18, 높이 + 47을 입력해야한다.
-	//this->MoveWindow(pos.x, pos.y, nVector_X, nVector_Y);
-	this->MoveWindow(pos.x, pos.y, MARGIN_X(730), MARGIN_Y(550));
+	this->SetWindowPos(NULL, 0 ,0, MARGIN_X(730), MARGIN_Y(550), SWP_NOMOVE);
 
 	scroll.ExecuteScrollPos(currentTheme);
 }

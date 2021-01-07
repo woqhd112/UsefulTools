@@ -54,19 +54,17 @@ BOOL WorldClock::OnInitDialog()
 	m_btn_search.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_search.SetTextColor(currentTheme->GetTextColor());
 
-	CRect listViewRect, editRect, thisRect;
-	m_stt_result_view.GetWindowRect(listViewRect);
-	//m_stt_result_view.SetWindowPos(NULL, 0, 0, 260, 236, SWP_NOMOVE);
-	m_edit_search.GetWindowRect(editRect);
-	this->GetWindowRect(thisRect);
+	this->SetWindowPos(NULL, 0, 0, 298, 333, SWP_NOMOVE);
+	m_btn_search.MoveWindow(11, 15, 26, 24);
+	m_edit_search.MoveWindow(11 + 26 + 4, 15, 234, 23);
+	m_stt_result_view.MoveWindow(11, 15 + 23 + 10, 263, 237);
 
 	worldclocklist = new WorldClockList(currentTheme, this);
 	worldclocklist->Create(IDD_DIALOG_WORLD_LIST, &m_stt_result_view);
-	worldclocklist->MoveWindow(0, 0, listViewRect.Width(), listViewRect.Height());
-	//worldclocklist->MoveWindow(0, 0, 260, 236);
+	worldclocklist->MoveWindow(0, 0, 263, 236);
 	worldclocklist->ShowWindow(SW_SHOW);
 
-	dynamicSearchRect = { editRect.left - thisRect.left - 8, editRect.top - thisRect.top - 38 + editRect.Height() + 9, editRect.left - thisRect.left - 8 + editRect.Width() - 2,editRect.top - thisRect.top - 38 + editRect.Height() + 1 + 100 };
+	dynamicSearchRect = { 11 + 26 + 4, 15 + 23 + 5, 11 + 26 + 4 + 232, 15 + 23 + 5 + 92 };
 	worldsearchlist = new WorldSearchList(currentTheme, this);
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);

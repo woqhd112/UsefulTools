@@ -29,7 +29,8 @@ private:
 	CGdipButton m_btn_theme_light;
 	CGdipButton m_btn_theme_magnifier;
 	CGdipButton m_btn_theme_ink;
-	CGdipButton m_btn_theme_sexy;
+	CGdipButton m_btn_theme_waterdrop;
+	CGdipButton m_btn_theme_planet;
 
 	CWnd* pParent;
 	std::vector<ThemeData*> themeList;

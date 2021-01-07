@@ -61,6 +61,7 @@ private:
 	CWinThread* m_maintainThread;
 
 	ButtonSignal bs;
+	HANDLE m_fonthandle;
 
 	int nMaintainCount;
 

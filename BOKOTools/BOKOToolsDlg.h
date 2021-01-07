@@ -87,6 +87,8 @@ private:
 	ThemeData* currentTheme;
 	CustomScroll scroll;
 
+	HANDLE m_fonthandle;
+
 	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void LoadTheme();
 	int LoadCurrnetTheme();

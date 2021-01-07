@@ -33,7 +33,8 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_LIGHT, m_btn_theme_light);
 	DDX_Control(pDX, IDC_BUTTON_THEME_MAGNIFIER, m_btn_theme_magnifier);
 	DDX_Control(pDX, IDC_BUTTON_THEME_INK, m_btn_theme_ink);
-	DDX_Control(pDX, IDC_BUTTON_THEME_SEXY, m_btn_theme_sexy);
+	DDX_Control(pDX, IDC_BUTTON_THEME_WATERDROP, m_btn_theme_waterdrop);
+	DDX_Control(pDX, IDC_BUTTON_THEME_PLANET, m_btn_theme_planet);
 }
 
 
@@ -75,9 +76,13 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_ink.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_INK, _T("PNG"), true);
 	m_btn_theme_ink.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_INK, _T("PNG"), true);
 
-	m_btn_theme_sexy.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_SEXY, _T("PNG"), true);
-	m_btn_theme_sexy.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_SEXY, _T("PNG"), true);
-	m_btn_theme_sexy.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_SEXY, _T("PNG"), true);
+	m_btn_theme_waterdrop.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_WATERDROP, _T("PNG"), true);
+	m_btn_theme_waterdrop.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_WATERDROP, _T("PNG"), true);
+	m_btn_theme_waterdrop.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_WATERDROP, _T("PNG"), true);
+
+	m_btn_theme_planet.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_PLANET, _T("PNG"), true);
+	m_btn_theme_planet.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_PLANET, _T("PNG"), true);
+	m_btn_theme_planet.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_PLANET, _T("PNG"), true);
 
 
 	/*m_btn_theme_detective.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -134,7 +139,12 @@ void SettingTheme::SetCtlPos()
 		m_btn_theme_ink.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_sexy.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		m_btn_theme_waterdrop.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		// 세번째줄
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
+		m_btn_theme_planet.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 	}
 	scroll.LineEnd();
@@ -189,10 +199,15 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 			ExecuteSelectTheme(THEME_INK);
 			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_INK, themeList.at(4));
 		}
-		else if (pMsg->hwnd == m_btn_theme_sexy.m_hWnd)
+		else if (pMsg->hwnd == m_btn_theme_waterdrop.m_hWnd)
 		{
-			ExecuteSelectTheme(THEME_SEXY);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_SEXY, themeList.at(5));
+			ExecuteSelectTheme(THEME_WATERDROP);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_WATERDROP, themeList.at(5));
+		}
+		else if (pMsg->hwnd == m_btn_theme_planet.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_PLANET);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_PLANET, themeList.at(5));
 		}
 	}
 
@@ -210,7 +225,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_light.DisConnect();
 	m_btn_theme_magnifier.DisConnect();
 	m_btn_theme_ink.DisConnect();
-	m_btn_theme_sexy.DisConnect();
+	m_btn_theme_waterdrop.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)

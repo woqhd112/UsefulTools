@@ -90,7 +90,41 @@ BOOL StopWatch::OnInitDialog()
 	m_btn_laptime.SetTextColor(currentTheme->GetTextColor());
 	m_btn_laptime_reset.SetTextColor(currentTheme->GetTextColor());
 
-	m_stt_hms.Initialize(45, _T("DS-Digital"));
+	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+
+	HRSRC res = FindResource(hResInstanceBold,
+		MAKEINTRESOURCE(IDF_FONT_DIGITAL), L"DS-Digital");
+
+	if (res)
+	{
+		HGLOBAL mem = LoadResource(hResInstanceBold, res);
+		void *data = LockResource(mem);
+		size_t len = SizeofResource(hResInstanceBold, res);
+
+		DWORD nFonts;
+		m_fonthandle = AddFontMemResourceEx(
+			data,       // font resource
+			(DWORD)len,       // number of bytes in font resource 
+			NULL,          // Reserved. Must be 0.
+			&nFonts      // number of fonts installed
+		);
+
+		if (m_fonthandle == 0)
+		{
+			TRACE("실패");
+		}
+	}
+	CFont fnt;
+	LOGFONT lf;
+	::ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = 45;
+	lf.lfWeight = FW_BOLD;
+	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
+	fnt.CreateFontIndirect(&lf);
+	m_stt_hms.SetFont(&fnt);
+	fnt.Detach();
+	//m_stt_hms.Initialize(45, _T("DS-Digital"));
 
 	m_stt_stopwatch_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_hms.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);

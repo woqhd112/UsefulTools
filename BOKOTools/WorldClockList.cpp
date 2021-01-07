@@ -20,7 +20,7 @@ WorldClockList::WorldClockList(ThemeData* currentTheme, CWnd* pParent /*=nullptr
 	nWorldButtonID = 58000;
 	nClockButtonPos_x = 2;
 	nClockButtonPos_y = 2;
-	nClockButtonWidth = 240;
+	nClockButtonWidth = 259;
 	nClockButtonHeight = 37;
 	nButtonCount = 0;
 	nDetectHeight = 0;
@@ -131,6 +131,12 @@ void WorldClockList::OnPaint()
 
 void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
 {
+	if (clockButtonVector.size() >= 20)
+	{
+		MessageBox(_T("시계는 최대 20개 까지 등록 가능합니다."));
+		return;
+	}
+
 	// 여기에 시간값 넣는 함수 추가
 	CalculateButton* newSearchButton = new CalculateButton;
 	newSearchButton->Create(strWorldClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
@@ -142,34 +148,11 @@ void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
 	newSearchButton->Invalidate();
 	clockButtonVector.push_back(newSearchButton);
 	nButtonCount++;
-	SizeToScrollDetect();
-}
 
-void WorldClockList::SizeToScrollDetect()
-{
-
-	//scroll.Destroy();
-
-	//scroll.Create(this);
-	//CustomScroll::CustomScrollInfo csi;
-	//csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
-	//csi.nAllPageSize = 0;
-	//csi.nKindOfScrollFlags = SB_VERT;
-	//csi.nOnePageSize = 236;
-	//csi.nScrollPos = 0;
-	//csi.nWheelValue = 236;
-	//scroll.Initialize(csi);
 	if (((int)clockButtonVector.size() - 1) % 6 == 0)
 	{
 		scroll.LineEnd();
 	}
-/*
-	for (int i = 0; i < (int)clockButtonVector.size() + 1 - 6; i++)
-	{
-		scroll.LineEnd();
-	}*/
-	/*scroll.LineEnd();
-	scroll.LoadScroll(scroll.csi.nOnePageSize);*/
 	scroll.ExecuteScrollPos(currentTheme);
 }
 
@@ -193,4 +176,38 @@ BOOL WorldClockList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
 	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	CString strCaption;
+	CalculateButton* button = (CalculateButton*)GetDlgItem((int)wParam);
+	
+	bool bDelete = false;
+	if (MessageBox(_T("선택한 항목을 삭제 하시겠습니까?"), _T("삭제"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+	{
+		int i = 0;
+		for (i = 0; i < (int)clockButtonVector.size(); i++)
+		{
+			if (clockButtonVector.at(i) == button)
+			{
+				clockButtonVector.erase(clockButtonVector.begin() + i);
+				button->DestroyWindow();
+				delete button;
+				button = nullptr;
+				bDelete = true;
+				break;
+			}
+		}
+	}
+
+	if (bDelete)
+	{
+		// 여기에 버튼들 정렬 기능 추가
+		return TRUE;
+	}
+
+	return CDialogEx::OnCommand(wParam, lParam);
 }
