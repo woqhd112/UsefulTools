@@ -48,6 +48,12 @@ void CustomScroll::LineEnd()
 	nLineCount++;
 }
 
+void CustomScroll::LineDelete()
+{
+	csi.nAllPageSize -= csi.nOnePageSize;
+	nLineCount--;
+}
+
 void CustomScroll::IncreaseScroll()
 {
 	LineEnd();

@@ -3,7 +3,6 @@
 //
 
 #pragma once
-#include "ThemeData.h"
 #include "BaseCalculate.h"
 #include "EngineeringCalculate.h"
 #include "UnitConverter.h"
@@ -14,7 +13,6 @@
 #include "NotePad.h"
 #include "BaseTimer.h"
 #include "WorldClock.h"
-#include "GdipButton.h" 
 
 // CBaseCalculatorDlg 대화 상자
 class CBOKOToolsDlg : public CDialogEx

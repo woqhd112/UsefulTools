@@ -64,16 +64,7 @@ BOOL SortIcon::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	this->SetBackgroundImage(currentTheme->GetMainBkIconID());
 
-	CRect SystemRect;
-	CPoint pos;
-	GetClientRect(SystemRect);
-	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
-	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
-
-	// 윈도우의 다이얼로그 사이즈는 양옆 위아래로 9씩의 마진값과 상단 타이틀의 38의 마진값을 가진다.
-	// 그래서 사이즈 조정시 넓이 + 18, 높이 + 47을 입력해야한다.
-	//this->MoveWindow(pos.x, pos.y, nVector_X, nVector_Y);
-	this->MoveWindow(pos.x, pos.y, MARGIN_X(730), MARGIN_Y(550));
+	this->SetWindowPos(NULL, 0, 0, MARGIN_X(730), MARGIN_Y(550), SWP_NOMOVE);
 
 	CRect thisRect;
 	this->GetWindowRect(thisRect);

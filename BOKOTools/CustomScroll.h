@@ -32,6 +32,7 @@ public:
 	void Destroy();
 	void Initialize(CustomScrollInfo csi);
 	void LineEnd();
+	void LineDelete();
 	void LoadScroll(int nThisHeight);
 	void ExecuteScrollPos(ThemeData* currentTheme);
 

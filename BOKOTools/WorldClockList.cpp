@@ -28,6 +28,31 @@ WorldClockList::WorldClockList(ThemeData* currentTheme, CWnd* pParent /*=nullptr
 
 WorldClockList::~WorldClockList()
 {
+	if (bCurTimeThread)
+	{
+		bCurTimeThread = false;
+		DWORD nExitCode = NULL;
+
+		GetExitCodeThread(m_curtimeThread->m_hThread, &nExitCode);
+		if (TerminateThread(m_curtimeThread->m_hThread, nExitCode) != 0)
+		{
+			delete m_curtimeThread;
+			m_curtimeThread = nullptr;
+		}
+	}
+
+	for (int i = 0; i < (int)clockButtonVector.size(); i++)
+	{
+		CalculateButton* deleteButton = clockButtonVector.at(i);
+		CalculateStatic* deleteStatic = clockStaticVector.at(i);
+		delete deleteButton;
+		delete deleteStatic;
+		deleteButton = nullptr;
+		deleteStatic = nullptr;
+	}
+	clockButtonVector.clear();
+	clockStaticVector.clear();
+	clockDataVector.clear();
 }
 
 void WorldClockList::DoDataExchange(CDataExchange* pDX)
@@ -53,6 +78,7 @@ BOOL WorldClockList::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
+	m_backBrush.CreateSolidBrush(currentTheme->GetButtonColor());
 	nBrightness = GetBrightness(GetRValue(currentTheme->GetFunctionSubColor()), GetGValue(currentTheme->GetFunctionSubColor()), GetBValue(currentTheme->GetFunctionSubColor()));
 
 	if (nBrightness > 120)
@@ -63,6 +89,32 @@ BOOL WorldClockList::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
 	worldclock = (WorldClock*)pParent;
+
+	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+
+	HRSRC res = FindResource(hResInstanceBold,
+		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
+
+	if (res)
+	{
+		HGLOBAL mem = LoadResource(hResInstanceBold, res);
+		void *data = LockResource(mem);
+		size_t len = SizeofResource(hResInstanceBold, res);
+
+		DWORD nFonts;
+		m_fonthandle = AddFontMemResourceEx(
+			data,       // font resource
+			(DWORD)len,       // number of bytes in font resource 
+			NULL,          // Reserved. Must be 0.
+			&nFonts      // number of fonts installed
+		);
+
+		if (m_fonthandle == 0)
+		{
+			TRACE("실패");
+		}
+	}
 
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
@@ -75,15 +127,146 @@ BOOL WorldClockList::OnInitDialog()
 	scroll.Initialize(csi);
 
 	// 로드 xml로 설정
-	AddClock(8, _T("대한민국 - 서울"));
-	AddClock(8, _T("대한민국 - 서울"));
-	AddClock(8, _T("대한민국 - 서울"));
-	AddClock(8, _T("대한민국 - 서울"));
-	AddClock(8, _T("대한민국 - 서울"));
-	AddClock(8, _T("대한민국 - 서울"));
+	LoadWorldClock();
+
+	bCurTimeThread = true;
+	m_curtimeThread = AfxBeginThread(thrStartWorldTime, this);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void WorldClockList::LoadWorldClock()
+{
+	bool bSavedXml = false;
+	CMarkup markUp;
+
+	CString szRoot = _T("");
+	CreateConfigClockFile(szRoot);
+
+	CString strFullPath = szRoot + _T("\\WorldClock.conf");
+
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Clock"));
+		markUp.IntoElem();
+		while (markUp.FindElem(_T("data")))
+		{
+			double dErrorTimeValue = _ttof(markUp.GetAttrib(_T("error")));
+			CString strWorldName = markUp.GetAttrib(_T("world"));
+			CString strCityName = markUp.GetAttrib(_T("city"));
+			AddClock(dErrorTimeValue, strWorldName, strCityName);
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CreateConfigClockFile(szRoot);
+		if (CreateDefaultClockXml(&markUp, szRoot)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			SaveXml(&markUp, strFullPath);
+		}
+	}
+}
+
+void WorldClockList::CreateConfigClockFile(CString& strFullPath)
+{
+	TCHAR chFilePath[256] = { 0, };
+	GetModuleFileName(NULL, chFilePath, 256);
+	strFullPath = (LPCTSTR)chFilePath;
+	int nLen = strFullPath.ReverseFind('\\');
+
+	if (nLen > 0)
+	{
+		strFullPath = strFullPath.Left(nLen);
+	}
+
+	CFileFind rootFind;
+	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
+		strFullPath += _T("\\BOKOTools");
+	}
+	rootFind.Close();
+
+	CreateDefaultDirectory(strFullPath, _T("\\Config"));
+	CreateDefaultDirectory(strFullPath, _T("\\WorldClock"));
+}
+
+void WorldClockList::SaveXml(CMarkup* markup, CString strSaveFullPath)
+{
+	CString strXML = markup->GetDoc();
+
+	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+	JWXml::CXml saveXML;
+	saveXML.LoadXml((LPCTSTR)strXML);
+	saveXML.SaveWithFormatted(strSaveFullPath);
+	saveXML.Close();
+	CoUninitialize();
+}
+
+void WorldClockList::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
+{
+	CFileFind findPath;
+	strFullPath += strAppendPath;
+	if (!findPath.FindFile(strFullPath))
+	{
+		CreateDirectory(strFullPath, NULL);
+	}
+	findPath.Close();
+}
+
+bool WorldClockList::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\WorldClock.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Clock"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("data"));
+		markUp->AddAttrib(_T("error"), 8);
+		markUp->AddAttrib(_T("world"), _T("대한민국"));
+		markUp->AddAttrib(_T("city"), _T("서울"));
+
+		AddClock(8, _T("대한민국"), _T("서울"));
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+
+UINT WorldClockList::thrStartWorldTime(LPVOID method)
+{
+	WorldClockList* thisDlg = (WorldClockList*)method;
+	thisDlg->StartWorldTime();
+
+	return 0;
+}
+
+void WorldClockList::StartWorldTime()
+{
+	CString strFullTime;
+	while (bCurTimeThread)
+	{
+		clock_t start, finish;
+		double duration;
+
+		start = clock();
+		for (int i = 0; i < (int)clockStaticVector.size(); i++)
+		{
+			CalculateStatic* timeStatic = clockStaticVector.at(i);
+			strFullTime = GetCurTime(clockDataVector.at(i));
+			timeStatic->SetWindowTextW(strFullTime);
+		}
+		finish = clock();
+		duration = (double)(finish - start) / CLOCKS_PER_SEC;
+		Sleep((1000 - (duration * 1000) <= 0) ? DWORD(0) : DWORD(1000 - (duration * 1000)));
+	}
 }
 
 
@@ -112,6 +295,11 @@ HBRUSH WorldClockList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  여기서 DC의 특성을 변경합니다.
+	if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		pDC->SetBkColor(currentTheme->GetButtonColor());
+		hbr = (HBRUSH)m_backBrush;
+	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
@@ -129,17 +317,42 @@ void WorldClockList::OnPaint()
 	dc.Draw3dRect(0, 0, thisRect.Width(), thisRect.Height(), bkBorderColor, bkBorderColor);
 }
 
-void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
+CString WorldClockList::GetCurTime(double dErrorTimeValue)
+{
+	CTime cTime = CTime::GetCurrentTime();
+	dErrorTimeValue = 8 - dErrorTimeValue;
+
+	int hour = int(dErrorTimeValue);
+	int minute = int((dErrorTimeValue - hour) * 60);
+
+	int nTimeHour = cTime.GetHour() - hour;
+	if (nTimeHour < 0)
+	{
+		nTimeHour += 12;
+	}
+	else if (nTimeHour >= 24)
+	{
+		nTimeHour -= 24;
+	}
+	int nTimeMinute = cTime.GetMinute() - minute;
+	int nTimeSecond = cTime.GetSecond();
+	CString strTimeFormat;
+	strTimeFormat.Format(_T("%02d:%02d:%02d"), nTimeHour, nTimeMinute, nTimeSecond);
+
+	return strTimeFormat;
+}
+
+bool WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName, CString strCityClockName)
 {
 	if (clockButtonVector.size() >= 20)
 	{
 		MessageBox(_T("시계는 최대 20개 까지 등록 가능합니다."));
-		return;
+		return false;
 	}
 
 	// 여기에 시간값 넣는 함수 추가
 	CalculateButton* newSearchButton = new CalculateButton;
-	newSearchButton->Create(strWorldClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	newSearchButton->Create(strWorldClockName + _T(" \r\n ") + strCityClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * (nButtonCount - (6 * (scroll.GetCurrentLinePos() - 1))));
 	newSearchButton->MoveWindow(nClockButtonPos_x, nDetectHeight, nClockButtonWidth, nClockButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
@@ -147,13 +360,39 @@ void WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName)
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	clockButtonVector.push_back(newSearchButton);
+
+	CalculateStatic* newSearchStatic = new CalculateStatic;
+	newSearchStatic->Create(GetCurTime(dErrorTimeValue), SS_CENTER, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	newSearchStatic->MoveWindow(nClockButtonPos_x + 100, nDetectHeight + 4, nClockButtonWidth - 100 - 4, nClockButtonHeight - 8);
+	newSearchStatic->ShowWindow(SW_SHOW);
+	CFont fnt;
+	LOGFONT lf;
+	::ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = 20;
+	lf.lfWeight = FW_BOLD;
+	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
+	fnt.CreateFontIndirect(&lf);
+	newSearchStatic->SetFont(&fnt);
+	fnt.Detach();
+	clockStaticVector.push_back(newSearchStatic);
+	clockDataVector.push_back(dErrorTimeValue);
+
+	newSearchButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newSearchStatic->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newSearchStatic->BringWindowToTop();
+
 	nButtonCount++;
+
 
 	if (((int)clockButtonVector.size() - 1) % 6 == 0)
 	{
 		scroll.LineEnd();
 	}
 	scroll.ExecuteScrollPos(currentTheme);
+
+	// xml 업데이트 함수
+
+	return true;
 }
 
 void WorldClockList::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -193,21 +432,40 @@ BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
 		{
 			if (clockButtonVector.at(i) == button)
 			{
+				nButtonCount--;
+				CalculateStatic* statics = clockStaticVector.at(i);
 				clockButtonVector.erase(clockButtonVector.begin() + i);
+				clockStaticVector.erase(clockStaticVector.begin() + i);
+				clockDataVector.erase(clockDataVector.begin() + i);
 				button->DestroyWindow();
+				statics->DestroyWindow();
 				delete button;
+				delete statics;
 				button = nullptr;
+				statics = nullptr;
 				bDelete = true;
+				if (scroll.GetLineCount() == scroll.GetCurrentLinePos())  OnVScroll(SB_PAGEUP, 0, GetScrollBarCtrl(SB_VERT));
+				if ((int)clockButtonVector.size() % 6 == 0)
+				{
+					scroll.LineDelete();
+					scroll.ExecuteScrollPos(currentTheme);
+				}
 				break;
 			}
 		}
+		if (bDelete)
+		{
+			for (int j = i; j < (int)clockButtonVector.size(); j++)
+			{
+				clockButtonVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x, nClockButtonPos_y + ((2 + nClockButtonHeight) * j), 0, 0, SWP_NOSIZE);
+				clockStaticVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x + 100, nClockButtonPos_y + ((2 + nClockButtonHeight) * j) + 4, 0, 0, SWP_NOSIZE);
+			}
+			// xml 업데이트 함수
+
+			return TRUE;
+		}
 	}
 
-	if (bDelete)
-	{
-		// 여기에 버튼들 정렬 기능 추가
-		return TRUE;
-	}
 
 	return CDialogEx::OnCommand(wParam, lParam);
 }

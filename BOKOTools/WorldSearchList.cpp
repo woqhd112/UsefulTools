@@ -287,13 +287,18 @@ BOOL WorldSearchList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 BOOL WorldSearchList::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CString strCaption;
+	CString strCaption, strWorldName, strCityName;
 	CalculateButton* button = (CalculateButton*)GetDlgItem((int)wParam);
 	button->GetWindowTextW(strCaption);
+	AfxExtractSubString(strWorldName, strCaption, 0, '-');
+	AfxExtractSubString(strCityName, strCaption, 1, '-');
 
 	if (MessageBox(_T("선택한 국가를 추가 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 	{
-		worldclock->GetClockInstance()->AddClock(GetGMPCalcValue(GetWorldClockData(strCaption)), strCaption);
+		if (worldclock->GetClockInstance()->AddClock(GetGMPCalcValue(GetWorldClockData(strCaption)), strWorldName, strCityName))
+		{
+			this->ShowWindow(SW_HIDE);
+		}
 	}
 
 	return CDialogEx::OnCommand(wParam, lParam);

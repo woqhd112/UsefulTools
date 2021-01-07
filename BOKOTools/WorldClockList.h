@@ -3,6 +3,9 @@
 #include "GeneralUtil.h"
 #include "CustomScroll.h"
 #include "CalculateButton.h"
+#include "CalculateStatic.h"
+#include "CMarkup/Markup.h"
+#include "CXml\Xml.h"
 #include <vector>
 
 
@@ -32,6 +35,8 @@ private:
 
 	int nBrightness;
 	COLORREF bkBorderColor;
+	CBrush m_backBrush;
+	HANDLE m_fonthandle;
 
 	CustomScroll scroll;
 	int nWorldButtonID; 
@@ -40,12 +45,24 @@ private:
 	int nClockButtonWidth;
 	int nClockButtonHeight;
 	int nButtonCount;
-
-	std::vector<CalculateButton*> clockButtonVector;
-
-
 	int nDetectHeight;
 
+	std::vector<CalculateButton*> clockButtonVector;
+	std::vector<CalculateStatic*> clockStaticVector;
+	std::vector<double> clockDataVector;
+
+	CWinThread* m_curtimeThread;
+	bool bCurTimeThread;
+	static UINT thrStartWorldTime(LPVOID method);
+	void StartWorldTime();
+
+	CString GetCurTime(double dErrorTimeValue);
+
+	void LoadWorldClock();
+	void CreateConfigClockFile(CString& strFullPath);
+	bool CreateDefaultClockXml(CMarkup* markUp, CString strFilePath);
+	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
+	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -53,7 +70,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	void AddClock(double dErrorTimeValue, CString strWorldClockName);
+	bool AddClock(double dErrorTimeValue, CString strWorldClockName, CString strCityClockName);
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

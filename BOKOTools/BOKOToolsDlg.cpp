@@ -178,7 +178,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
 
 	HRSRC res = FindResource(hResInstanceBold,
-		MAKEINTRESOURCE(IDF_FONT_DIGITAL), L"Font");
+		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
 
 	if (res)
 	{
@@ -227,9 +227,6 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_notepad.Initialize(15, _T("고딕"));
 	m_stt_basetimer.Initialize(15, _T("고딕"));
 	m_stt_world_clock.Initialize(15, _T("고딕"));
-	//m_stt_ampm.Initialize(15, _T("DS-Digital"));
-	//m_stt_week.Initialize(15, _T("DS-Digital"));
-	//m_stt_current_time.Initialize(40, _T("DS-Digital"));
 
 	LoadUserInterface(currentTheme);
 	
@@ -365,11 +362,7 @@ void CBOKOToolsDlg::StartCurrentTime()
 }
 
 void CBOKOToolsDlg::LoadButtonPos()
-{
-	// xml 미존재시 creat 존재시 load
-	// setctlpos에서 lineend 설정 
-
-	int nThemeFlags = 0;
+{ 
 	bool bSavedXml = false;
 	CMarkup markUp;
 

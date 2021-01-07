@@ -176,7 +176,7 @@ ThemeData::ThemeData(int nThemeFlags)
 		buttonColor = RGB(115, 115, 115);
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_WATERDROP;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_WATERDROP;
-		nMainTimePosMargin = THEME_MAIN_TIME_POS_UP;
+		nMainTimePosMargin = THEME_MAIN_TIME_POS_DOWN;
 	}
 	else if (nThemeFlags == THEME_PLANET)
 	{

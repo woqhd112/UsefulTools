@@ -21,6 +21,17 @@ WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 WorldClock::~WorldClock()
 {
+	if (worldclocklist)
+	{
+		delete worldclocklist;
+		worldclocklist = nullptr;
+	}
+
+	if (worldsearchlist)
+	{
+		delete worldsearchlist;
+		worldsearchlist = nullptr;
+	}
 }
 
 void WorldClock::DoDataExchange(CDataExchange* pDX)
@@ -54,7 +65,7 @@ BOOL WorldClock::OnInitDialog()
 	m_btn_search.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_search.SetTextColor(currentTheme->GetTextColor());
 
-	this->SetWindowPos(NULL, 0, 0, 298, 333, SWP_NOMOVE);
+	this->SetWindowPos(NULL, 0, 0, 298, 335, SWP_NOMOVE);
 	m_btn_search.MoveWindow(11, 15, 26, 24);
 	m_edit_search.MoveWindow(11 + 26 + 4, 15, 234, 23);
 	m_stt_result_view.MoveWindow(11, 15 + 23 + 10, 263, 237);

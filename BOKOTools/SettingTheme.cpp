@@ -150,13 +150,7 @@ void SettingTheme::SetCtlPos()
 	scroll.LineEnd();
 
 
-	CRect SystemRect;
-	CPoint pos;
-	GetClientRect(SystemRect);
-	pos.x = LONG(GetSystemMetrics(SM_CXSCREEN) / 2.0f - SystemRect.Width() / 2.0f);
-	pos.y = LONG(GetSystemMetrics(SM_CYSCREEN) / 2.0f - SystemRect.Height() / 2.0f);
-
-	this->MoveWindow(pos.x, pos.y, MARGIN_X(300), MARGIN_Y(400));
+	this->SetWindowPos(NULL, 0, 0, MARGIN_X(300), MARGIN_Y(400), SWP_NOMOVE);
 
 	scroll.ExecuteScrollPos(currentTheme);
 }
@@ -226,6 +220,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_magnifier.DisConnect();
 	m_btn_theme_ink.DisConnect();
 	m_btn_theme_waterdrop.DisConnect();
+	m_btn_theme_planet.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)

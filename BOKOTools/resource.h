@@ -1,6 +1,6 @@
-Ôªø//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
-// BOKOTools.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+// BOKOTools.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -318,6 +318,7 @@
 #define IDB_PNG_WORLDCLOCK_NOMAL_THEME_PLANET 555
 #define IDB_PNG_WORLDCLOCK_CLICK_THEME_PLANET 556
 #define IDB_PNG_WORLDCLOCK_HOVER_THEME_PLANET 557
+#define IDR_TEXT_FONT_DIGITAL           563
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -658,18 +659,16 @@
 #define IDC_BUTTON_7                    2007
 #define IDC_BUTTON_8                    2008
 #define IDC_BUTTON_9                    2009
-#define IDF_FONT_DIGITAL                10000
 #define ID_32771                        32771
 #define ID_MENU_SETTING_THEME           32772
 #define ID_32773                        32773
-#define ID_                             32774
 #define ID_MENU_SORT_ICON               32775
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        558
+#define _APS_NEXT_RESOURCE_VALUE        564
 #define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1304
 #define _APS_NEXT_SYMED_VALUE           101

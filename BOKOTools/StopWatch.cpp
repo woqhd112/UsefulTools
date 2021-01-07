@@ -94,7 +94,7 @@ BOOL StopWatch::OnInitDialog()
 	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
 
 	HRSRC res = FindResource(hResInstanceBold,
-		MAKEINTRESOURCE(IDF_FONT_DIGITAL), L"DS-Digital");
+		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
 
 	if (res)
 	{
