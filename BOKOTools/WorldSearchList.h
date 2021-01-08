@@ -1,9 +1,7 @@
 ﻿#pragma once
-#include "ThemeData.h"
 #include "GeneralUtil.h"
 #include "CalculateButton.h"
 #include "CustomScroll.h"
-#include <vector>
 
 // WorldSearchList 대화 상자
 

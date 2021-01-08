@@ -31,6 +31,7 @@ private:
 	CGdipButton m_btn_theme_ink;
 	CGdipButton m_btn_theme_waterdrop;
 	CGdipButton m_btn_theme_planet;
+	CGdipButton m_btn_theme_neonsign;
 
 	CWnd* pParent;
 	std::vector<ThemeData*> themeList;

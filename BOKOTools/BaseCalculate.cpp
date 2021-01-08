@@ -58,13 +58,12 @@ BOOL BaseCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	//SetWindowTheme(m_stt_group_base, _T(""), _T(""));
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
 	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_result_select_from_base.SetTextColor(currentTheme->GetTextColor());
-	m_edit_input_ten_from_base.Initialize(12, _T("고딕"));
-	m_edit_output_select_from_base.Initialize(12, _T("고딕"));
+	m_edit_input_ten_from_base.Initialize(17, _T("고딕"));
+	m_edit_output_select_from_base.Initialize(17, _T("고딕"));
 	m_stt_base.Initialize(16, _T("고딕"));
 
 	SetComboBox();

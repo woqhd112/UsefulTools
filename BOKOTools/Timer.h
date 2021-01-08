@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CalculateButton.h"
 #include "GdipButton.h"
-#include "ConvertButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
 #include "CMarkup/Markup.h"

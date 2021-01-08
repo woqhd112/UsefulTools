@@ -2,7 +2,6 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "LapTime.h"
-#include "ThemeData.h"
 
 // Timer 대화 상자
 

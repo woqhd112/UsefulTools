@@ -4,7 +4,6 @@
 #include "ConvertTimeTab.h"
 #include "ConvertWeightTab.h"
 #include "ConvertWidthTab.h"
-#include "ThemeData.h"
 
 // UnitConverter 대화 상자
 

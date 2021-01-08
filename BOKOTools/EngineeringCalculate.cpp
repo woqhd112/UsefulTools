@@ -181,8 +181,8 @@ BOOL EngineeringCalculate::OnInitDialog()
 	m_btn_root.SetTextColor(currentTheme->GetTextColor());
 	m_btn_factorial.SetTextColor(currentTheme->GetTextColor());
 
-	m_edit_result.Initialize(25, _T("고딕"));
-	m_edit_calculate_view.Initialize(18, _T("고딕"));
+	m_edit_result.Initialize(30, _T("고딕"));
+	m_edit_calculate_view.Initialize(23, _T("고딕"));
 
 	m_btn_report.LoadStdImage(IDB_PNG_TIMELINE_NOMAL, _T("PNG"));
 	m_btn_report.LoadHovImage(IDB_PNG_TIMELINE_HOVER, _T("PNG"));

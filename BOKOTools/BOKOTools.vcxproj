@@ -123,6 +123,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <EnableUAC>false</EnableUAC>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -205,7 +206,6 @@
     <ClInclude Include="CGdiPlusBitmap.h" />
     <ClInclude Include="CMarkup\Markup.h" />
     <ClInclude Include="ConvertBitTab.h" />
-    <ClInclude Include="ConvertButton.h" />
     <ClInclude Include="ConvertLengthTab.h" />
     <ClInclude Include="ConvertTimeTab.h" />
     <ClInclude Include="ConvertWeightTab.h" />
@@ -257,7 +257,6 @@
     <ClCompile Include="CalculateStatic.cpp" />
     <ClCompile Include="CMarkup\Markup.cpp" />
     <ClCompile Include="ConvertBitTab.cpp" />
-    <ClCompile Include="ConvertButton.cpp" />
     <ClCompile Include="ConvertLengthTab.cpp" />
     <ClCompile Include="ConvertTimeTab.cpp" />
     <ClCompile Include="ConvertWeightTab.cpp" />
@@ -530,6 +529,41 @@
     <Image Include="res\Theme_Magnifier\WorldClock_B.png" />
     <Image Include="res\Theme_Magnifier\WorldClock_C.png" />
     <Image Include="res\Theme_Magnifier\WorldClock_U.png" />
+    <Image Include="res\Theme_Neonsign\BaseTimer_B.png" />
+    <Image Include="res\Theme_Neonsign\BaseTimer_C.png" />
+    <Image Include="res\Theme_Neonsign\BaseTimer_U.png" />
+    <Image Include="res\Theme_Neonsign\Base_B.png" />
+    <Image Include="res\Theme_Neonsign\Base_C.png" />
+    <Image Include="res\Theme_Neonsign\Base_U.png" />
+    <Image Include="res\Theme_Neonsign\ComingSoon.png" />
+    <Image Include="res\Theme_Neonsign\Converter_B.png" />
+    <Image Include="res\Theme_Neonsign\Converter_C.png" />
+    <Image Include="res\Theme_Neonsign\Converter_U.png" />
+    <Image Include="res\Theme_Neonsign\DateCal_B.png" />
+    <Image Include="res\Theme_Neonsign\DateCal_C.png" />
+    <Image Include="res\Theme_Neonsign\DateCal_U.png" />
+    <Image Include="res\Theme_Neonsign\Engineering_B.png" />
+    <Image Include="res\Theme_Neonsign\Engineering_C.png" />
+    <Image Include="res\Theme_Neonsign\Engineering_U.png" />
+    <Image Include="res\Theme_Neonsign\Main_BK.bmp" />
+    <Image Include="res\Theme_Neonsign\NotePad_B.png" />
+    <Image Include="res\Theme_Neonsign\NotePad_C.png" />
+    <Image Include="res\Theme_Neonsign\NotePad_U.png" />
+    <Image Include="res\Theme_Neonsign\Scroll_icon_A.png" />
+    <Image Include="res\Theme_Neonsign\Scroll_icon_B.png" />
+    <Image Include="res\Theme_Neonsign\StopWatch_B.png" />
+    <Image Include="res\Theme_Neonsign\StopWatch_C.png" />
+    <Image Include="res\Theme_Neonsign\StopWatch_U.png" />
+    <Image Include="res\Theme_Neonsign\ThemaChange_B.png" />
+    <Image Include="res\Theme_Neonsign\ThemaChange_C.png" />
+    <Image Include="res\Theme_Neonsign\ThemaChange_U.png" />
+    <Image Include="res\Theme_Neonsign\ThemaChoice_BK.bmp" />
+    <Image Include="res\Theme_Neonsign\WorkTimer_B.png" />
+    <Image Include="res\Theme_Neonsign\WorkTimer_C.png" />
+    <Image Include="res\Theme_Neonsign\WorkTimer_U.png" />
+    <Image Include="res\Theme_Neonsign\WorldClock_B.png" />
+    <Image Include="res\Theme_Neonsign\WorldClock_C.png" />
+    <Image Include="res\Theme_Neonsign\WorldClock_U.png" />
     <Image Include="res\Theme_Planet\BaseTimer_B.png" />
     <Image Include="res\Theme_Planet\BaseTimer_C.png" />
     <Image Include="res\Theme_Planet\BaseTimer_U.png" />

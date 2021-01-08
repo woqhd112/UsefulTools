@@ -1,8 +1,5 @@
 ﻿#pragma once
-#include "ThemeData.h"
-#include "CalculateButton.h"
 #include "CalculateEdit.h"
-#include "CalculateStatic.h"
 #include "WorldClockList.h"
 #include "WorldSearchList.h"
 

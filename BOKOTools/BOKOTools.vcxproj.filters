@@ -85,9 +85,6 @@
     <ClCompile Include="CalculateStatic.cpp">
       <Filter>UI\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="ConvertButton.cpp">
-      <Filter>UI\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="GdipButton.cpp">
       <Filter>UI\Controller</Filter>
     </ClCompile>
@@ -217,9 +214,6 @@
       <Filter>UI\Controller</Filter>
     </ClInclude>
     <ClInclude Include="CGdiPlusBitmap.h">
-      <Filter>UI\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="ConvertButton.h">
       <Filter>UI\Controller</Filter>
     </ClInclude>
     <ClInclude Include="GdipButton.h">
@@ -1172,6 +1166,111 @@
     <Image Include="res\Theme_Planet\WorldClock_U.png">
       <Filter>리소스\행성 테마\세계시계 아이콘</Filter>
     </Image>
+    <Image Include="res\Theme_Neonsign\ThemaChange_U.png">
+      <Filter>리소스\네온 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\ThemaChange_C.png">
+      <Filter>리소스\네온 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\ThemaChange_B.png">
+      <Filter>리소스\네온 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\ThemaChoice_BK.bmp">
+      <Filter>리소스\네온 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\ComingSoon.png">
+      <Filter>리소스\네온 테마\커밍순 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Base_B.png">
+      <Filter>리소스\네온 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Base_C.png">
+      <Filter>리소스\네온 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Base_U.png">
+      <Filter>리소스\네온 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorkTimer_B.png">
+      <Filter>리소스\네온 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorkTimer_C.png">
+      <Filter>리소스\네온 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorkTimer_U.png">
+      <Filter>리소스\네온 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\StopWatch_B.png">
+      <Filter>리소스\네온 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\StopWatch_C.png">
+      <Filter>리소스\네온 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\StopWatch_U.png">
+      <Filter>리소스\네온 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Scroll_icon_A.png">
+      <Filter>리소스\네온 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Scroll_icon_B.png">
+      <Filter>리소스\네온 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorldClock_B.png">
+      <Filter>리소스\네온 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorldClock_C.png">
+      <Filter>리소스\네온 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\WorldClock_U.png">
+      <Filter>리소스\네온 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Main_BK.bmp">
+      <Filter>리소스\네온 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\NotePad_B.png">
+      <Filter>리소스\네온 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\NotePad_C.png">
+      <Filter>리소스\네온 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\NotePad_U.png">
+      <Filter>리소스\네온 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Converter_B.png">
+      <Filter>리소스\네온 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Converter_C.png">
+      <Filter>리소스\네온 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Converter_U.png">
+      <Filter>리소스\네온 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\DateCal_B.png">
+      <Filter>리소스\네온 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\DateCal_C.png">
+      <Filter>리소스\네온 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\DateCal_U.png">
+      <Filter>리소스\네온 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\BaseTimer_B.png">
+      <Filter>리소스\네온 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\BaseTimer_C.png">
+      <Filter>리소스\네온 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\BaseTimer_U.png">
+      <Filter>리소스\네온 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Engineering_B.png">
+      <Filter>리소스\네온 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Engineering_C.png">
+      <Filter>리소스\네온 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Neonsign\Engineering_U.png">
+      <Filter>리소스\네온 테마\공학계산기 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1578,6 +1677,51 @@
     </Filter>
     <Filter Include="리소스\폰트">
       <UniqueIdentifier>{b944da6f-9332-412b-85f2-f030948ca6f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마">
+      <UniqueIdentifier>{c154f0ee-cb6a-4f33-aa83-6f09bf8d31b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{d6b2ce97-a3f0-46c5-8e82-8f725fd88b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\테마세팅 배경">
+      <UniqueIdentifier>{345d2afd-8a2f-47aa-80dc-9b5bcf6345a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\커밍순 아이콘">
+      <UniqueIdentifier>{626bcd8c-d0fc-4f18-a7e1-38032fab33a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{c968b934-165c-4c44-ad65-bf35a6873117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{cb28cb3e-473d-4669-9a7c-e91b97e7ca65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{0c9e7430-cef6-4dbc-a8df-a44e95f7eb91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\스크롤 아이콘">
+      <UniqueIdentifier>{260d9f63-fb14-423a-8b7d-b3bd1bca264e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\세계시계 아이콘">
+      <UniqueIdentifier>{02c1bcce-05af-41ef-ae81-457a3eb07b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\메인 배경">
+      <UniqueIdentifier>{9364d6ba-805d-414a-b36a-f701da78a30f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\메모장 아이콘">
+      <UniqueIdentifier>{55d35389-bf51-42e2-9db2-b99da480378b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{0e42c0c7-3ad2-49bf-8032-77d2c106db24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{5a0c2883-da71-41af-9c21-1da03c7bd367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{eec6b0a5-43cb-4ac9-b3f5-e4dfaf3f96d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\네온 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{e2add5ed-402e-4897-a9e7-910793fcbabf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

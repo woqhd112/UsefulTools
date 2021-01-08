@@ -495,6 +495,7 @@ void CBOKOToolsDlg::LoadTheme()
 	ThemeData* theme5 = new ThemeData(THEME_INK);
 	ThemeData* theme6 = new ThemeData(THEME_WATERDROP);
 	ThemeData* theme7 = new ThemeData(THEME_PLANET);
+	ThemeData* theme8 = new ThemeData(THEME_NEONSIGN);
 
 	themeList.push_back(theme1);
 	themeList.push_back(theme2);
@@ -503,6 +504,7 @@ void CBOKOToolsDlg::LoadTheme()
 	themeList.push_back(theme5);
 	themeList.push_back(theme6);
 	themeList.push_back(theme7);
+	themeList.push_back(theme8);
 	int nFlags = LoadCurrnetTheme();
 
 	if (nFlags == THEME_DETECTIVE)
@@ -532,6 +534,10 @@ void CBOKOToolsDlg::LoadTheme()
 	else if (nFlags == THEME_PLANET)
 	{
 		currentTheme = theme7;
+	}
+	else if (nFlags == THEME_NEONSIGN)
+	{
+		currentTheme = theme8;
 	}
 }
 

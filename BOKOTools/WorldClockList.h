@@ -1,12 +1,10 @@
 ﻿#pragma once
-#include "ThemeData.h"
 #include "GeneralUtil.h"
 #include "CustomScroll.h"
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
-#include <vector>
 
 
 // WorldClockList 대화 상자

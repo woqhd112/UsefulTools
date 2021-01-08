@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "ThemeData.h"
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "NotePadList.h"

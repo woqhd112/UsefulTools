@@ -1,11 +1,9 @@
 ﻿#pragma once
 #include "Formula.h"
-#include "ThemeData.h"
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "ResultTimeline.h"
 #include "GdipButton.h" 
-#include <vector>
 
 
 

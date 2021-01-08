@@ -35,6 +35,7 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_INK, m_btn_theme_ink);
 	DDX_Control(pDX, IDC_BUTTON_THEME_WATERDROP, m_btn_theme_waterdrop);
 	DDX_Control(pDX, IDC_BUTTON_THEME_PLANET, m_btn_theme_planet);
+	DDX_Control(pDX, IDC_BUTTON_THEME_NEONSIGN, m_btn_theme_neonsign);
 }
 
 
@@ -84,12 +85,10 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_planet.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_PLANET, _T("PNG"), true);
 	m_btn_theme_planet.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_PLANET, _T("PNG"), true);
 
+	m_btn_theme_neonsign.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_NEONSIGN, _T("PNG"), true);
+	m_btn_theme_neonsign.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_NEONSIGN, _T("PNG"), true);
+	m_btn_theme_neonsign.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN, _T("PNG"), true);
 
-	/*m_btn_theme_detective.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_btn_theme_cloud.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-
-	m_btn_theme_detective.BringWindowToTop();
-	m_btn_theme_cloud.BringWindowToTop();*/
 
 	hoverTheme = currentTheme;
 
@@ -145,6 +144,9 @@ void SettingTheme::SetCtlPos()
 		nCtlPos_X = LEFT_MARGIN + 10;
 		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
 		m_btn_theme_planet.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		m_btn_theme_neonsign.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 	}
 	scroll.LineEnd();
@@ -203,6 +205,11 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 			ExecuteSelectTheme(THEME_PLANET);
 			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_PLANET, themeList.at(5));
 		}
+		else if (pMsg->hwnd == m_btn_theme_neonsign.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_NEONSIGN);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_NEONSIGN, themeList.at(6));
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -221,6 +228,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_ink.DisConnect();
 	m_btn_theme_waterdrop.DisConnect();
 	m_btn_theme_planet.DisConnect();
+	m_btn_theme_neonsign.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)

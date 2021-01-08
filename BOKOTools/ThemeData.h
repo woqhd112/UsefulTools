@@ -10,6 +10,7 @@
 #define THEME_INK	4
 #define THEME_WATERDROP	5
 #define THEME_PLANET	6
+#define THEME_NEONSIGN	7
 
 class ThemeData
 {

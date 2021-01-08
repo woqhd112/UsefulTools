@@ -63,7 +63,7 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 		nID == IDC_BUTTON_9)
 	{
 		nFontFlag = FW_BOLD;
-		nFontSize = 15;
+		nFontSize = 20;
 		m_defaultColor = color;
 		m_hoverColor = RGB(MinRGBColor(nRv, 30), MinRGBColor(nGv, 30), MinRGBColor(nBv, 30));
 		m_downColor = RGB(MinRGBColor(nRv, 80), MinRGBColor(nGv, 80), MinRGBColor(nBv, 80));

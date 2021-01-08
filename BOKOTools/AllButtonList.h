@@ -1,9 +1,6 @@
 ﻿#pragma once
-#include "ThemeData.h"
-#include "Gdipbutton.h"
 #include "CustomScroll.h"
 #include "DragDialog.h"
-#include <vector>
 
 
 // AllButtonList 대화 상자

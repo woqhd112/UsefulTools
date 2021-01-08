@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "GdipButton.h"
-//#include "ThemeData.h"
 
 // DragDialog 대화 상자
 

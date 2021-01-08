@@ -4,7 +4,6 @@
 #include "SortButtonList.h"
 #include "AllButtonList.h"
 #include "BOKOToolsDlg.h"
-#include "DragDialog.h"
 
 // SortIcon 대화 상자
 
