@@ -28,10 +28,6 @@ Timer::Timer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	bDivideClick = false;
 	//nBkBrightness = 0;
 	efp = FOCUS_WORK_HOUR_1;
-
-	int clrIndex = COLOR_GRAYTEXT;
-	COLORREF clr = currentTheme->GetTextColor();
-	SetSysColors(1, &clrIndex, &clr);
 }
 
 Timer::~Timer()

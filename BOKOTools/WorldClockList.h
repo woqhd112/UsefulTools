@@ -70,6 +70,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
+	void SaveClockXml();
 	bool AddClock(double dErrorTimeValue, CString strWorldClockName, CString strCityClockName);
 
 	virtual BOOL OnInitDialog();

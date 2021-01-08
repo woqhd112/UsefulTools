@@ -24,6 +24,7 @@ public:
 
 private:
 
+	friend class WorldClockList;
 
 	/*
 	주요도시

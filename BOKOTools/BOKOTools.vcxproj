@@ -294,7 +294,6 @@
     <ResourceCompile Include="BOKOTools.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="font\font2.bin" />
     <None Include="res\BOKOTools.rc2" />
   </ItemGroup>
   <ItemGroup>

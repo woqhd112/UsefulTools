@@ -18,11 +18,6 @@ ResultTimeline::ResultTimeline(ThemeData* currentTheme, CWnd* pParent /*=nullptr
 	cy = 0;	// 한 페이지의 사이즈
 
 	this->currentTheme = currentTheme;
-
-	// disable 된 editctl은 텍스트색 변경불가능이므로 생성자에서 아래 함수 호출
-	int clrIndex = COLOR_GRAYTEXT;
-	COLORREF clr = currentTheme->GetFunctionTextColor();
-	SetSysColors(1, &clrIndex, &clr);
 }
 
 ResultTimeline::~ResultTimeline()

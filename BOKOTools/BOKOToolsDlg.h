@@ -87,6 +87,7 @@ private:
 
 	HANDLE m_fonthandle;
 
+	void SetDisableCtlColor();
 	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void LoadTheme();
 	int LoadCurrnetTheme();

@@ -1589,7 +1589,6 @@
     <None Include="res\BOKOTools.rc2">
       <Filter>리소스</Filter>
     </None>
-    <None Include="font\font2.bin" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Font\DS-DIGIT.TTF">

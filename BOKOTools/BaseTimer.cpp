@@ -23,9 +23,6 @@ BaseTimer::BaseTimer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	bMaintainThread = false;
 	nMaintainCount = 0;
 	bs = SIGNAL_NONE;
-	int clrIndex = COLOR_GRAYTEXT;
-	COLORREF clr = currentTheme->GetTextColor();
-	SetSysColors(1, &clrIndex, &clr);
 }
 
 BaseTimer::~BaseTimer()
@@ -109,31 +106,31 @@ BOOL BaseTimer::OnInitDialog()
 	m_btn_s_up.SetTextColor(currentTheme->GetTextColor());
 	m_btn_s_down.SetTextColor(currentTheme->GetTextColor());
 
-	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
-	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+	//HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	//HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
 
-	HRSRC res = FindResource(hResInstanceBold,
-		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
+	//HRSRC res = FindResource(hResInstanceBold,
+	//	MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
 
-	if (res)
-	{
-		HGLOBAL mem = LoadResource(hResInstanceBold, res);
-		void *data = LockResource(mem);
-		size_t len = SizeofResource(hResInstanceBold, res);
+	//if (res)
+	//{
+	//	HGLOBAL mem = LoadResource(hResInstanceBold, res);
+	//	void *data = LockResource(mem);
+	//	size_t len = SizeofResource(hResInstanceBold, res);
 
-		DWORD nFonts;
-		m_fonthandle = AddFontMemResourceEx(
-			data,       // font resource
-			(DWORD)len,       // number of bytes in font resource 
-			NULL,          // Reserved. Must be 0.
-			&nFonts      // number of fonts installed
-		);
+	//	DWORD nFonts;
+	//	m_fonthandle = AddFontMemResourceEx(
+	//		data,       // font resource
+	//		(DWORD)len,       // number of bytes in font resource 
+	//		NULL,          // Reserved. Must be 0.
+	//		&nFonts      // number of fonts installed
+	//	);
 
-		if (m_fonthandle == 0)
-		{
-			TRACE("실패");
-		}
-	}
+	//	if (m_fonthandle == 0)
+	//	{
+	//		TRACE("실패");
+	//	}
+	//}
 	CFont fnt;
 	LOGFONT lf;
 	::ZeroMemory(&lf, sizeof(lf));

@@ -90,31 +90,31 @@ BOOL WorldClockList::OnInitDialog()
 
 	worldclock = (WorldClock*)pParent;
 
-	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
-	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+	//HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	//HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
 
-	HRSRC res = FindResource(hResInstanceBold,
-		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
+	//HRSRC res = FindResource(hResInstanceBold,
+	//	MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
 
-	if (res)
-	{
-		HGLOBAL mem = LoadResource(hResInstanceBold, res);
-		void *data = LockResource(mem);
-		size_t len = SizeofResource(hResInstanceBold, res);
+	//if (res)
+	//{
+	//	HGLOBAL mem = LoadResource(hResInstanceBold, res);
+	//	void *data = LockResource(mem);
+	//	size_t len = SizeofResource(hResInstanceBold, res);
 
-		DWORD nFonts;
-		m_fonthandle = AddFontMemResourceEx(
-			data,       // font resource
-			(DWORD)len,       // number of bytes in font resource 
-			NULL,          // Reserved. Must be 0.
-			&nFonts      // number of fonts installed
-		);
+	//	DWORD nFonts;
+	//	m_fonthandle = AddFontMemResourceEx(
+	//		data,       // font resource
+	//		(DWORD)len,       // number of bytes in font resource 
+	//		NULL,          // Reserved. Must be 0.
+	//		&nFonts      // number of fonts installed
+	//	);
 
-		if (m_fonthandle == 0)
-		{
-			TRACE("실패");
-		}
-	}
+	//	if (m_fonthandle == 0)
+	//	{
+	//		TRACE("실패");
+	//	}
+	//}
 
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
@@ -227,10 +227,10 @@ bool WorldClockList::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
 		markUp->IntoElem();
 		markUp->AddElem(_T("data"));
 		markUp->AddAttrib(_T("error"), 8);
-		markUp->AddAttrib(_T("world"), _T("대한민국"));
-		markUp->AddAttrib(_T("city"), _T("서울"));
+		markUp->AddAttrib(_T("world"), _T("대한민국 "));
+		markUp->AddAttrib(_T("city"), _T(" 서울"));
 
-		AddClock(8, _T("대한민국"), _T("서울"));
+		AddClock(8, _T("대한민국 "), _T(" 서울"));
 
 		bReturn = true;
 	}
@@ -352,7 +352,7 @@ bool WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName,
 
 	// 여기에 시간값 넣는 함수 추가
 	CalculateButton* newSearchButton = new CalculateButton;
-	newSearchButton->Create(strWorldClockName + _T(" \r\n ") + strCityClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	newSearchButton->Create(strWorldClockName + _T("\r\n") + strCityClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * (nButtonCount - (6 * (scroll.GetCurrentLinePos() - 1))));
 	newSearchButton->MoveWindow(nClockButtonPos_x, nDetectHeight, nClockButtonWidth, nClockButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
@@ -368,7 +368,7 @@ bool WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName,
 	CFont fnt;
 	LOGFONT lf;
 	::ZeroMemory(&lf, sizeof(lf));
-	lf.lfHeight = 20;
+	lf.lfHeight = 30;
 	lf.lfWeight = FW_BOLD;
 	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
 	fnt.CreateFontIndirect(&lf);
@@ -461,6 +461,7 @@ BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
 				clockStaticVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x + 100, nClockButtonPos_y + ((2 + nClockButtonHeight) * j) + 4, 0, 0, SWP_NOSIZE);
 			}
 			// xml 업데이트 함수
+			SaveClockXml();
 
 			return TRUE;
 		}
@@ -468,4 +469,32 @@ BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
 
 
 	return CDialogEx::OnCommand(wParam, lParam);
+}
+
+void WorldClockList::SaveClockXml()
+{
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CreateConfigClockFile(szRoot);
+	CString strFullPath = szRoot + _T("\\WorldClock.conf");
+
+	markUp.AddElem(_T("Clock"));
+	markUp.IntoElem();
+	for (int i = 0; i < clockButtonVector.size(); i++)
+	{
+		CalculateButton* saveButton = clockButtonVector.at(i);
+		CString strButtonText, strWorldName, strCityName, strGMPValue;
+		saveButton->GetWindowTextW(strButtonText);
+		strButtonText.Replace(_T("\r\n"), _T("-"));
+		strGMPValue.Format(_T("%.1f"), worldclock->GetSearchInstance()->GetGMPCalcValue(worldclock->GetSearchInstance()->GetWorldClockData(strButtonText)));
+		AfxExtractSubString(strWorldName, strButtonText, 0, '-');
+		AfxExtractSubString(strCityName, strButtonText, 1, '-');
+
+		markUp.AddElem(_T("data"));
+		markUp.AddAttrib(_T("error"), strGMPValue);
+		markUp.AddAttrib(_T("world"), strWorldName);
+		markUp.AddAttrib(_T("city"), strCityName);
+	}
+
+	SaveXml(&markUp, strFullPath);
 }

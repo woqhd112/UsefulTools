@@ -162,6 +162,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	LoadTheme();
 
+	SetDisableCtlColor();
 
 	bBase = false;
 	bEngineering = false;
@@ -271,6 +272,13 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
+}
+
+void CBOKOToolsDlg::SetDisableCtlColor()
+{
+	int clrIndex = COLOR_GRAYTEXT;
+	COLORREF clr = currentTheme->GetFunctionTextColor();
+	SetSysColors(1, &clrIndex, &clr);
 }
 
 void CBOKOToolsDlg::ShowCurrentTime()

@@ -298,6 +298,7 @@ BOOL WorldSearchList::OnCommand(WPARAM wParam, LPARAM lParam)
 		if (worldclock->GetClockInstance()->AddClock(GetGMPCalcValue(GetWorldClockData(strCaption)), strWorldName, strCityName))
 		{
 			this->ShowWindow(SW_HIDE);
+			worldclock->GetClockInstance()->SaveClockXml();
 		}
 	}
 
