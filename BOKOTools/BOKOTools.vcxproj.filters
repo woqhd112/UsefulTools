@@ -118,6 +118,9 @@
     <ClCompile Include="WorldSearchList.cpp">
       <Filter>WorldClock</Filter>
     </ClCompile>
+    <ClCompile Include="AnalogWatch.cpp">
+      <Filter>WorldClock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -253,6 +256,9 @@
       <Filter>WorldClock</Filter>
     </ClInclude>
     <ClInclude Include="WorldSearchList.h">
+      <Filter>WorldClock</Filter>
+    </ClInclude>
+    <ClInclude Include="AnalogWatch.h">
       <Filter>WorldClock</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1271,6 +1277,9 @@
     <Image Include="res\Theme_Neonsign\Engineering_U.png">
       <Filter>리소스\네온 테마\공학계산기 아이콘</Filter>
     </Image>
+    <Image Include="res\Common\WorldClock_BK.png">
+      <Filter>리소스\공통 아이콘\세계시계 이미지</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1723,6 +1732,12 @@
     <Filter Include="리소스\네온 테마\공학계산기 아이콘">
       <UniqueIdentifier>{e2add5ed-402e-4897-a9e7-910793fcbabf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스\사운드 트랙">
+      <UniqueIdentifier>{e302b1e9-8c96-451c-bcc5-906ecca087ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\세계시계 이미지">
+      <UniqueIdentifier>{b8ceb5a6-4147-49c3-80a6-0bd3349ec3f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BOKOTools.rc">
@@ -1735,8 +1750,40 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Font\DS-DIGIT.TTF">
+    <Font Include="res\Font\DS-DIGIT.TTF">
       <Filter>리소스\폰트</Filter>
     </Font>
+    <Font Include="res\Font\gabia_solmee.ttf">
+      <Filter>리소스\폰트</Filter>
+    </Font>
+    <Font Include="res\Font\godoMaum.ttf">
+      <Filter>리소스\폰트</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\SoundTrack\BaseTimer\Alarm.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\end_work.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\end_work_all.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\ButtonSound\MouseClick.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\soon_start_rest.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\soon_start_work.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\start_rest.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
+    <Media Include="res\SoundTrack\WorkTimer\start_work.wav">
+      <Filter>리소스\사운드 트랙</Filter>
+    </Media>
   </ItemGroup>
 </Project>

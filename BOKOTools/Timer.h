@@ -181,7 +181,7 @@ private:
 	static UINT thrTimer(LPVOID method);
 	static UINT thrLoadSound(LPVOID method);
 	void StartTimer();
-	void StartSound(CString strSoundPath);
+	void StartSound(int nSoundResourceID);
 	void StartBeepSound(ProgressState ps);
 	void CalculateWorkTime();
 	void CalculateRestTime();

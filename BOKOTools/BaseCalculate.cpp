@@ -38,6 +38,8 @@ void BaseCalculate::DoDataExchange(CDataExchange* pDX)
 	//DDX_Control(pDX, IDC_STATIC_GROUP_BASE, m_stt_group_base);
 	DDX_Control(pDX, IDC_STATIC_BASE_VIEW, m_stt_base_view);
 	DDX_Control(pDX, IDC_STATIC_BASE, m_stt_base);
+	DDX_Control(pDX, IDC_STATIC_SELECT_INPUT, m_stt_select_input);
+	DDX_Control(pDX, IDC_STATIC_SELECT_OUTPUT, m_stt_result_select);
 }
 
 
@@ -60,11 +62,15 @@ BOOL BaseCalculate::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
-	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_result_select_from_base.SetTextColor(currentTheme->GetTextColor());
 	m_edit_input_ten_from_base.Initialize(17, _T("고딕"));
 	m_edit_output_select_from_base.Initialize(17, _T("고딕"));
-	m_stt_base.Initialize(16, _T("고딕"));
+	m_stt_base.Initialize(23, _T("godoMaum"));
+	m_stt_input_select.Initialize(21, _T("godoMaum"));
+	m_stt_output_result.Initialize(21, _T("godoMaum"));
+	m_stt_select_input.Initialize(21, _T("godoMaum"));
+	m_stt_result_select.Initialize(21, _T("godoMaum"));
 
 	SetComboBox();
 
@@ -82,6 +88,10 @@ BOOL BaseCalculate::OnInitDialog()
 
 void BaseCalculate::SetComboBox()
 {
+	comboFont.CreateFontW(20, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		_T("godoMaum"));
+	m_select.SetFont(&comboFont);
 	m_select.AddString(_T("2진법"));
 	m_select.AddString(_T("3진법"));
 	m_select.AddString(_T("4진법"));
@@ -99,6 +109,7 @@ void BaseCalculate::SetComboBox()
 	m_select.AddString(_T("16진법"));
 	m_select.SetCurSel(8);
 	SelectComboBox();
+	m_result.SetFont(&comboFont);
 	m_result.AddString(_T("2진법"));
 	m_result.AddString(_T("3진법"));
 	m_result.AddString(_T("4진법"));

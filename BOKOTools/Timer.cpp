@@ -155,7 +155,7 @@ BOOL Timer::OnInitDialog()
 
 	tr.none_color = currentTheme->GetFunctionBkColor();
 	tr.work_color = RGB(150, 150, 150);
-	tr.rest_color = currentTheme->GetFunctionSubSubColor();
+	tr.rest_color = currentTheme->GetFunctionSubColor();
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_returnBrush.CreateSolidBrush(RGB(255, 255, 255));
@@ -285,6 +285,8 @@ BOOL Timer::OnInitDialog()
 	nLeft = int(borderRect.left - thisRect.left - 10);
 	nTop = int(borderRect.top - thisRect.top - 35);
 	drawBorderRect4 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -803,7 +805,7 @@ void Timer::OnBnClickedButtonWorkHourUp()
 	{
 		nLastText++;
 	}
-
+	
 	strFirstText.Format(_T("%d"), nFirstText);
 	strLastText.Format(_T("%d"), nLastText);
 
@@ -1354,57 +1356,57 @@ UINT Timer::thrLoadSound(LPVOID method)
 {
 	Timer* timer = (Timer*)method;
 
-	CString strSoundPath;
+	int nSoundResourceID = 0;
 
 	switch (timer->tr.ps)
 	{
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_START:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\start_work.wav");
+		nSoundResourceID = IDR_WAVE_START_WORK;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_END:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\end_work.wav");
+		nSoundResourceID = IDR_WAVE_END_WORK;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_RESTING_START:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\start_rest.wav");
+		nSoundResourceID = IDR_WAVE_START_REST;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_SOON_WORKING_START:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\soon_start_work.wav");
+		nSoundResourceID = IDR_WAVE_SOON_START_WORK;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_SOON_RESTING_START:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\soon_start_rest.wav");
+		nSoundResourceID = IDR_WAVE_SOON_START_REST;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_0:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_1:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_2:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_3:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_4:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_COUNT_5:
-		strSoundPath = _T("");
+		nSoundResourceID = 0;
 		break;
 	case Timer::ProgressState::PROGRESS_STATE_WORKING_END_ALL:
-		strSoundPath = _T("SoundTrack\\WorkTimer\\end_work_all.wav");
+		nSoundResourceID = IDR_WAVE_END_WORK_ALL;
 		break;
 	default : 
 		break;
 	}
 
-	if (strSoundPath.IsEmpty())
+	if (nSoundResourceID == 0)
 	{
 		timer->StartBeepSound(timer->tr.ps);
 	}
 	else
 	{
-		timer->StartSound(strSoundPath);
+		timer->StartSound(nSoundResourceID);
 	}
 	timer->tr.bSoundThread = false;
 
@@ -1423,9 +1425,9 @@ void Timer::StartBeepSound(ProgressState ps)
 	}
 }
 
-void Timer::StartSound(CString strSoundPath)
+void Timer::StartSound(int nSoundResourceID)
 {
-	PlaySound(strSoundPath, AfxGetInstanceHandle(), SND_ASYNC);
+	PlaySound(MAKEINTRESOURCE(nSoundResourceID), AfxGetInstanceHandle(), SND_ASYNC | SND_RESOURCE);
 }
 
 void Timer::SetGlobalEditText()

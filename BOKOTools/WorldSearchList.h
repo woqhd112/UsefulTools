@@ -5,14 +5,15 @@
 
 // WorldSearchList 대화 상자
 
-class WorldClock;
+//class WorldClock;
+class AnalogWatch;
 
 class WorldSearchList : public CDialogEx
 {
 	DECLARE_DYNAMIC(WorldSearchList)
 
 public:
-	WorldSearchList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	WorldSearchList(CRect buttonPosRect, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~WorldSearchList();
 
 // 대화 상자 데이터입니다.
@@ -22,71 +23,82 @@ public:
 
 private:
 
-	friend class WorldClockList;
+	//friend class WorldClockList;
 
-	/*
-	주요도시
-	-호주 시드니
-	-아랍에미리트 두바이
-	-이탈리아 밀라노,베네치아,나폴리,피사
-	-미국 뉴욕,로스엔젤레스,라스베이거스,애틀란타,시애틀,샌프란시스코,마이애미
-	-캐나다 밴쿠버,토론토
-	-브라질 상파울루
-	-영국 옥스포드,리버풀,맨체스터
-	-스페인 발렌시아,바르셀로나
-	-프랑스 마르세유
-	-독일 뮌헨
-	-스위스 취리히
-	*/
 	enum GreenWichWorldClockData
 	{
-		COSTARICA_SANJOSE = -6602,				//
-		MEXICO_MEXICOCITY = -6601,				//
-		COLUMBIA_SANTAFEDEBOGOTA = -5503,		//
-		USA_WASHINGTONDC = -5502,				//
-		CANADA_OTTAWA = -5501,					//
-		CHILE_SANTIAGO = -4401,					//
-		BRAZIL_BRASILIA = -3001,				//
-		IRELAND_DUBLIN = -1003,					//
-		PORTUGAL_LISBON = -1002,				//
-		ISLAND_REYKJAVIK = -1001,				//
-		ENGLAND_LONDON = 1,						//
-		DENMARK_COPENHAGEN = 2,					//
-		NORWAY_OSLO = 3,						//
-		SPAIN_MADRID = 4,						//
-		FRANCE_PARIS = 5,						//
-		BELGIUM_BRUSSELS = 6,					//
-		GERMANY_BERLIN = 7,						//
-		SWEDEN_STOCKHOLM = 8,					//
-		SWISS_BERN = 9,							//
-		AUSTRIA_WIEN = 10,						//
-		NETHERLANDS_AMSTERDAM = 11,				//
-		LUXEMBOURG_LUXEMBOURG = 12,				//
-		ITALY_ROME = 13,						//
-		CZECH_PRAGUE = 14,						//
-		HUNGARY_BUDAPEST = 15,					//
-		POLAND_WARSZAWA = 16,					//
-		SLOVAKIA_BRATISLAVA = 17,				//
-		SLOVENIA_LJUBLJANA = 18,				//
-		GREECE_ATHENS = 1001,					//
-		FINLAND_HELSINKI = 1002,				//
-		ISRAEL_JERUSALEM = 1003,				//
-		ESTONIA_TALLINN = 1004,					//
-		LATVIA_RIGA = 1005,						//
-		LITHUANIA_VILNIUS = 1006,				//
-		REPUBLICOFSOUTHAFRICA_PRETORIA = 1007,	//
-		TURKEY_ANKARA = 2001,					//
-		RUSIA_MOSKVA = 2002,					//
-		NEWZEALAND_WELLINGTON = 4001,			//
-		INDIA_NEWDELHI = 5501,					//
-		AUSTRALIA_CANBERRA = 6001,				//
-		CHINA_BEIJING = 7002,					//
-		TAIWAN_TAIPEI = 7003,					//
-		PHILIPPINES_MANILA = 7004,				//
-		INDONESIA_JAKARTA = 7005,				//
-		NORTHKOREA_PYONGYANG = 8001,			//
-		SOUTHKOREA_SEOUL = 8002,				//
-		JAPAN_TOKYO = 8003,						//
+		USA_LOSANGELES = -8005,
+		USA_LASVEGAS = -8004,
+		USA_SEATTLE = -8003,
+		USA_SANFRANCISCO = -8002,
+		CANADA_VANCOUVER = -8001,
+		COSTARICA_SANJOSE = -6002,
+		MEXICO_MEXICOCITY = -6001,
+		USA_VIRGINIA = -5008,
+		USA_NEWYORK = -5007,
+		USA_ATLANTA = -5006,
+		USA_MIAMI = -5005,
+		CANADA_TORONTO = -5004,
+		COLUMBIA_SANTAFEDEBOGOTA = -5003,
+		USA_WASHINGTONDC = -5002,
+		CANADA_OTTAWA = -5001,
+		BRAZIL_SAOPAULO = -3003,
+		CHILE_SANTIAGO = -3002,
+		BRAZIL_BRASILIA = -3001,
+		ENGLAND_LONDON = 1,
+		ISLAND_REYKJAVIK = 2,
+		PORTUGAL_LISBON = 3,
+		IRELAND_DUBLIN = 4,
+		ENGLAND_OXFORD = 5,
+		ENGLAND_GREENWICH = 6,
+		ENGLAND_LIVERPOOL = 7,
+		ENGLAND_MANCHESTER = 8,
+		SLOVENIA_LJUBLJANA = 1001,
+		SLOVAKIA_BRATISLAVA = 1002,
+		POLAND_WARSZAWA = 1003,
+		HUNGARY_BUDAPEST = 1004,
+		CZECH_PRAGUE = 1005,
+		ITALY_ROME = 1006,
+		LUXEMBOURG_LUXEMBOURG = 1007,
+		NETHERLANDS_AMSTERDAM = 1008,
+		AUSTRIA_WIEN = 1009,
+		SWISS_BERN = 1010,
+		SWEDEN_STOCKHOLM = 1011,
+		GERMANY_BERLIN = 1012,
+		BELGIUM_BRUSSELS = 1013,
+		FRANCE_PARIS = 1014,
+		SPAIN_MADRID = 1015,
+		NORWAY_OSLO = 1016,
+		DENMARK_COPENHAGEN = 1017,
+		ITALIA_PISA = 1018,
+		ITALIA_NEAPOLITAN = 1019,
+		ITALIA_VENETIAN = 1020,
+		ITALIA_MILAN = 1021,
+		SPAIN_BARCELONA = 1022,
+		FRANCE_MARSEILLE = 1023,
+		GERMANY_MUNICH = 1024,
+		SWISS_ZURICH = 1025,
+		LITHUANIA_VILNIUS = 2001,
+		REPUBLICOFSOUTHAFRICA_PRETORIA = 2002,
+		LATVIA_RIGA = 2003,
+		ESTONIA_TALLINN = 2004,
+		ISRAEL_JERUSALEM = 2005,
+		FINLAND_HELSINKI = 2006,
+		GREECE_ATHENS = 2007,
+		RUSIA_MOSKVA = 3001,
+		TURKEY_ANKARA = 3002,
+		UAE_DUBAI = 4001,
+		NEWZEALAND_WELLINGTON = 5001,
+		INDIA_NEWDELHI = 5501,
+		AUSTRALIA_CANBERRA = 7001,
+		INDONESIA_JAKARTA = 7002,
+		AUSTRALIA_SYDNEY = 7003,
+		CHINA_BEIJING = 8001,
+		PHILIPPINES_MANILA = 8002,
+		TAIWAN_TAIPEI = 8003,
+		NORTHKOREA_PYONGYANG = 9001,
+		SOUTHKOREA_SEOUL = 9002,
+		JAPAN_TOKYO = 9003,
 
 	};
 
@@ -141,6 +153,32 @@ private:
 		else if (cwcd == GERMANY_BERLIN) strReturnCityName = _T("독일 - 베를린");
 		else if (cwcd == SWEDEN_STOCKHOLM) strReturnCityName = _T("스웨덴 - 스톡홀름");
 		else if (cwcd == SWISS_BERN) strReturnCityName = _T("스위스 - 베른");
+		else if (cwcd == AUSTRALIA_SYDNEY) strReturnCityName = _T("호주 - 시드니");
+		else if (cwcd == UAE_DUBAI) strReturnCityName = _T("아랍에미리트 - 두바이");
+		else if (cwcd == SWISS_ZURICH) strReturnCityName = _T("스위스 - 취리히");
+		else if (cwcd == GERMANY_MUNICH) strReturnCityName = _T("독일 - 뮌헨");
+		else if (cwcd == FRANCE_MARSEILLE) strReturnCityName = _T("프랑스 - 마르세유");
+		else if (cwcd == SPAIN_BARCELONA) strReturnCityName = _T("스페인 - 바르셀로나");
+		else if (cwcd == ITALIA_MILAN) strReturnCityName = _T("이탈리아 - 밀라노");
+		else if (cwcd == ITALIA_VENETIAN) strReturnCityName = _T("이탈리아 - 베네치아");
+		else if (cwcd == ITALIA_NEAPOLITAN) strReturnCityName = _T("이탈리아 - 나폴리");
+		else if (cwcd == ITALIA_PISA) strReturnCityName = _T("이탈리아 - 피사");
+		else if (cwcd == USA_VIRGINIA) strReturnCityName = _T("미국 - 버지니아");
+		else if (cwcd == USA_NEWYORK) strReturnCityName = _T("미국 - 뉴욕");
+		else if (cwcd == USA_LOSANGELES) strReturnCityName = _T("미국 - 로스앤젤레스");
+		else if (cwcd == USA_LASVEGAS) strReturnCityName = _T("미국 - 라스베이거스");
+		else if (cwcd == USA_ATLANTA) strReturnCityName = _T("미국 - 애틀란타");
+		else if (cwcd == USA_SEATTLE) strReturnCityName = _T("미국 - 시애틀");
+		else if (cwcd == USA_SANFRANCISCO) strReturnCityName = _T("미국 - 샌프란시스코");
+		else if (cwcd == USA_MIAMI) strReturnCityName = _T("미국 - 마이애미");
+		else if (cwcd == CANADA_VANCOUVER) strReturnCityName = _T("캐나다 - 밴쿠버");
+		else if (cwcd == CANADA_TORONTO) strReturnCityName = _T("캐나다 - 토론토");
+		else if (cwcd == BRAZIL_SAOPAULO) strReturnCityName = _T("브라질 - 상파울루");
+		else if (cwcd == ENGLAND_MANCHESTER) strReturnCityName = _T("영국 - 맨체스터");
+		else if (cwcd == ENGLAND_LIVERPOOL) strReturnCityName = _T("영국 - 리버풀");
+		else if (cwcd == ENGLAND_GREENWICH) strReturnCityName = _T("영국 - 그리니치");
+		else if (cwcd == ENGLAND_OXFORD) strReturnCityName = _T("영국 - 옥스포드");
+
 
 		return strReturnCityName;
 	}
@@ -196,6 +234,31 @@ private:
 		else if (strWorldName == _T("독일 - 베를린")) cwcd = GERMANY_BERLIN;
 		else if (strWorldName == _T("스웨덴 - 스톡홀름")) cwcd = SWEDEN_STOCKHOLM;
 		else if (strWorldName == _T("스위스 - 베른")) cwcd = SWISS_BERN;
+		else if (strWorldName == _T("호주 - 시드니")) cwcd = AUSTRALIA_SYDNEY;
+		else if (strWorldName == _T("아랍에미리트 - 두바이")) cwcd = UAE_DUBAI;
+		else if (strWorldName == _T("스위스 - 취리히")) cwcd = SWISS_ZURICH;
+		else if (strWorldName == _T("독일 - 뮌헨")) cwcd = GERMANY_MUNICH;
+		else if (strWorldName == _T("프랑스 - 마르세유")) cwcd = FRANCE_MARSEILLE;
+		else if (strWorldName == _T("스페인 - 바르셀로나")) cwcd = SPAIN_BARCELONA;
+		else if (strWorldName == _T("이탈리아 - 밀라노")) cwcd = ITALIA_MILAN;
+		else if (strWorldName == _T("이탈리아 - 베네치아")) cwcd = ITALIA_VENETIAN;
+		else if (strWorldName == _T("이탈리아 - 나폴리")) cwcd = ITALIA_NEAPOLITAN;
+		else if (strWorldName == _T("이탈리아 - 피사")) cwcd = ITALIA_PISA;
+		else if (strWorldName == _T("미국 - 버지니아")) cwcd = USA_VIRGINIA;
+		else if (strWorldName == _T("미국 - 뉴욕")) cwcd = USA_NEWYORK;
+		else if (strWorldName == _T("미국 - 로스앤젤레스")) cwcd = USA_LOSANGELES;
+		else if (strWorldName == _T("미국 - 라스베이거스")) cwcd = USA_LASVEGAS;
+		else if (strWorldName == _T("미국 - 애틀란타")) cwcd = USA_ATLANTA;
+		else if (strWorldName == _T("미국 - 시애틀")) cwcd = USA_SEATTLE;
+		else if (strWorldName == _T("미국 - 샌프란시스코")) cwcd = USA_SANFRANCISCO;
+		else if (strWorldName == _T("미국 - 마이애미")) cwcd = USA_MIAMI;
+		else if (strWorldName == _T("캐나다 - 밴쿠버")) cwcd = CANADA_VANCOUVER;
+		else if (strWorldName == _T("캐나다 - 토론토")) cwcd = CANADA_TORONTO;
+		else if (strWorldName == _T("브라질 - 상파울루")) cwcd = BRAZIL_SAOPAULO;
+		else if (strWorldName == _T("영국 - 맨체스터")) cwcd = ENGLAND_MANCHESTER;
+		else if (strWorldName == _T("영국 - 리버풀")) cwcd = ENGLAND_LIVERPOOL;
+		else if (strWorldName == _T("영국 - 그리니치")) cwcd = ENGLAND_GREENWICH;
+		else if (strWorldName == _T("영국 - 옥스포드")) cwcd = ENGLAND_OXFORD;
 
 		return cwcd;
 	}
@@ -212,8 +275,10 @@ private:
 		double dGMPValue;
 	};
 
+	CRect buttonRect;
 	ThemeData* currentTheme;
-	WorldClock* worldclock;
+	//WorldClock* worldclock;
+	AnalogWatch* analogwatch;
 	CWnd* pParent;
 
 	int nBrightness;

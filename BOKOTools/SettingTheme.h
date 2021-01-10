@@ -36,16 +36,23 @@ private:
 	CWnd* pParent;
 	std::vector<ThemeData*> themeList;
 	ThemeData* currentTheme;
-	ThemeData* hoverTheme;
 
 	bool bButtonHover;
 
 	int nCtlPos_X = 0;
 	int nCtlPos_Y = 0;
 
+	const int PICTURE_WIDTH = 64;
+	const int PICTURE_HEIGHT = 64;
+	const int LEFT_MARGIN = 30;
+	const int TOP_MARGIN = 30;
+	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
+	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
+
 	CustomScroll scroll;
 
 	void SetCtlPos();
+	void SetButtonPos(int nFirstButtonID, int nSecondButtonID, int nThirdButtonID, int nIdx);
 	void ExecuteSelectTheme(int nThemeFlags);
 	void InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTheme);
 

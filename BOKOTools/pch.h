@@ -60,6 +60,7 @@ using namespace Gdiplus;
 #include <afxcontrolbars.h>
 #include <afxcontrolbars.h>
 #include <afxcontrolbars.h>
+#include <afxcontrolbars.h>
 #pragma comment(lib, "gdiplus.lib")
 using namespace Gdiplus;
 

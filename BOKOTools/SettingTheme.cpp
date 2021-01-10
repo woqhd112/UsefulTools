@@ -89,13 +89,32 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_neonsign.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_NEONSIGN, _T("PNG"), true);
 	m_btn_theme_neonsign.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN, _T("PNG"), true);
 
-
-	hoverTheme = currentTheme;
-
 	SetCtlPos();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void SettingTheme::SetButtonPos(int nFirstButtonID, int nSecondButtonID, int nThirdButtonID, int nIdx)
+{
+	if (nFirstButtonID != 0)
+	{
+		nCtlPos_X = LEFT_MARGIN + 10;
+		nCtlPos_Y = TOP_MARGIN + (PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT) * nIdx;
+		GetDlgItem(nFirstButtonID)->MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
+
+	if (nSecondButtonID != 0)
+	{
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		GetDlgItem(nSecondButtonID)->MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
+
+	if (nThirdButtonID != 0)
+	{
+		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
+		GetDlgItem(nThirdButtonID)->MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+	}
 }
 
 void SettingTheme::SetCtlPos()
@@ -109,44 +128,16 @@ void SettingTheme::SetCtlPos()
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);
 
-	const int PICTURE_WIDTH = 64;
-	const int PICTURE_HEIGHT = 64;
-	const int LEFT_MARGIN = 30;
-	const int TOP_MARGIN = 30;
-	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
-	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
-
 	// 첫번째 페이지, 페이지당 4줄
 	{
 		// 첫재줄
-		nCtlPos_X = LEFT_MARGIN + 10;
-		nCtlPos_Y += TOP_MARGIN;
-		m_btn_theme_detective.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_cloud.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_light.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		SetButtonPos(m_btn_theme_detective.GetDlgCtrlID(), m_btn_theme_cloud.GetDlgCtrlID(), m_btn_theme_light.GetDlgCtrlID(), 0);
 
 		// 두번째줄
-		nCtlPos_X = LEFT_MARGIN + 10;
-		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-		m_btn_theme_magnifier.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_ink.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_waterdrop.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		SetButtonPos(m_btn_theme_magnifier.GetDlgCtrlID(), m_btn_theme_ink.GetDlgCtrlID(), m_btn_theme_waterdrop.GetDlgCtrlID(), 1);
 
 		// 세번째줄
-		nCtlPos_X = LEFT_MARGIN + 10;
-		nCtlPos_Y += PICTURE_HEIGHT + PICTURE_TO_PICTURE_MARGIN_HEIGHT;
-		m_btn_theme_planet.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
-
-		nCtlPos_X += PICTURE_WIDTH + PICTURE_TO_PICTURE_MARGIN_WIDTH;
-		m_btn_theme_neonsign.MoveWindow(nCtlPos_X, nCtlPos_Y, PICTURE_WIDTH, PICTURE_HEIGHT);
+		SetButtonPos(m_btn_theme_planet.GetDlgCtrlID(), m_btn_theme_neonsign.GetDlgCtrlID(), 0, 2);
 
 	}
 	scroll.LineEnd();
@@ -218,7 +209,6 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTheme)
 {
 	this->SetBackgroundImage(nSettingThemeBkIconID);
-	this->hoverTheme = hoverTheme;
 	scroll.ThemeChange(hoverTheme);
 	Invalidate();
 	m_btn_theme_detective.DisConnect();
@@ -297,7 +287,7 @@ void SettingTheme::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if (scroll.OperateScroll(nSBCode, nPos))
 	{
-		InvalidateTheme(hoverTheme->GetSettingThemeBkIconID(), hoverTheme);
+		InvalidateTheme(currentTheme->GetSettingThemeBkIconID(), currentTheme);
 	}
 	//CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
 }

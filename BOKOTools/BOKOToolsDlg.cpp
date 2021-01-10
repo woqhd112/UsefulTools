@@ -175,59 +175,22 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
-	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
-	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+	LoadResourceItem(IDR_TEXT_FONT_DIGITAL);
+	LoadResourceItem(IDR_TEXT_FONT_GABIA_SOLMEE);
+	LoadResourceItem(IDR_TEXT_FONT_GODOMAUM);
 
-	HRSRC res = FindResource(hResInstanceBold,
-		MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
-
-	if (res)
-	{
-		HGLOBAL mem = LoadResource(hResInstanceBold, res);
-		void *data = LockResource(mem);
-		size_t len = SizeofResource(hResInstanceBold, res);
-
-		DWORD nFonts;
-		m_fonthandle = AddFontMemResourceEx(
-			data,       // font resource
-			(DWORD)len,       // number of bytes in font resource 
-			NULL,          // Reserved. Must be 0.
-			&nFonts      // number of fonts installed
-		);
-
-		if (m_fonthandle == 0)
-		{
-			TRACE("실패");
-		}
-	}
-	CFont fnt;
-	LOGFONT lf;
-	::ZeroMemory(&lf, sizeof(lf));
-	lf.lfHeight = 15;
-	lf.lfWeight = FW_BOLD;
-	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
-	fnt.CreateFontIndirect(&lf);
-	m_stt_ampm.SetFont(&fnt);
-	m_stt_week.SetFont(&fnt);
-	fnt.Detach();
-
-	::ZeroMemory(&lf, sizeof(lf));
-	lf.lfHeight = 40;
-	lf.lfWeight = FW_BOLD;
-	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
-	fnt.CreateFontIndirect(&lf);
-	m_stt_current_time.SetFont(&fnt);
-	fnt.Detach();
-
-	m_stt_engineering.Initialize(15, _T("고딕"));
-	m_stt_base.Initialize(15, _T("고딕"));
-	m_stt_converter.Initialize(15, _T("고딕"));
-	m_stt_date.Initialize(15, _T("고딕"));
-	m_stt_stopwatch.Initialize(15, _T("고딕"));
-	m_stt_worktimer.Initialize(15, _T("고딕"));
-	m_stt_notepad.Initialize(15, _T("고딕"));
-	m_stt_basetimer.Initialize(15, _T("고딕"));
-	m_stt_world_clock.Initialize(15, _T("고딕"));
+	m_stt_ampm.Initialize(15, _T("DS-Digital"));
+	m_stt_week.Initialize(15, _T("DS-Digital"));
+	m_stt_current_time.Initialize(40, _T("DS-Digital"));
+	m_stt_engineering.Initialize(23, _T("godoMaum"));
+	m_stt_base.Initialize(23, _T("godoMaum"));
+	m_stt_converter.Initialize(23, _T("godoMaum"));
+	m_stt_date.Initialize(23, _T("godoMaum"));
+	m_stt_stopwatch.Initialize(23, _T("godoMaum"));
+	m_stt_worktimer.Initialize(23, _T("godoMaum"));
+	m_stt_notepad.Initialize(23, _T("godoMaum"));
+	m_stt_basetimer.Initialize(23, _T("godoMaum"));
+	m_stt_world_clock.Initialize(23, _T("godoMaum"));
 
 	LoadUserInterface(currentTheme);
 	
@@ -272,6 +235,35 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
+}
+
+void CBOKOToolsDlg::LoadResourceItem(int nResourceID)
+{
+	HINSTANCE hResInstanceBold = AfxGetResourceHandle();
+	HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
+
+	HRSRC res = FindResource(hResInstanceBold,
+		MAKEINTRESOURCE(nResourceID), L"TEXT");
+
+	if (res)
+	{
+		HGLOBAL mem = LoadResource(hResInstanceBold, res);
+		void *data = LockResource(mem);
+		size_t len = SizeofResource(hResInstanceBold, res);
+
+		DWORD nFonts;
+		HANDLE m_fonthandle = AddFontMemResourceEx(
+			data,       // font resource
+			(DWORD)len,       // number of bytes in font resource 
+			NULL,          // Reserved. Must be 0.
+			&nFonts      // number of fonts installed
+		);
+
+		if (m_fonthandle == 0)
+		{
+			TRACE("실패");
+		}
+	}
 }
 
 void CBOKOToolsDlg::SetDisableCtlColor()
@@ -427,47 +419,47 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 
 	ButtonCtlDisConnect();
 
-	m_btn_base_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_base_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseIcon().nNormalID, _T("PNG"));
 	m_btn_base_gdi.LoadHovImage(currentTheme->GetBaseIcon().nHoverID, _T("PNG"));
 	m_btn_base_gdi.LoadAltImage(currentTheme->GetBaseIcon().nClickID, _T("PNG"));
 
-	m_btn_calculator_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_calculator_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_calculator_gdi.LoadStdImage(currentTheme->GetEngineeringIcon().nNormalID, _T("PNG"));
 	m_btn_calculator_gdi.LoadHovImage(currentTheme->GetEngineeringIcon().nHoverID, _T("PNG"));
 	m_btn_calculator_gdi.LoadAltImage(currentTheme->GetEngineeringIcon().nClickID, _T("PNG"));
 
-	m_btn_stopwatch_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_stopwatch_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_stopwatch_gdi.LoadStdImage(currentTheme->GetStopWatchIcon().nNormalID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadHovImage(currentTheme->GetStopWatchIcon().nHoverID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadAltImage(currentTheme->GetStopWatchIcon().nClickID, _T("PNG"));
 
-	m_btn_converter_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_converter_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_converter_gdi.LoadStdImage(currentTheme->GetConverterIcon().nNormalID, _T("PNG"));
 	m_btn_converter_gdi.LoadHovImage(currentTheme->GetConverterIcon().nHoverID, _T("PNG"));
 	m_btn_converter_gdi.LoadAltImage(currentTheme->GetConverterIcon().nClickID, _T("PNG"));
 
-	m_btn_date_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_date_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_date_gdi.LoadStdImage(currentTheme->GetDateCalIcon().nNormalID, _T("PNG"));
 	m_btn_date_gdi.LoadHovImage(currentTheme->GetDateCalIcon().nHoverID, _T("PNG"));
 	m_btn_date_gdi.LoadAltImage(currentTheme->GetDateCalIcon().nClickID, _T("PNG"));
 
-	m_btn_worktimer_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_worktimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_worktimer_gdi.LoadStdImage(currentTheme->GetWorkTimerIcon().nNormalID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadHovImage(currentTheme->GetWorkTimerIcon().nHoverID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadAltImage(currentTheme->GetWorkTimerIcon().nClickID, _T("PNG"));
 
-	m_btn_notepad_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_notepad_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_notepad_gdi.LoadStdImage(currentTheme->GetNotePadIcon().nNormalID, _T("PNG"));
 	m_btn_notepad_gdi.LoadHovImage(currentTheme->GetNotePadIcon().nHoverID, _T("PNG"));
 	m_btn_notepad_gdi.LoadAltImage(currentTheme->GetNotePadIcon().nClickID, _T("PNG"));
 
-	m_btn_basetimer_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_basetimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_basetimer_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
 
-	m_btn_world_clock_gdi.SetClickSound(currentTheme->GetButtonSoundPath());
+	m_btn_world_clock_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_world_clock_gdi.LoadStdImage(currentTheme->GetWorldClockIcon().nNormalID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
@@ -488,56 +480,16 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 void CBOKOToolsDlg::LoadTheme()
 {
 	// 테마 추가되면 설정하기
-	ThemeData* theme1 = new ThemeData(THEME_DETECTIVE);
-	ThemeData* theme2 = new ThemeData(THEME_CLOUD);
-	ThemeData* theme3 = new ThemeData(THEME_LIGHT);
-	ThemeData* theme4 = new ThemeData(THEME_MAGNIFIER);
-	ThemeData* theme5 = new ThemeData(THEME_INK);
-	ThemeData* theme6 = new ThemeData(THEME_WATERDROP);
-	ThemeData* theme7 = new ThemeData(THEME_PLANET);
-	ThemeData* theme8 = new ThemeData(THEME_NEONSIGN);
-
-	themeList.push_back(theme1);
-	themeList.push_back(theme2);
-	themeList.push_back(theme3);
-	themeList.push_back(theme4);
-	themeList.push_back(theme5);
-	themeList.push_back(theme6);
-	themeList.push_back(theme7);
-	themeList.push_back(theme8);
 	int nFlags = LoadCurrnetTheme();
 
-	if (nFlags == THEME_DETECTIVE)
+	for (int i = 0; i < 8; i++)
 	{
-		currentTheme = theme1;
-	}
-	else if (nFlags == THEME_CLOUD)
-	{
-		currentTheme = theme2;
-	}
-	else if (nFlags == THEME_LIGHT)
-	{
-		currentTheme = theme3;
-	}
-	else if (nFlags == THEME_MAGNIFIER)
-	{
-		currentTheme = theme4;
-	}
-	else if (nFlags == THEME_INK)
-	{
-		currentTheme = theme5;
-	}
-	else if (nFlags == THEME_WATERDROP)
-	{
-		currentTheme = theme6;
-	}
-	else if (nFlags == THEME_PLANET)
-	{
-		currentTheme = theme7;
-	}
-	else if (nFlags == THEME_NEONSIGN)
-	{
-		currentTheme = theme8;
+		ThemeData* theme = new ThemeData(i);
+		themeList.push_back(theme);
+		if (nFlags == i)
+		{
+			currentTheme = theme;
+		}
 	}
 }
 

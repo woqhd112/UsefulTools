@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AllButtonList.h" />
+    <ClInclude Include="AnalogWatch.h" />
     <ClInclude Include="BaseCalculate.h" />
     <ClInclude Include="BaseTimer.h" />
     <ClInclude Include="CalculateButton.h" />
@@ -245,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AllButtonList.cpp" />
+    <ClCompile Include="AnalogWatch.cpp" />
     <ClCompile Include="BaseCalculate.cpp" />
     <ClCompile Include="BaseTimer.cpp" />
     <ClCompile Include="CustomScroll.cpp" />
@@ -335,6 +337,7 @@
     <Image Include="res\Common\S_1.png" />
     <Image Include="res\Common\S_2.png" />
     <Image Include="res\Common\S_3.png" />
+    <Image Include="res\Common\WorldClock_BK.png" />
     <Image Include="res\ConvertBit_B.png" />
     <Image Include="res\ConvertBit_C.png" />
     <Image Include="res\ConvertBit_U.png" />
@@ -636,7 +639,19 @@
     <Image Include="res\Theme_Waterdrop\WorldClock_U.png" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Font\DS-DIGIT.TTF" />
+    <Font Include="res\Font\DS-DIGIT.TTF" />
+    <Font Include="res\Font\gabia_solmee.ttf" />
+    <Font Include="res\Font\godoMaum.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\SoundTrack\BaseTimer\Alarm.wav" />
+    <Media Include="res\SoundTrack\ButtonSound\MouseClick.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\end_work.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\end_work_all.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\soon_start_rest.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\soon_start_work.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\start_rest.wav" />
+    <Media Include="res\SoundTrack\WorkTimer\start_work.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

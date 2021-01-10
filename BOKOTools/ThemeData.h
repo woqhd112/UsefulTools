@@ -33,7 +33,6 @@ private:
 	};
 
 	CString strThemeName;
-	CString strButtonSoundPath;
 	FunctionIcon themeButtonIcon;
 	FunctionIcon baseIcon;
 	FunctionIcon engineeringIcon;
@@ -50,7 +49,6 @@ private:
 	COLORREF functionTextColor;
 	COLORREF functionBkColor;
 	COLORREF functionSubColor;
-	COLORREF functionSubSubColor;
 	COLORREF rectBorderColor;
 	COLORREF functionRectBorderColor;
 	COLORREF buttonColor;
@@ -63,7 +61,6 @@ public:
 
 	int GetThemeFlags() const;
 	CString GetThemeName() const;
-	CString GetButtonSoundPath() const;
 	FunctionIcon GetThemeButtonIcon() const;
 	FunctionIcon GetBaseIcon() const;
 	FunctionIcon GetEngineeringIcon() const;
@@ -80,7 +77,6 @@ public:
 	COLORREF GetFunctionTextColor() const;
 	COLORREF GetFunctionBkColor() const;
 	COLORREF GetFunctionSubColor() const;
-	COLORREF GetFunctionSubSubColor() const;
 	COLORREF GetRectBorderColor() const;
 	COLORREF GetFunctionRectBorderColor() const;
 	COLORREF GetButtonColor() const;

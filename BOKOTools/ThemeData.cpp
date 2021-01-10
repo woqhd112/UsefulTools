@@ -1,4 +1,5 @@
 #include "pch.h"
+#pragma warning (disable : 4819)
 #include "Resource.h"
 #include "ThemeData.h"
 
@@ -8,7 +9,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("사건 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Detective\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_DETECTIVE, IDB_PNG_CHANGE_HOVER_THEME_DETECTIVE, IDB_PNG_CHANGE_CLICK_THEME_DETECTIVE };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_DETECTIVE, IDB_PNG_BASE_HOVER_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_DETECTIVE };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_DETECTIVE, IDB_PNG_ENGINEERING_HOVER_THEME_DETECTIVE, IDB_PNG_ENGINEERING_CLICK_THEME_DETECTIVE };
@@ -27,7 +27,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionSubColor = RGB(255, 255, 255);//RGB(77, 32, 11);
 		rectBorderColor = RGB(255, 255, 255);
 		functionRectBorderColor = RGB(0, 0, 0);
-		functionSubSubColor = RGB(0, 0, 0);
 		buttonColor = RGB(50, 50, 50);
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_DETECTIVE;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_DETECTIVE;
@@ -37,7 +36,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("구름 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Cloud\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_CLOUD, IDB_PNG_CHANGE_HOVER_THEME_CLOUD, IDB_PNG_CHANGE_CLICK_THEME_CLOUD };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_CLOUD, IDB_PNG_BASE_HOVER_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_CLOUD };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_CLOUD, IDB_PNG_ENGINEERING_HOVER_THEME_CLOUD, IDB_PNG_ENGINEERING_CLICK_THEME_CLOUD };
@@ -54,7 +52,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(81, 153, 177);
 		functionBkColor = RGB(99, 177, 198);
 		functionSubColor = RGB(255, 255, 255);
-		functionSubSubColor = RGB(137, 202, 217);
 		rectBorderColor = RGB(255, 255, 255);
 		functionRectBorderColor = RGB(255, 255, 255);
 		buttonColor = RGB(147, 212, 227);
@@ -66,7 +63,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("조명 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Light\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_LIGHT, IDB_PNG_CHANGE_HOVER_THEME_LIGHT, IDB_PNG_CHANGE_CLICK_THEME_LIGHT };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_LIGHT, IDB_PNG_BASE_HOVER_THEME_LIGHT, IDB_PNG_BASE_CLICK_THEME_LIGHT };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_LIGHT, IDB_PNG_ENGINEERING_HOVER_THEME_LIGHT, IDB_PNG_ENGINEERING_CLICK_THEME_LIGHT };
@@ -83,7 +79,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(21, 20, 20);
 		functionBkColor = RGB(21, 20, 20); 
 		functionSubColor = RGB(77, 40, 30); 
-		functionSubSubColor = RGB(60, 39, 23); 
 		rectBorderColor = RGB(77, 40, 30);
 		functionRectBorderColor = RGB(21, 20, 20);
 		buttonColor = RGB(80, 59, 43);	//130, 109, 93
@@ -95,7 +90,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("돋보기 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Magnifier\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_MAGNIFIER, IDB_PNG_CHANGE_HOVER_THEME_MAGNIFIER, IDB_PNG_CHANGE_CLICK_THEME_MAGNIFIER };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_MAGNIFIER, IDB_PNG_BASE_HOVER_THEME_MAGNIFIER, IDB_PNG_BASE_CLICK_THEME_MAGNIFIER };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_MAGNIFIER, IDB_PNG_ENGINEERING_HOVER_THEME_MAGNIFIER, IDB_PNG_ENGINEERING_CLICK_THEME_MAGNIFIER };
@@ -112,7 +106,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(255, 255, 255);
 		functionBkColor = RGB(133, 118, 102);
 		functionSubColor = RGB(3, 3, 3);
-		functionSubSubColor = RGB(134, 120, 104);
 		rectBorderColor = RGB(3, 3, 3);
 		functionRectBorderColor = RGB(255, 255, 255);
 		buttonColor = RGB(134, 120, 104);
@@ -124,7 +117,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("수묵 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Ink\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_INK, IDB_PNG_CHANGE_HOVER_THEME_INK, IDB_PNG_CHANGE_CLICK_THEME_INK };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_INK, IDB_PNG_BASE_HOVER_THEME_INK, IDB_PNG_BASE_CLICK_THEME_INK };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_INK, IDB_PNG_ENGINEERING_HOVER_THEME_INK, IDB_PNG_ENGINEERING_CLICK_THEME_INK };
@@ -141,7 +133,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(238, 238, 238);
 		functionBkColor = RGB(238, 238, 238);
 		functionSubColor = RGB(17, 17, 17);
-		functionSubSubColor = RGB(255, 255, 255);
 		rectBorderColor = RGB(17, 17, 17);
 		functionRectBorderColor = RGB(238, 238, 238);
 		buttonColor = RGB(115, 115, 115);
@@ -153,7 +144,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("물방울 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Waterdrop\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_WATERDROP, IDB_PNG_CHANGE_HOVER_THEME_WATERDROP, IDB_PNG_CHANGE_CLICK_THEME_WATERDROP };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_WATERDROP, IDB_PNG_BASE_HOVER_THEME_WATERDROP, IDB_PNG_BASE_CLICK_THEME_WATERDROP };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_WATERDROP, IDB_PNG_ENGINEERING_HOVER_THEME_WATERDROP, IDB_PNG_ENGINEERING_CLICK_THEME_WATERDROP };
@@ -170,7 +160,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(71, 111, 134);
 		functionBkColor = RGB(95, 183, 206);
 		functionSubColor = RGB(242, 155, 136);
-		functionSubSubColor = RGB(255, 255, 255);
 		rectBorderColor = RGB(254, 249, 229);
 		functionRectBorderColor = RGB(44, 14, 26);
 		buttonColor = RGB(115, 115, 115);
@@ -182,7 +171,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("행성 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Planet\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_PLANET, IDB_PNG_CHANGE_HOVER_THEME_PLANET, IDB_PNG_CHANGE_CLICK_THEME_PLANET };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_PLANET, IDB_PNG_BASE_HOVER_THEME_PLANET, IDB_PNG_BASE_CLICK_THEME_PLANET };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_PLANET, IDB_PNG_ENGINEERING_HOVER_THEME_PLANET, IDB_PNG_ENGINEERING_CLICK_THEME_PLANET };
@@ -199,7 +187,6 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionTextColor = RGB(0, 0, 0);
 		functionBkColor = RGB(0, 0, 0);
 		functionSubColor = RGB(90, 1, 1);
-		functionSubSubColor = RGB(255, 255, 255);
 		rectBorderColor = RGB(159, 24, 1);
 		functionRectBorderColor = RGB(251, 246, 227);
 		buttonColor = RGB(180, 2, 2);
@@ -211,7 +198,6 @@ ThemeData::ThemeData(int nThemeFlags)
 	{
 		strThemeName = _T("네온 테마");
 		this->nThemeFlags = nThemeFlags;
-		strButtonSoundPath = _T("SoundTrack\\ButtonSound\\Theme_Neonsign\\MouseClick.wav");
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_NEONSIGN, IDB_PNG_CHANGE_HOVER_THEME_NEONSIGN, IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_NEONSIGN, IDB_PNG_BASE_HOVER_THEME_NEONSIGN, IDB_PNG_BASE_CLICK_THEME_NEONSIGN };
 		engineeringIcon = { IDB_PNG_ENGINEERING_NOMAL_THEME_NEONSIGN, IDB_PNG_ENGINEERING_HOVER_THEME_NEONSIGN, IDB_PNG_ENGINEERING_CLICK_THEME_NEONSIGN };
@@ -225,10 +211,9 @@ ThemeData::ThemeData(int nThemeFlags)
 		scrollIcon = { IDB_PNG_SCROLL_NONSIGNAL_THEME_NEONSIGN, IDB_PNG_SCROLL_SIGNAL_THEME_NEONSIGN, IDB_PNG_SCROLL_NONSIGNAL_THEME_NEONSIGN };
 		commingSoonIcon = { IDB_PNG_COMINGSOON_THEME_NEONSIGN, IDB_PNG_COMINGSOON_THEME_NEONSIGN, IDB_PNG_COMINGSOON_THEME_NEONSIGN };
 		textColor = RGB(154, 232, 215);
-		functionTextColor = RGB(2, 4, 3);
+		functionTextColor = RGB(255, 255, 255);
 		functionBkColor = RGB(1, 3, 2);
 		functionSubColor = RGB(5, 37, 26);
-		functionSubSubColor = RGB(255, 255, 255);
 		rectBorderColor = RGB(159, 24, 1);
 		functionRectBorderColor = RGB(154, 232, 215);
 		buttonColor = RGB(159, 24, 1);
@@ -251,11 +236,6 @@ int ThemeData::GetThemeFlags() const
 CString ThemeData::GetThemeName() const
 {
 	return strThemeName;
-}
-
-CString ThemeData::GetButtonSoundPath() const
-{
-	return strButtonSoundPath;
 }
 
 ThemeData::FunctionIcon ThemeData::GetThemeButtonIcon() const
@@ -331,11 +311,6 @@ COLORREF ThemeData::GetFunctionBkColor() const
 COLORREF ThemeData::GetFunctionSubColor() const
 {
 	return functionSubColor;
-}
-
-COLORREF ThemeData::GetFunctionSubSubColor() const
-{
-	return functionSubSubColor;
 }
 
 COLORREF ThemeData::GetRectBorderColor() const

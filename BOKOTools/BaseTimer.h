@@ -61,7 +61,6 @@ private:
 	CWinThread* m_maintainThread;
 
 	ButtonSignal bs;
-	HANDLE m_fonthandle;
 
 	int nMaintainCount;
 
@@ -74,7 +73,7 @@ private:
 	static UINT thrLoadSound(LPVOID method);
 	static UINT thrClickMaintain(LPVOID method);
 	void StartBaseTimer();
-	void StartSound(CString strSoundPath);
+	void StartSound(int nSoundResourceID);
 	void StartMaintainCount();
 	bool DeleteMainThread();
 	void ResetDefaultValue();

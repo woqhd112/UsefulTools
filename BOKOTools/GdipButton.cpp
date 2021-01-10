@@ -783,10 +783,10 @@ void CGdipButton::DeleteToolTip()
 	}
 }
 
-void CGdipButton::SetClickSound(CString strSoundPath)
+void CGdipButton::SetClickSound(int nSoundResourceID)
 {
 	m_bUseClickSoundEvent = true;
-	this->strSoundPath = strSoundPath;
+	this->nSoundResourceID = nSoundResourceID;
 }
 
 void CGdipButton::OnLButtonDown(UINT nFlags, CPoint point)
@@ -816,5 +816,5 @@ UINT CGdipButton::thrLoadSound(LPVOID method)
 
 void CGdipButton::StartSound()
 {
-	PlaySound(strSoundPath, 0, SND_ASYNC);
+	PlaySound(MAKEINTRESOURCE(nSoundResourceID), AfxGetInstanceHandle(), SND_ASYNC | SND_RESOURCE);
 }

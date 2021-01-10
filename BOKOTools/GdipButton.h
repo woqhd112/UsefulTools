@@ -71,7 +71,7 @@ public:
 	void SetToolTipText(UINT nId, BOOL bActivate = TRUE);
 	void SetHorizontal(bool ImagesAreLaidOutHorizontally = FALSE);
 	void DeleteToolTip();
-	void SetClickSound(CString strSoundPath);
+	void SetClickSound(int nSoundResourceID);
 	void StartSound();
 	void DisConnect();
 	void UseHoverEvent();
@@ -109,7 +109,7 @@ protected:
 	CString			m_tooltext;
 	CToolTipCtrl*	m_pToolTip;
 	
-	CString strSoundPath;
+	int nSoundResourceID;
 
 	void	InitToolTip();
 

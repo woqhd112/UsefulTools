@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "WorldClockList.h"
-#include "WorldClock.h"
+//#include "WorldClock.h"
 #include "afxdialogex.h"
 
 
@@ -20,8 +20,8 @@ WorldClockList::WorldClockList(ThemeData* currentTheme, CWnd* pParent /*=nullptr
 	nWorldButtonID = 58000;
 	nClockButtonPos_x = 2;
 	nClockButtonPos_y = 2;
-	nClockButtonWidth = 259;
-	nClockButtonHeight = 37;
+	nClockButtonWidth = 359;
+	nClockButtonHeight = 82;
 	nButtonCount = 0;
 	nDetectHeight = 0;
 }
@@ -88,42 +88,17 @@ BOOL WorldClockList::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
-	worldclock = (WorldClock*)pParent;
+	//worldclock = (WorldClock*)pParent;
 
-	//HINSTANCE hResInstanceBold = AfxGetResourceHandle();
-	//HINSTANCE hResInstanceRegular = AfxGetResourceHandle();
-
-	//HRSRC res = FindResource(hResInstanceBold,
-	//	MAKEINTRESOURCE(IDR_TEXT_FONT_DIGITAL), L"TEXT");
-
-	//if (res)
-	//{
-	//	HGLOBAL mem = LoadResource(hResInstanceBold, res);
-	//	void *data = LockResource(mem);
-	//	size_t len = SizeofResource(hResInstanceBold, res);
-
-	//	DWORD nFonts;
-	//	m_fonthandle = AddFontMemResourceEx(
-	//		data,       // font resource
-	//		(DWORD)len,       // number of bytes in font resource 
-	//		NULL,          // Reserved. Must be 0.
-	//		&nFonts      // number of fonts installed
-	//	);
-
-	//	if (m_fonthandle == 0)
-	//	{
-	//		TRACE("실패");
-	//	}
-	//}
 
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
 	csi.nAllPageSize = 0;
 	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = 236;
+	csi.nOnePageSize = 451 - 30;
 	csi.nScrollPos = 0;
-	csi.nWheelValue = 234;
+	csi.nWheelValue = 451 - 30 - 1;
 	scroll.Initialize(csi);
 
 	// 로드 xml로 설정
@@ -226,7 +201,7 @@ bool WorldClockList::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
 		markUp->AddElem(_T("Clock"));
 		markUp->IntoElem();
 		markUp->AddElem(_T("data"));
-		markUp->AddAttrib(_T("error"), 8);
+		markUp->AddAttrib(_T("error"), 9);
 		markUp->AddAttrib(_T("world"), _T("대한민국 "));
 		markUp->AddAttrib(_T("city"), _T(" 서울"));
 
@@ -281,10 +256,10 @@ void WorldClockList::OnOK()
 BOOL WorldClockList::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (pMsg->message == WM_LBUTTONUP)
+	/*if (pMsg->message == WM_LBUTTONUP)
 	{
 		worldclock->GetSearchInstance()->ShowWindow(SW_HIDE);
-	}
+	}*/
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
@@ -320,7 +295,7 @@ void WorldClockList::OnPaint()
 CString WorldClockList::GetCurTime(double dErrorTimeValue)
 {
 	CTime cTime = CTime::GetCurrentTime();
-	dErrorTimeValue = 8 - dErrorTimeValue;
+	dErrorTimeValue = 9 - dErrorTimeValue;
 
 	int hour = int(dErrorTimeValue);
 	int minute = int((dErrorTimeValue - hour) * 60);
@@ -353,27 +328,20 @@ bool WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName,
 	// 여기에 시간값 넣는 함수 추가
 	CalculateButton* newSearchButton = new CalculateButton;
 	newSearchButton->Create(strWorldClockName + _T("\r\n") + strCityClockName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
-	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * (nButtonCount - (6 * (scroll.GetCurrentLinePos() - 1))));
+	nDetectHeight = nClockButtonPos_y + ((2 + nClockButtonHeight) * (nButtonCount - (5 * (scroll.GetCurrentLinePos() - 1))));
 	newSearchButton->MoveWindow(nClockButtonPos_x, nDetectHeight, nClockButtonWidth, nClockButtonHeight);
 	newSearchButton->ShowWindow(SW_SHOW);
-	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 30);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	clockButtonVector.push_back(newSearchButton);
 
 	CalculateStatic* newSearchStatic = new CalculateStatic;
 	newSearchStatic->Create(GetCurTime(dErrorTimeValue), SS_CENTER, CRect(0, 0, 0, 0), this, nWorldButtonID++);
-	newSearchStatic->MoveWindow(nClockButtonPos_x + 100, nDetectHeight + 4, nClockButtonWidth - 100 - 4, nClockButtonHeight - 8);
+	newSearchStatic->MoveWindow(nClockButtonPos_x + 150, nDetectHeight + 4, nClockButtonWidth - 150 - 4, nClockButtonHeight - 8);
 	newSearchStatic->ShowWindow(SW_SHOW);
-	CFont fnt;
-	LOGFONT lf;
-	::ZeroMemory(&lf, sizeof(lf));
-	lf.lfHeight = 30;
-	lf.lfWeight = FW_BOLD;
-	_tcscpy_s(lf.lfFaceName, L"DS-Digital");
-	fnt.CreateFontIndirect(&lf);
-	newSearchStatic->SetFont(&fnt);
-	fnt.Detach();
+	newSearchStatic->Initialize(50, _T("DS-Digital"));
+	
 	clockStaticVector.push_back(newSearchStatic);
 	clockDataVector.push_back(dErrorTimeValue);
 
@@ -384,7 +352,7 @@ bool WorldClockList::AddClock(double dErrorTimeValue, CString strWorldClockName,
 	nButtonCount++;
 
 
-	if (((int)clockButtonVector.size() - 1) % 6 == 0)
+	if (((int)clockButtonVector.size() - 1) % 5 == 0)
 	{
 		scroll.LineEnd();
 	}
@@ -445,7 +413,7 @@ BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
 				statics = nullptr;
 				bDelete = true;
 				if (scroll.GetLineCount() == scroll.GetCurrentLinePos())  OnVScroll(SB_PAGEUP, 0, GetScrollBarCtrl(SB_VERT));
-				if ((int)clockButtonVector.size() % 6 == 0)
+				if ((int)clockButtonVector.size() % 5 == 0)
 				{
 					scroll.LineDelete();
 					scroll.ExecuteScrollPos(currentTheme);
@@ -458,7 +426,7 @@ BOOL WorldClockList::OnCommand(WPARAM wParam, LPARAM lParam)
 			for (int j = i; j < (int)clockButtonVector.size(); j++)
 			{
 				clockButtonVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x, nClockButtonPos_y + ((2 + nClockButtonHeight) * j), 0, 0, SWP_NOSIZE);
-				clockStaticVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x + 100, nClockButtonPos_y + ((2 + nClockButtonHeight) * j) + 4, 0, 0, SWP_NOSIZE);
+				clockStaticVector.at(j)->SetWindowPos(NULL, nClockButtonPos_x + 150, nClockButtonPos_y + ((2 + nClockButtonHeight) * j) + 4, 0, 0, SWP_NOSIZE);
 			}
 			// xml 업데이트 함수
 			SaveClockXml();
@@ -486,7 +454,7 @@ void WorldClockList::SaveClockXml()
 		CString strButtonText, strWorldName, strCityName, strGMPValue;
 		saveButton->GetWindowTextW(strButtonText);
 		strButtonText.Replace(_T("\r\n"), _T("-"));
-		strGMPValue.Format(_T("%.1f"), worldclock->GetSearchInstance()->GetGMPCalcValue(worldclock->GetSearchInstance()->GetWorldClockData(strButtonText)));
+		//strGMPValue.Format(_T("%.1f"), worldclock->GetSearchInstance()->GetGMPCalcValue(worldclock->GetSearchInstance()->GetWorldClockData(strButtonText)));
 		AfxExtractSubString(strWorldName, strButtonText, 0, '-');
 		AfxExtractSubString(strCityName, strButtonText, 1, '-');
 

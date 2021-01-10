@@ -4,7 +4,8 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "WorldSearchList.h"
-#include "WorldClock.h"
+#include "AnalogWatch.h"
+//#include "WorldClock.h"
 #include "afxdialogex.h"
 
 
@@ -12,16 +13,17 @@
 
 IMPLEMENT_DYNAMIC(WorldSearchList, CDialogEx)
 
-WorldSearchList::WorldSearchList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+WorldSearchList::WorldSearchList(CRect buttonPosRect, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SEARCH_LIST, pParent)
 {
+	this->buttonRect = buttonPosRect;
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
 	nWorldButtonID = 55000;
 	nSearchButtonPos_x = 2;
 	nSearchButtonPos_y = 2;
-	nSearchButtonWidth = 228;
-	nSearchButtonHeight = 28;
+	nSearchButtonWidth = buttonPosRect.Width() - 4;
+	nSearchButtonHeight = (buttonPosRect.Height()) / 3 - 1;
 }
 
 WorldSearchList::~WorldSearchList()
@@ -63,7 +65,8 @@ BOOL WorldSearchList::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
-	worldclock = (WorldClock*)pParent;
+	//worldclock = (WorldClock*)pParent;
+	analogwatch = (AnalogWatch*)pParent;
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -132,9 +135,9 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
 	csi.nAllPageSize = 0;
 	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = 90;
+	csi.nOnePageSize = buttonRect.Height();
 	csi.nScrollPos = 0;
-	csi.nWheelValue = 30;
+	csi.nWheelValue = nSearchButtonHeight + 2;
 	csi.bLikeButtonEvent = false;
 	scroll.Initialize(csi);
 
@@ -188,9 +191,11 @@ void WorldSearchList::SetApsorptionToButtonPos()
 void WorldSearchList::CreateCityDataButton(WorldClockData wcd)
 {
 	CalculateButton* newSearchButton = new CalculateButton;
-	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	CString strCityName = wcd.strWorldName;
+	strCityName.Replace(_T("-"), _T("\r\n"));
+	newSearchButton->Create(strCityName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	newSearchButton->ShowWindow(SW_SHOW);
-	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	cityDataButtonVector.push_back(newSearchButton);
@@ -199,9 +204,11 @@ void WorldSearchList::CreateCityDataButton(WorldClockData wcd)
 void WorldSearchList::CreateWorldDataButton(WorldClockData wcd)
 {
 	CalculateButton* newSearchButton = new CalculateButton;
-	newSearchButton->Create(wcd.strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
+	CString strWorldName = wcd.strWorldName;
+	strWorldName.Replace(_T("-"), _T("\r\n"));
+	newSearchButton->Create(strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	newSearchButton->ShowWindow(SW_SHOW);
-	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	worldDataButtonVector.push_back(newSearchButton);
@@ -290,17 +297,21 @@ BOOL WorldSearchList::OnCommand(WPARAM wParam, LPARAM lParam)
 	CString strCaption, strWorldName, strCityName;
 	CalculateButton* button = (CalculateButton*)GetDlgItem((int)wParam);
 	button->GetWindowTextW(strCaption);
-	AfxExtractSubString(strWorldName, strCaption, 0, '-');
-	AfxExtractSubString(strCityName, strCaption, 1, '-');
+	strCaption.Replace(_T("\r\n"), _T("-"));
+	//AfxExtractSubString(strWorldName, strCaption, 0, '\r\n');
+	//AfxExtractSubString(strCityName, strCaption, 1, '\r\n');
 
-	if (MessageBox(_T("선택한 국가를 추가 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+	analogwatch->m_edit_analog_search.SetWindowTextW(strCaption);
+	this->ShowWindow(SW_HIDE);
+	return TRUE;
+	/*if (MessageBox(_T("선택한 국가를 추가 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 	{
 		if (worldclock->GetClockInstance()->AddClock(GetGMPCalcValue(GetWorldClockData(strCaption)), strWorldName, strCityName))
 		{
 			this->ShowWindow(SW_HIDE);
 			worldclock->GetClockInstance()->SaveClockXml();
 		}
-	}
+	}*/
 
-	return CDialogEx::OnCommand(wParam, lParam);
+	//return CDialogEx::OnCommand(wParam, lParam);
 }

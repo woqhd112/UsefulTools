@@ -72,7 +72,6 @@ BOOL ConvertWidthTab::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	m_rightValueBrush.CreateSolidBrush(currentTheme->GetFunctionSubSubColor());
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 

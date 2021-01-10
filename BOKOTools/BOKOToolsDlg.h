@@ -85,7 +85,6 @@ private:
 	ThemeData* currentTheme;
 	CustomScroll scroll;
 
-	HANDLE m_fonthandle;
 
 	void SetDisableCtlColor();
 	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
@@ -93,6 +92,7 @@ private:
 	int LoadCurrnetTheme();
 	void LoadButtonPos();
 	void LoadUserInterface(ThemeData* currentTheme);
+	void LoadResourceItem(int nResourceID);
 	void CreateConfigPosFile(CString& strFullPath);
 	bool CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector);
 	void CreateConfigThemeFile(CString& strFullPath);
@@ -120,7 +120,7 @@ private:
 	const int TOP_MARGIN = 30;
 	const int PICTURE_TO_PICTURE_MARGIN_WIDTH = 20;
 	const int PICTURE_TO_PICTURE_MARGIN_HEIGHT = 30;
-	const int STATIC_HEIGHT = 18;
+	const int STATIC_HEIGHT = 23;
 	int nPageCount;
 	int nCtlItemCount;
 

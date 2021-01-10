@@ -8,6 +8,7 @@
 	#error "include 'pch.h' before including this file for PCH"
 #endif
 
+#pragma warning (disable : 4819)
 #include "resource.h"		// 주 기호입니다.
 
 #define MARGIN_X(Width)	{Width + 18}

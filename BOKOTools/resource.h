@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// BOKOTools.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// BOKOTools.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -354,6 +354,21 @@
 #define IDB_PNG_WORLDCLOCK_NOMAL_THEME_NEONSIGN 596
 #define IDB_PNG_WORLDCLOCK_CLICK_THEME_NEONSIGN 597
 #define IDB_PNG_WORLDCLOCK_HOVER_THEME_NEONSIGN 598
+#define IDR_WAVE_END_WORK               599
+#define IDR_WAVE_END_WORK_ALL           605
+#define IDR_WAVE_SOON_START_REST        606
+#define IDR_WAVE_SOON_START_WORK        607
+#define IDR_WAVE_START_REST             608
+#define IDR_WAVE_START_WORK             609
+#define IDR_WAVE_BUTTON_SOUND           610
+#define IDR_WAVE1                       611
+#define IDR_WAVE_ALARM                  611
+#define IDR_TEXT1                       612
+#define IDR_TEXT_FONT_GABIA_SOLMEE      612
+#define IDR_TEXT2                       613
+#define IDR_TEXT_FONT_GODOMAUM          613
+#define IDB_PNG_WORLDCLOCK_BK           614
+#define IDD_DIALOG_ANALOG_WATCh         615
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -388,6 +403,7 @@
 #define IDC_BUTTON_BASE_TIMER_STARTANDSTOP 1022
 #define IDC_BUTTON_SORT_SAVE            1022
 #define IDC_BUTTON_WORLD_SEARCH         1022
+#define IDC_BUTTON_ANALOG_SUBMIT        1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_BUTTON_RESET                1023
@@ -573,6 +589,7 @@
 #define IDC_BUTTON_TEST_DRAW            1194
 #define IDC_BUTTON_BASE_GDI             1194
 #define IDC_BUTTON_THEME_DETECTIVE      1194
+#define IDC_BUTTON_WORLDCLOCK_BK        1194
 #define IDC_BUTTON_STOPWATCH_GDI        1195
 #define IDC_BUTTON_CONVERTER_GDI        1196
 #define IDC_BUTTON_CALCULATOR_GDI       1197
@@ -686,6 +703,8 @@
 #define IDC_BUTTON_THEME_PLANET         1303
 #define IDC_BUTTON6                     1304
 #define IDC_BUTTON_THEME_NEONSIGN       1304
+#define IDC_STATIC_ANALOG_DATE          1305
+#define IDC_EDIT_ANALOG_SEARCH          1306
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -705,9 +724,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        599
+#define _APS_NEXT_RESOURCE_VALUE        618
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1305
+#define _APS_NEXT_CONTROL_VALUE         1307
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

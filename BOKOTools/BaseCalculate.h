@@ -38,6 +38,7 @@ private:
 
 	CComboBox m_select;
 	CComboBox m_result;
+	CFont comboFont;
 
 	// 2진법 계산기 컨트롤러
 	CalculateButton m_btn_result_select_from_base;
@@ -46,8 +47,10 @@ private:
 	//CalculateStatic m_stt_group_base;
 	CalculateStatic m_stt_base_view;
 	CalculateStatic m_stt_base;
-	CStatic m_stt_input_select;
-	CStatic m_stt_output_result;
+	CalculateStatic m_stt_input_select;
+	CalculateStatic m_stt_output_result;
+	CalculateStatic m_stt_select_input;
+	CalculateStatic m_stt_result_select;
 
 public:
 	afx_msg void OnBnClickedButtonResultTwoFrom2();

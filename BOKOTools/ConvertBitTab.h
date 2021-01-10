@@ -45,7 +45,6 @@ private:
 	CalculateStatic m_stt_divide;
 
 	CBrush m_backBrush;
-	CBrush m_rightValueBrush;
 	ThemeData* currentTheme;
 
 	CRect drawBorderRect;

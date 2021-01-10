@@ -44,7 +44,6 @@ private:
 	ThemeData* currentTheme;
 
 	CBrush m_backBrush;
-	HANDLE m_fonthandle;
 
 	bool bThread;
 	bool bStart;

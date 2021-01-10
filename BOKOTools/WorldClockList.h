@@ -9,7 +9,7 @@
 
 // WorldClockList 대화 상자
 
-class WorldClock;
+//class WorldClock;
 
 class WorldClockList : public CDialogEx
 {
@@ -29,7 +29,7 @@ private:
 	ThemeData* currentTheme;
 	CWnd* pParent;
 
-	WorldClock* worldclock;
+	//WorldClock* worldclock;
 
 	int nBrightness;
 	COLORREF bkBorderColor;

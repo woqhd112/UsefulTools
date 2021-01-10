@@ -2,6 +2,7 @@
 #include "CalculateEdit.h"
 #include "WorldClockList.h"
 #include "WorldSearchList.h"
+#include "AnalogWatch.h"
 
 // WorldClock 대화 상자
 
@@ -37,15 +38,17 @@ private:
 	CBrush m_backBrush;
 	CRect dynamicSearchRect;
 
-	WorldClockList* worldclocklist;
-	WorldSearchList* worldsearchlist;
+	//WorldClockList* worldclocklist;
+	//WorldSearchList* worldsearchlist;
+	AnalogWatch* analogwatch;
+	std::vector<AnalogWatch*> subAnalogWatchVector;
 
 public:
 
 public:
 
-	WorldClockList* GetClockInstance() const;
-	WorldSearchList* GetSearchInstance() const;
+	//WorldClockList* GetClockInstance() const;
+	//WorldSearchList* GetSearchInstance() const;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -54,4 +57,5 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnEnChangeEditWorldSearch();
+	afx_msg void OnBnClickedButtonWorldSearch();
 };
