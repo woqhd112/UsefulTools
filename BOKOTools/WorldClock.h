@@ -45,6 +45,7 @@ private:
 	bool bCurTimeThread;
 	static UINT thrStartWorldClock(LPVOID method);
 	void StartWorldClock();
+	void FormatClockData(CString strInputTime, AnalogWatch::ClockData* inputTime);
 
 	CString GetCurTime(double dErrorSubTimeValue);
 

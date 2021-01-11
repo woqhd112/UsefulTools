@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ìž…ë‹ˆë‹¤.
-// BOKOTools.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìžˆìŠµë‹ˆë‹¤.
+// Microsoft Visual C++¿¡¼­ »ý¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
+// BOKOTools.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -693,6 +693,7 @@
 #define IDC_STATIC_WEEK                 1287
 #define IDC_STATIC_                     1288
 #define IDC_STATIC_CURRENT_TIME         1288
+#define IDC_STATIC_ANALOG_WORLDNAME     1288
 #define IDC_BUTTON_EDIT_BOLD            1289
 #define IDC_BUTTON_EDIT_ITALIC          1290
 #define IDC_BUTTON_EDIT_UNDERLINE       1291

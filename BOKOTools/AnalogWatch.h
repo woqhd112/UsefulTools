@@ -37,6 +37,7 @@ private:
 	CBrush m_backBrush;
 	CRect thisRect, watchRect;
 	CalculateStatic m_stt_analog_date;
+	CalculateStatic m_stt_analog_worldname;
 	CalculateButton m_btn_analog_submit;
 	CalculateEdit m_edit_analog_search;
 
@@ -48,7 +49,7 @@ private:
 	const double WATCH_MINMARK = 10;
 	const double WATCH_MARKWIDTH = 50;
 	const int WATCH_HOURTEXT = 2;
-	const int WATCH_LOGOTEXT = 10;
+	const int WATCH_LOGOTEXT = 1;
 	const double WATCH_LOGODOWN = 2.5;
 
 	const int WATCH_CENTERSIZE = 40;
@@ -61,16 +62,19 @@ private:
 
 	struct ClockData
 	{
-		double dErrorMainGMPValue;
-		double dErrorSubGMPValue;
-		CString strWorldName;
-		CString strCityName;
-		int nHour;
-		int nMinute;
-		int nSecond;
+		WorldSearchList::GreenWichWorldClockData mainGWCD;
+		WorldSearchList::GreenWichWorldClockData subGWCD;
+		CString strWorldCityName;
+		int m_nYear;
+		int m_nMonth;
+		int m_nDay;
+		int m_nHour;
+		int m_nMinute;
+		int m_nSecond;
 	};
 
 	ClockData* clockData;
+	bool m_bInitSuccess;
 
 	CPoint GetRotatedPos(const CPoint& anchorPt, double radius, double deg) const;
 	void DrawTime(CDC& memDC);
@@ -82,8 +86,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	void Initialize();
-	void InvalidClockRect();
+	void Initialize(ClockData* clockData);
+	void InvalidClockRect(ClockData* clockData);
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

@@ -17,6 +17,7 @@ AnalogWatch::AnalogWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	bMainClock = false;
+	m_bInitSuccess = false;
 }
 
 AnalogWatch::~AnalogWatch()
@@ -40,6 +41,7 @@ void AnalogWatch::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_ANALOG_DATE, m_stt_analog_date);
 	DDX_Control(pDX, IDC_BUTTON_ANALOG_SUBMIT, m_btn_analog_submit);
 	DDX_Control(pDX, IDC_EDIT_ANALOG_SEARCH, m_edit_analog_search);
+	DDX_Control(pDX, IDC_STATIC_ANALOG_WORLDNAME, m_stt_analog_worldname);
 }
 
 
@@ -75,32 +77,40 @@ BOOL AnalogWatch::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void AnalogWatch::Initialize()
+void AnalogWatch::Initialize(ClockData* clockData)
 {
 	this->GetWindowRect(thisRect);
-	watchRect = { 0, 40, thisRect.Width() - 5, 40 + thisRect.Width() - 5 };
+	watchRect = { 0, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 };
 
-	m_stt_analog_date.Initialize(40, _T("godoMaum"));
-	m_stt_analog_date.SetWindowTextW(_T("테스트"));
-	m_stt_analog_date.MoveWindow(0, 0, thisRect.Width(), 30);
+	m_stt_analog_worldname.Initialize(25, _T("godoMaum"));
+	m_stt_analog_worldname.MoveWindow(0, 0, thisRect.Width(), 30);
+	m_stt_analog_date.Initialize(25, _T("godoMaum"));
+	m_stt_analog_date.MoveWindow(0, 30, thisRect.Width(), 30);
 
 	m_edit_analog_search.Initialize(20, _T("godoMaum"));
-	m_edit_analog_search.MoveWindow(0, 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 40, 30);
+	m_edit_analog_search.MoveWindow(0, 30 + 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 40, 30);
 	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_analog_submit.SetTextColor(currentTheme->GetTextColor());
-	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 40 + 10, 40 + thisRect.Width() - 5 + 10, 30, 30);
+	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 40 + 10, 30 + 40 + thisRect.Width() - 5 + 10, 30, 30);
 
 	//CRect dynamicSearchRect = { 0, 40 + thisRect.Width() - 5 + 10 + 30 + 10, thisRect.Width() - 5 - 40, 40 + thisRect.Width() - 5 + 10 + 30 + 10 + 135 };
-	CRect dynamicSearchRect = { 0, 40 + thisRect.Width() - 5 - 135 + 10, thisRect.Width() - 5 - 40, 40 + thisRect.Width() - 5 + 10 };
+	CRect dynamicSearchRect = { 0, 30 + 40 + thisRect.Width() - 5 - 135 + 10, thisRect.Width() - 5 - 40, 30 + 40 + thisRect.Width() - 5 + 10 };
 	worldsearchlist = new WorldSearchList(dynamicSearchRect, currentTheme, this);
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);
 	worldsearchlist->ShowWindow(SW_HIDE);
 
+	this->clockData = clockData;
+	m_stt_analog_worldname.SetWindowTextW(clockData->strWorldCityName);
+	m_bInitSuccess = true;
 }
 
-void AnalogWatch::InvalidClockRect()
+void AnalogWatch::InvalidClockRect(ClockData* clockData)
 {
+	this->clockData = clockData;
+	CString strCurDate;
+	strCurDate.Format(_T("%04d년 %02d월 %02d일"), clockData->m_nYear, clockData->m_nMonth, clockData->m_nDay);
+	m_stt_analog_date.SetWindowTextW(strCurDate);
 	InvalidateRect(watchRect);
 }
 
@@ -202,20 +212,10 @@ void AnalogWatch::OnPaint()
 		minmark++;
 	}
 
-	// 시계 로고
-	CFont logofont;
-	logofont.CreatePointFont(watchRect.Width() / WATCH_LOGOTEXT, _T("godoMaum"));
-	dc.SelectObject(&logofont);
-	CRect logorect(watchRect);
-	logorect.OffsetRect(0, (int)((double)logorect.Height() - (double)logorect.Height() / WATCH_LOGODOWN));
-	CString str;
-	str.Format(_T("Ocean Coding School\r\n%s"), _T("!!"));
-
-	dc.DrawText(str, &logorect, DT_CENTER);
 
 
 	//DrawYMD(dc);
-	DrawTime(dc);
+	if (m_bInitSuccess) DrawTime(dc);
 
 
 	// 사용한 GDI Object 반환, 삭제	
@@ -237,7 +237,18 @@ void AnalogWatch::DrawTime(CDC& memDC)
 
 
 	//CTime curTime = CTime::GetCurrentTime();
-	CTime curTime = CTime::GetCurrentTime();
+	CTime curTime(clockData->m_nYear, clockData->m_nMonth, clockData->m_nDay, clockData->m_nHour, clockData->m_nMinute, clockData->m_nSecond);
+
+	// 시계 ampm
+	CFont ampmfont;
+	ampmfont.CreatePointFont(watchRect.Width() / WATCH_LOGOTEXT, _T("godoMaum"));
+	memDC.SelectObject(&ampmfont);
+	CRect ampmrect(watchRect);
+	ampmrect.OffsetRect(0, (int)((double)ampmrect.Height() / WATCH_LOGODOWN / WATCH_LOGODOWN));
+	CString str;
+	str.Format(_T("%s"), curTime.GetHour() < 12 ? _T("AM") : _T("PM"));
+
+	memDC.DrawText(str, &ampmrect, DT_CENTER);
 
 	double radius = watchRect.Width() / 2;
 
@@ -263,6 +274,7 @@ void AnalogWatch::DrawTime(CDC& memDC)
 	memDC.LineTo(cpt.x + secpt.x, cpt.y - secpt.y);
 
 	memDC.SelectObject(pOldPen);
+
 	hourpen.DeleteObject();
 	minpen.DeleteObject();
 	secpen.DeleteObject();
@@ -317,6 +329,10 @@ HBRUSH AnalogWatch::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetTextColor(currentTheme->GetTextColor());
 		}
+		else if (pWnd->GetDlgCtrlID() == m_stt_analog_worldname.GetDlgCtrlID())
+		{
+			pDC->SetTextColor(currentTheme->GetTextColor());
+		}
 	}
 	else if (nCtlColor == CTLCOLOR_EDIT)
 	{
@@ -362,18 +378,14 @@ void AnalogWatch::OnBnClickedButtonAnalogSubmit()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (MessageBox(_T("선택한 국가로 등록 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 	{
-		//
 		CString strSuccessName;
-		CString strWorldName, strCityName;
-		AfxExtractSubString(strWorldName, strSuccessName, 0, '-');
-		AfxExtractSubString(strCityName, strSuccessName, 1, '-');
 
 		m_edit_analog_search.GetWindowTextW(strSuccessName);
-		m_stt_analog_date.SetWindowTextW(strSuccessName);
-		double dGMPValue = worldsearchlist->GetGMPCalcValue(worldsearchlist->GetWorldClockData(strSuccessName));
-		if (bMainClock) clockData->dErrorMainGMPValue = dGMPValue;
-		clockData->dErrorSubGMPValue = dGMPValue;
-		clockData->strWorldName = strWorldName;
-		clockData->strCityName = strCityName;
+		m_stt_analog_worldname.SetWindowTextW(strSuccessName);
+		WorldSearchList::GreenWichWorldClockData dGMPValue = worldsearchlist->GetWorldClockData(strSuccessName);
+		if (bMainClock) clockData->mainGWCD = dGMPValue;
+		clockData->subGWCD = dGMPValue;
+		clockData->strWorldCityName = strSuccessName;
+		m_edit_analog_search.SetWindowTextW(_T(""));
 	}
 }
