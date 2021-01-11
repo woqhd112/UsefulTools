@@ -38,17 +38,17 @@ private:
 	CBrush m_backBrush;
 	CRect dynamicSearchRect;
 
-	//WorldClockList* worldclocklist;
-	//WorldSearchList* worldsearchlist;
 	AnalogWatch* analogwatch;
 	std::vector<AnalogWatch*> subAnalogWatchVector;
 
-public:
+	CWinThread* m_curtimeThread;
+	bool bCurTimeThread;
+	static UINT thrStartWorldClock(LPVOID method);
+	void StartWorldClock();
+
+	CString GetCurTime(double dErrorSubTimeValue);
 
 public:
-
-	//WorldClockList* GetClockInstance() const;
-	//WorldSearchList* GetSearchInstance() const;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

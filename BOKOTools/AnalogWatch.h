@@ -40,6 +40,8 @@ private:
 	CalculateButton m_btn_analog_submit;
 	CalculateEdit m_edit_analog_search;
 
+	bool bMainClock;
+
 	enum TIME_ { TIME_SEC, TIME_MIN, TIME_HOUR };
 
 	const double PI = 3.141592653589793238462643383279;
@@ -57,10 +59,18 @@ private:
 	const double WATCH_MINWIDTH = 100;
 	const double WATCH_HOURWIDTH = 50;
 
-	CWinThread* m_curtimeThread;
-	bool bCurTimeThread;
-	static UINT thrStartAnalogClock(LPVOID method);
-	void StartAnalogClock();
+	struct ClockData
+	{
+		double dErrorMainGMPValue;
+		double dErrorSubGMPValue;
+		CString strWorldName;
+		CString strCityName;
+		int nHour;
+		int nMinute;
+		int nSecond;
+	};
+
+	ClockData* clockData;
 
 	CPoint GetRotatedPos(const CPoint& anchorPt, double radius, double deg) const;
 	void DrawTime(CDC& memDC);
@@ -73,6 +83,7 @@ protected:
 public:
 
 	void Initialize();
+	void InvalidClockRect();
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

@@ -46,6 +46,19 @@ WorldClock::~WorldClock()
 		deleteWatch = nullptr;
 	}
 	subAnalogWatchVector.clear();
+
+	if (bCurTimeThread)
+	{
+		bCurTimeThread = false;
+		DWORD nExitCode = NULL;
+
+		GetExitCodeThread(m_curtimeThread->m_hThread, &nExitCode);
+		if (TerminateThread(m_curtimeThread->m_hThread, nExitCode) != 0)
+		{
+			delete m_curtimeThread;
+			m_curtimeThread = nullptr;
+		}
+	}
 }
 
 void WorldClock::DoDataExchange(CDataExchange* pDX)
@@ -72,8 +85,8 @@ END_MESSAGE_MAP()
 //3. 메인시계는 로컬타임 동기화버튼 지원함
 //4. 아날로그시게의 static은 국가명 - 도시명 \r\n 년월일 출력
 //5. 아날로그시계 가운데에 am\pm 추가
-//6. 시계 스타트 스레드는 worldclock에서 작동
-//7. 스레드함수 안에서 각 analogwatch 객체의 시간값 변경하여 invalidrect 수행
+
+
 //8. analogwatch 객체에는 시간값 데이터만 갱신시키고 스레드는 수행하지않음.
 //9. xml값은 설정한 시계데이터 저장
 //10. 적용버튼 클릭시 해당 시계의 전 데이터를 찾아 변경한 데이터로 수정
@@ -102,6 +115,13 @@ BOOL WorldClock::OnInitDialog()
 	analogwatch->MoveWindow(50, 75, 200, 200 + 40 + 40);
 	analogwatch->ShowWindow(SW_SHOW);
 	analogwatch->Initialize();
+	analogwatch->bMainClock = true;
+	AnalogWatch::ClockData* clockData = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	analogwatch->clockData = clockData;
 
 	AnalogWatch* newAnalogwatch1 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCh, this);
@@ -109,6 +129,13 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch1->ShowWindow(SW_SHOW);
 	newAnalogwatch1->Initialize();
 	newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	AnalogWatch::ClockData* clockData1 = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	newAnalogwatch1->clockData = clockData1;
+
 	subAnalogWatchVector.push_back(newAnalogwatch1);
 
 	AnalogWatch* newAnalogwatch2 = new AnalogWatch(currentTheme, this);
@@ -117,6 +144,13 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch2->ShowWindow(SW_SHOW);
 	newAnalogwatch2->Initialize();
 	newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	AnalogWatch::ClockData* clockData2 = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	newAnalogwatch2->clockData = clockData2;
+
 	subAnalogWatchVector.push_back(newAnalogwatch2);
 
 	AnalogWatch* newAnalogwatch3 = new AnalogWatch(currentTheme, this);
@@ -125,6 +159,13 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch3->ShowWindow(SW_SHOW);
 	newAnalogwatch3->Initialize();
 	newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	AnalogWatch::ClockData* clockData3 = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	newAnalogwatch3->clockData = clockData3;
+
 	subAnalogWatchVector.push_back(newAnalogwatch3);
 
 	AnalogWatch* newAnalogwatch4 = new AnalogWatch(currentTheme, this);
@@ -132,6 +173,13 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch4->MoveWindow(500, 270, 150, 150 + 40 + 40);
 	newAnalogwatch4->ShowWindow(SW_SHOW);
 	newAnalogwatch4->Initialize();
+	AnalogWatch::ClockData* clockData4 = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	newAnalogwatch4->clockData = clockData4;
+
 	subAnalogWatchVector.push_back(newAnalogwatch4);
 
 	AnalogWatch* newAnalogwatch5 = new AnalogWatch(currentTheme, this);
@@ -139,6 +187,13 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch5->MoveWindow(700, 270, 150, 150 + 40 + 40);
 	newAnalogwatch5->ShowWindow(SW_SHOW);
 	newAnalogwatch5->Initialize();
+	AnalogWatch::ClockData* clockData5 = new AnalogWatch::ClockData;
+	clockData->dErrorMainGMPValue = 9;
+	clockData->dErrorSubGMPValue = 9;
+	clockData->strWorldName = _T("대한민국 ");
+	clockData->strCityName = _T(" 서울");
+	newAnalogwatch5->clockData = clockData5;
+
 	subAnalogWatchVector.push_back(newAnalogwatch5);
 
 	analogwatch->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -153,21 +208,65 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch3->worldsearchlist->BringWindowToTop();
 	newAnalogwatch4->worldsearchlist->BringWindowToTop();
 	newAnalogwatch5->worldsearchlist->BringWindowToTop();
+	TRACE(L"time : %s\n", GetCurTime(9));
+	bCurTimeThread = true;
+	m_curtimeThread = AfxBeginThread(thrStartWorldClock, this);
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-//
-//WorldClockList* WorldClock::GetClockInstance() const
-//{
-//	return worldclocklist;
-//}
-//
-//WorldSearchList* WorldClock::GetSearchInstance() const
-//{
-//	return worldsearchlist;
-//}
+
+CString WorldClock::GetCurTime(double dErrorSubTimeValue)
+{
+	SYSTEMTIME cur_time;
+	GetSystemTime(&cur_time);
+	CTime cTime(cur_time);
+
+	int hour = int(dErrorSubTimeValue);
+	int minute = int((dErrorSubTimeValue - hour) * 60);
+
+	int nTimeHour = cTime.GetHour() + hour;
+	if (nTimeHour >= 24)
+	{
+		nTimeHour -= 24;
+	}
+	int nTimeMinute = cTime.GetMinute() - minute;
+	int nTimeSecond = cTime.GetSecond();
+	CString strTimeFormat;
+	strTimeFormat.Format(_T("%02d:%02d:%02d"), nTimeHour, nTimeMinute, nTimeSecond);
+
+	return strTimeFormat;
+}
+
+UINT WorldClock::thrStartWorldClock(LPVOID method)
+{
+	WorldClock* worldclock = (WorldClock*)method;
+	worldclock->StartWorldClock();
+
+	return 0;
+}
+
+void WorldClock::StartWorldClock()
+{
+	while (bCurTimeThread)
+	{
+		clock_t start, finish;
+		double duration;
+
+		start = clock();
+		
+		analogwatch->InvalidClockRect();
+		for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+		{
+			subAnalogWatchVector.at(i)->InvalidClockRect();
+		}
+		finish = clock();
+		duration = (double)(finish - start) / CLOCKS_PER_SEC;
+		Sleep((1000 - (duration * 1000) <= 0) ? DWORD(0) : DWORD(1000 - (duration * 1000)));
+	}
+}
+
 
 void WorldClock::OnOK()
 {

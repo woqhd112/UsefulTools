@@ -24,6 +24,7 @@ public:
 private:
 
 	//friend class WorldClockList;
+	friend class AnalogWatch;
 
 	enum GreenWichWorldClockData
 	{

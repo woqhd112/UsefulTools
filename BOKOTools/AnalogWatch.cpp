@@ -16,10 +16,22 @@ AnalogWatch::AnalogWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	bMainClock = false;
 }
 
 AnalogWatch::~AnalogWatch()
 {
+	if (worldsearchlist)
+	{
+		delete worldsearchlist;
+		worldsearchlist = nullptr;
+	}
+
+	if (clockData)
+	{
+		delete clockData;
+		clockData = nullptr;
+	}
 }
 
 void AnalogWatch::DoDataExchange(CDataExchange* pDX)
@@ -85,27 +97,11 @@ void AnalogWatch::Initialize()
 	worldsearchlist->MoveWindow(dynamicSearchRect);
 	worldsearchlist->ShowWindow(SW_HIDE);
 
-
-	bCurTimeThread = true;
-	m_curtimeThread = AfxBeginThread(thrStartAnalogClock, this);
 }
 
-UINT AnalogWatch::thrStartAnalogClock(LPVOID method)
+void AnalogWatch::InvalidClockRect()
 {
-	AnalogWatch* analog = (AnalogWatch*)method;
-	analog->StartAnalogClock();
-
-	return 0;
-}
-
-void AnalogWatch::StartAnalogClock()
-{
-	while (bCurTimeThread)
-	{
-		InvalidateRect(watchRect);
-
-		Sleep(1000);
-	}
+	InvalidateRect(watchRect);
 }
 
 
@@ -239,21 +235,9 @@ void AnalogWatch::DrawTime(CDC& memDC)
 	// 중심 점 그리기
 	memDC.Ellipse(cpt.x - size, cpt.y - size, cpt.x + size, cpt.y + size);
 
-	//CTime time = CTime::GetCurrentTime();
 
-	// UTC 시간 구하기
-	//SYSTEMTIME utctime;
+	//CTime curTime = CTime::GetCurrentTime();
 	CTime curTime = CTime::GetCurrentTime();
-	//::GetSystemTime(&utctime);
-
-	//// UTC 시간을 struct tm 변환
-	//struct tm timespan;
-	//SystemTime2StructTM(&utctime, &timespan);
-	//// 로컬 시간 구하기
-	//timespan.tm_hour += static_cast<int>(m_utc);
-	//mktime(&timespan);
-	//// 로컬 시간을 SYSTEMTIME 으로 변환
-	//StructTM2SystemTime(&timespan, &utctime);
 
 	double radius = watchRect.Width() / 2;
 
@@ -380,7 +364,16 @@ void AnalogWatch::OnBnClickedButtonAnalogSubmit()
 	{
 		//
 		CString strSuccessName;
+		CString strWorldName, strCityName;
+		AfxExtractSubString(strWorldName, strSuccessName, 0, '-');
+		AfxExtractSubString(strCityName, strSuccessName, 1, '-');
+
 		m_edit_analog_search.GetWindowTextW(strSuccessName);
 		m_stt_analog_date.SetWindowTextW(strSuccessName);
+		double dGMPValue = worldsearchlist->GetGMPCalcValue(worldsearchlist->GetWorldClockData(strSuccessName));
+		if (bMainClock) clockData->dErrorMainGMPValue = dGMPValue;
+		clockData->dErrorSubGMPValue = dGMPValue;
+		clockData->strWorldName = strWorldName;
+		clockData->strCityName = strCityName;
 	}
 }
