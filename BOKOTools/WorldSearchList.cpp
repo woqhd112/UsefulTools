@@ -83,43 +83,68 @@ void WorldSearchList::LoadWorldClockList()
 	worldVector.push_back(GetGreenWichWorldClockData(SOUTHKOREA_SEOUL));
 	worldVector.push_back(GetGreenWichWorldClockData(DENMARK_COPENHAGEN));
 	worldVector.push_back(GetGreenWichWorldClockData(GERMANY_BERLIN));
+	worldVector.push_back(GetGreenWichWorldClockData(GERMANY_MUNICH));
 	worldVector.push_back(GetGreenWichWorldClockData(LATVIA_RIGA));
 	worldVector.push_back(GetGreenWichWorldClockData(RUSIA_MOSKVA));
 	worldVector.push_back(GetGreenWichWorldClockData(LUXEMBOURG_LUXEMBOURG));
 	worldVector.push_back(GetGreenWichWorldClockData(LITHUANIA_VILNIUS));
 	worldVector.push_back(GetGreenWichWorldClockData(MEXICO_MEXICOCITY));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_ATLANTA));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_NEWYORK));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_LASVEGAS));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_LOSANGELES));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_MIAMI));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_VIRGINIA));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_SANFRANCISCO));
+	worldVector.push_back(GetGreenWichWorldClockData(USA_SEATTLE));
 	worldVector.push_back(GetGreenWichWorldClockData(USA_WASHINGTONDC));
 	worldVector.push_back(GetGreenWichWorldClockData(NORTHKOREA_PYONGYANG));
 	worldVector.push_back(GetGreenWichWorldClockData(BRAZIL_BRASILIA));
+	worldVector.push_back(GetGreenWichWorldClockData(BRAZIL_SAOPAULO));
 	worldVector.push_back(GetGreenWichWorldClockData(BELGIUM_BRUSSELS));
 	worldVector.push_back(GetGreenWichWorldClockData(SWEDEN_STOCKHOLM));
 	worldVector.push_back(GetGreenWichWorldClockData(SWISS_BERN));
+	worldVector.push_back(GetGreenWichWorldClockData(SWISS_ZURICH));
+	worldVector.push_back(GetGreenWichWorldClockData(SPAIN_BARCELONA));
 	worldVector.push_back(GetGreenWichWorldClockData(SPAIN_MADRID));
 	worldVector.push_back(GetGreenWichWorldClockData(SLOVAKIA_BRATISLAVA));
 	worldVector.push_back(GetGreenWichWorldClockData(SLOVENIA_LJUBLJANA));
+	worldVector.push_back(GetGreenWichWorldClockData(UAE_DUBAI));
 	worldVector.push_back(GetGreenWichWorldClockData(ISLAND_REYKJAVIK));
 	worldVector.push_back(GetGreenWichWorldClockData(IRELAND_DUBLIN));
+	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_GREENWICH));
 	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_LONDON));
+	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_LIVERPOOL));
+	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_MANCHESTER));
+	worldVector.push_back(GetGreenWichWorldClockData(ENGLAND_OXFORD));
 	worldVector.push_back(GetGreenWichWorldClockData(ESTONIA_TALLINN));
 	worldVector.push_back(GetGreenWichWorldClockData(AUSTRIA_WIEN));
 	worldVector.push_back(GetGreenWichWorldClockData(ISRAEL_JERUSALEM));
+	worldVector.push_back(GetGreenWichWorldClockData(ITALIA_NEAPOLITAN));
 	worldVector.push_back(GetGreenWichWorldClockData(ITALY_ROME));
+	worldVector.push_back(GetGreenWichWorldClockData(ITALIA_MILAN));
+	worldVector.push_back(GetGreenWichWorldClockData(ITALIA_VENETIAN));
+	worldVector.push_back(GetGreenWichWorldClockData(ITALIA_PISA));
 	worldVector.push_back(GetGreenWichWorldClockData(INDIA_NEWDELHI));
 	worldVector.push_back(GetGreenWichWorldClockData(INDONESIA_JAKARTA));
 	worldVector.push_back(GetGreenWichWorldClockData(JAPAN_TOKYO));
 	worldVector.push_back(GetGreenWichWorldClockData(CHINA_BEIJING));
 	worldVector.push_back(GetGreenWichWorldClockData(CZECH_PRAGUE));
 	worldVector.push_back(GetGreenWichWorldClockData(CHILE_SANTIAGO));
+	worldVector.push_back(GetGreenWichWorldClockData(CANADA_VANCOUVER));
 	worldVector.push_back(GetGreenWichWorldClockData(CANADA_OTTAWA));
+	worldVector.push_back(GetGreenWichWorldClockData(CANADA_TORONTO));
 	worldVector.push_back(GetGreenWichWorldClockData(COSTARICA_SANJOSE));
 	worldVector.push_back(GetGreenWichWorldClockData(COLUMBIA_SANTAFEDEBOGOTA));
 	worldVector.push_back(GetGreenWichWorldClockData(TURKEY_ANKARA));
 	worldVector.push_back(GetGreenWichWorldClockData(PORTUGAL_LISBON));
 	worldVector.push_back(GetGreenWichWorldClockData(POLAND_WARSZAWA));
+	worldVector.push_back(GetGreenWichWorldClockData(FRANCE_MARSEILLE));
 	worldVector.push_back(GetGreenWichWorldClockData(FRANCE_PARIS));
 	worldVector.push_back(GetGreenWichWorldClockData(FINLAND_HELSINKI));
 	worldVector.push_back(GetGreenWichWorldClockData(PHILIPPINES_MANILA));
 	worldVector.push_back(GetGreenWichWorldClockData(HUNGARY_BUDAPEST));
+	worldVector.push_back(GetGreenWichWorldClockData(AUSTRALIA_SYDNEY));
 	worldVector.push_back(GetGreenWichWorldClockData(AUSTRALIA_CANBERRA));
 }
 
@@ -135,7 +160,7 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
 	csi.nAllPageSize = 0;
 	csi.nKindOfScrollFlags = SB_VERT;
-	csi.nOnePageSize = buttonRect.Height();
+	csi.nOnePageSize = nSearchButtonHeight + 2;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = nSearchButtonHeight + 2;
 	csi.bLikeButtonEvent = false;
@@ -169,7 +194,7 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	}
 	SetApsorptionToButtonPos();
 
-	for (int i = 0; i < ((int)allDataButtonVector.size() - 1) / 3 + 1; i++)
+	for (int i = 0; i < ((int)allDataButtonVector.size() - 1); i++)
 	{
 		scroll.LineEnd();
 	}

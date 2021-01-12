@@ -8,6 +8,7 @@
 #include "WorldSearchList.h"
 
 // AnalogWatch 대화 상자
+class WorldClock;
 
 class AnalogWatch : public CDialogEx
 {
@@ -31,6 +32,7 @@ private:
 	COLORREF bkBorderColor;
 
 	CWnd* pParent;
+	WorldClock* worldclock;
 	ThemeData* currentTheme;
 	WorldSearchList* worldsearchlist;
 
@@ -41,7 +43,7 @@ private:
 	CalculateButton m_btn_analog_submit;
 	CalculateEdit m_edit_analog_search;
 
-	bool bMainClock;
+	int nClockIdx;
 
 	enum TIME_ { TIME_SEC, TIME_MIN, TIME_HOUR };
 
@@ -74,11 +76,18 @@ private:
 	};
 
 	ClockData* clockData;
+	CPoint cpt;
 	bool m_bInitSuccess;
+
+	CRgn hourLine;
+	CRgn minuteLine;
+	CRgn secondLine;
+	CPoint point[4];
 
 	CPoint GetRotatedPos(const CPoint& anchorPt, double radius, double deg) const;
 	void DrawTime(CDC& memDC);
 	CPoint GetClockHandPos(AnalogWatch::TIME_ TIME, const CTime& time, const CPoint& anchorPt, double radius);
+	void DrawClockData(CDC& memDC, CPoint selectPoint, const double selectWidth);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

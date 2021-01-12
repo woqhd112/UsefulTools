@@ -31,6 +31,8 @@ protected:
 
 private:
 
+	friend class AnalogWatch;
+
 	CalculateButton m_btn_search;
 	CalculateEdit m_edit_search;
 	CalculateStatic m_stt_result_view;
@@ -40,6 +42,8 @@ private:
 
 	AnalogWatch* analogwatch;
 	std::vector<AnalogWatch*> subAnalogWatchVector;
+
+	bool bWillModify;
 
 	CWinThread* m_curtimeThread;
 	bool bCurTimeThread;

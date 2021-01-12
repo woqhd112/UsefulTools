@@ -17,6 +17,7 @@ WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	bWillModify = false;
 }
 
 WorldClock::~WorldClock()
@@ -119,7 +120,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	analogwatch->Initialize(clockData);
-	analogwatch->bMainClock = true;
+	analogwatch->nClockIdx = 0;
 
 	AnalogWatch* newAnalogwatch1 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCh, this);
@@ -130,6 +131,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData1->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData1->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	newAnalogwatch1->Initialize(clockData1);
+	newAnalogwatch1->nClockIdx = 1;
 	newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	subAnalogWatchVector.push_back(newAnalogwatch1);
 
@@ -142,6 +144,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData2->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData2->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	newAnalogwatch2->Initialize(clockData2);
+	newAnalogwatch2->nClockIdx = 2;
 	newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	subAnalogWatchVector.push_back(newAnalogwatch2);
 
@@ -154,6 +157,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData3->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData3->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	newAnalogwatch3->Initialize(clockData3);
+	newAnalogwatch3->nClockIdx = 3;
 	newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	subAnalogWatchVector.push_back(newAnalogwatch3);
 
@@ -166,6 +170,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData4->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData4->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	newAnalogwatch4->Initialize(clockData4);
+	newAnalogwatch4->nClockIdx = 4;
 	subAnalogWatchVector.push_back(newAnalogwatch4);
 
 	AnalogWatch* newAnalogwatch5 = new AnalogWatch(currentTheme, this);
@@ -177,6 +182,7 @@ BOOL WorldClock::OnInitDialog()
 	clockData5->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 	clockData5->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
 	newAnalogwatch5->Initialize(clockData5);
+	newAnalogwatch5->nClockIdx = 5;
 	subAnalogWatchVector.push_back(newAnalogwatch5);
 
 	analogwatch->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -249,14 +255,19 @@ void WorldClock::StartWorldClock()
 		double duration;
 
 		start = clock();
-		FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(analogwatch->clockData->subGWCD)), analogwatch->clockData);
-		analogwatch->InvalidClockRect(analogwatch->clockData);
-		for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+
+		if (!bWillModify)
 		{
-			AnalogWatch::ClockData* clock = subAnalogWatchVector.at(i)->clockData;
-			FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
-			subAnalogWatchVector.at(i)->InvalidClockRect(clock);
+			FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(analogwatch->clockData->subGWCD)), analogwatch->clockData);
+			analogwatch->InvalidClockRect(analogwatch->clockData);
+			for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+			{
+				AnalogWatch::ClockData* clock = subAnalogWatchVector.at(i)->clockData;
+				FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
+				subAnalogWatchVector.at(i)->InvalidClockRect(clock);
+			}
 		}
+
 		finish = clock();
 		duration = (double)(finish - start) / CLOCKS_PER_SEC;
 
@@ -296,24 +307,18 @@ BOOL WorldClock::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	// 에딧 마우스 좌클릭시 worldsearchlist sw_show 처리 (현재 edit 텍스트값 뽑아서 SearchClockListFromInputText() 함수 호출)
-	/*if (pMsg->message == WM_LBUTTONUP)
+	if (pMsg->message == WM_LBUTTONUP)
 	{
 		if (pMsg->hwnd == this->m_hWnd)
 		{
-			worldsearchlist->ShowWindow(SW_HIDE);
-		}
-		else if (pMsg->hwnd == m_edit_search.m_hWnd)
-		{
-			CString strSearchText;
-			m_edit_search.GetWindowTextW(strSearchText);
-
-			if (worldsearchlist->SearchClockListFromInputText(strSearchText))
+			analogwatch->worldsearchlist->ShowWindow(SW_HIDE);
+			for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
 			{
-				worldsearchlist->ShowWindow(SW_SHOW);
+				subAnalogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);
 			}
-			m_edit_search.SetFocus();
+			bWillModify = false;
 		}
-	}*/
+	}
 
 
 	return CDialogEx::PreTranslateMessage(pMsg);

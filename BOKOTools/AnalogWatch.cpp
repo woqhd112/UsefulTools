@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "AnalogWatch.h"
+#include "WorldClock.h"
 #include "afxdialogex.h"
 
 
@@ -16,7 +17,7 @@ AnalogWatch::AnalogWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
-	bMainClock = false;
+	nClockIdx = 0;
 	m_bInitSuccess = false;
 }
 
@@ -72,6 +73,7 @@ BOOL AnalogWatch::OnInitDialog()
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	
+	worldclock = (WorldClock*)pParent;
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -81,6 +83,7 @@ void AnalogWatch::Initialize(ClockData* clockData)
 {
 	this->GetWindowRect(thisRect);
 	watchRect = { 0, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 };
+	cpt = watchRect.CenterPoint();
 
 	m_stt_analog_worldname.Initialize(25, _T("godoMaum"));
 	m_stt_analog_worldname.MoveWindow(0, 0, thisRect.Width(), 30);
@@ -130,10 +133,34 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == this->m_hWnd)
 		{
-			worldsearchlist->ShowWindow(SW_HIDE);
+			worldclock->analogwatch->worldsearchlist->ShowWindow(SW_HIDE);
+			for (int i = 0; i < (int)worldclock->subAnalogWatchVector.size(); i++)
+			{
+				worldclock->subAnalogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);;
+			}
+
+			CRect changeRect = watchRect;
+			ClientToScreen(changeRect);
+			if (nClockIdx == 0)
+			{
+				if (PtInRect(changeRect, pMsg->pt))
+				{
+					worldclock->bWillModify = true;
+					InvalidateRect(watchRect);
+				}
+				else
+				{
+					worldclock->bWillModify = false;
+				}
+			}
+			else
+			{
+				worldclock->bWillModify = false;
+			}
 		}
 		else if (pMsg->hwnd == m_edit_analog_search.m_hWnd)
 		{
+			worldclock->bWillModify = false;
 			CString strSearchText;
 			m_edit_analog_search.GetWindowTextW(strSearchText);
 
@@ -143,6 +170,10 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 			}
 			m_edit_analog_search.SetFocus();
 		}
+	}
+	else if (pMsg->message == WM_LBUTTONDOWN)
+	{
+
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -155,7 +186,19 @@ void AnalogWatch::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	CPen ellipsePen(PS_SOLID, 2, currentTheme->GetRectBorderColor());
+	int nBorderSize = 0;
+	COLORREF borderColor;
+	if (worldclock->bWillModify)
+	{
+		nBorderSize = 4;
+		borderColor = RGB(43, 220, 240);
+	}
+	else
+	{
+		nBorderSize = 2;
+		borderColor = currentTheme->GetRectBorderColor();
+	}
+	CPen ellipsePen(PS_SOLID, nBorderSize, borderColor);
 	CPen *pOldPen = dc.SelectObject(&ellipsePen);
 
 	dc.Ellipse(&watchRect);
@@ -229,7 +272,6 @@ void AnalogWatch::OnPaint()
 
 void AnalogWatch::DrawTime(CDC& memDC)
 {
-	CPoint cpt = watchRect.CenterPoint();
 	int size = watchRect.Width() / WATCH_CENTERSIZE;
 
 	// 중심 점 그리기
@@ -258,28 +300,67 @@ void AnalogWatch::DrawTime(CDC& memDC)
 	CPoint hourpt = GetClockHandPos(TIME_HOUR, curTime, cpt, radius*WATCH_HOURLENGTH);
 
 	// 초,분,시침 그리기
-	CPen hourpen(PS_SOLID, (int)(watchRect.Width() / WATCH_HOURWIDTH), RGB(0, 0, 0));
-	CPen* pOldPen = memDC.SelectObject(&hourpen);
-	memDC.MoveTo(cpt.x, cpt.y);
-	memDC.LineTo(cpt.x + hourpt.x, cpt.y - hourpt.y);
-
-	CPen minpen(PS_SOLID, (int)(watchRect.Width() / WATCH_MINWIDTH), RGB(0, 0, 0));
-	memDC.SelectObject(&minpen);
-	memDC.MoveTo(cpt.x, cpt.y);
-	memDC.LineTo(cpt.x + minpt.x, cpt.y - minpt.y);
-
-	CPen secpen(PS_SOLID, int(watchRect.Width() / WATCH_SECWIDTH), RGB(0, 0, 0));
-	memDC.SelectObject(&secpen);
-	memDC.MoveTo(cpt.x, cpt.y);
-	memDC.LineTo(cpt.x + secpt.x, cpt.y - secpt.y);
-
-	memDC.SelectObject(pOldPen);
-
-	hourpen.DeleteObject();
-	minpen.DeleteObject();
-	secpen.DeleteObject();
+	DrawClockData(memDC, hourpt, WATCH_HOURWIDTH);
+	DrawClockData(memDC, minpt, WATCH_MINWIDTH);
+	DrawClockData(memDC, secpt, WATCH_SECWIDTH);
 }
 
+void AnalogWatch::DrawClockData(CDC& memDC, CPoint selectPoint, const double selectWidth)
+{
+	CPen pen(PS_SOLID, (int)(watchRect.Width() / selectWidth), RGB(0, 0, 0));
+	CPen* pOldPen = memDC.SelectObject(&pen);
+	memDC.MoveTo(cpt.x, cpt.y);
+	memDC.LineTo(cpt.x + selectPoint.x, cpt.y - selectPoint.y);
+	
+	int x = cpt.x;
+	int y = cpt.y;
+	int w = selectPoint.x;
+	int h = selectPoint.y;
+
+	double angle;
+	double theta = w ? atan(double(h) / double(w)) : sin(h) * PI / 2.;
+	if (theta < 0)
+	{
+		theta = theta + 2 * PI;
+	}
+	angle = (theta + PI / 2.);
+	int dx = int(4 * cos(angle));
+	int dy = int(4 * sin(angle));
+
+	point[0] = CPoint(x + dx, y + dy);
+	point[1] = CPoint(x - dx, y - dy);
+	point[2] = CPoint(x + w - dx, y + h - dy);
+	point[3] = CPoint(x + w + dx, y + h + dy);
+
+	CPen pens(PS_SOLID, 1, RGB(100, 0, 0));
+	memDC.SelectObject(&pens);
+	memDC.MoveTo(point[0].x, point[0].y);
+	memDC.LineTo(point[1].x, point[1].y);
+	memDC.MoveTo(point[1].x, point[1].y);
+	memDC.LineTo(point[2].x, point[2].y);
+	memDC.MoveTo(point[2].x, point[2].y);
+	memDC.LineTo(point[3].x, point[3].y);
+	memDC.MoveTo(point[3].x, point[3].y);
+	memDC.LineTo(point[0].x, point[0].y);
+	if (selectWidth == WATCH_HOURWIDTH)
+	{
+		hourLine.DeleteObject();
+		hourLine.CreatePolygonRgn(point, 4, WINDING);
+	}
+	else if (selectWidth == WATCH_MINWIDTH)
+	{
+		minuteLine.DeleteObject();
+		minuteLine.CreatePolygonRgn(point, 4, WINDING);
+	}
+	else if (selectWidth == WATCH_SECWIDTH)
+	{
+		secondLine.DeleteObject();
+		secondLine.CreatePolygonRgn(point, 4, WINDING);
+	}
+	memDC.SelectObject(pOldPen);
+
+	pen.DeleteObject();
+}
 
 CPoint AnalogWatch::GetClockHandPos(AnalogWatch::TIME_ TIME, const CTime& time, const CPoint& anchorPt, double radius)
 {
@@ -379,13 +460,19 @@ void AnalogWatch::OnBnClickedButtonAnalogSubmit()
 	if (MessageBox(_T("선택한 국가로 등록 하시겠습니까?"), _T("추가"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 	{
 		CString strSuccessName;
-
 		m_edit_analog_search.GetWindowTextW(strSuccessName);
-		m_stt_analog_worldname.SetWindowTextW(strSuccessName);
 		WorldSearchList::GreenWichWorldClockData dGMPValue = worldsearchlist->GetWorldClockData(strSuccessName);
-		if (bMainClock) clockData->mainGWCD = dGMPValue;
-		clockData->subGWCD = dGMPValue;
-		clockData->strWorldCityName = strSuccessName;
-		m_edit_analog_search.SetWindowTextW(_T(""));
+		if (dGMPValue != WorldSearchList::GreenWichWorldClockData::WORLD_CLOCK_NONE)
+		{
+			m_stt_analog_worldname.SetWindowTextW(strSuccessName);
+			if (nClockIdx == 0) clockData->mainGWCD = dGMPValue;
+			clockData->subGWCD = dGMPValue;
+			clockData->strWorldCityName = strSuccessName;
+			m_edit_analog_search.SetWindowTextW(_T(""));
+		}
+		else
+		{
+			MessageBox(_T("해당 국가가 존재하지 않습니다."));
+		}
 	}
 }

@@ -47,6 +47,7 @@ private:
 		BRAZIL_SAOPAULO = -3003,
 		CHILE_SANTIAGO = -3002,
 		BRAZIL_BRASILIA = -3001,
+		WORLD_CLOCK_NONE = 0,
 		ENGLAND_LONDON = 1,
 		ISLAND_REYKJAVIK = 2,
 		PORTUGAL_LISBON = 3,
@@ -187,7 +188,7 @@ private:
 
 	inline GreenWichWorldClockData GetWorldClockData(CString strWorldName)
 	{
-		GreenWichWorldClockData cwcd = SOUTHKOREA_SEOUL;
+		GreenWichWorldClockData cwcd = WORLD_CLOCK_NONE;
 
 		if (strWorldName == _T("인도 - 뉴델리")) cwcd = INDIA_NEWDELHI;
 		else if (strWorldName == _T("중국 - 베이징")) cwcd = CHINA_BEIJING;
