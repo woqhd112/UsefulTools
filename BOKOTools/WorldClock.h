@@ -3,6 +3,8 @@
 #include "WorldClockList.h"
 #include "WorldSearchList.h"
 #include "AnalogWatch.h"
+#include "CMarkup/Markup.h"
+#include "CXml\Xml.h"
 
 // WorldClock 대화 상자
 
@@ -40,8 +42,8 @@ private:
 	CBrush m_backBrush;
 	CRect dynamicSearchRect;
 
-	AnalogWatch* analogwatch;
-	std::vector<AnalogWatch*> subAnalogWatchVector;
+	//AnalogWatch* analogwatch;
+	std::vector<AnalogWatch*> analogWatchVector;
 
 	bool bWillModify;
 
@@ -52,6 +54,12 @@ private:
 	void FormatClockData(CString strInputTime, AnalogWatch::ClockData* inputTime);
 
 	CString GetCurTime(double dErrorSubTimeValue);
+
+	void LoadWorldClockData();
+	void CreateConfigClockFile(CString& strFullPath);
+	bool CreateDefaultClockXml(CMarkup* markUp, CString strFilePath);
+	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
+	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 
 public:
 

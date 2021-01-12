@@ -706,6 +706,7 @@
 #define IDC_BUTTON_THEME_NEONSIGN       1304
 #define IDC_STATIC_ANALOG_DATE          1305
 #define IDC_EDIT_ANALOG_SEARCH          1306
+#define IDC_EDIT_DIGITAL_CLOCK          1307
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -727,7 +728,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        618
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1307
+#define _APS_NEXT_CONTROL_VALUE         1308
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

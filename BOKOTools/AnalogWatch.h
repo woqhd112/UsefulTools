@@ -37,11 +37,13 @@ private:
 	WorldSearchList* worldsearchlist;
 
 	CBrush m_backBrush;
+	CBrush m_digitalBrush;
 	CRect thisRect, watchRect;
 	CalculateStatic m_stt_analog_date;
 	CalculateStatic m_stt_analog_worldname;
 	CalculateButton m_btn_analog_submit;
 	CalculateEdit m_edit_analog_search;
+	CalculateEdit m_edit_digital_clock;
 
 	int nClockIdx;
 
@@ -96,6 +98,7 @@ protected:
 public:
 
 	void Initialize(ClockData* clockData);
+	void SetClockPriority(int nPriority);
 	void InvalidClockRect(ClockData* clockData);
 
 	virtual BOOL OnInitDialog();

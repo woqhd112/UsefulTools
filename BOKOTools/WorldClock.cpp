@@ -34,19 +34,19 @@ WorldClock::~WorldClock()
 		worldsearchlist = nullptr;
 	}*/
 
-	if (analogwatch)
+	/*if (analogwatch)
 	{
 		delete analogwatch;
 		analogwatch = nullptr;
-	}
+	}*/
 
-	for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+	for (int i = 0; i < (int)analogWatchVector.size(); i++)
 	{
-		AnalogWatch* deleteWatch = subAnalogWatchVector.at(i);
+		AnalogWatch* deleteWatch = analogWatchVector.at(i);
 		delete deleteWatch;
 		deleteWatch = nullptr;
 	}
-	subAnalogWatchVector.clear();
+	analogWatchVector.clear();
 
 	if (bCurTimeThread)
 	{
@@ -84,13 +84,8 @@ END_MESSAGE_MAP()
 //1. 메인시계는 시간값 변경가능
 //2. 서브시계들은 메인시계의 시간값에따라 gmp값을 추가하여 설정
 //3. 메인시계는 로컬타임 동기화버튼 지원함
-//4. 아날로그시게의 static은 국가명 - 도시명 \r\n 년월일 출력
-//5. 아날로그시계 가운데에 am\pm 추가
-
-
-//8. analogwatch 객체에는 시간값 데이터만 갱신시키고 스레드는 수행하지않음.
 //9. xml값은 설정한 시계데이터 저장
-//10. 적용버튼 클릭시 해당 시계의 전 데이터를 찾아 변경한 데이터로 수정
+//10. 적용버튼 클릭시 해당 시계의 전 데이터를 찾아 변경한 데이터로 수정 (xml 저장은 아직안됨)
 
 BOOL WorldClock::OnInitDialog()
 {
@@ -111,87 +106,53 @@ BOOL WorldClock::OnInitDialog()
 	m_stt_result_view.ShowWindow(SW_HIDE);
 
 
-	analogwatch = new AnalogWatch(currentTheme, this);
-	analogwatch->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	analogwatch->MoveWindow(50, 75, 200, 200 + 40 + 40 + 40);
-	analogwatch->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData = new AnalogWatch::ClockData;
-	clockData->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	analogwatch->Initialize(clockData);
-	analogwatch->nClockIdx = 0;
+
+	AnalogWatch* newAnalogwatch0 = new AnalogWatch(currentTheme, this);
+	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCh, this);
+	newAnalogwatch0->MoveWindow(50, 75, 200, 200 + 40 + 40 + 40);
+	newAnalogwatch0->ShowWindow(SW_SHOW);
+	analogWatchVector.push_back(newAnalogwatch0);
 
 	AnalogWatch* newAnalogwatch1 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCh, this);
 	newAnalogwatch1->MoveWindow(400, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch1->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData1 = new AnalogWatch::ClockData;
-	clockData1->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData1->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData1->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	newAnalogwatch1->Initialize(clockData1);
-	newAnalogwatch1->nClockIdx = 1;
-	newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	subAnalogWatchVector.push_back(newAnalogwatch1);
+	analogWatchVector.push_back(newAnalogwatch1);
 
 	AnalogWatch* newAnalogwatch2 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch2->Create(IDD_DIALOG_ANALOG_WATCh, this);
 	newAnalogwatch2->MoveWindow(600, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch2->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData2 = new AnalogWatch::ClockData;
-	clockData2->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData2->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData2->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	newAnalogwatch2->Initialize(clockData2);
-	newAnalogwatch2->nClockIdx = 2;
-	newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	subAnalogWatchVector.push_back(newAnalogwatch2);
+	analogWatchVector.push_back(newAnalogwatch2);
 
 	AnalogWatch* newAnalogwatch3 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch3->Create(IDD_DIALOG_ANALOG_WATCh, this);
 	newAnalogwatch3->MoveWindow(800, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch3->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData3 = new AnalogWatch::ClockData;
-	clockData3->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData3->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData3->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	newAnalogwatch3->Initialize(clockData3);
-	newAnalogwatch3->nClockIdx = 3;
-	newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	subAnalogWatchVector.push_back(newAnalogwatch3);
+	analogWatchVector.push_back(newAnalogwatch3);
 
 	AnalogWatch* newAnalogwatch4 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch4->Create(IDD_DIALOG_ANALOG_WATCh, this);
 	newAnalogwatch4->MoveWindow(500, 270 + 30, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch4->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData4 = new AnalogWatch::ClockData;
-	clockData4->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData4->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData4->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	newAnalogwatch4->Initialize(clockData4);
-	newAnalogwatch4->nClockIdx = 4;
-	subAnalogWatchVector.push_back(newAnalogwatch4);
+	analogWatchVector.push_back(newAnalogwatch4);
 
 	AnalogWatch* newAnalogwatch5 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch5->Create(IDD_DIALOG_ANALOG_WATCh, this);
 	newAnalogwatch5->MoveWindow(700, 270 + 30, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch5->ShowWindow(SW_SHOW);
-	AnalogWatch::ClockData* clockData5 = new AnalogWatch::ClockData;
-	clockData5->mainGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData5->subGWCD = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
-	clockData5->strWorldCityName = analogwatch->worldsearchlist->GetWorldCityName(clockData->subGWCD);
-	newAnalogwatch5->Initialize(clockData5);
-	newAnalogwatch5->nClockIdx = 5;
-	subAnalogWatchVector.push_back(newAnalogwatch5);
+	analogWatchVector.push_back(newAnalogwatch5);
 
-	analogwatch->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+
+	LoadWorldClockData();
+
+	newAnalogwatch0->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch1->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch2->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch3->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch4->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch5->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	analogwatch->worldsearchlist->BringWindowToTop();
+	newAnalogwatch0->worldsearchlist->BringWindowToTop();
 	newAnalogwatch1->worldsearchlist->BringWindowToTop();
 	newAnalogwatch2->worldsearchlist->BringWindowToTop();
 	newAnalogwatch3->worldsearchlist->BringWindowToTop();
@@ -205,6 +166,136 @@ BOOL WorldClock::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
+
+void WorldClock::LoadWorldClockData()
+{
+	bool bSavedXml = false;
+	CMarkup markUp;
+
+	CString szRoot = _T("");
+	CreateConfigClockFile(szRoot);
+
+	CString strFullPath = szRoot + _T("\\WorldClock.conf");
+
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Clock"));
+		markUp.IntoElem();
+		int nAnalogIdx = 0;
+		while (markUp.FindElem(_T("data")))
+		{
+			if (nAnalogIdx >= 6) break;
+
+			WorldSearchList::GreenWichWorldClockData thisErrorTimeValue = WorldSearchList::GreenWichWorldClockData(_ttoi(markUp.GetAttrib(_T("mainGWCD"))));
+			WorldSearchList::GreenWichWorldClockData targetErrorTimeValue = WorldSearchList::GreenWichWorldClockData(_ttoi(markUp.GetAttrib(_T("subGWDC"))));
+			CString strWorldName = markUp.GetAttrib(_T("worldcity"));
+			AnalogWatch::ClockData* clockData = new AnalogWatch::ClockData;
+			clockData->mainGWCD = thisErrorTimeValue;
+			clockData->subGWCD = targetErrorTimeValue;
+			clockData->strWorldCityName = strWorldName;
+
+			AnalogWatch* analog = analogWatchVector.at(nAnalogIdx);
+			analog->Initialize(clockData);
+			analog->SetClockPriority(nAnalogIdx);
+			nAnalogIdx++;
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CreateConfigClockFile(szRoot);
+		if (CreateDefaultClockXml(&markUp, szRoot)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			SaveXml(&markUp, strFullPath);
+		}
+	}
+}
+
+
+void WorldClock::CreateConfigClockFile(CString& strFullPath)
+{
+	TCHAR chFilePath[256] = { 0, };
+	GetModuleFileName(NULL, chFilePath, 256);
+	strFullPath = (LPCTSTR)chFilePath;
+	int nLen = strFullPath.ReverseFind('\\');
+
+	if (nLen > 0)
+	{
+		strFullPath = strFullPath.Left(nLen);
+	}
+
+	CFileFind rootFind;
+	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
+		strFullPath += _T("\\BOKOTools");
+	}
+	rootFind.Close();
+
+	CreateDefaultDirectory(strFullPath, _T("\\Config"));
+	CreateDefaultDirectory(strFullPath, _T("\\WorldClock"));
+}
+
+void WorldClock::SaveXml(CMarkup* markup, CString strSaveFullPath)
+{
+	CString strXML = markup->GetDoc();
+
+	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+	JWXml::CXml saveXML;
+	saveXML.LoadXml((LPCTSTR)strXML);
+	saveXML.SaveWithFormatted(strSaveFullPath);
+	saveXML.Close();
+	CoUninitialize();
+}
+
+void WorldClock::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
+{
+	CFileFind findPath;
+	strFullPath += strAppendPath;
+	if (!findPath.FindFile(strFullPath))
+	{
+		CreateDirectory(strFullPath, NULL);
+	}
+	findPath.Close();
+}
+
+bool WorldClock::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\WorldClock.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Clock"));
+		markUp->IntoElem();
+
+		for (int i = 0; i < 6; i++)
+		{
+			markUp->AddElem(_T("data"));
+			markUp->AddAttrib(_T("mainGWCD"), 9002);
+			markUp->AddAttrib(_T("subGWDC"), 9002);
+			markUp->AddAttrib(_T("worldcity"), _T("대한민국 - 서울"));
+
+			WorldSearchList::GreenWichWorldClockData thisErrorTimeValue = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
+			WorldSearchList::GreenWichWorldClockData targetErrorTimeValue = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
+			CString strWorldName = _T("대한민국 - 서울");
+			AnalogWatch::ClockData* clockData = new AnalogWatch::ClockData;
+			clockData->mainGWCD = thisErrorTimeValue;
+			clockData->subGWCD = targetErrorTimeValue;
+			clockData->strWorldCityName = strWorldName;
+
+			AnalogWatch* analog = analogWatchVector.at(i);
+			analog->Initialize(clockData);
+			analog->SetClockPriority(i);
+		}
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
 
 CString WorldClock::GetCurTime(double dErrorSubTimeValue)
 {
@@ -258,13 +349,11 @@ void WorldClock::StartWorldClock()
 
 		if (!bWillModify)
 		{
-			FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(analogwatch->clockData->subGWCD)), analogwatch->clockData);
-			analogwatch->InvalidClockRect(analogwatch->clockData);
-			for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+			for (int i = 0; i < (int)analogWatchVector.size(); i++)
 			{
-				AnalogWatch::ClockData* clock = subAnalogWatchVector.at(i)->clockData;
-				FormatClockData(GetCurTime(analogwatch->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
-				subAnalogWatchVector.at(i)->InvalidClockRect(clock);
+				AnalogWatch::ClockData* clock = analogWatchVector.at(i)->clockData;
+				FormatClockData(GetCurTime(analogWatchVector.at(i)->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
+				analogWatchVector.at(i)->InvalidClockRect(clock);
 			}
 		}
 
@@ -311,10 +400,10 @@ BOOL WorldClock::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == this->m_hWnd)
 		{
-			analogwatch->worldsearchlist->ShowWindow(SW_HIDE);
-			for (int i = 0; i < (int)subAnalogWatchVector.size(); i++)
+			//analogwatch->worldsearchlist->ShowWindow(SW_HIDE);
+			for (int i = 0; i < (int)analogWatchVector.size(); i++)
 			{
-				subAnalogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);
+				analogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);
 			}
 			bWillModify = false;
 		}
