@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CalculateEdit.h"
-#include "WorldClockList.h"
 #include "WorldSearchList.h"
 #include "AnalogWatch.h"
 #include "CMarkup/Markup.h"
@@ -35,16 +34,15 @@ private:
 
 	friend class AnalogWatch;
 
-	CalculateButton m_btn_search;
 	CalculateButton m_btn_worldclock_localtime_sync;
-	CalculateEdit m_edit_search;
-	CalculateStatic m_stt_result_view;
+	CalculateStatic m_stt_clock_offset;
 
 	CBrush m_backBrush;
 	CRect dynamicSearchRect;
 
 	//AnalogWatch* analogwatch;
 	std::vector<AnalogWatch*> analogWatchVector;
+	std::vector<AnalogWatch::ClockData*> clockDataVector;
 
 	bool bWillModify;
 
@@ -61,7 +59,7 @@ private:
 	CString GetCurTime(double dErrorSubTimeValue);
 	void ErrorTimeCalc(AnalogWatch::ClockData* inputTime);
 
-	void LoadWorldClockData();
+	bool LoadWorldClockData();
 	void CreateConfigClockFile(CString& strFullPath);
 	bool CreateDefaultClockXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);

@@ -241,7 +241,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitConverter.h" />
     <ClInclude Include="WorldClock.h" />
-    <ClInclude Include="WorldClockList.h" />
     <ClInclude Include="WorldSearchList.h" />
   </ItemGroup>
   <ItemGroup>
@@ -288,7 +287,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitConverter.cpp" />
     <ClCompile Include="WorldClock.cpp" />
-    <ClCompile Include="WorldClockList.cpp" />
     <ClCompile Include="WorldSearchList.cpp" />
   </ItemGroup>
   <ItemGroup>

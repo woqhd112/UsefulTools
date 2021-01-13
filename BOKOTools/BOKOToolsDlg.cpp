@@ -172,7 +172,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	LoadTheme();
 
-	SetDisableCtlColor();
+	SetDisableCtlColor(currentTheme->GetTextColor());
 
 	bBase = false;
 	bEngineering = false;
@@ -276,11 +276,10 @@ void CBOKOToolsDlg::LoadResourceItem(int nResourceID)
 	}
 }
 
-void CBOKOToolsDlg::SetDisableCtlColor()
+void CBOKOToolsDlg::SetDisableCtlColor(COLORREF setColor)
 {
 	int clrIndex = COLOR_GRAYTEXT;
-	COLORREF clr = currentTheme->GetFunctionTextColor();
-	SetSysColors(1, &clrIndex, &clr);
+	SetSysColors(1, &clrIndex, &setColor);
 }
 
 void CBOKOToolsDlg::ShowCurrentTime()
@@ -1242,6 +1241,7 @@ void CBOKOToolsDlg::ExecuteSelectTheme(ThemeData* selectTheme)
 	scroll.ThemeChange(currentTheme);
 	LoadUserInterface(currentTheme);
 	ChangeBackBrush();
+	SetDisableCtlColor(currentTheme->GetTextColor());
 	Invalidate();
 }
 

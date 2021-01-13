@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
-// BOKOTools.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
+// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+// BOKOTools.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -246,7 +246,6 @@
 #define IDB_PNG3                        479
 #define IDB_PNG_ICON_MOVE_HOVER         479
 #define IDD_DIALOG_NOTEPAD_LIST         481
-#define IDD_DIALOG_WORLD_LIST           484
 #define IDD_DIALOG_SEARCH_LIST          486
 #define IDB_PNG_BASE_NOMAL_THEME_WATERDROP 488
 #define IDB_PNG_BASE_CLICK_THEME_WATERDROP 489
@@ -368,7 +367,7 @@
 #define IDR_TEXT2                       613
 #define IDR_TEXT_FONT_GODOMAUM          613
 #define IDB_PNG_WORLDCLOCK_BK           614
-#define IDD_DIALOG_ANALOG_WATCh         615
+#define IDD_DIALOG_ANALOG_WATCH         615
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -708,6 +707,7 @@
 #define IDC_EDIT_ANALOG_SEARCH          1306
 #define IDC_EDIT_DIGITAL_CLOCK          1307
 #define IDC_BUTTON_WORLDCLOCK_SYNCRONIZE 1308
+#define IDC_STATIC_CLOCK_OFFSET         1309
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -729,7 +729,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        618
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1309
+#define _APS_NEXT_CONTROL_VALUE         1310
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

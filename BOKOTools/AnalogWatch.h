@@ -4,7 +4,6 @@
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
 #include "GeneralUtil.h"
-#include "WorldClockList.h"
 #include "WorldSearchList.h"
 
 // AnalogWatch 대화 상자
@@ -20,7 +19,7 @@ public:
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_ANALOG_WATCh };
+	enum { IDD = IDD_DIALOG_ANALOG_WATCH };
 #endif
 
 private:
@@ -46,6 +45,9 @@ private:
 	CalculateEdit m_edit_digital_clock;
 
 	int nClockIdx;
+	bool bClockDataInit;
+	CString strSaveTime;
+	CString strOffsetTime;
 
 	enum TIME_ { TIME_SEC, TIME_MIN, TIME_HOUR };
 
@@ -58,11 +60,11 @@ private:
 
 	const int WATCH_CENTERSIZE = 40;
 	const double WATCH_SECLENGTH = 0.9;
-	const double WATCH_MINLENGTH = 0.8;
-	const double WATCH_HOURLENGTH = 0.6;
-	const double WATCH_SECWIDTH = 300;
-	const double WATCH_MINWIDTH = 100;
-	const double WATCH_HOURWIDTH = 50;
+	const double WATCH_MINLENGTH = 0.7;
+	const double WATCH_HOURLENGTH = 0.5;
+	const double WATCH_SECWIDTH = 250;
+	const double WATCH_MINWIDTH = 70;
+	const double WATCH_HOURWIDTH = 40;
 
 
 	struct ClockData
@@ -76,6 +78,7 @@ private:
 
 	CTime formatTime;
 	bool bTimeSync;
+	bool bInitWorldSearchList;
 
 	ClockData* clockData;
 	CPoint cpt;

@@ -6,6 +6,7 @@
 #include "AnalogWatch.h"
 #include "WorldClock.h"
 #include "afxdialogex.h"
+#include <math.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -18,27 +19,23 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(AnalogWatch, CDialogEx)
 
 AnalogWatch::AnalogWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOG_ANALOG_WATCh, pParent)
+	: CDialogEx(IDD_DIALOG_ANALOG_WATCH, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	nClockIdx = 0;
 	m_bInitSuccess = false;
 	bTimeSync = false;
+	bInitWorldSearchList = false;
+	bClockDataInit = false;
 }
 
 AnalogWatch::~AnalogWatch()
 {
-	if (worldsearchlist)
+	if (bInitWorldSearchList)
 	{
 		delete worldsearchlist;
 		worldsearchlist = nullptr;
-	}
-
-	if (clockData)
-	{
-		delete clockData;
-		clockData = nullptr;
 	}
 }
 
@@ -78,7 +75,7 @@ BOOL AnalogWatch::OnInitDialog()
 		bkBorderColor = RGB(255, 255, 255);
 
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	m_digitalBrush.CreateSolidBrush(RGB(200, 200, 200));
+	m_digitalBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_edit_digital_clock.LimitText(8);
 	
@@ -101,26 +98,36 @@ void AnalogWatch::Initialize(ClockData* clockData)
 
 	m_edit_analog_search.Initialize(20, _T("godoMaum"));
 	m_edit_analog_search.MoveWindow(0, 30 + 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 40, 30);
-	m_edit_digital_clock.Initialize(20, _T("DS-Digital"));
-	m_edit_digital_clock.MoveWindow((thisRect.Width() - 5) / 2 / 2, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, 20);
-
-	//m_edit_digital_clock.SetWindowPos(&watchRect, (thisRect.Width() - 5) / 2 / 2, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, 20, SW_SHOW);
+	int nDigitalFontSize = 0;
+	int nDigitalFontHeight = 0;
+	if (nClockIdx > 0)
+	{
+		nDigitalFontSize = 15;
+		nDigitalFontHeight = 15;
+	}
+	else
+	{
+		nDigitalFontSize = 20;
+		nDigitalFontHeight = 20;
+	}
+	m_edit_digital_clock.Initialize(nDigitalFontSize, _T("DS-Digital"));
+	m_edit_digital_clock.MoveWindow((thisRect.Width() - 5) / 2 / 2, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, nDigitalFontHeight);
 
 	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_analog_submit.SetTextColor(currentTheme->GetTextColor());
 	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 40 + 10, 30 + 40 + thisRect.Width() - 5 + 10, 30, 30);
 
-	//CRect dynamicSearchRect = { 0, 40 + thisRect.Width() - 5 + 10 + 30 + 10, thisRect.Width() - 5 - 40, 40 + thisRect.Width() - 5 + 10 + 30 + 10 + 135 };
 	CRect dynamicSearchRect = { 0, 30 + 40 + thisRect.Width() - 5 - 135 + 10, thisRect.Width() - 5 - 40, 30 + 40 + thisRect.Width() - 5 + 10 };
 	worldsearchlist = new WorldSearchList(dynamicSearchRect, currentTheme, this);
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);
 	worldsearchlist->ShowWindow(SW_HIDE);
+	bInitWorldSearchList = true;
 
 	this->clockData = clockData;
 	m_stt_analog_worldname.SetWindowTextW(clockData->strWorldCityName);
 	m_bInitSuccess = true;
-
+	bClockDataInit = true;
 }
 
 void AnalogWatch::SetClockPriority(int nPriority)
@@ -135,11 +142,6 @@ void AnalogWatch::InvalidClockRect(ClockData* clockData)
 	this->clockData = clockData;
 	if (!worldclock->bWillModify)
 	{
-		CString strCurDate, strCurTime;
-		strCurDate.Format(_T("%04d년 %02d월 %02d일"), clockData->curTimeVal.GetYear(), clockData->curTimeVal.GetMonth(), clockData->curTimeVal.GetDay());
-		strCurTime.Format(_T("%02d:%02d:%02d"), clockData->curTimeVal.GetHour(), clockData->curTimeVal.GetMinute(), clockData->curTimeVal.GetSecond());
-		m_stt_analog_date.SetWindowTextW(strCurDate);
-		m_edit_digital_clock.SetWindowTextW(strCurTime);
 		InvalidateRect(watchRect);
 	}
 }
@@ -188,10 +190,10 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			worldclock->bWillModify = false;
-			CString strSearchText;
-			m_edit_analog_search.GetWindowTextW(strSearchText);
+			CString strText;
+			m_edit_analog_search.GetWindowTextW(strText);
 
-			if (worldsearchlist->SearchClockListFromInputText(strSearchText))
+			if (worldsearchlist->SearchClockListFromInputText(strText))
 			{
 				worldsearchlist->ShowWindow(SW_SHOW);
 			}
@@ -200,6 +202,7 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 		else if (pMsg->hwnd == m_edit_digital_clock.m_hWnd)
 		{
 			worldclock->bWillModify = true;
+			m_edit_digital_clock.GetWindowTextW(strSaveTime);
 		}
 	}
 	else if (pMsg->message == WM_KEYDOWN)
@@ -259,6 +262,10 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 				int nStart, nEnd;
 				m_edit_digital_clock.GetSel(nStart, nEnd);
 				if (nStart < nEnd) return TRUE;
+				if (nEnd == 0 && pMsg->wParam > L'2') return TRUE;
+				else if (nEnd == 1 && pMsg->wParam > L'3' && (CString)strFullText.GetAt(nEnd - 1) == _T("2")) return TRUE;
+				else if (nEnd == 3 && pMsg->wParam > L'5') return TRUE;
+				else if (nEnd == 6 && pMsg->wParam > L'5') return TRUE;
 				if (nEnd != strFullText.GetLength())
 				{
 					if ((CString)strFullText.GetAt(nEnd) != _T(":"))
@@ -320,9 +327,24 @@ void AnalogWatch::SetErrorTime()
 	AfxExtractSubString(strFormatMinute, strFormatTime, 1, ':');
 	AfxExtractSubString(strFormatSecond, strFormatTime, 2, ':');
 
+	CString offsetHour, offsetMinute, offsetSecond;
+	AfxExtractSubString(offsetHour, strSaveTime, 0, ':');
+	AfxExtractSubString(offsetMinute, strSaveTime, 1, ':');
+	AfxExtractSubString(offsetSecond, strSaveTime, 2, ':');
+
 	int nHour = _ttoi(strFormatHour);
 	int nMinute = _ttoi(strFormatMinute);
 	int nSecond = _ttoi(strFormatSecond);
+
+	int nOffsetHour = _ttoi(offsetHour);
+	int nOffsetMinute = _ttoi(offsetMinute);
+	int nOffsetSecond = _ttoi(offsetSecond);
+
+	CString strSymbol = nOffsetHour - nHour > 0? _T("+") : _T("-");
+
+	// 이곳을 로컬시간의 오차로 수정
+	strOffsetTime.Format(_T("시간 오차 : %s %02d:%02d:%02d"), strSymbol, abs(nOffsetHour - nHour), abs(nOffsetMinute - nMinute), abs(nOffsetSecond - nSecond));
+	TRACE(L"%s\n", strOffsetTime);
 
 	worldclock->nErrorTimeHour += (curTime.GetHour() - nHour);
 	worldclock->nErrorTimeMinute += (curTime.GetMinute() - nMinute);
@@ -334,6 +356,16 @@ void AnalogWatch::OnPaint()
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+
+	if (bClockDataInit)
+	{
+		CString strCurDate, strCurTime;
+		strCurDate.Format(_T("%04d년 %02d월 %02d일"), clockData->curTimeVal.GetYear(), clockData->curTimeVal.GetMonth(), clockData->curTimeVal.GetDay());
+		strCurTime.Format(_T("%02d:%02d:%02d"), clockData->curTimeVal.GetHour(), clockData->curTimeVal.GetMinute(), clockData->curTimeVal.GetSecond());
+		m_stt_analog_date.SetWindowTextW(strCurDate);
+		m_edit_digital_clock.SetWindowTextW(strCurTime);
+	}
 
 	CBrush ellipseBrush;
 	ellipseBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
@@ -456,13 +488,12 @@ void AnalogWatch::DrawTime(CDC& memDC)
 
 void AnalogWatch::DrawClockData(CDC& memDC, CPoint selectPoint, const double selectWidth)
 {
-	CPen pen(PS_SOLID, (int)(watchRect.Width() / selectWidth), RGB(0, 0, 0));
+	CPen pen(PS_SOLID, (int)(watchRect.Width() / selectWidth), currentTheme->GetFunctionRectBorderColor());
 	CPen* pOldPen = memDC.SelectObject(&pen);
 	memDC.MoveTo(cpt.x, cpt.y);
 	memDC.LineTo(cpt.x + selectPoint.x, cpt.y - selectPoint.y);
 	
 	memDC.SelectObject(pOldPen);
-
 	pen.DeleteObject();
 }
 
@@ -520,8 +551,8 @@ HBRUSH AnalogWatch::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == m_edit_digital_clock.GetDlgCtrlID())
 		{
-			pDC->SetBkColor(RGB(200, 200, 200));
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+			pDC->SetTextColor(currentTheme->GetTextColor());
 			hbr = (HBRUSH)m_digitalBrush;
 		}
 	}
@@ -535,8 +566,8 @@ HBRUSH AnalogWatch::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		else if (pWnd->GetDlgCtrlID() == m_edit_digital_clock.GetDlgCtrlID())
 		{
-			pDC->SetBkColor(RGB(200, 200, 200));
-			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+			pDC->SetTextColor(currentTheme->GetTextColor());
 			hbr = (HBRUSH)m_digitalBrush;
 		}
 	}

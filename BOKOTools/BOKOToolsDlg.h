@@ -86,7 +86,6 @@ private:
 	CustomScroll scroll;
 
 
-	void SetDisableCtlColor();
 	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void LoadTheme();
 	int LoadCurrnetTheme();
@@ -135,6 +134,7 @@ public:
 	bool bBaseTimer;
 	bool bWorldClock;
 
+	void SetDisableCtlColor(COLORREF setColor);
 	void ExecuteSelectTheme(ThemeData* selectTheme);
 	void SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y);
 	void SaveButtonCtlPos(std::vector<std::vector<int>> saveCtlItemVector);

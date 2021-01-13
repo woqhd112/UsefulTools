@@ -112,9 +112,6 @@
     <ClCompile Include="NotePadList.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
-    <ClCompile Include="WorldClockList.cpp">
-      <Filter>WorldClock</Filter>
-    </ClCompile>
     <ClCompile Include="WorldSearchList.cpp">
       <Filter>WorldClock</Filter>
     </ClCompile>
@@ -251,9 +248,6 @@
     </ClInclude>
     <ClInclude Include="NotePadList.h">
       <Filter>NotePad</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldClockList.h">
-      <Filter>WorldClock</Filter>
     </ClInclude>
     <ClInclude Include="WorldSearchList.h">
       <Filter>WorldClock</Filter>

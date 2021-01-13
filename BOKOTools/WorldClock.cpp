@@ -6,7 +6,6 @@
 #include "WorldClock.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
-#include <math.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,6 +23,7 @@ WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	bWillModify = false;
+	bCurTimeThread = false;
 	nErrorTimeHour = 0;
 	nErrorTimeMinute = 0;
 	nErrorTimeSecond = 0;
@@ -31,6 +31,13 @@ WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 WorldClock::~WorldClock()
 {
+	for (int i = 0; i < (int)clockDataVector.size(); i++)
+	{
+		AnalogWatch::ClockData* deleteClock = clockDataVector.at(i);
+		delete deleteClock;
+		deleteClock = nullptr;
+	}
+	clockDataVector.clear();
 
 	for (int i = 0; i < (int)analogWatchVector.size(); i++)
 	{
@@ -39,6 +46,7 @@ WorldClock::~WorldClock()
 		deleteWatch = nullptr;
 	}
 	analogWatchVector.clear();
+
 
 	if (bCurTimeThread)
 	{
@@ -57,10 +65,8 @@ WorldClock::~WorldClock()
 void WorldClock::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_BUTTON_WORLD_SEARCH, m_btn_search);
-	DDX_Control(pDX, IDC_EDIT_WORLD_SEARCH, m_edit_search);
-	DDX_Control(pDX, IDC_STATIC_RESULT_VIEW, m_stt_result_view);
 	DDX_Control(pDX, IDC_BUTTON_WORLDCLOCK_SYNCRONIZE, m_btn_worldclock_localtime_sync);
+	DDX_Control(pDX, IDC_STATIC_CLOCK_OFFSET, m_stt_clock_offset);
 }
 
 
@@ -87,93 +93,97 @@ BOOL WorldClock::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
+	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
-	m_btn_search.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 30);
-	m_btn_search.SetTextColor(currentTheme->GetTextColor());
 	m_btn_worldclock_localtime_sync.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_worldclock_localtime_sync.SetTextColor(currentTheme->GetTextColor());
-	m_edit_search.Initialize(40, _T("godoMaum"));
+	m_stt_clock_offset.Initialize(30, _T("godoMaum"));
 
 	this->SetWindowPos(NULL, 0, 0, 1000, 620, SWP_NOMOVE);
-	m_btn_search.ShowWindow(SW_HIDE);
-	m_edit_search.ShowWindow(SW_HIDE);
-	m_stt_result_view.ShowWindow(SW_HIDE);
 
-	m_btn_worldclock_localtime_sync.MoveWindow(50, 95 + 200 + 40 + 40 + 40, 100, 20);
+	m_stt_clock_offset.MoveWindow(70, 60 + 200 + 40 + 40 + 40, 200, 30);
+	m_stt_clock_offset.SetWindowTextW(_T("시간 오차 : + 00:00:00"));
+	m_btn_worldclock_localtime_sync.MoveWindow(70, 60 + 200 + 40 + 40 + 40 + 35, 100, 20);
 
 	AnalogWatch* newAnalogwatch0 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch0->MoveWindow(50, 95, 200, 200 + 40 + 40 + 40);
+	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch0->MoveWindow(70, 60, 200, 200 + 40 + 40 + 40);
 	newAnalogwatch0->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch0);
 
 	AnalogWatch* newAnalogwatch1 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch1->MoveWindow(400, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch1->MoveWindow(370, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch1->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch1);
 
 	AnalogWatch* newAnalogwatch2 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch2->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch2->MoveWindow(600, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch2->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch2->MoveWindow(570, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch2->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch2);
 
 	AnalogWatch* newAnalogwatch3 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch3->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch3->MoveWindow(800, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch3->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch3->MoveWindow(770, 20, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch3->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch3);
 
 	AnalogWatch* newAnalogwatch4 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch4->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch4->MoveWindow(500, 270 + 30, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch4->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch4->MoveWindow(470, 270 + 30, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch4->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch4);
 
 	AnalogWatch* newAnalogwatch5 = new AnalogWatch(currentTheme, this);
-	newAnalogwatch5->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch5->MoveWindow(700, 270 + 30, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch5->Create(IDD_DIALOG_ANALOG_WATCH, this);
+	newAnalogwatch5->MoveWindow(670, 270 + 30, 150, 150 + 40 + 40 + 40);
 	newAnalogwatch5->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch5);
 
-	LoadWorldClockData();
-	newAnalogwatch0->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch4->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch5->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch0->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch1->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch2->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch3->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch4->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch5->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch0->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch1->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch2->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch3->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch4->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch5->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	newAnalogwatch0->worldsearchlist->BringWindowToTop();
-	newAnalogwatch1->worldsearchlist->BringWindowToTop();
-	newAnalogwatch2->worldsearchlist->BringWindowToTop();
-	newAnalogwatch3->worldsearchlist->BringWindowToTop();
-	newAnalogwatch4->worldsearchlist->BringWindowToTop();
-	newAnalogwatch5->worldsearchlist->BringWindowToTop();
+	if (LoadWorldClockData())
+	{
+		newAnalogwatch0->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch4->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch5->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch0->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch1->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch2->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch3->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch4->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch5->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch0->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch1->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch2->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch3->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch4->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch5->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		newAnalogwatch0->worldsearchlist->BringWindowToTop();
+		newAnalogwatch1->worldsearchlist->BringWindowToTop();
+		newAnalogwatch2->worldsearchlist->BringWindowToTop();
+		newAnalogwatch3->worldsearchlist->BringWindowToTop();
+		newAnalogwatch4->worldsearchlist->BringWindowToTop();
+		newAnalogwatch5->worldsearchlist->BringWindowToTop();
 
-	bCurTimeThread = true;
-	m_curtimeThread = AfxBeginThread(thrStartWorldClock, this);
-
+		bCurTimeThread = true;
+		m_curtimeThread = AfxBeginThread(thrStartWorldClock, this);
+	}
+	else
+	{
+		MessageBox(_T("Config 폴더 안의 WorldClock.conf 파일 설정값이 잘못되었습니다.\n 해당 파일을 삭제하고 다시 실행하여 주십시오."));
+		PostMessage(WM_CLOSE, 0, 0);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void WorldClock::LoadWorldClockData()
+bool WorldClock::LoadWorldClockData()
 {
+	bool bReturn = false;
 	bool bSavedXml = false;
 	CMarkup markUp;
 
@@ -196,10 +206,11 @@ void WorldClock::LoadWorldClockData()
 			clockData->mainGWCD = thisErrorTimeValue;
 			clockData->subGWCD = targetErrorTimeValue;
 			clockData->strWorldCityName = strWorldName;
+			clockDataVector.push_back(clockData);
 
 			AnalogWatch* analog = analogWatchVector.at(nClockIdx);
-			analog->Initialize(clockData);
 			analog->SetClockPriority(nClockIdx);
+			analog->Initialize(clockData);
 		}
 	}
 	else
@@ -213,6 +224,20 @@ void WorldClock::LoadWorldClockData()
 			SaveXml(&markUp, strFullPath);
 		}
 	}
+
+	if (clockDataVector.size() == 6)
+	{
+		bReturn = true;
+		for (int i = 0; i < (int)analogWatchVector.size(); i++)
+		{
+			if (analogWatchVector.at(i)->worldsearchlist->GetWorldCityName(analogWatchVector.at(i)->clockData->mainGWCD) == _T("")) bReturn = false;
+			if (analogWatchVector.at(i)->worldsearchlist->GetWorldCityName(analogWatchVector.at(i)->clockData->subGWCD) == _T("")) bReturn = false;
+			if (analogWatchVector.at(i)->worldsearchlist->GetWorldClockData(analogWatchVector.at(i)->clockData->strWorldCityName) == WorldSearchList::GreenWichWorldClockData::WORLD_CLOCK_NONE) bReturn = false;
+		}
+	}
+
+
+	return bReturn;
 }
 
 void WorldClock::SaveClockXml(int nClockIdx)
@@ -313,10 +338,11 @@ bool WorldClock::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
 			clockData->mainGWCD = thisErrorTimeValue;
 			clockData->subGWCD = targetErrorTimeValue;
 			clockData->strWorldCityName = strWorldName;
+			clockDataVector.push_back(clockData);
 
 			AnalogWatch* analog = analogWatchVector.at(i);
-			analog->Initialize(clockData);
 			analog->SetClockPriority(i);
+			analog->Initialize(clockData);
 		}
 
 		bReturn = true;
@@ -392,6 +418,11 @@ void WorldClock::StartWorldClock()
 void WorldClock::ErrorTimeCalc(AnalogWatch::ClockData* inputTime)
 {
 	inputTime->curTimeVal -= CTimeSpan(0, nErrorTimeHour, nErrorTimeMinute, nErrorTimeSecond);
+	CTimeSpan offset(0, nErrorTimeHour, nErrorTimeMinute, nErrorTimeSecond);
+	/*TRACE(L"offest hour : %d\n", offset.GetHours());
+	TRACE(L"offest minute : %d\n", offset.GetMinutes());
+	TRACE(L"offest second : %d\n", offset.GetSeconds());*/
+	m_stt_clock_offset.SetWindowTextW(analogWatchVector.at(0)->strOffsetTime);
 }
 
 void WorldClock::OnOK()
@@ -458,12 +489,12 @@ HBRUSH WorldClock::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  여기서 DC의 특성을 변경합니다.
-	if (nCtlColor == CTLCOLOR_EDIT)
+	if (nCtlColor == CTLCOLOR_STATIC)
 	{
-		if (pWnd->GetDlgCtrlID() == IDC_EDIT_WORLD_SEARCH)
+		if (pWnd->GetDlgCtrlID() == m_stt_clock_offset.GetDlgCtrlID())
 		{
-			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
-			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
+			pDC->SetBkColor(currentTheme->GetFunctionBkColor());
+			pDC->SetTextColor(currentTheme->GetTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
@@ -528,5 +559,7 @@ void WorldClock::OnBnClickedButtonWorldclockSyncronize()
 		nErrorTimeHour = 0;
 		nErrorTimeMinute = 0;
 		nErrorTimeSecond = 0;
+		analogWatchVector.at(0)->strOffsetTime = _T("시간 오차 : + 00:00:00");
+		m_stt_clock_offset.SetWindowTextW(analogWatchVector.at(0)->strOffsetTime);
 	}
 }
