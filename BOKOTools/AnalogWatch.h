@@ -64,18 +64,18 @@ private:
 	const double WATCH_MINWIDTH = 100;
 	const double WATCH_HOURWIDTH = 50;
 
+
 	struct ClockData
 	{
 		WorldSearchList::GreenWichWorldClockData mainGWCD;
 		WorldSearchList::GreenWichWorldClockData subGWCD;
 		CString strWorldCityName;
-		int m_nYear;
-		int m_nMonth;
-		int m_nDay;
-		int m_nHour;
-		int m_nMinute;
-		int m_nSecond;
+		CTime curTimeVal;
 	};
+
+
+	CTime formatTime;
+	bool bTimeSync;
 
 	ClockData* clockData;
 	CPoint cpt;
@@ -90,6 +90,7 @@ private:
 	void DrawTime(CDC& memDC);
 	CPoint GetClockHandPos(AnalogWatch::TIME_ TIME, const CTime& time, const CPoint& anchorPt, double radius);
 	void DrawClockData(CDC& memDC, CPoint selectPoint, const double selectWidth);
+	void SetErrorTime();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

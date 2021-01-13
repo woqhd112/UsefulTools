@@ -51,6 +51,7 @@ public:
 
 	// sets the image type
 	void SetImage(int type);
+	void DeleteImage();
 
 	BOOL LoadAltImage(UINT id, LPCTSTR pType, BOOL bHavMinSize = FALSE);
 	BOOL LoadStdImage(UINT id, LPCTSTR pType, BOOL bHavMinSize = FALSE);

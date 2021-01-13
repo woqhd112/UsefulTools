@@ -36,6 +36,7 @@ private:
 	friend class AnalogWatch;
 
 	CalculateButton m_btn_search;
+	CalculateButton m_btn_worldclock_localtime_sync;
 	CalculateEdit m_edit_search;
 	CalculateStatic m_stt_result_view;
 
@@ -47,6 +48,10 @@ private:
 
 	bool bWillModify;
 
+	int nErrorTimeHour;
+	int nErrorTimeMinute;
+	int nErrorTimeSecond;
+
 	CWinThread* m_curtimeThread;
 	bool bCurTimeThread;
 	static UINT thrStartWorldClock(LPVOID method);
@@ -54,12 +59,14 @@ private:
 	void FormatClockData(CString strInputTime, AnalogWatch::ClockData* inputTime);
 
 	CString GetCurTime(double dErrorSubTimeValue);
+	void ErrorTimeCalc(AnalogWatch::ClockData* inputTime);
 
 	void LoadWorldClockData();
 	void CreateConfigClockFile(CString& strFullPath);
 	bool CreateDefaultClockXml(CMarkup* markUp, CString strFilePath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 	void SaveXml(CMarkup* markup, CString strSaveFullPath);
+	void SaveClockXml(int nClockIdx);
 
 public:
 
@@ -71,4 +78,5 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnEnChangeEditWorldSearch();
 	afx_msg void OnBnClickedButtonWorldSearch();
+	afx_msg void OnBnClickedButtonWorldclockSyncronize();
 };

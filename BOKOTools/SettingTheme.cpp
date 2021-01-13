@@ -7,6 +7,11 @@
 #include "SettingTheme.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // SettingTheme 대화 상자
 
@@ -200,6 +205,13 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 		{
 			ExecuteSelectTheme(THEME_NEONSIGN);
 			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_NEONSIGN, themeList.at(6));
+		}
+	}
+	else if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE)
+		{
+			return TRUE;
 		}
 	}
 

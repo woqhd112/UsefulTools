@@ -6,6 +6,11 @@
 #include "ConvertWidthTab.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // ConvertWidthTab 대화 상자
 
@@ -451,6 +456,13 @@ BOOL ConvertWidthTab::PreTranslateMessage(MSG* pMsg)
 			{
 			}
 			else
+			{
+				return TRUE;
+			}
+		}
+		else
+		{
+			if (pMsg->wParam == VK_ESCAPE)
 			{
 				return TRUE;
 			}

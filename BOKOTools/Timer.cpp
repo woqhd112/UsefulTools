@@ -653,6 +653,13 @@ BOOL Timer::PreTranslateMessage(MSG* pMsg)
 				return TRUE;
 			}
 		}
+		else
+		{
+			if (pMsg->wParam == VK_ESCAPE)
+			{
+				return TRUE;
+			}
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);

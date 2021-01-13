@@ -6,6 +6,11 @@
 #include "SortIcon.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // SortIcon 대화 상자
 
@@ -113,36 +118,12 @@ void SortIcon::OnOK()
 BOOL SortIcon::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	CRect rect;
-	m_stt_sort_view.GetWindowRect(rect);
-	if(PtInRect(rect, pMsg->pt))
+	if (pMsg->message == WM_KEYDOWN)
 	{
-		//TRACE(L"? : %d\n", pMsg->message);
-		if (pMsg->message == 647)
+		if (pMsg->wParam == VK_ESCAPE)
 		{
-			
+			return TRUE;
 		}
-	}
-
-	m_stt_all_view.GetWindowRect(rect);
-	if (PtInRect(rect, pMsg->pt))
-	{
-	}
-	if (pMsg->message == 647)
-	{
-		/*CGdipButton* hoverButton = allButtonList->hoverButton;
-		if (hoverButton != nullptr)
-		{
-			dragDlg = new DragDialog(currentTheme, hoverButton);
-			dragDlg->Create(IDD_DIALOG_DRAG);
-			dragDlg->ShowWindow(SW_SHOW);
-			dragDlg->MoveWindow(pMsg->pt.x, pMsg->pt.y, 128, 128);
-		}*/
-	}
-	//TRACE(L"? : %d\n", pMsg->message);
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);

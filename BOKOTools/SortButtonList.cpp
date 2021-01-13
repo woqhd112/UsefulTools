@@ -7,6 +7,11 @@
 #include "SortIcon.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // SortButtonList 대화 상자
 
@@ -923,6 +928,13 @@ BOOL SortButtonList::PreTranslateMessage(MSG* pMsg)
 				}
 				return TRUE;
 			}
+		}
+	}
+	else if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE)
+		{
+			return TRUE;
 		}
 	}
 	return CDialogEx::PreTranslateMessage(pMsg);

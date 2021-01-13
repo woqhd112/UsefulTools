@@ -7,6 +7,11 @@
 #include "WorldClock.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // AnalogWatch 대화 상자
 
@@ -19,6 +24,7 @@ AnalogWatch::AnalogWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	this->currentTheme = currentTheme;
 	nClockIdx = 0;
 	m_bInitSuccess = false;
+	bTimeSync = false;
 }
 
 AnalogWatch::~AnalogWatch()
@@ -74,7 +80,7 @@ BOOL AnalogWatch::OnInitDialog()
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 	m_digitalBrush.CreateSolidBrush(RGB(200, 200, 200));
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-	//m_edit_digital_clock.ShowWindow(SW_HIDE);
+	m_edit_digital_clock.LimitText(8);
 	
 	worldclock = (WorldClock*)pParent;
 
@@ -95,8 +101,11 @@ void AnalogWatch::Initialize(ClockData* clockData)
 
 	m_edit_analog_search.Initialize(20, _T("godoMaum"));
 	m_edit_analog_search.MoveWindow(0, 30 + 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 40, 30);
-	m_edit_digital_clock.Initialize(20, _T("godoMaum"));
+	m_edit_digital_clock.Initialize(20, _T("DS-Digital"));
 	m_edit_digital_clock.MoveWindow((thisRect.Width() - 5) / 2 / 2, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, 20);
+
+	//m_edit_digital_clock.SetWindowPos(&watchRect, (thisRect.Width() - 5) / 2 / 2, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, 20, SW_SHOW);
+
 	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_analog_submit.SetTextColor(currentTheme->GetTextColor());
 	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 40 + 10, 30 + 40 + thisRect.Width() - 5 + 10, 30, 30);
@@ -111,6 +120,7 @@ void AnalogWatch::Initialize(ClockData* clockData)
 	this->clockData = clockData;
 	m_stt_analog_worldname.SetWindowTextW(clockData->strWorldCityName);
 	m_bInitSuccess = true;
+
 }
 
 void AnalogWatch::SetClockPriority(int nPriority)
@@ -123,12 +133,15 @@ void AnalogWatch::SetClockPriority(int nPriority)
 void AnalogWatch::InvalidClockRect(ClockData* clockData)
 {
 	this->clockData = clockData;
-	CString strCurDate, strCurTime;
-	strCurDate.Format(_T("%04d년 %02d월 %02d일"), clockData->m_nYear, clockData->m_nMonth, clockData->m_nDay);
-	strCurTime.Format(_T("%02d:%02d:%02d"), clockData->m_nHour, clockData->m_nMinute, clockData->m_nSecond);
-	m_stt_analog_date.SetWindowTextW(strCurDate);
-	m_edit_digital_clock.SetWindowTextW(strCurTime);
-	InvalidateRect(watchRect);
+	if (!worldclock->bWillModify)
+	{
+		CString strCurDate, strCurTime;
+		strCurDate.Format(_T("%04d년 %02d월 %02d일"), clockData->curTimeVal.GetYear(), clockData->curTimeVal.GetMonth(), clockData->curTimeVal.GetDay());
+		strCurTime.Format(_T("%02d:%02d:%02d"), clockData->curTimeVal.GetHour(), clockData->curTimeVal.GetMinute(), clockData->curTimeVal.GetSecond());
+		m_stt_analog_date.SetWindowTextW(strCurDate);
+		m_edit_digital_clock.SetWindowTextW(strCurTime);
+		InvalidateRect(watchRect);
+	}
 }
 
 
@@ -147,13 +160,33 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == this->m_hWnd)
 		{
+			if (worldclock->bWillModify)
+			{
+				SetErrorTime();
+				for (int i = 0; i < (int)worldclock->analogWatchVector.size(); i++)
+				{
+					worldclock->analogWatchVector.at(i)->bTimeSync = true;
+				}
+			}
+
+			worldclock->bWillModify = false;
 			for (int i = 0; i < (int)worldclock->analogWatchVector.size(); i++)
 			{
-				worldclock->analogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);;
+				worldclock->analogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);
+				worldclock->analogWatchVector.at(i)->SetFocus();
+				worldclock->analogWatchVector.at(i)->m_edit_digital_clock.HideCaret();
 			}
 		}
 		else if (pMsg->hwnd == m_edit_analog_search.m_hWnd)
 		{
+			if (worldclock->bWillModify)
+			{
+				SetErrorTime();
+				for (int i = 0; i < (int)worldclock->analogWatchVector.size(); i++)
+				{
+					worldclock->analogWatchVector.at(i)->bTimeSync = true;
+				}
+			}
 			worldclock->bWillModify = false;
 			CString strSearchText;
 			m_edit_analog_search.GetWindowTextW(strSearchText);
@@ -164,11 +197,137 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 			}
 			m_edit_analog_search.SetFocus();
 		}
+		else if (pMsg->hwnd == m_edit_digital_clock.m_hWnd)
+		{
+			worldclock->bWillModify = true;
+		}
+	}
+	else if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_NUMPAD0) pMsg->wParam = L'0';
+		else if (pMsg->wParam == VK_NUMPAD1) pMsg->wParam = L'1';
+		else if (pMsg->wParam == VK_NUMPAD2) pMsg->wParam = L'2';
+		else if (pMsg->wParam == VK_NUMPAD3) pMsg->wParam = L'3';
+		else if (pMsg->wParam == VK_NUMPAD4) pMsg->wParam = L'4';
+		else if (pMsg->wParam == VK_NUMPAD5) pMsg->wParam = L'5';
+		else if (pMsg->wParam == VK_NUMPAD6) pMsg->wParam = L'6';
+		else if (pMsg->wParam == VK_NUMPAD7) pMsg->wParam = L'7';
+		else if (pMsg->wParam == VK_NUMPAD8) pMsg->wParam = L'8';
+		else if (pMsg->wParam == VK_NUMPAD9) pMsg->wParam = L'9';
+
+		if (pMsg->hwnd == m_edit_digital_clock.m_hWnd)
+		{
+			CString strFullText;
+			m_edit_digital_clock.GetWindowTextW(strFullText);
+			if (pMsg->wParam == VK_BACK)
+			{
+				int nStart, nEnd;
+				m_edit_digital_clock.GetSel(nStart, nEnd);
+				if (nStart < nEnd) return TRUE;
+				if (nEnd > 0)
+				{
+					if ((CString)strFullText.GetAt(nEnd - 1) != _T(":"))
+					{
+						strFullText.SetAt(nEnd - 1, '0');
+						m_edit_digital_clock.SetWindowTextW(strFullText);
+					}
+					m_edit_digital_clock.SetSel(nEnd - 1, nEnd - 1);
+					return TRUE;
+				}
+			}
+			else if (pMsg->wParam == L'0' ||
+					 pMsg->wParam == L'1' ||
+				 	 pMsg->wParam == L'2' ||
+					 pMsg->wParam == L'3' ||
+					 pMsg->wParam == L'4' ||
+					 pMsg->wParam == L'5' ||
+					 pMsg->wParam == L'6' ||
+					 pMsg->wParam == L'7' ||
+					 pMsg->wParam == L'8' ||
+					 pMsg->wParam == L'9' ||
+					 pMsg->wParam == VK_NUMPAD0 ||
+					 pMsg->wParam == VK_NUMPAD1 || 
+					 pMsg->wParam == VK_NUMPAD2 || 
+					 pMsg->wParam == VK_NUMPAD3 || 
+					 pMsg->wParam == VK_NUMPAD4 || 
+					 pMsg->wParam == VK_NUMPAD5 || 
+					 pMsg->wParam == VK_NUMPAD6 || 
+					 pMsg->wParam == VK_NUMPAD7 || 
+					 pMsg->wParam == VK_NUMPAD8 || 
+					 pMsg->wParam == VK_NUMPAD9)
+			{
+				int nStart, nEnd;
+				m_edit_digital_clock.GetSel(nStart, nEnd);
+				if (nStart < nEnd) return TRUE;
+				if (nEnd != strFullText.GetLength())
+				{
+					if ((CString)strFullText.GetAt(nEnd) != _T(":"))
+					{
+						strFullText.SetAt(nEnd, (wchar_t)pMsg->wParam);
+						m_edit_digital_clock.SetWindowTextW(strFullText);
+					}
+					m_edit_digital_clock.SetSel(nEnd + 1, nEnd + 1);
+					return TRUE;
+				}
+			}
+			else if (pMsg->wParam == VK_LEFT || 
+					 pMsg->wParam == VK_RIGHT || 
+					 pMsg->wParam == VK_UP || 
+					 pMsg->wParam == VK_DOWN) {}
+			else if (pMsg->wParam == VK_RETURN)
+			{
+				worldclock->bWillModify = false;
+				for (int i = 0; i < (int)worldclock->analogWatchVector.size(); i++)
+				{
+					worldclock->analogWatchVector.at(i)->bTimeSync = true;
+				}
+				this->SetFocus();
+				m_edit_digital_clock.HideCaret();
+				SetErrorTime();
+			}
+			else if (pMsg->wParam == VK_ESCAPE)
+			{
+				worldclock->bWillModify = false;
+				this->SetFocus();
+				m_edit_digital_clock.HideCaret();
+				return TRUE;
+			}
+			else
+			{
+				return TRUE;
+			}
+
+		}
+		else
+		{
+			if (pMsg->wParam == VK_ESCAPE)
+			{
+				return TRUE;
+			}
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
+void AnalogWatch::SetErrorTime()
+{
+	CTime curTime = clockData->curTimeVal;
+
+	CString strFormatTime, strFormatHour, strFormatMinute, strFormatSecond;
+	m_edit_digital_clock.GetWindowTextW(strFormatTime);
+	AfxExtractSubString(strFormatHour, strFormatTime, 0, ':');
+	AfxExtractSubString(strFormatMinute, strFormatTime, 1, ':');
+	AfxExtractSubString(strFormatSecond, strFormatTime, 2, ':');
+
+	int nHour = _ttoi(strFormatHour);
+	int nMinute = _ttoi(strFormatMinute);
+	int nSecond = _ttoi(strFormatSecond);
+
+	worldclock->nErrorTimeHour += (curTime.GetHour() - nHour);
+	worldclock->nErrorTimeMinute += (curTime.GetMinute() - nMinute);
+	worldclock->nErrorTimeSecond += (curTime.GetSecond() - nSecond);
+}
 
 void AnalogWatch::OnPaint()
 {
@@ -240,9 +399,6 @@ void AnalogWatch::OnPaint()
 		minmark++;
 	}
 
-
-
-	//DrawYMD(dc);
 	if (m_bInitSuccess) DrawTime(dc);
 
 
@@ -269,7 +425,8 @@ void AnalogWatch::DrawTime(CDC& memDC)
 	memDC.SelectObject(pOldBrush);
 
 	//CTime curTime = CTime::GetCurrentTime();
-	CTime curTime(clockData->m_nYear, clockData->m_nMonth, clockData->m_nDay, clockData->m_nHour, clockData->m_nMinute, clockData->m_nSecond);
+	CTime curTime(clockData->curTimeVal.GetYear(), clockData->curTimeVal.GetMonth(), clockData->curTimeVal.GetDay(),
+				  clockData->curTimeVal.GetHour(), clockData->curTimeVal.GetMinute(), clockData->curTimeVal.GetSecond());
 
 	// 시계 ampm
 	CFont ampmfont;
@@ -428,6 +585,8 @@ void AnalogWatch::OnBnClickedButtonAnalogSubmit()
 			clockData->subGWCD = GMPValue;
 			clockData->strWorldCityName = strSuccessName;
 			m_edit_analog_search.SetWindowTextW(_T(""));
+
+			worldclock->SaveClockXml(nClockIdx);
 		}
 		else
 		{

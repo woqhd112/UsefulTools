@@ -6,6 +6,11 @@
 #include "DragDialog.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // DragDialog 대화 상자
 
@@ -106,7 +111,7 @@ void DragDialog::OnMove(int x, int y)
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	if (newButton)
 	{
-		Invalidate();
-		newButton->DisConnect();
+		//Invalidate();
+		//newButton->DisConnect();
 	}
 }

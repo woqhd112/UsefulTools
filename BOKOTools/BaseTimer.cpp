@@ -7,6 +7,11 @@
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // BaseTimer 대화 상자
 
@@ -228,6 +233,10 @@ BOOL BaseTimer::PreTranslateMessage(MSG* pMsg)
 			{
 				m_edit_basetimer_s.HideCaret();
 			}
+		}
+		else if (pMsg->wParam == VK_ESCAPE)
+		{
+			return TRUE;
 		}
 	}
 

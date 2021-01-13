@@ -13,6 +13,8 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
@@ -73,6 +75,14 @@ CBOKOToolsDlg::~CBOKOToolsDlg()
 			m_curtimeThread = nullptr;
 		}
 	}
+
+	for (int i = 0; i < (int)themeList.size(); i++)
+	{
+		ThemeData* deleteTheme = themeList.at(i);
+		delete deleteTheme;
+		deleteTheme = nullptr;
+	}
+	themeList.clear();
 }
 
 void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -420,58 +430,70 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 	ButtonCtlDisConnect();
 
 	m_btn_base_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_base_gdi.DeleteImage();
 	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseIcon().nNormalID, _T("PNG"));
 	m_btn_base_gdi.LoadHovImage(currentTheme->GetBaseIcon().nHoverID, _T("PNG"));
 	m_btn_base_gdi.LoadAltImage(currentTheme->GetBaseIcon().nClickID, _T("PNG"));
 
 	m_btn_calculator_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_calculator_gdi.DeleteImage();
 	m_btn_calculator_gdi.LoadStdImage(currentTheme->GetEngineeringIcon().nNormalID, _T("PNG"));
 	m_btn_calculator_gdi.LoadHovImage(currentTheme->GetEngineeringIcon().nHoverID, _T("PNG"));
 	m_btn_calculator_gdi.LoadAltImage(currentTheme->GetEngineeringIcon().nClickID, _T("PNG"));
 
 	m_btn_stopwatch_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_stopwatch_gdi.DeleteImage();
 	m_btn_stopwatch_gdi.LoadStdImage(currentTheme->GetStopWatchIcon().nNormalID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadHovImage(currentTheme->GetStopWatchIcon().nHoverID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadAltImage(currentTheme->GetStopWatchIcon().nClickID, _T("PNG"));
 
 	m_btn_converter_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_converter_gdi.DeleteImage();
 	m_btn_converter_gdi.LoadStdImage(currentTheme->GetConverterIcon().nNormalID, _T("PNG"));
 	m_btn_converter_gdi.LoadHovImage(currentTheme->GetConverterIcon().nHoverID, _T("PNG"));
 	m_btn_converter_gdi.LoadAltImage(currentTheme->GetConverterIcon().nClickID, _T("PNG"));
 
 	m_btn_date_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_date_gdi.DeleteImage();
 	m_btn_date_gdi.LoadStdImage(currentTheme->GetDateCalIcon().nNormalID, _T("PNG"));
 	m_btn_date_gdi.LoadHovImage(currentTheme->GetDateCalIcon().nHoverID, _T("PNG"));
 	m_btn_date_gdi.LoadAltImage(currentTheme->GetDateCalIcon().nClickID, _T("PNG"));
 
 	m_btn_worktimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_worktimer_gdi.DeleteImage();
 	m_btn_worktimer_gdi.LoadStdImage(currentTheme->GetWorkTimerIcon().nNormalID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadHovImage(currentTheme->GetWorkTimerIcon().nHoverID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadAltImage(currentTheme->GetWorkTimerIcon().nClickID, _T("PNG"));
 
 	m_btn_notepad_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_notepad_gdi.DeleteImage();
 	m_btn_notepad_gdi.LoadStdImage(currentTheme->GetNotePadIcon().nNormalID, _T("PNG"));
 	m_btn_notepad_gdi.LoadHovImage(currentTheme->GetNotePadIcon().nHoverID, _T("PNG"));
 	m_btn_notepad_gdi.LoadAltImage(currentTheme->GetNotePadIcon().nClickID, _T("PNG"));
 
 	m_btn_basetimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_basetimer_gdi.DeleteImage();
 	m_btn_basetimer_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
 
 	m_btn_world_clock_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
+	m_btn_world_clock_gdi.DeleteImage();
 	m_btn_world_clock_gdi.LoadStdImage(currentTheme->GetWorldClockIcon().nNormalID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
 
+	m_btn_comingsoon_1.DeleteImage();
 	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_1.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_1.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 
+	m_btn_comingsoon_2.DeleteImage();
 	m_btn_comingsoon_2.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_2.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_2.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 
+	m_btn_comingsoon_3.DeleteImage();
 	m_btn_comingsoon_3.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_3.LoadHovImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));
 	m_btn_comingsoon_3.LoadAltImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));

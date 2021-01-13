@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "CustomScroll.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 CustomScroll::CustomScroll()
 {
 
@@ -83,6 +89,7 @@ void CustomScroll::IncreaseScroll()
 		buttonRect.push_back(scrollPos);
 
 		button->MoveWindow(scrollPos);
+		button->DeleteImage();
 		button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
 		button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
 		button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
@@ -137,6 +144,7 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 			buttonRect.push_back(scrollPos);
 
 			button->MoveWindow(scrollPos);
+			button->DeleteImage();
 			button->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
 			button->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));	// 여기에 테마 스크롤 버튼 hover
 			button->LoadAltImage(currentTheme->GetScrollIcon().nClickID, _T("PNG"));	// 여기에 테마 스크롤 버튼 namal
@@ -163,6 +171,7 @@ void CustomScroll::ThemeChange(ThemeData* changeTheme)
 	this->currentTheme = changeTheme;
 	for (int i = 0; i < (int)buttonVector.size(); i++)
 	{
+		buttonVector.at(i)->DeleteImage();
 		buttonVector.at(i)->DisConnect();
 		buttonVector.at(i)->LoadStdImage(currentTheme->GetScrollIcon().nNormalID, _T("PNG"));
 		buttonVector.at(i)->LoadHovImage(currentTheme->GetScrollIcon().nHoverID, _T("PNG"));

@@ -72,11 +72,7 @@ CGdipButton::CGdipButton()
 
 CGdipButton::~CGdipButton()
 {
-	if(m_pStdImage) delete m_pStdImage;
-	if(m_pAltImage) delete m_pAltImage;
-	if(m_pHovImage) delete m_pHovImage;
-
-	if(m_pToolTip)	delete m_pToolTip;
+	DeleteImage();
 }
 
 
@@ -163,6 +159,15 @@ BOOL CGdipButton::LoadHovImage(UINT id, LPCTSTR pType, BOOL bHavMinSize /* = FAL
 void CGdipButton::DisConnect()
 {
 	m_bHaveBitmaps = FALSE;
+}
+
+void CGdipButton::DeleteImage()
+{
+	if (m_pStdImage) delete m_pStdImage;
+	if (m_pAltImage) delete m_pAltImage;
+	if (m_pHovImage) delete m_pHovImage;
+
+	if (m_pToolTip)	delete m_pToolTip;
 }
 
 //=============================================================================

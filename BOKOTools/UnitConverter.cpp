@@ -7,6 +7,11 @@
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // UnitConverter 대화 상자
 
@@ -199,7 +204,11 @@ BOOL UnitConverter::PreTranslateMessage(MSG* pMsg)
 					break;
 			}
 		}
-	}
+		else if (pMsg->wParam == VK_ESCAPE)
+		{
+			return TRUE;
+		}
+}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }

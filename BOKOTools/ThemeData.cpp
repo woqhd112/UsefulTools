@@ -3,6 +3,12 @@
 #include "Resource.h"
 #include "ThemeData.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 ThemeData::ThemeData(int nThemeFlags)
 {
 	if (nThemeFlags == THEME_DETECTIVE)
@@ -53,7 +59,7 @@ ThemeData::ThemeData(int nThemeFlags)
 		functionBkColor = RGB(99, 177, 198);
 		functionSubColor = RGB(255, 255, 255);
 		rectBorderColor = RGB(255, 255, 255);
-		functionRectBorderColor = RGB(255, 255, 255);
+		functionRectBorderColor = RGB(99, 177, 198);
 		buttonColor = RGB(147, 212, 227);
 		nSettingThemeBkIconID = IDB_BITMAP_CHOICE_BK_THEME_CLOUD;
 		nMainBkIconID = IDB_BITMAP_MAIN_BK_THEME_CLOUD;

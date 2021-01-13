@@ -6,7 +6,13 @@
 #include "WorldClock.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
+#include <math.h>
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 // WorldClock 대화 상자
 
@@ -18,27 +24,13 @@ WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	bWillModify = false;
+	nErrorTimeHour = 0;
+	nErrorTimeMinute = 0;
+	nErrorTimeSecond = 0;
 }
 
 WorldClock::~WorldClock()
 {
-	/*if (worldclocklist)
-	{
-		delete worldclocklist;
-		worldclocklist = nullptr;
-	}
-
-	if (worldsearchlist)
-	{
-		delete worldsearchlist;
-		worldsearchlist = nullptr;
-	}*/
-
-	/*if (analogwatch)
-	{
-		delete analogwatch;
-		analogwatch = nullptr;
-	}*/
 
 	for (int i = 0; i < (int)analogWatchVector.size(); i++)
 	{
@@ -68,6 +60,7 @@ void WorldClock::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_WORLD_SEARCH, m_btn_search);
 	DDX_Control(pDX, IDC_EDIT_WORLD_SEARCH, m_edit_search);
 	DDX_Control(pDX, IDC_STATIC_RESULT_VIEW, m_stt_result_view);
+	DDX_Control(pDX, IDC_BUTTON_WORLDCLOCK_SYNCRONIZE, m_btn_worldclock_localtime_sync);
 }
 
 
@@ -76,6 +69,7 @@ BEGIN_MESSAGE_MAP(WorldClock, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_EN_CHANGE(IDC_EDIT_WORLD_SEARCH, &WorldClock::OnEnChangeEditWorldSearch)
 	ON_BN_CLICKED(IDC_BUTTON_WORLD_SEARCH, &WorldClock::OnBnClickedButtonWorldSearch)
+	ON_BN_CLICKED(IDC_BUTTON_WORLDCLOCK_SYNCRONIZE, &WorldClock::OnBnClickedButtonWorldclockSyncronize)
 END_MESSAGE_MAP()
 
 
@@ -84,8 +78,7 @@ END_MESSAGE_MAP()
 //1. 메인시계는 시간값 변경가능
 //2. 서브시계들은 메인시계의 시간값에따라 gmp값을 추가하여 설정
 //3. 메인시계는 로컬타임 동기화버튼 지원함
-//9. xml값은 설정한 시계데이터 저장
-//10. 적용버튼 클릭시 해당 시계의 전 데이터를 찾아 변경한 데이터로 수정 (xml 저장은 아직안됨)
+
 
 BOOL WorldClock::OnInitDialog()
 {
@@ -98,6 +91,8 @@ BOOL WorldClock::OnInitDialog()
 
 	m_btn_search.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 30);
 	m_btn_search.SetTextColor(currentTheme->GetTextColor());
+	m_btn_worldclock_localtime_sync.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
+	m_btn_worldclock_localtime_sync.SetTextColor(currentTheme->GetTextColor());
 	m_edit_search.Initialize(40, _T("godoMaum"));
 
 	this->SetWindowPos(NULL, 0, 0, 1000, 620, SWP_NOMOVE);
@@ -105,11 +100,11 @@ BOOL WorldClock::OnInitDialog()
 	m_edit_search.ShowWindow(SW_HIDE);
 	m_stt_result_view.ShowWindow(SW_HIDE);
 
-
+	m_btn_worldclock_localtime_sync.MoveWindow(50, 95 + 200 + 40 + 40 + 40, 100, 20);
 
 	AnalogWatch* newAnalogwatch0 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCh, this);
-	newAnalogwatch0->MoveWindow(50, 75, 200, 200 + 40 + 40 + 40);
+	newAnalogwatch0->MoveWindow(50, 95, 200, 200 + 40 + 40 + 40);
 	newAnalogwatch0->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch0);
 
@@ -143,9 +138,19 @@ BOOL WorldClock::OnInitDialog()
 	newAnalogwatch5->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch5);
 
-
 	LoadWorldClockData();
-
+	newAnalogwatch0->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch1->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch2->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch3->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch4->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch5->worldsearchlist->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch0->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch1->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch2->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch3->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch4->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	newAnalogwatch5->m_edit_digital_clock.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch0->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch1->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	newAnalogwatch2->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -181,23 +186,20 @@ void WorldClock::LoadWorldClockData()
 	{
 		markUp.FindElem(_T("Clock"));
 		markUp.IntoElem();
-		int nAnalogIdx = 0;
 		while (markUp.FindElem(_T("data")))
 		{
-			if (nAnalogIdx >= 6) break;
-
 			WorldSearchList::GreenWichWorldClockData thisErrorTimeValue = WorldSearchList::GreenWichWorldClockData(_ttoi(markUp.GetAttrib(_T("mainGWCD"))));
 			WorldSearchList::GreenWichWorldClockData targetErrorTimeValue = WorldSearchList::GreenWichWorldClockData(_ttoi(markUp.GetAttrib(_T("subGWDC"))));
 			CString strWorldName = markUp.GetAttrib(_T("worldcity"));
+			int nClockIdx = _ttoi(markUp.GetAttrib(_T("clockidx")));
 			AnalogWatch::ClockData* clockData = new AnalogWatch::ClockData;
 			clockData->mainGWCD = thisErrorTimeValue;
 			clockData->subGWCD = targetErrorTimeValue;
 			clockData->strWorldCityName = strWorldName;
 
-			AnalogWatch* analog = analogWatchVector.at(nAnalogIdx);
+			AnalogWatch* analog = analogWatchVector.at(nClockIdx);
 			analog->Initialize(clockData);
-			analog->SetClockPriority(nAnalogIdx);
-			nAnalogIdx++;
+			analog->SetClockPriority(nClockIdx);
 		}
 	}
 	else
@@ -213,6 +215,33 @@ void WorldClock::LoadWorldClockData()
 	}
 }
 
+void WorldClock::SaveClockXml(int nClockIdx)
+{
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CreateConfigClockFile(szRoot);
+	CString strFullPath = szRoot + _T("\\WorldClock.conf");
+
+	if (markUp.Load(strFullPath))
+	{
+		if (markUp.FindElem(_T("Clock")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("data")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("clockidx"))) == nClockIdx)
+				{
+					markUp.SetAttrib(_T("mainGWCD"), analogWatchVector.at(nClockIdx)->clockData->mainGWCD);
+					markUp.SetAttrib(_T("subGWDC"), analogWatchVector.at(nClockIdx)->clockData->subGWCD);
+					markUp.SetAttrib(_T("worldcity"), analogWatchVector.at(nClockIdx)->clockData->strWorldCityName);
+					break;
+				}
+			}
+		}
+	}
+
+	SaveXml(&markUp, strFullPath);
+}
 
 void WorldClock::CreateConfigClockFile(CString& strFullPath)
 {
@@ -275,6 +304,7 @@ bool WorldClock::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
 			markUp->AddAttrib(_T("mainGWCD"), 9002);
 			markUp->AddAttrib(_T("subGWDC"), 9002);
 			markUp->AddAttrib(_T("worldcity"), _T("대한민국 - 서울"));
+			markUp->AddAttrib(_T("clockidx"), i);
 
 			WorldSearchList::GreenWichWorldClockData thisErrorTimeValue = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
 			WorldSearchList::GreenWichWorldClockData targetErrorTimeValue = WorldSearchList::GreenWichWorldClockData::SOUTHKOREA_SEOUL;
@@ -330,12 +360,7 @@ void WorldClock::FormatClockData(CString strInputTime, AnalogWatch::ClockData* i
 	AfxExtractSubString(strHour, strInputTime, 3, ':');
 	AfxExtractSubString(strMinute, strInputTime, 4, ':');
 	AfxExtractSubString(strSecond, strInputTime, 5, ':');
-	inputTime->m_nYear = _ttoi(strYear);
-	inputTime->m_nMonth = _ttoi(strMonth);
-	inputTime->m_nDay = _ttoi(strDay);
-	inputTime->m_nHour = _ttoi(strHour);
-	inputTime->m_nMinute = _ttoi(strMinute);
-	inputTime->m_nSecond = _ttoi(strSecond);
+	inputTime->curTimeVal = CTime(_ttoi(strYear), _ttoi(strMonth), _ttoi(strDay), _ttoi(strHour), _ttoi(strMinute), _ttoi(strSecond));
 }
 
 void WorldClock::StartWorldClock()
@@ -347,14 +372,14 @@ void WorldClock::StartWorldClock()
 
 		start = clock();
 
-		if (!bWillModify)
+		for (int i = 0; i < (int)analogWatchVector.size(); i++)
 		{
-			for (int i = 0; i < (int)analogWatchVector.size(); i++)
-			{
-				AnalogWatch::ClockData* clock = analogWatchVector.at(i)->clockData;
-				FormatClockData(GetCurTime(analogWatchVector.at(i)->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
-				analogWatchVector.at(i)->InvalidClockRect(clock);
-			}
+			AnalogWatch::ClockData* clock = analogWatchVector.at(i)->clockData;
+			FormatClockData(GetCurTime(analogWatchVector.at(i)->worldsearchlist->GetGMPCalcValue(clock->subGWCD)), clock);
+
+			if (analogWatchVector.at(i)->bTimeSync) ErrorTimeCalc(clock);
+
+			analogWatchVector.at(i)->InvalidClockRect(clock);
 		}
 
 		finish = clock();
@@ -364,6 +389,10 @@ void WorldClock::StartWorldClock()
 	}
 }
 
+void WorldClock::ErrorTimeCalc(AnalogWatch::ClockData* inputTime)
+{
+	inputTime->curTimeVal -= CTimeSpan(0, nErrorTimeHour, nErrorTimeMinute, nErrorTimeSecond);
+}
 
 void WorldClock::OnOK()
 {
@@ -400,12 +429,22 @@ BOOL WorldClock::PreTranslateMessage(MSG* pMsg)
 	{
 		if (pMsg->hwnd == this->m_hWnd)
 		{
-			//analogwatch->worldsearchlist->ShowWindow(SW_HIDE);
+			if (bWillModify) analogWatchVector.at(0)->SetErrorTime();
+
+			bWillModify = false;
 			for (int i = 0; i < (int)analogWatchVector.size(); i++)
 			{
 				analogWatchVector.at(i)->worldsearchlist->ShowWindow(SW_HIDE);
+				analogWatchVector.at(i)->SetFocus();
+				analogWatchVector.at(i)->m_edit_digital_clock.HideCaret();
 			}
-			bWillModify = false;
+		}
+	}
+	else if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE)
+		{
+			return TRUE;
 		}
 	}
 
@@ -474,4 +513,20 @@ void WorldClock::OnBnClickedButtonWorldSearch()
 		worldsearchlist->ShowWindow(SW_SHOW);
 	}
 	m_edit_search.SetFocus();*/
+}
+
+
+void WorldClock::OnBnClickedButtonWorldclockSyncronize()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (MessageBox(_T("로컬 시간으로 동기화 하시겠습니까?"), _T("동기화"), MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+	{
+		for (int i = 0; i < (int)analogWatchVector.size(); i++)
+		{
+			analogWatchVector.at(i)->bTimeSync = false;
+		}
+		nErrorTimeHour = 0;
+		nErrorTimeMinute = 0;
+		nErrorTimeSecond = 0;
+	}
 }

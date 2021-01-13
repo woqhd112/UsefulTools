@@ -105,7 +105,6 @@ BOOL CBOKOToolsApp::InitInstance()
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
 
-
 	return FALSE;
 }
 
