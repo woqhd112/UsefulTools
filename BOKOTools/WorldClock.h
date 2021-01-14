@@ -74,7 +74,5 @@ public:
 	virtual void PostNcDestroy();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnEnChangeEditWorldSearch();
-	afx_msg void OnBnClickedButtonWorldSearch();
 	afx_msg void OnBnClickedButtonWorldclockSyncronize();
 };

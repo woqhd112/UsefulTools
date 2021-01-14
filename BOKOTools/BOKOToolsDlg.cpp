@@ -1222,15 +1222,24 @@ void CBOKOToolsDlg::OnMenuSortIcon()
 void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	
 	CMenu mainMenu;
 	mainMenu.LoadMenuW(IDR_MENU_MAIN);
 
 	CMenu* pPopupMenu = mainMenu.GetSubMenu(0);
 	
 	this->ClientToScreen(&point);
-	
+
 	pPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+
+	LOGFONT logfont;
+	memset(&logfont, 0, sizeof(LOGFONT));
+	logfont.lfCharSet = 0x81; // 한글 Character Set
+	logfont.lfHeight = 12; // 12 point 크기
+	wcscpy_s(logfont.lfFaceName, _T("godoMaum"));
+	::SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(LOGFONT), &logfont, 0);
+	afxGlobalData.SetMenuFont(&logfont, TRUE);
+
 
 	CDialogEx::OnRButtonDown(nFlags, point);
 }

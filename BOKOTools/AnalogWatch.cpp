@@ -88,8 +88,8 @@ BOOL AnalogWatch::OnInitDialog()
 void AnalogWatch::Initialize(ClockData* clockData)
 {
 	this->GetWindowRect(thisRect);
-	watchRect = { 5, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 };
-	watchBorderRect = { 0, 30 + 40 - 5, thisRect.Width(), 30 + 40 + thisRect.Width() };
+	watchRect = { 5, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 - 5 };
+	watchBorderRect = { 0, 30 + 40 - 5, thisRect.Width(), 30 + 40 + thisRect.Width() - 5 };
 	cpt = watchRect.CenterPoint();
 
 	m_stt_analog_worldname.Initialize(25, _T("godoMaum"));
@@ -98,7 +98,7 @@ void AnalogWatch::Initialize(ClockData* clockData)
 	m_stt_analog_date.MoveWindow(0, 30, thisRect.Width(), 30);
 
 	m_edit_analog_search.Initialize(20, _T("godoMaum"));
-	m_edit_analog_search.MoveWindow(0, 30 + 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 40, 30);
+	m_edit_analog_search.MoveWindow(0, 30 + 40 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 30, 30);
 	int nDigitalFontSize = 0;
 	int nDigitalFontHeight = 0;
 	if (nClockIdx > 0)
@@ -116,9 +116,9 @@ void AnalogWatch::Initialize(ClockData* clockData)
 
 	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
 	m_btn_analog_submit.SetTextColor(currentTheme->GetTextColor());
-	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 40 + 10, 30 + 40 + thisRect.Width() - 5 + 10, 30, 30);
+	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 35 + 10, 30 + 40 + thisRect.Width() - 5 + 10, 30, 30);
 
-	CRect dynamicSearchRect = { 0, 30 + 40 + thisRect.Width() - 5 - 135 + 10, thisRect.Width() - 5 - 40, 30 + 40 + thisRect.Width() - 5 + 10 };
+	CRect dynamicSearchRect = { 0, 30 + 40 + thisRect.Width() - 5 - 135 + 10, thisRect.Width() - 5 - 30, 30 + 40 + thisRect.Width() - 5 + 10 };
 	worldsearchlist = new WorldSearchList(dynamicSearchRect, currentTheme, this);
 	worldsearchlist->Create(IDD_DIALOG_SEARCH_LIST, this);
 	worldsearchlist->MoveWindow(dynamicSearchRect);
@@ -143,7 +143,7 @@ void AnalogWatch::InvalidClockRect(ClockData* clockData)
 	this->clockData = clockData;
 	if (!worldclock->bWillModify)
 	{
-		InvalidateRect(watchRect);
+		InvalidateRect(watchBorderRect);
 	}
 }
 
@@ -364,37 +364,32 @@ void AnalogWatch::OnPaint()
 		borderAMPMPenColor = RGB(255, 255, 255);
 	}
 
-	CBrush boderAMPMBrush;
-	CBrush ellipseBrush;
-	CPen borderAMPMPen;
+	CBrush boderAMPMBrush, ellipseBrush, *pOldBrush;
+	CPen borderAMPMPen, markpen, ellipsePen, *pOldPen;
+	CFont font, *pOldFont;
+
+	markpen.CreatePen(PS_SOLID, (int)(watchRect.Width() / WATCH_MARKWIDTH), currentTheme->GetFunctionRectBorderColor());
+	ellipsePen.CreatePen(PS_SOLID, 2, currentTheme->GetFunctionRectBorderColor());
 	borderAMPMPen.CreatePen(PS_GEOMETRIC, 1, borderAMPMPenColor);
 	boderAMPMBrush.CreateSolidBrush(borderAMPMBrushColor);
-	CPen *oldPen = dc.SelectObject(&borderAMPMPen);
-	CBrush *pOldBrush = dc.SelectObject(&boderAMPMBrush);
-	dc.Ellipse(&watchBorderRect);
-
 	ellipseBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
+	font.CreatePointFont(watchRect.Width() / WATCH_HOURTEXT, _T("godoMaum"));
+
+	pOldPen = dc.SelectObject(&borderAMPMPen);
+	pOldBrush = dc.SelectObject(&boderAMPMBrush);
+
+	dc.Ellipse(&watchBorderRect);
 	dc.SelectObject(&ellipseBrush);
 	dc.Ellipse(&watchRect);
-
-	dc.SelectObject(oldPen);
-	dc.SelectObject(pOldBrush);
 
 	const CPoint cpt = watchRect.CenterPoint();
 	double radius = watchRect.Width() / 2;
 
-	CPen markpen(PS_SOLID, (int)(watchRect.Width() / WATCH_MARKWIDTH), currentTheme->GetFunctionRectBorderColor());
-	CPen *pOldPen = dc.SelectObject(&markpen);
+	dc.SelectObject(&markpen);
 
-	CFont font, *pOldFont;
-	font.CreatePointFont(watchRect.Width() / WATCH_HOURTEXT, _T("godoMaum"));
 	pOldFont = dc.SelectObject(&font);
 
-
 	int minmark = 0;
-
-	CPen ellipsePen(PS_SOLID, 2, currentTheme->GetFunctionRectBorderColor());
-	//pOldPen = dc.SelectObject(&ellipsePen);
 
 	for (int i = 0; i < 360; i += 6)
 	{

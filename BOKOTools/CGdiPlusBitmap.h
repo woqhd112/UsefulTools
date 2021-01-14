@@ -10,7 +10,14 @@ public:
 	CGdiPlusBitmap(LPCWSTR pFile)				{ m_pBitmap = NULL; Load(pFile); }
 	virtual ~CGdiPlusBitmap()					{ Empty(); }
 
-	void Empty()								{ delete m_pBitmap; m_pBitmap = NULL; }
+	void Empty()							
+	{
+		if (m_pBitmap)
+		{
+			delete m_pBitmap;
+			m_pBitmap = NULL;
+		}
+	}
 
 	bool Load(LPCWSTR pFile)
 	{

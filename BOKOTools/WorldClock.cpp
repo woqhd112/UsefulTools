@@ -73,8 +73,6 @@ void WorldClock::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(WorldClock, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
-	ON_EN_CHANGE(IDC_EDIT_WORLD_SEARCH, &WorldClock::OnEnChangeEditWorldSearch)
-	ON_BN_CLICKED(IDC_BUTTON_WORLD_SEARCH, &WorldClock::OnBnClickedButtonWorldSearch)
 	ON_BN_CLICKED(IDC_BUTTON_WORLDCLOCK_SYNCRONIZE, &WorldClock::OnBnClickedButtonWorldclockSyncronize)
 END_MESSAGE_MAP()
 
@@ -512,49 +510,6 @@ HBRUSH WorldClock::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
-}
-
-
-void WorldClock::OnEnChangeEditWorldSearch()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	// 동적으로 입력한 텍스트를 worldsearchlist에서 로드된 시간데이터와 비교하여 같은값만 worldsearchlist 화면에 출력
-	// 입력한 값이 존재하면 worldsearchlist의 화면을 sh_show 하고 없으면 sh_hide 한다
-
-	/*CString strSearchText;
-	m_edit_search.GetWindowTextW(strSearchText);
-	if (strSearchText.IsEmpty())
-	{
-		worldsearchlist->ShowWindow(SW_HIDE);
-		return;
-	}
-
-	if (worldsearchlist->SearchClockListFromInputText(strSearchText))
-	{
-		worldsearchlist->ShowWindow(SW_SHOW);
-	}
-	m_edit_search.SetFocus();*/
-	
-}
-
-
-void WorldClock::OnBnClickedButtonWorldSearch()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	/*CString strSearchText;
-	m_edit_search.GetWindowTextW(strSearchText);
-
-	if (worldsearchlist->SearchClockListFromInputText(strSearchText))
-	{
-		worldsearchlist->ShowWindow(SW_SHOW);
-	}
-	m_edit_search.SetFocus();*/
 }
 
 

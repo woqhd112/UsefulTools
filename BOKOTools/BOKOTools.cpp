@@ -7,6 +7,7 @@
 #include "BOKOTools.h"
 #include "BOKOToolsDlg.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -29,6 +30,10 @@ CBOKOToolsApp::CBOKOToolsApp()
 	// InitInstance에 모든 중요한 초기화 작업을 배치합니다.
 }
 
+CBOKOToolsApp::~CBOKOToolsApp()
+{
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+}
 
 // 유일한 CBaseCalculatorApp 개체입니다.
 

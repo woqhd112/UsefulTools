@@ -22,6 +22,7 @@ class CBOKOToolsApp : public CWinApp
 {
 public:
 	CBOKOToolsApp();
+	~CBOKOToolsApp();
 	ULONG_PTR m_gdiplusToken;
 
 // 재정의입니다.
