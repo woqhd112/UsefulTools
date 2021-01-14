@@ -37,7 +37,7 @@ private:
 
 	CBrush m_backBrush;
 	CBrush m_digitalBrush;
-	CRect thisRect, watchRect;
+	CRect thisRect, watchRect, watchBorderRect;
 	CalculateStatic m_stt_analog_date;
 	CalculateStatic m_stt_analog_worldname;
 	CalculateButton m_btn_analog_submit;
@@ -46,8 +46,6 @@ private:
 
 	int nClockIdx;
 	bool bClockDataInit;
-	CString strSaveTime;
-	CString strOffsetTime;
 
 	enum TIME_ { TIME_SEC, TIME_MIN, TIME_HOUR };
 

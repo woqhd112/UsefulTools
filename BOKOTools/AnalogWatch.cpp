@@ -88,7 +88,8 @@ BOOL AnalogWatch::OnInitDialog()
 void AnalogWatch::Initialize(ClockData* clockData)
 {
 	this->GetWindowRect(thisRect);
-	watchRect = { 0, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 };
+	watchRect = { 5, 30 + 40, thisRect.Width() - 5, 30 + 40 + thisRect.Width() - 5 };
+	watchBorderRect = { 0, 30 + 40 - 5, thisRect.Width(), 30 + 40 + thisRect.Width() };
 	cpt = watchRect.CenterPoint();
 
 	m_stt_analog_worldname.Initialize(25, _T("godoMaum"));
@@ -202,7 +203,6 @@ BOOL AnalogWatch::PreTranslateMessage(MSG* pMsg)
 		else if (pMsg->hwnd == m_edit_digital_clock.m_hWnd)
 		{
 			worldclock->bWillModify = true;
-			m_edit_digital_clock.GetWindowTextW(strSaveTime);
 		}
 	}
 	else if (pMsg->message == WM_KEYDOWN)
@@ -327,24 +327,9 @@ void AnalogWatch::SetErrorTime()
 	AfxExtractSubString(strFormatMinute, strFormatTime, 1, ':');
 	AfxExtractSubString(strFormatSecond, strFormatTime, 2, ':');
 
-	CString offsetHour, offsetMinute, offsetSecond;
-	AfxExtractSubString(offsetHour, strSaveTime, 0, ':');
-	AfxExtractSubString(offsetMinute, strSaveTime, 1, ':');
-	AfxExtractSubString(offsetSecond, strSaveTime, 2, ':');
-
 	int nHour = _ttoi(strFormatHour);
 	int nMinute = _ttoi(strFormatMinute);
 	int nSecond = _ttoi(strFormatSecond);
-
-	int nOffsetHour = _ttoi(offsetHour);
-	int nOffsetMinute = _ttoi(offsetMinute);
-	int nOffsetSecond = _ttoi(offsetSecond);
-
-	CString strSymbol = nOffsetHour - nHour > 0? _T("+") : _T("-");
-
-	// 이곳을 로컬시간의 오차로 수정
-	strOffsetTime.Format(_T("시간 오차 : %s %02d:%02d:%02d"), strSymbol, abs(nOffsetHour - nHour), abs(nOffsetMinute - nMinute), abs(nOffsetSecond - nSecond));
-	TRACE(L"%s\n", strOffsetTime);
 
 	worldclock->nErrorTimeHour += (curTime.GetHour() - nHour);
 	worldclock->nErrorTimeMinute += (curTime.GetMinute() - nMinute);
@@ -357,7 +342,6 @@ void AnalogWatch::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-
 	if (bClockDataInit)
 	{
 		CString strCurDate, strCurTime;
@@ -365,13 +349,35 @@ void AnalogWatch::OnPaint()
 		strCurTime.Format(_T("%02d:%02d:%02d"), clockData->curTimeVal.GetHour(), clockData->curTimeVal.GetMinute(), clockData->curTimeVal.GetSecond());
 		m_stt_analog_date.SetWindowTextW(strCurDate);
 		m_edit_digital_clock.SetWindowTextW(strCurTime);
+
 	}
 
-	CBrush ellipseBrush;
-	ellipseBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	CBrush *pOldBrush = dc.SelectObject(&ellipseBrush);
+	COLORREF borderAMPMBrushColor,borderAMPMPenColor;
+	if (clockData->curTimeVal.GetHour() < 12)
+	{
+		borderAMPMBrushColor = RGB(255, 255, 255);
+		borderAMPMPenColor = RGB(0, 0, 0);
+	}
+	else
+	{
+		borderAMPMBrushColor = RGB(0, 0, 0);
+		borderAMPMPenColor = RGB(255, 255, 255);
+	}
 
+	CBrush boderAMPMBrush;
+	CBrush ellipseBrush;
+	CPen borderAMPMPen;
+	borderAMPMPen.CreatePen(PS_GEOMETRIC, 1, borderAMPMPenColor);
+	boderAMPMBrush.CreateSolidBrush(borderAMPMBrushColor);
+	CPen *oldPen = dc.SelectObject(&borderAMPMPen);
+	CBrush *pOldBrush = dc.SelectObject(&boderAMPMBrush);
+	dc.Ellipse(&watchBorderRect);
+
+	ellipseBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
+	dc.SelectObject(&ellipseBrush);
 	dc.Ellipse(&watchRect);
+
+	dc.SelectObject(oldPen);
 	dc.SelectObject(pOldBrush);
 
 	const CPoint cpt = watchRect.CenterPoint();
@@ -442,6 +448,8 @@ void AnalogWatch::OnPaint()
 	ellipsePen.DeleteObject();
 	markpen.DeleteObject();
 	font.DeleteObject();
+	borderAMPMPen.DeleteObject();
+	boderAMPMBrush.DeleteObject();
 }
 
 

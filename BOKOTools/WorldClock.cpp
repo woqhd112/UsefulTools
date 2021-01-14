@@ -101,43 +101,43 @@ BOOL WorldClock::OnInitDialog()
 
 	this->SetWindowPos(NULL, 0, 0, 1000, 620, SWP_NOMOVE);
 
-	m_stt_clock_offset.MoveWindow(70, 60 + 200 + 40 + 40 + 40, 200, 30);
+	m_stt_clock_offset.MoveWindow(65, 60 + 200 + 40 + 40 + 40, 210, 30);
 	m_stt_clock_offset.SetWindowTextW(_T("시간 오차 : + 00:00:00"));
-	m_btn_worldclock_localtime_sync.MoveWindow(70, 60 + 200 + 40 + 40 + 40 + 35, 100, 20);
+	m_btn_worldclock_localtime_sync.MoveWindow(65, 60 + 200 + 40 + 40 + 40 + 35, 110, 20);
 
 	AnalogWatch* newAnalogwatch0 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch0->MoveWindow(70, 60, 200, 200 + 40 + 40 + 40);
+	newAnalogwatch0->MoveWindow(65, 60, 210, 200 + 40 + 40 + 40);
 	newAnalogwatch0->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch0);
 
 	AnalogWatch* newAnalogwatch1 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch1->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch1->MoveWindow(370, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch1->MoveWindow(365, 20, 160, 150 + 40 + 40 + 40);
 	newAnalogwatch1->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch1);
 
 	AnalogWatch* newAnalogwatch2 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch2->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch2->MoveWindow(570, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch2->MoveWindow(565, 20, 160, 150 + 40 + 40 + 40);
 	newAnalogwatch2->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch2);
 
 	AnalogWatch* newAnalogwatch3 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch3->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch3->MoveWindow(770, 20, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch3->MoveWindow(765, 20, 160, 150 + 40 + 40 + 40);
 	newAnalogwatch3->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch3);
 
 	AnalogWatch* newAnalogwatch4 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch4->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch4->MoveWindow(470, 270 + 30, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch4->MoveWindow(465, 270 + 30, 160, 150 + 40 + 40 + 40);
 	newAnalogwatch4->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch4);
 
 	AnalogWatch* newAnalogwatch5 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch5->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch5->MoveWindow(670, 270 + 30, 150, 150 + 40 + 40 + 40);
+	newAnalogwatch5->MoveWindow(665, 270 + 30, 160, 150 + 40 + 40 + 40);
 	newAnalogwatch5->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch5);
 
@@ -418,11 +418,22 @@ void WorldClock::StartWorldClock()
 void WorldClock::ErrorTimeCalc(AnalogWatch::ClockData* inputTime)
 {
 	inputTime->curTimeVal -= CTimeSpan(0, nErrorTimeHour, nErrorTimeMinute, nErrorTimeSecond);
-	CTimeSpan offset(0, nErrorTimeHour, nErrorTimeMinute, nErrorTimeSecond);
-	/*TRACE(L"offest hour : %d\n", offset.GetHours());
-	TRACE(L"offest minute : %d\n", offset.GetMinutes());
-	TRACE(L"offest second : %d\n", offset.GetSeconds());*/
-	m_stt_clock_offset.SetWindowTextW(analogWatchVector.at(0)->strOffsetTime);
+
+	int nOffsetHour = nErrorTimeHour * 60 * 60;
+	int nOffsetMinute = nErrorTimeMinute * 60;
+	int nOffsetSecond = nErrorTimeSecond;
+	int nOffset = nOffsetHour + nOffsetMinute + nOffsetSecond;
+	unsigned int absOffset = abs(nOffset);
+	CString strSymbol, strOffsetTime;
+	if (nOffset > 0) strSymbol = _T("-"); 
+	else			 strSymbol = _T("+");
+
+	nOffsetHour = absOffset / 3600;
+	nOffsetMinute = (absOffset % 3600) / 60;
+	nOffsetSecond = (absOffset % 3600) % 60;
+
+	strOffsetTime.Format(_T("시간 오차 : %s %02d:%02d:%02d"), strSymbol, nOffsetHour, nOffsetMinute, nOffsetSecond);
+	m_stt_clock_offset.SetWindowTextW(strOffsetTime);
 }
 
 void WorldClock::OnOK()
@@ -559,7 +570,6 @@ void WorldClock::OnBnClickedButtonWorldclockSyncronize()
 		nErrorTimeHour = 0;
 		nErrorTimeMinute = 0;
 		nErrorTimeSecond = 0;
-		analogWatchVector.at(0)->strOffsetTime = _T("시간 오차 : + 00:00:00");
-		m_stt_clock_offset.SetWindowTextW(analogWatchVector.at(0)->strOffsetTime);
+		m_stt_clock_offset.SetWindowTextW(_T("시간 오차 : + 00:00:00"));
 	}
 }
