@@ -1274,6 +1274,41 @@
     <Image Include="res\Common\WorldClock_BK.png">
       <Filter>리소스\공통 아이콘\세계시계 이미지</Filter>
     </Image>
+    <Image Include="res\Theme_Basic\Base_B.png" />
+    <Image Include="res\Theme_Basic\Base_C.png" />
+    <Image Include="res\Theme_Basic\Base_U.png" />
+    <Image Include="res\Theme_Basic\BaseTimer_B.png" />
+    <Image Include="res\Theme_Basic\BaseTimer_C.png" />
+    <Image Include="res\Theme_Basic\BaseTimer_U.png" />
+    <Image Include="res\Theme_Basic\ComingSoon.png" />
+    <Image Include="res\Theme_Basic\Converter_B.png" />
+    <Image Include="res\Theme_Basic\Converter_C.png" />
+    <Image Include="res\Theme_Basic\Converter_U.png" />
+    <Image Include="res\Theme_Basic\DateCal_B.png" />
+    <Image Include="res\Theme_Basic\DateCal_C.png" />
+    <Image Include="res\Theme_Basic\DateCal_U.png" />
+    <Image Include="res\Theme_Basic\Engineering_B.png" />
+    <Image Include="res\Theme_Basic\Engineering_C.png" />
+    <Image Include="res\Theme_Basic\Engineering_U.png" />
+    <Image Include="res\Theme_Basic\Main_BK.bmp" />
+    <Image Include="res\Theme_Basic\NotePad_B.png" />
+    <Image Include="res\Theme_Basic\NotePad_C.png" />
+    <Image Include="res\Theme_Basic\NotePad_U.png" />
+    <Image Include="res\Theme_Basic\Scroll_icon_A.png" />
+    <Image Include="res\Theme_Basic\Scroll_icon_B.png" />
+    <Image Include="res\Theme_Basic\StopWatch_B.png" />
+    <Image Include="res\Theme_Basic\StopWatch_C.png" />
+    <Image Include="res\Theme_Basic\StopWatch_U.png" />
+    <Image Include="res\Theme_Basic\ThemaChange_B.png" />
+    <Image Include="res\Theme_Basic\ThemaChange_C.png" />
+    <Image Include="res\Theme_Basic\ThemaChange_U.png" />
+    <Image Include="res\Theme_Basic\ThemaChoice_BK.bmp" />
+    <Image Include="res\Theme_Basic\WorkTimer_B.png" />
+    <Image Include="res\Theme_Basic\WorkTimer_C.png" />
+    <Image Include="res\Theme_Basic\WorkTimer_U.png" />
+    <Image Include="res\Theme_Basic\WorldClock_B.png" />
+    <Image Include="res\Theme_Basic\WorldClock_C.png" />
+    <Image Include="res\Theme_Basic\WorldClock_U.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">

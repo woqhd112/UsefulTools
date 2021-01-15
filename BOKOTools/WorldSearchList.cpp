@@ -225,7 +225,7 @@ void WorldSearchList::CreateCityDataButton(WorldClockData wcd)
 	strCityName.Replace(_T("-"), _T("\r\n"));
 	newSearchButton->Create(strCityName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	newSearchButton->ShowWindow(SW_SHOW);
-	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("가비아 솔미체"), 20);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	cityDataButtonVector.push_back(newSearchButton);
@@ -238,7 +238,7 @@ void WorldSearchList::CreateWorldDataButton(WorldClockData wcd)
 	strWorldName.Replace(_T("-"), _T("\r\n"));
 	newSearchButton->Create(strWorldName, BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, nWorldButtonID++);
 	newSearchButton->ShowWindow(SW_SHOW);
-	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
+	newSearchButton->Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("가비아 솔미체"), 20);
 	newSearchButton->SetAlignment(CMFCButton::AlignStyle::ALIGN_LEFT);
 	newSearchButton->Invalidate();
 	worldDataButtonVector.push_back(newSearchButton);

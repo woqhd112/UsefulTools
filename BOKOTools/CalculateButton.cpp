@@ -44,14 +44,13 @@ END_MESSAGE_MAP()
 
 // CalculateButton 메시지 처리기
 
-void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /*= _T("고딕")*/, int nFontSize /*= 10*/)
+void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFontName /*= _T("고딕")*/, int nFontSize /*= 10*/, int nFontFlags /*= FW_NORMAL*/)
 {
 	this->EnableWindowsTheming(FALSE);
 	this->SetFaceColor(color);
 	this->m_bDrawFocus = FALSE;
 
 	nID = this->GetDlgCtrlID();
-	int nFontFlag = 0;
 	int nRv = GetRValue(color);
 	int nGv = GetGValue(color);
 	int nBv = GetBValue(color);
@@ -67,21 +66,18 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 		nID == IDC_BUTTON_8 ||
 		nID == IDC_BUTTON_9)
 	{
-		nFontFlag = FW_BOLD;
-		nFontSize = 20;
 		m_defaultColor = color;
 		m_hoverColor = RGB(MinRGBColor(nRv, 30), MinRGBColor(nGv, 30), MinRGBColor(nBv, 30));
 		m_downColor = RGB(MinRGBColor(nRv, 80), MinRGBColor(nGv, 80), MinRGBColor(nBv, 80));
 	}
 	else
 	{
-		nFontFlag = FW_NORMAL;
 		m_defaultColor = color;
 		m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
 		m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
 	}
 
-	defaultFont.CreateFontW(nFontSize, 0, 0, 0, nFontFlag, FALSE, FALSE, 0, DEFAULT_CHARSET,
+	defaultFont.CreateFontW(nFontSize, 0, 0, 0, nFontFlags, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
 	hoverFont.CreateFontW(nFontSize, 0, 0, 0, FW_NORMAL, FALSE, TRUE, 0, DEFAULT_CHARSET,

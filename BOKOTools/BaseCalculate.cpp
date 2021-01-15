@@ -66,25 +66,31 @@ BOOL BaseCalculate::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
+	this->SetWindowPos(NULL, 0, 0, 400, 300, SWP_NOMOVE);
 
-	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
+	m_btn_result_select_from_base.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("가비아 솔미체"), 25);
 	m_btn_result_select_from_base.SetTextColor(currentTheme->GetTextColor());
-	m_edit_input_ten_from_base.Initialize(17, _T("고딕"));
-	m_edit_output_select_from_base.Initialize(17, _T("고딕"));
-	m_stt_base.Initialize(23, _T("godoMaum"));
-	m_stt_input_select.Initialize(21, _T("godoMaum"));
-	m_stt_output_result.Initialize(21, _T("godoMaum"));
-	m_stt_select_input.Initialize(21, _T("godoMaum"));
-	m_stt_result_select.Initialize(21, _T("godoMaum"));
+	m_edit_input_ten_from_base.Initialize(25, _T("가비아 솔미체"));
+	m_edit_output_select_from_base.Initialize(25, _T("가비아 솔미체"));
+	m_stt_base.Initialize(30, _T("가비아 솔미체"));
+	m_stt_input_select.Initialize(20, _T("가비아 솔미체"));
+	m_stt_output_result.Initialize(20, _T("가비아 솔미체"));
+	m_stt_select_input.Initialize(20, _T("가비아 솔미체"));
+	m_stt_result_select.Initialize(20, _T("가비아 솔미체"));
 
 	SetComboBox();
 
-	CRect borderRect, thisRect;
-	m_stt_base_view.GetWindowRect(borderRect);
-	this->GetWindowRect(thisRect);
-	int nLeft = int(borderRect.left - thisRect.left - 10);
-	int nTop = int(borderRect.top - thisRect.top - 35);
-	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+	drawBorderRect = { 20, 55, 360, 245 };
+	m_stt_base.MoveWindow(20, 20, 200, 30);
+	m_stt_select_input.MoveWindow(30, 90, 70, 20);
+	m_select.MoveWindow(100, 85, 80, 30);
+	m_stt_result_select.MoveWindow(190, 90, 70, 20);
+	m_result.MoveWindow(260, 85, 80, 30);
+	m_stt_input_select.MoveWindow(30, 130, 70, 20);
+	m_edit_input_ten_from_base.MoveWindow(100, 125, 240, 30);
+	m_stt_output_result.MoveWindow(30, 170, 70, 20);
+	m_edit_output_select_from_base.MoveWindow(100, 165, 240, 30);
+	m_btn_result_select_from_base.MoveWindow(200, 205, 140, 30);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -95,7 +101,7 @@ void BaseCalculate::SetComboBox()
 {
 	comboFont.CreateFontW(20, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
-		_T("godoMaum"));
+		_T("가비아 솔미체"));
 	m_select.SetFont(&comboFont);
 	m_select.AddString(_T("2진법"));
 	m_select.AddString(_T("3진법"));

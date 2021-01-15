@@ -93,19 +93,19 @@ BOOL WorldClock::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
-	m_btn_worldclock_localtime_sync.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("godoMaum"), 20);
+	m_btn_worldclock_localtime_sync.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("가비아 솔미체"), 18);
 	m_btn_worldclock_localtime_sync.SetTextColor(currentTheme->GetTextColor());
-	m_stt_clock_offset.Initialize(30, _T("godoMaum"));
+	m_stt_clock_offset.Initialize(25, _T("가비아 솔미체"));
 
 	this->SetWindowPos(NULL, 0, 0, 1000, 620, SWP_NOMOVE);
 
-	m_stt_clock_offset.MoveWindow(65, 60 + 200 + 40 + 40 + 40, 210, 30);
+	m_stt_clock_offset.MoveWindow(80, 90 + 200 + 40 + 40 + 40, 210, 30);
 	m_stt_clock_offset.SetWindowTextW(_T("시간 오차 : + 00:00:00"));
-	m_btn_worldclock_localtime_sync.MoveWindow(65, 60 + 200 + 40 + 40 + 40 + 35, 110, 20);
+	m_btn_worldclock_localtime_sync.MoveWindow(80, 90 + 200 + 40 + 40 + 40 + 35, 110, 20);
 
 	AnalogWatch* newAnalogwatch0 = new AnalogWatch(currentTheme, this);
 	newAnalogwatch0->Create(IDD_DIALOG_ANALOG_WATCH, this);
-	newAnalogwatch0->MoveWindow(65, 60, 210, 200 + 40 + 40 + 40);
+	newAnalogwatch0->MoveWindow(80, 90, 210, 200 + 40 + 40 + 40);
 	newAnalogwatch0->ShowWindow(SW_SHOW);
 	analogWatchVector.push_back(newAnalogwatch0);
 

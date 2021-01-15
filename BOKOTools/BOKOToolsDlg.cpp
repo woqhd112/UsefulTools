@@ -192,15 +192,15 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_ampm.Initialize(15, _T("DS-Digital"));
 	m_stt_week.Initialize(15, _T("DS-Digital"));
 	m_stt_current_time.Initialize(40, _T("DS-Digital"));
-	m_stt_engineering.Initialize(23, _T("godoMaum"));
-	m_stt_base.Initialize(23, _T("godoMaum"));
-	m_stt_converter.Initialize(23, _T("godoMaum"));
-	m_stt_date.Initialize(23, _T("godoMaum"));
-	m_stt_stopwatch.Initialize(23, _T("godoMaum"));
-	m_stt_worktimer.Initialize(23, _T("godoMaum"));
-	m_stt_notepad.Initialize(23, _T("godoMaum"));
-	m_stt_basetimer.Initialize(23, _T("godoMaum"));
-	m_stt_world_clock.Initialize(23, _T("godoMaum"));
+	m_stt_engineering.Initialize(20, _T("가비아 솔미체"));
+	m_stt_base.Initialize(20, _T("가비아 솔미체"));
+	m_stt_converter.Initialize(20, _T("가비아 솔미체"));
+	m_stt_date.Initialize(20, _T("가비아 솔미체"));
+	m_stt_stopwatch.Initialize(20, _T("가비아 솔미체"));
+	m_stt_worktimer.Initialize(20, _T("가비아 솔미체"));
+	m_stt_notepad.Initialize(20, _T("가비아 솔미체"));
+	m_stt_basetimer.Initialize(20, _T("가비아 솔미체"));
+	m_stt_world_clock.Initialize(20, _T("가비아 솔미체"));
 
 	LoadUserInterface(currentTheme);
 	
@@ -503,7 +503,7 @@ void CBOKOToolsDlg::LoadTheme()
 	// 테마 추가되면 설정하기
 	int nFlags = LoadCurrnetTheme();
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		ThemeData* theme = new ThemeData(i);
 		themeList.push_back(theme);

@@ -3,14 +3,16 @@
 
 #define THEME_MAIN_TIME_POS_UP	0
 #define THEME_MAIN_TIME_POS_DOWN	370
-#define THEME_DETECTIVE	0
-#define THEME_CLOUD 1
-#define THEME_LIGHT 2
-#define THEME_MAGNIFIER 3
-#define THEME_INK	4
-#define THEME_WATERDROP	5
-#define THEME_PLANET	6
-#define THEME_NEONSIGN	7
+#define THEME_BASIC		0
+#define THEME_DETECTIVE	1
+#define THEME_CLOUD		2
+#define THEME_LIGHT		3
+#define THEME_MAGNIFIER 4
+#define THEME_INK		5
+#define THEME_WATERDROP	6
+#define THEME_PLANET	7
+#define THEME_NEONSIGN	8
+
 
 class ThemeData
 {

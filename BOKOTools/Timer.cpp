@@ -1498,7 +1498,7 @@ bool Timer::CheckRepeatCount(bool bCalc)
 	}
 	else if (nCount == 1)
 	{
-		tr.bLastWorkClock = true;
+		if (bCalc) tr.bLastWorkClock = true;
 	}
 	if (bCalc)
 	{

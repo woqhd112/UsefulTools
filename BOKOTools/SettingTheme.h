@@ -24,6 +24,7 @@ public:
 
 private:
 
+	CGdipButton m_btn_theme_basic;
 	CGdipButton m_btn_theme_detective;
 	CGdipButton m_btn_theme_cloud;
 	CGdipButton m_btn_theme_light;

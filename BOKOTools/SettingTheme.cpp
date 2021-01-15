@@ -41,6 +41,7 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_WATERDROP, m_btn_theme_waterdrop);
 	DDX_Control(pDX, IDC_BUTTON_THEME_PLANET, m_btn_theme_planet);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NEONSIGN, m_btn_theme_neonsign);
+	DDX_Control(pDX, IDC_BUTTON_THEME_BASIC, m_btn_theme_basic);
 }
 
 
@@ -61,6 +62,10 @@ BOOL SettingTheme::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundImage(currentTheme->GetSettingThemeBkIconID());
+
+	m_btn_theme_basic.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_BASIC, _T("PNG"), true);
+	m_btn_theme_basic.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_BASIC, _T("PNG"), true);
+	m_btn_theme_basic.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_BASIC, _T("PNG"), true);
 	
 	m_btn_theme_detective.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_DETECTIVE, _T("PNG"), true);
 	m_btn_theme_detective.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_DETECTIVE, _T("PNG"), true);
@@ -136,13 +141,13 @@ void SettingTheme::SetCtlPos()
 	// 첫번째 페이지, 페이지당 4줄
 	{
 		// 첫재줄
-		SetButtonPos(m_btn_theme_detective.GetDlgCtrlID(), m_btn_theme_cloud.GetDlgCtrlID(), m_btn_theme_light.GetDlgCtrlID(), 0);
+		SetButtonPos(m_btn_theme_basic.GetDlgCtrlID(), m_btn_theme_detective.GetDlgCtrlID(), m_btn_theme_cloud.GetDlgCtrlID(), 0);
 
 		// 두번째줄
-		SetButtonPos(m_btn_theme_magnifier.GetDlgCtrlID(), m_btn_theme_ink.GetDlgCtrlID(), m_btn_theme_waterdrop.GetDlgCtrlID(), 1);
+		SetButtonPos(m_btn_theme_light.GetDlgCtrlID(), m_btn_theme_magnifier.GetDlgCtrlID(), m_btn_theme_ink.GetDlgCtrlID(), 1);
 
 		// 세번째줄
-		SetButtonPos(m_btn_theme_planet.GetDlgCtrlID(), m_btn_theme_neonsign.GetDlgCtrlID(), 0, 2);
+		SetButtonPos(m_btn_theme_waterdrop.GetDlgCtrlID(), m_btn_theme_planet.GetDlgCtrlID(), m_btn_theme_neonsign.GetDlgCtrlID(), 2);
 
 	}
 	scroll.LineEnd();
@@ -166,45 +171,50 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if (pMsg->message == WM_LBUTTONUP)
 	{
-		if (pMsg->hwnd == m_btn_theme_detective.m_hWnd)
+		if (pMsg->hwnd == m_btn_theme_basic.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_BASIC);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_BASIC, themeList.at(0));
+		}
+		else if (pMsg->hwnd == m_btn_theme_detective.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_DETECTIVE);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_DETECTIVE, themeList.at(0));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_DETECTIVE, themeList.at(1));
 		}
 		else if (pMsg->hwnd == m_btn_theme_cloud.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_CLOUD);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_CLOUD, themeList.at(1));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_CLOUD, themeList.at(2));
 		}
 		else if (pMsg->hwnd == m_btn_theme_light.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_LIGHT);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_LIGHT, themeList.at(2));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_LIGHT, themeList.at(3));
 		}
 		else if (pMsg->hwnd == m_btn_theme_magnifier.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_MAGNIFIER);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_MAGNIFIER, themeList.at(3));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_MAGNIFIER, themeList.at(4));
 		}
 		else if (pMsg->hwnd == m_btn_theme_ink.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_INK);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_INK, themeList.at(4));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_INK, themeList.at(5));
 		}
 		else if (pMsg->hwnd == m_btn_theme_waterdrop.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_WATERDROP);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_WATERDROP, themeList.at(5));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_WATERDROP, themeList.at(6));
 		}
 		else if (pMsg->hwnd == m_btn_theme_planet.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_PLANET);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_PLANET, themeList.at(5));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_PLANET, themeList.at(7));
 		}
 		else if (pMsg->hwnd == m_btn_theme_neonsign.m_hWnd)
 		{
 			ExecuteSelectTheme(THEME_NEONSIGN);
-			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_NEONSIGN, themeList.at(6));
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_NEONSIGN, themeList.at(8));
 		}
 	}
 	else if (pMsg->message == WM_KEYDOWN)
@@ -223,6 +233,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	this->SetBackgroundImage(nSettingThemeBkIconID);
 	scroll.ThemeChange(hoverTheme);
 	Invalidate();
+	m_btn_theme_basic.DisConnect();
 	m_btn_theme_detective.DisConnect();
 	m_btn_theme_cloud.DisConnect();
 	m_btn_theme_light.DisConnect();

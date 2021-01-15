@@ -128,6 +128,7 @@ HBRUSH ResultTimeline::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() >= 10001)
 		{
 			pDC->SetBkColor(currentTheme->GetFunctionSubColor());
+			pDC->SetTextColor(currentTheme->GetFunctionTextColor());
 			hbr = (HBRUSH)m_backBrush;
 		}
 	}
