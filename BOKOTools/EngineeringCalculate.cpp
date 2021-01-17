@@ -122,13 +122,13 @@ BOOL EngineeringCalculate::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	GetWindowRect(&thisRect);
 
-	this->SetWindowPos(NULL, 0, 0, 300, 440, SWP_NOMOVE);
+	this->SetWindowPos(NULL, 0, 0, 300, 450, SWP_NOMOVE);
 	this->GetWindowRect(thisRect);
 
 	timeline->Create(IDD_DIALOG_TIMELINE, this);
-	timeline->MoveWindow(300, 43, 220, 305);
+	timeline->MoveWindow(300, 45, 220, 305);
+	drawTimelineBorderRect = {298, 43, 300 + 222, 45 + 307};
 	m_btn_report.MoveWindow(250, 10, 24, 24);
 	m_btn_trash.MoveWindow(495, 360, 24, 24);
 	timeline->ShowWindow(SW_HIDE);
@@ -136,40 +136,40 @@ BOOL EngineeringCalculate::OnInitDialog()
 
 	m_stt_calculate_view.MoveWindow(8, 45, 276, 135);
 	drawBorderRect = { 7, 43, 278, 137 };
-	// 아래 에딧들과 버튼들 resulttimeline의 에딧위치 사이즈 조정해야함
-	m_edit_calculate_view.ShowWindow(SW_HIDE);
-	m_edit_result.ShowWindow(SW_HIDE);
-
+	m_edit_calculate_view.MoveWindow(9, 50, 265, 30);
+	m_edit_result.MoveWindow(9, 100, 265, 30);
 	m_stt_btn_calculate_view.MoveWindow(8, 148, 276, 395);
 	drawButtonBorderRect = { 7, 146, 278, 393 };
 
+	SetButtonPos();
+	
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
 	COLORREF buttonColor = RGB(MaxRGBColor(GetRValue(currentTheme->GetButtonColor()), 20), MaxRGBColor(GetGValue(currentTheme->GetButtonColor()), 20), MaxRGBColor(GetBValue(currentTheme->GetButtonColor()), 20));
-	m_btn_0.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_1.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_2.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_3.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_4.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_5.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_6.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_7.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_8.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_9.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 20, FW_BOLD);
-	m_btn_back.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_clear.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_divide.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_multi.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_sum.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_min.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_result.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_dot.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_openbracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_closebracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_exponentiation.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_remainer.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_root.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
-	m_btn_factorial.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 15, FW_NORMAL);
+	m_btn_0.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_1.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_2.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_3.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_4.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_5.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_6.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_7.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_8.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_9.Initialize(buttonColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("고딕"), 23, FW_BOLD);
+	m_btn_back.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_clear.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_divide.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_multi.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_sum.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_min.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_result.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_dot.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_openbracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_closebracket.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_exponentiation.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_remainer.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_root.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
+	m_btn_factorial.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 17, FW_NORMAL);
 
 	m_btn_0.SetTextColor(currentTheme->GetTextColor());
 	m_btn_1.SetTextColor(currentTheme->GetTextColor());
@@ -221,6 +221,46 @@ BOOL EngineeringCalculate::OnInitDialog()
 	
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+void EngineeringCalculate::SetButtonPos()
+{
+	int nButtonStartPos_x = 15;
+	int nButtonStartPos_y = 154;
+	int nButtonWidth = 60;
+	int nButtonHeight = 34;
+	int nButtonMargin = 5;
+
+	m_btn_remainer.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 0, nButtonWidth, nButtonHeight);
+	m_btn_root.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 0, nButtonWidth, nButtonHeight);
+	m_btn_exponentiation.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 0, nButtonWidth, nButtonHeight);
+	m_btn_factorial.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 0, nButtonWidth, nButtonHeight);
+
+	m_btn_clear.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 1, nButtonWidth, nButtonHeight);
+	m_btn_back.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 1, nButtonWidth, nButtonHeight);
+	m_btn_openbracket.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 1, nButtonWidth, nButtonHeight);
+	m_btn_closebracket.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 1, nButtonWidth, nButtonHeight);
+
+	m_btn_7.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 2, nButtonWidth, nButtonHeight);
+	m_btn_8.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 2, nButtonWidth, nButtonHeight);
+	m_btn_9.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 2, nButtonWidth, nButtonHeight);
+	m_btn_divide.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 2, nButtonWidth, nButtonHeight);
+
+	m_btn_4.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 3, nButtonWidth, nButtonHeight);
+	m_btn_5.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 3, nButtonWidth, nButtonHeight);
+	m_btn_6.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 3, nButtonWidth, nButtonHeight);
+	m_btn_multi.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 3, nButtonWidth, nButtonHeight);
+
+	m_btn_1.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 4, nButtonWidth, nButtonHeight);
+	m_btn_2.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 4, nButtonWidth, nButtonHeight);
+	m_btn_3.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 4, nButtonWidth, nButtonHeight);
+	m_btn_sum.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 4, nButtonWidth, nButtonHeight);
+
+	m_btn_dot.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 0, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 5, nButtonWidth, nButtonHeight);
+	m_btn_0.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 1, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 5, nButtonWidth, nButtonHeight);
+	m_btn_result.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 2, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 5, nButtonWidth, nButtonHeight);
+	m_btn_min.MoveWindow(nButtonStartPos_x + (nButtonWidth + nButtonMargin) * 3, nButtonStartPos_y + (nButtonHeight + nButtonMargin) * 5, nButtonWidth, nButtonHeight);
+
 }
 
 // 클리어버튼 1. 에딧 클리어, 2. 계산 초기화
@@ -1238,6 +1278,7 @@ void EngineeringCalculate::OnPaint()
 
 	dc.Draw3dRect(drawBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
 	dc.Draw3dRect(drawButtonBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(drawTimelineBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
 
 	CBrush *pOld = dc.SelectObject(&m_backBrush);
 	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);

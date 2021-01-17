@@ -1274,41 +1274,111 @@
     <Image Include="res\Common\WorldClock_BK.png">
       <Filter>리소스\공통 아이콘\세계시계 이미지</Filter>
     </Image>
-    <Image Include="res\Theme_Basic\Base_B.png" />
-    <Image Include="res\Theme_Basic\Base_C.png" />
-    <Image Include="res\Theme_Basic\Base_U.png" />
-    <Image Include="res\Theme_Basic\BaseTimer_B.png" />
-    <Image Include="res\Theme_Basic\BaseTimer_C.png" />
-    <Image Include="res\Theme_Basic\BaseTimer_U.png" />
-    <Image Include="res\Theme_Basic\ComingSoon.png" />
-    <Image Include="res\Theme_Basic\Converter_B.png" />
-    <Image Include="res\Theme_Basic\Converter_C.png" />
-    <Image Include="res\Theme_Basic\Converter_U.png" />
-    <Image Include="res\Theme_Basic\DateCal_B.png" />
-    <Image Include="res\Theme_Basic\DateCal_C.png" />
-    <Image Include="res\Theme_Basic\DateCal_U.png" />
-    <Image Include="res\Theme_Basic\Engineering_B.png" />
-    <Image Include="res\Theme_Basic\Engineering_C.png" />
-    <Image Include="res\Theme_Basic\Engineering_U.png" />
-    <Image Include="res\Theme_Basic\Main_BK.bmp" />
-    <Image Include="res\Theme_Basic\NotePad_B.png" />
-    <Image Include="res\Theme_Basic\NotePad_C.png" />
-    <Image Include="res\Theme_Basic\NotePad_U.png" />
-    <Image Include="res\Theme_Basic\Scroll_icon_A.png" />
-    <Image Include="res\Theme_Basic\Scroll_icon_B.png" />
-    <Image Include="res\Theme_Basic\StopWatch_B.png" />
-    <Image Include="res\Theme_Basic\StopWatch_C.png" />
-    <Image Include="res\Theme_Basic\StopWatch_U.png" />
-    <Image Include="res\Theme_Basic\ThemaChange_B.png" />
-    <Image Include="res\Theme_Basic\ThemaChange_C.png" />
-    <Image Include="res\Theme_Basic\ThemaChange_U.png" />
-    <Image Include="res\Theme_Basic\ThemaChoice_BK.bmp" />
-    <Image Include="res\Theme_Basic\WorkTimer_B.png" />
-    <Image Include="res\Theme_Basic\WorkTimer_C.png" />
-    <Image Include="res\Theme_Basic\WorkTimer_U.png" />
-    <Image Include="res\Theme_Basic\WorldClock_B.png" />
-    <Image Include="res\Theme_Basic\WorldClock_C.png" />
-    <Image Include="res\Theme_Basic\WorldClock_U.png" />
+    <Image Include="res\Theme_Basic\Base_B.png">
+      <Filter>리소스\기본 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Base_C.png">
+      <Filter>리소스\기본 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Base_U.png">
+      <Filter>리소스\기본 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\BaseTimer_B.png">
+      <Filter>리소스\기본 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\BaseTimer_C.png">
+      <Filter>리소스\기본 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\BaseTimer_U.png">
+      <Filter>리소스\기본 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\ComingSoon.png">
+      <Filter>리소스\기본 테마\커밍순 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Converter_B.png">
+      <Filter>리소스\기본 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Converter_C.png">
+      <Filter>리소스\기본 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Converter_U.png">
+      <Filter>리소스\기본 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\DateCal_B.png">
+      <Filter>리소스\기본 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\DateCal_C.png">
+      <Filter>리소스\기본 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\DateCal_U.png">
+      <Filter>리소스\기본 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Engineering_B.png">
+      <Filter>리소스\기본 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Engineering_C.png">
+      <Filter>리소스\기본 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Engineering_U.png">
+      <Filter>리소스\기본 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Main_BK.bmp">
+      <Filter>리소스\기본 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\NotePad_B.png">
+      <Filter>리소스\기본 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\NotePad_C.png">
+      <Filter>리소스\기본 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\NotePad_U.png">
+      <Filter>리소스\기본 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Scroll_icon_A.png">
+      <Filter>리소스\기본 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\Scroll_icon_B.png">
+      <Filter>리소스\기본 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\StopWatch_B.png">
+      <Filter>리소스\기본 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\StopWatch_C.png">
+      <Filter>리소스\기본 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\StopWatch_U.png">
+      <Filter>리소스\기본 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\ThemaChange_B.png">
+      <Filter>리소스\기본 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\ThemaChange_C.png">
+      <Filter>리소스\기본 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\ThemaChange_U.png">
+      <Filter>리소스\기본 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\ThemaChoice_BK.bmp">
+      <Filter>리소스\기본 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorkTimer_B.png">
+      <Filter>리소스\기본 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorkTimer_C.png">
+      <Filter>리소스\기본 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorkTimer_U.png">
+      <Filter>리소스\기본 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorldClock_B.png">
+      <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorldClock_C.png">
+      <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Basic\WorldClock_U.png">
+      <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1766,6 +1836,51 @@
     </Filter>
     <Filter Include="리소스\공통 아이콘\세계시계 이미지">
       <UniqueIdentifier>{b8ceb5a6-4147-49c3-80a6-0bd3349ec3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마">
+      <UniqueIdentifier>{b613fae1-ab28-4d47-a6ad-8ae7b5aa3201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{92bc7ee7-fded-4541-bf70-fa9cf6c0c110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\테마세팅 배경">
+      <UniqueIdentifier>{55729363-bdcf-489e-88d5-3c2309c78083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\커밍순 아이콘">
+      <UniqueIdentifier>{c95bd88b-496c-4775-ad1b-df0dcb4cb4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{de1317ab-1f2a-4a35-a3cb-ebd5eef7c07f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{4a304805-2f53-4630-9317-11b29acb8eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{81e8ef5c-75a7-46d1-ac66-10a9fb116832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\스크롤 아이콘">
+      <UniqueIdentifier>{35ea3365-7784-45e8-8b39-637fc7ac8bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\세계시계 아이콘">
+      <UniqueIdentifier>{33325ba5-31ad-40f2-b3c2-e13027eaf699}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\메인 배경">
+      <UniqueIdentifier>{d5f550e7-eabe-425d-86eb-4729d0c8b67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\메모장 아이콘">
+      <UniqueIdentifier>{51941b43-608f-463a-a601-c571ceb4df2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{44f9cb8f-b979-4cf7-a67f-fef8f99bfeeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{365c40b9-f173-49f9-9223-433a5940ce52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{89526714-65bf-47ba-8fea-e44acf5038f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\기본 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{f6d7bea2-e0f8-4193-8f5f-b356c607040a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

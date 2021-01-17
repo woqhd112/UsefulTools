@@ -3,6 +3,7 @@
 
 #define THEME_MAIN_TIME_POS_UP	0
 #define THEME_MAIN_TIME_POS_DOWN	370
+
 #define THEME_BASIC		0
 #define THEME_DETECTIVE	1
 #define THEME_CLOUD		2
@@ -35,6 +36,7 @@ private:
 	};
 
 	CString strThemeName;
+	CString strThemeFontName;
 	FunctionIcon themeButtonIcon;
 	FunctionIcon baseIcon;
 	FunctionIcon engineeringIcon;
@@ -63,6 +65,7 @@ public:
 
 	int GetThemeFlags() const;
 	CString GetThemeName() const;
+	CString GetThemeFontName() const;
 	FunctionIcon GetThemeButtonIcon() const;
 	FunctionIcon GetBaseIcon() const;
 	FunctionIcon GetEngineeringIcon() const;

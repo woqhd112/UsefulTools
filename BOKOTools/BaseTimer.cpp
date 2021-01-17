@@ -98,12 +98,29 @@ BOOL BaseTimer::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
-	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_m_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_m_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_s_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_s_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	this->SetWindowPos(NULL, 0, 0, 320, 220, SWP_NOMOVE);
+
+	m_stt_basetimer_view.MoveWindow(50, 20, 200, 90);
+	drawBorderRect = { 49, 19, 202 + 49, 92 + 19 };
+
+	m_edit_basetimer_m.MoveWindow(55, 25, 80, 80);
+	m_stt_basetimer_colon.MoveWindow(140, 25, 20, 80);
+	m_edit_basetimer_s.MoveWindow(165, 25, 80, 80);
+
+	m_btn_m_up.MoveWindow(10, 30, 30, 30);
+	m_btn_m_down.MoveWindow(10, 70, 30, 30);
+	m_btn_s_up.MoveWindow(260, 30, 30, 30);
+	m_btn_s_down.MoveWindow(260, 70, 30, 30);
+
+	m_btn_startandstop.MoveWindow(50 ,120, 95, 30);
+	m_btn_reset.MoveWindow(155, 120, 95, 30);
+
+	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_m_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_m_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_s_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_s_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_startandstop.SetTextColor(currentTheme->GetTextColor());
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
 	m_btn_m_up.SetTextColor(currentTheme->GetTextColor());
@@ -111,10 +128,10 @@ BOOL BaseTimer::OnInitDialog()
 	m_btn_s_up.SetTextColor(currentTheme->GetTextColor());
 	m_btn_s_down.SetTextColor(currentTheme->GetTextColor());
 
-	m_edit_basetimer_m.Initialize(50, _T("DS-Digital"));
-	m_edit_basetimer_s.Initialize(50, _T("DS-Digital"));
+	m_edit_basetimer_m.Initialize(55, _T("DS-Digital"));
+	m_edit_basetimer_s.Initialize(55, _T("DS-Digital"));
 
-	m_stt_basetimer_colon.Initialize(50, _T("DS-Digital"));
+	m_stt_basetimer_colon.Initialize(55, _T("DS-Digital"));
 
 	m_stt_basetimer_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_basetimer_colon.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -125,12 +142,6 @@ BOOL BaseTimer::OnInitDialog()
 	m_edit_basetimer_m.BringWindowToTop();
 	m_edit_basetimer_s.BringWindowToTop();
 
-	CRect borderRect, thisRect;
-	this->GetWindowRect(thisRect);
-	m_stt_basetimer_view.GetWindowRect(borderRect);
-	int nLeft = int(borderRect.left - thisRect.left - 10);
-	int nTop = int(borderRect.top - thisRect.top - 35);
-	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() + 1 };
 
 	m_edit_basetimer_m.SetWindowTextW(_T("00"));
 	m_edit_basetimer_s.SetWindowTextW(_T("00"));

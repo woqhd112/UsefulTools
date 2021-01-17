@@ -95,12 +95,13 @@ private:
 	CBrush m_backBrush;
 	CRect thisRect;
 	CRect childRect;
-	CRect trashRect;
 	CRect drawBorderRect;
 	CRect drawButtonBorderRect;
+	CRect drawTimelineBorderRect;
 	ResultTimeline* timeline;
 	bool bTimeline;
 
+	void SetButtonPos();
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

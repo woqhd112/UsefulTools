@@ -55,6 +55,7 @@ private:
 	ConvertWeightTab* m_convert_weight;
 	ConvertWidthTab* m_convert_width;
 
+	CRect converterBorderRect;
 
 	CalculateButton m_btn_length;
 	CalculateButton m_btn_width;
@@ -72,4 +73,5 @@ public:
 	afx_msg void OnBnClickedButtonTimec();
 	afx_msg void OnBnClickedButtonBit();
 
+	afx_msg void OnPaint();
 };

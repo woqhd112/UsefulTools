@@ -93,9 +93,9 @@ BOOL SortIcon::OnInitDialog()
 
 	GetWindowRect(dragRect);
 
-	m_btn_sort_scroll_line.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_sort_scroll_line.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_sort_scroll_line.SetTextColor(currentTheme->GetTextColor());
-	m_btn_sort_save.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_sort_save.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_sort_save.SetTextColor(currentTheme->GetTextColor());
 
 	m_btn_sort_scroll_line.MoveWindow(nStartPos_x, nStartPos_y + 504 - 10 + 5, 474 - 10 + 30, 25);

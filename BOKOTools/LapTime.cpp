@@ -60,7 +60,7 @@ void LapTime::ResetGValue()
 {
 	nStaticEditID = 0;	// 에딧의 동적 아이디
 	nStartEditPos = 10;	// 에딧을 입력할 시작 위치
-	m_nBasic = 30;	// 스크롤 위아래 버튼 클릭 시 스크롤 간격
+	m_nBasic = 35;	// 스크롤 위아래 버튼 클릭 시 스크롤 간격
 	nViewHeight = 0;	// 스크롤 전체 출력 화면
 	nScrollPos = 0;	// 현재 스크롤의 위치
 	nPageSize = 0;	// 한페이지의 사이즈
@@ -90,16 +90,16 @@ void LapTime::AppendLapTime(CString strM, CString strS, CString strMils)
 	CalculateEdit* newEdit = new CalculateEdit;
 	newEdit->Create(WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_LEFT | WS_DISABLED, CRect(0, 0, 0, 0), this, nID);
 	newEdit->MoveWindow(10, 10, thisRect.Width() - 30, 10000);
-	newEdit->Initialize(20, _T("고딕"));
+	newEdit->Initialize(25, _T("고딕"));
 
 	CString strFormat;
 	strFormat.Format(_T("%d.\t%s : %s : %s"), nStaticLapTimeCount, strM, strS, strMils);
 	newEdit->SetWindowTextW(strFormat);
 	int lineCount = newEdit->GetLineCount();
-	newEdit->MoveWindow(10, nStartEditPos, int(thisRect.Width() * 0.9), lineCount * 20);
-	nStartEditPos += (lineCount * 20 + 10);
-	if (nViewHeight == 0) nViewHeight = 30;
-	nViewHeight += (lineCount * 20 + 10);
+	newEdit->MoveWindow(10, nStartEditPos, 240, lineCount * 25);
+	nStartEditPos += (lineCount * 25 + 10);
+	if (nViewHeight == 0) nViewHeight = 35;
+	nViewHeight += (lineCount * 25 + 10);
 	SetScrollSize(cy);
 
 	editVector.push_back(newEdit);

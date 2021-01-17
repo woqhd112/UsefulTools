@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "ConvertTimeTab.h"
+#include "GeneralUtil.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -78,23 +79,34 @@ BOOL ConvertTimeTab::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 	
-	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_TIME_NOMAL, _T("PNG"));
-	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_TIME_HOVER, _T("PNG"));
-	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
+	int nBrightness = GetBrightness(GetRValue(currentTheme->GetFunctionSubColor()), GetGValue(currentTheme->GetFunctionSubColor()), GetBValue(currentTheme->GetFunctionSubColor()));
+
+	if (nBrightness > 120)
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_TIME_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_NOMAL, _T("PNG"));
+	}
+	else
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_TIME_NOMAL, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_TIME_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
+	}
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"));
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
-	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
+	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test2.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
+	m_btn_test2.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_test2.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test2.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test3.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
+	m_btn_test3.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_test3.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test3.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test4.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 10);
+	m_btn_test4.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_test4.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test4.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
@@ -102,15 +114,15 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_btn_test3.SetTextColor(currentTheme->GetFunctionTextColor());
 	m_btn_test4.SetTextColor(currentTheme->GetFunctionTextColor());
 
-	m_edit_date.Initialize(18, _T("휴먼매직체"));
-	m_edit_hour.Initialize(18, _T("휴먼매직체"));
-	m_edit_minute.Initialize(18, _T("휴먼매직체"));
-	m_edit_second.Initialize(18, _T("휴먼매직체"));
+	m_edit_date.Initialize(18, _T("고딕"));
+	m_edit_hour.Initialize(18, _T("고딕"));
+	m_edit_minute.Initialize(18, _T("고딕"));
+	m_edit_second.Initialize(18, _T("고딕"));
 
-	m_stt_dhms.Initialize(15, _T("휴먼매직체"));
-	m_stt_hms.Initialize(15, _T("휴먼매직체"));
-	m_stt_ms.Initialize(15, _T("휴먼매직체"));
-	m_stt_s.Initialize(15, _T("휴먼매직체"));
+	m_stt_dhms.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_hms.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_ms.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_s.Initialize(20, currentTheme->GetThemeFontName());
 
 	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_test2.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);

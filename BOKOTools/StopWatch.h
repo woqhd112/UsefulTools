@@ -58,7 +58,7 @@ private:
 	bool bLaptime;
 	CRect thisRect;
 	CRect childRect;
-	CRect laptimeResetRect;
+	CRect drawlaptimeBorderRect;
 	CRect drawBorderRect;
 
 	static UINT thrStopWatch(LPVOID method);

@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "ConvertWidthTab.h"
+#include "GeneralUtil.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -80,33 +81,49 @@ BOOL ConvertWidthTab::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
-	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WIDTH_NOMAL, _T("PNG"));
-	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WIDTH_HOVER, _T("PNG"));
-	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WIDTH_CLICK, _T("PNG"));
+	int nBrightness = GetBrightness(GetRValue(currentTheme->GetFunctionSubColor()), GetGValue(currentTheme->GetFunctionSubColor()), GetBValue(currentTheme->GetFunctionSubColor()));
+
+	if (nBrightness > 120)
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WIDTH_CLICK, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WIDTH_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WIDTH_NOMAL, _T("PNG"));
+	}
+	else
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WIDTH_NOMAL, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WIDTH_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WIDTH_CLICK, _T("PNG"));
+	}
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"), 14);
+	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_combo.SetTextColor(currentTheme->GetFunctionTextColor());
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
 
-	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("고딕"));
 
-	m_stt_squared_m.Initialize(15, _T("휴먼매직체"));
-	m_stt_are.Initialize(15, _T("휴먼매직체"));
-	m_stt_hectare.Initialize(15, _T("휴먼매직체"));
-	m_stt_squared_km.Initialize(15, _T("휴먼매직체"));
-	m_stt_squared_ft.Initialize(15, _T("휴먼매직체"));
-	m_stt_squared_yd.Initialize(15, _T("휴먼매직체"));
-	m_stt_acre.Initialize(15, _T("휴먼매직체"));
-	m_stt_square_ruler.Initialize(15, _T("휴먼매직체"));
-	m_stt_square.Initialize(15, _T("휴먼매직체"));
-	m_stt_danbo.Initialize(15, _T("휴먼매직체"));
-	m_stt_jungbo.Initialize(15, _T("휴먼매직체"));
+	m_stt_squared_m.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_are.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_hectare.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_squared_km.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_squared_ft.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_squared_yd.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_acre.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_square_ruler.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_square.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_danbo.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_jungbo.Initialize(20, currentTheme->GetThemeFontName());
+
+	comboFont.CreateFontW(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		currentTheme->GetThemeFontName());
+	m_combo_left.SetFont(&comboFont);
 
 	m_combo_left.InsertString(0, _T("제곱미터 (m²)"));
 	m_combo_left.InsertString(1, _T("아르 (a)"));

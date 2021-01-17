@@ -14,6 +14,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	if (nThemeFlags == THEME_BASIC)
 	{
 		strThemeName = _T("기본 테마");
+		strThemeFontName = _T("고딕");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_BASIC, IDB_PNG_CHANGE_HOVER_THEME_BASIC, IDB_PNG_CHANGE_CLICK_THEME_BASIC };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_BASIC, IDB_PNG_BASE_HOVER_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_BASIC };
@@ -41,6 +42,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_DETECTIVE)
 	{
 		strThemeName = _T("사건 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_DETECTIVE, IDB_PNG_CHANGE_HOVER_THEME_DETECTIVE, IDB_PNG_CHANGE_CLICK_THEME_DETECTIVE };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_DETECTIVE, IDB_PNG_BASE_HOVER_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_DETECTIVE };
@@ -68,6 +70,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_CLOUD)
 	{
 		strThemeName = _T("구름 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_CLOUD, IDB_PNG_CHANGE_HOVER_THEME_CLOUD, IDB_PNG_CHANGE_CLICK_THEME_CLOUD };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_CLOUD, IDB_PNG_BASE_HOVER_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_CLOUD };
@@ -95,6 +98,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_LIGHT)
 	{
 		strThemeName = _T("조명 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_LIGHT, IDB_PNG_CHANGE_HOVER_THEME_LIGHT, IDB_PNG_CHANGE_CLICK_THEME_LIGHT };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_LIGHT, IDB_PNG_BASE_HOVER_THEME_LIGHT, IDB_PNG_BASE_CLICK_THEME_LIGHT };
@@ -122,6 +126,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_MAGNIFIER)
 	{
 		strThemeName = _T("돋보기 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_MAGNIFIER, IDB_PNG_CHANGE_HOVER_THEME_MAGNIFIER, IDB_PNG_CHANGE_CLICK_THEME_MAGNIFIER };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_MAGNIFIER, IDB_PNG_BASE_HOVER_THEME_MAGNIFIER, IDB_PNG_BASE_CLICK_THEME_MAGNIFIER };
@@ -149,6 +154,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_INK)
 	{
 		strThemeName = _T("수묵 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_INK, IDB_PNG_CHANGE_HOVER_THEME_INK, IDB_PNG_CHANGE_CLICK_THEME_INK };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_INK, IDB_PNG_BASE_HOVER_THEME_INK, IDB_PNG_BASE_CLICK_THEME_INK };
@@ -176,6 +182,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_WATERDROP)
 	{
 		strThemeName = _T("물방울 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_WATERDROP, IDB_PNG_CHANGE_HOVER_THEME_WATERDROP, IDB_PNG_CHANGE_CLICK_THEME_WATERDROP };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_WATERDROP, IDB_PNG_BASE_HOVER_THEME_WATERDROP, IDB_PNG_BASE_CLICK_THEME_WATERDROP };
@@ -203,6 +210,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_PLANET)
 	{
 		strThemeName = _T("행성 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_PLANET, IDB_PNG_CHANGE_HOVER_THEME_PLANET, IDB_PNG_CHANGE_CLICK_THEME_PLANET };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_PLANET, IDB_PNG_BASE_HOVER_THEME_PLANET, IDB_PNG_BASE_CLICK_THEME_PLANET };
@@ -230,6 +238,7 @@ ThemeData::ThemeData(int nThemeFlags)
 	else if (nThemeFlags == THEME_NEONSIGN)
 	{
 		strThemeName = _T("네온 테마");
+		strThemeFontName = _T("가비아 솔미체");
 		this->nThemeFlags = nThemeFlags;
 		themeButtonIcon = { IDB_PNG_CHANGE_NOMAL_THEME_NEONSIGN, IDB_PNG_CHANGE_HOVER_THEME_NEONSIGN, IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN };
 		baseIcon = { IDB_PNG_BASE_NOMAL_THEME_NEONSIGN, IDB_PNG_BASE_HOVER_THEME_NEONSIGN, IDB_PNG_BASE_CLICK_THEME_NEONSIGN };
@@ -369,6 +378,11 @@ ThemeData::FunctionIcon ThemeData::GetCommingSoonIcon() const
 int ThemeData::GetSettingThemeBkIconID() const
 {
 	return nSettingThemeBkIconID;
+}
+
+CString ThemeData::GetThemeFontName() const
+{
+	return strThemeFontName;
 }
 
 int ThemeData::GetMainBkIconID() const

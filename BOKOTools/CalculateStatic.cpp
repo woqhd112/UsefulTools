@@ -17,7 +17,8 @@ IMPLEMENT_DYNAMIC(CalculateStatic, CStatic)
 
 CalculateStatic::CalculateStatic()
 {
-
+	nFontSize = 0;
+	strFontName = _T("");
 }
 
 CalculateStatic::~CalculateStatic()
@@ -34,6 +35,8 @@ END_MESSAGE_MAP()
 
 void CalculateStatic::Initialize(int nFontSize, CString strFontName)
 {
+	this->strFontName = strFontName;
+	this->nFontSize = nFontSize;
 	thisFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		strFontName);
@@ -41,3 +44,12 @@ void CalculateStatic::Initialize(int nFontSize, CString strFontName)
 
 }
 
+void CalculateStatic::InvalidFont(CString strFontName)
+{
+	this->strFontName = strFontName;
+	thisFont.DeleteObject();
+	thisFont.CreateFontW(nFontSize, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		strFontName);
+	this->SetFont(&thisFont);
+}

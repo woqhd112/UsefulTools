@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(UnitConverter, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_WEIGHT, &UnitConverter::OnBnClickedButtonWeight)
 	ON_BN_CLICKED(IDC_BUTTON_TIMEC, &UnitConverter::OnBnClickedButtonTimec)
 	ON_BN_CLICKED(IDC_BUTTON_BIT, &UnitConverter::OnBnClickedButtonBit)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -91,8 +92,18 @@ BOOL UnitConverter::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
+
 	CRect tabRect;
+	this->SetWindowPos(NULL, 0, 0, 610, 450, SWP_NOMOVE);
+	m_stt_tab.MoveWindow(30, 60, 529, 314);
 	m_stt_tab.GetWindowRect(&tabRect);
+	m_btn_length.MoveWindow(30, 30, 100, 30);
+	m_btn_width.MoveWindow(135, 30, 100, 30);
+	m_btn_weight.MoveWindow(240, 30, 100, 30);
+	m_btn_bit.MoveWindow(345, 30, 100, 30);
+	m_btn_time.MoveWindow(450, 30, 100, 30);
+
+	converterBorderRect = { 30, 60, 30 + 529, 60 + 314 };
 
 	m_convert_length = new ConvertLengthTab(currentTheme, this);
 	m_convert_length->Create(IDD_TAB_LENGTH, &m_stt_tab);
@@ -119,11 +130,11 @@ BOOL UnitConverter::OnInitDialog()
 	m_convert_bit->MoveWindow(0, 0, tabRect.Width(), tabRect.Height());
 	m_convert_bit->ShowWindow(SW_HIDE);
 
-	m_btn_length.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
-	m_btn_width.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
-	m_btn_weight.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
-	m_btn_time.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
-	m_btn_bit.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_length.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_width.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_weight.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_time.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
+	m_btn_bit.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
 	m_btn_length.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_length.m_bUseMouseTextItalicEvent = true;
 	m_btn_length.m_bUseMouseTextBoldEvent = true;
@@ -358,3 +369,13 @@ void UnitConverter::OnBnClickedButtonBit()
 	bClickTab = false;
 }
 
+
+
+void UnitConverter::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	dc.Draw3dRect(converterBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+}

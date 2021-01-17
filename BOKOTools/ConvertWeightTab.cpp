@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "ConvertWeightTab.h"
+#include "GeneralUtil.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -82,34 +83,50 @@ BOOL ConvertWeightTab::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 	
-	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WEIGHT_NOMAL, _T("PNG"));
-	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WEIGHT_HOVER, _T("PNG"));
-	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WEIGHT_CLICK, _T("PNG"));
+	int nBrightness = GetBrightness(GetRValue(currentTheme->GetFunctionSubColor()), GetGValue(currentTheme->GetFunctionSubColor()), GetBValue(currentTheme->GetFunctionSubColor()));
+
+	if (nBrightness > 120)
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WEIGHT_CLICK, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WEIGHT_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WEIGHT_NOMAL, _T("PNG"));
+	}
+	else
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_WEIGHT_NOMAL, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_WEIGHT_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_WEIGHT_CLICK, _T("PNG"));
+	}
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"), 14);
+	m_btn_test1.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_test1.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_test1.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_combo.SetTextColor(currentTheme->GetFunctionTextColor());
 	m_btn_test1.SetTextColor(currentTheme->GetFunctionTextColor());
 
-	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("고딕"));
 
-	m_stt_mg.Initialize(15, _T("휴먼매직체"));
-	m_stt_g.Initialize(15, _T("휴먼매직체"));
-	m_stt_kg.Initialize(15, _T("휴먼매직체"));
-	m_stt_t.Initialize(15, _T("휴먼매직체"));
-	m_stt_kt.Initialize(15, _T("휴먼매직체"));
-	m_stt_gr.Initialize(15, _T("휴먼매직체"));
-	m_stt_oz.Initialize(15, _T("휴먼매직체"));
-	m_stt_lb.Initialize(15, _T("휴먼매직체"));
-	m_stt_don.Initialize(15, _T("휴먼매직체"));
-	m_stt_nyang.Initialize(15, _T("휴먼매직체"));
-	m_stt_geun.Initialize(15, _T("휴먼매직체"));
-	m_stt_guan.Initialize(15, _T("휴먼매직체"));
+	m_stt_mg.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_g.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_kg.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_t.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_kt.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_gr.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_oz.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_lb.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_don.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_nyang.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_geun.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_guan.Initialize(20, currentTheme->GetThemeFontName());
+
+	comboFont.CreateFontW(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		currentTheme->GetThemeFontName());
+	m_combo_left.SetFont(&comboFont);
 
 	m_combo_left.InsertString(0, _T("밀리그램 (mg)"));
 	m_combo_left.InsertString(1, _T("그램 (g)"));

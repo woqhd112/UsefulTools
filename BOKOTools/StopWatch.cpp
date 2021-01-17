@@ -75,27 +75,36 @@ BOOL StopWatch::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
+	this->SetWindowPos(NULL, 0, 0, 320, 210, SWP_NOMOVE);
+
 	GetWindowRect(&thisRect);
 
 	laptime->Create(IDD_DIALOG_LAPTIME, this);
+	laptime->MoveWindow(16, 170, 268, 350);
 	laptime->GetWindowRect(&childRect);
-	laptime->MoveWindow(15, thisRect.Height() - 30, int(thisRect.Width() * 0.9) - 15, int(childRect.Height() * 0.9));
-	laptime->GetWindowRect(&childRect);
-	m_btn_laptime_reset.GetClientRect(&laptimeResetRect);
-	m_btn_laptime_reset.MoveWindow(thisRect.Width() / 2 - (laptimeResetRect.Width() / 2), thisRect.Height() - 30 + childRect.Height() + 5, laptimeResetRect.Width(), laptimeResetRect.Height());
+	m_btn_laptime_reset.MoveWindow(100, 530, 100, 30);
 	m_btn_laptime_reset.ShowWindow(SW_HIDE);
 	laptime->ShowWindow(SW_HIDE);
 
-	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_laptime.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_laptime_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandstop.MoveWindow(15, 110, 80, 30);
+	m_btn_laptime.MoveWindow(105, 110, 90, 30);
+	m_btn_reset.MoveWindow(205, 110, 80, 30);
+
+	m_stt_stopwatch_view.MoveWindow(16, 16, 268, 70);
+	m_stt_hms.MoveWindow(20, 20, 259, 66);
+	drawBorderRect = { 15, 15, 270 + 15, 72 + 15 };
+	drawlaptimeBorderRect = {15, 169, 270 + 15, 352 + 169};
+
+	m_btn_startandstop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_laptime.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_laptime_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_startandstop.SetTextColor(currentTheme->GetTextColor());
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
 	m_btn_laptime.SetTextColor(currentTheme->GetTextColor());
 	m_btn_laptime_reset.SetTextColor(currentTheme->GetTextColor());
 
-	m_stt_hms.Initialize(45, _T("DS-Digital"));
+	m_stt_hms.Initialize(50, _T("DS-Digital"));
 
 	m_stt_stopwatch_view.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_hms.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -104,11 +113,6 @@ BOOL StopWatch::OnInitDialog()
 
 	m_btn_laptime.EnableWindow(FALSE);
 
-	CRect borderRect;
-	m_stt_stopwatch_view.GetWindowRect(borderRect);
-	int nLeft = int(borderRect.left - thisRect.left - 10);
-	int nTop = int(borderRect.top - thisRect.top - 35);
-	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -353,6 +357,7 @@ void StopWatch::OnPaint()
 					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
 	dc.Draw3dRect(drawBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
+	dc.Draw3dRect(drawlaptimeBorderRect, currentTheme->GetRectBorderColor(), currentTheme->GetRectBorderColor());
 
 	CBrush *pOld = dc.SelectObject(&m_backBrush);
 	dc.PatBlt(drawBorderRect.left + 1, drawBorderRect.top + 1, drawBorderRect.Width() - 2, drawBorderRect.Height() - 2, PATCOPY);

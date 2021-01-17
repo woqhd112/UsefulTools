@@ -92,12 +92,12 @@ void AnalogWatch::Initialize(ClockData* clockData)
 	watchBorderRect = { 0, 30 + 35 - 5, thisRect.Width(), 30 + 35 + thisRect.Width() - 5 };
 	cpt = watchRect.CenterPoint();
 
-	m_stt_analog_worldname.Initialize(25, _T("가비아 솔미체"));
+	m_stt_analog_worldname.Initialize(25, currentTheme->GetThemeFontName());
 	m_stt_analog_worldname.MoveWindow(0, 0, thisRect.Width(), 30);
-	m_stt_analog_date.Initialize(25, _T("가비아 솔미체"));
+	m_stt_analog_date.Initialize(25, currentTheme->GetThemeFontName());
 	m_stt_analog_date.MoveWindow(0, 30, thisRect.Width(), 30);
 
-	m_edit_analog_search.Initialize(25, _T("가비아 솔미체"));
+	m_edit_analog_search.Initialize(25, currentTheme->GetThemeFontName());
 	m_edit_analog_search.MoveWindow(0, 30 + 35 + thisRect.Width() - 5 + 10, thisRect.Width() - 5 - 30, 30);
 	int nDigitalFontSize = 0;
 	int nDigitalFontHeight = 0;
@@ -114,7 +114,7 @@ void AnalogWatch::Initialize(ClockData* clockData)
 	m_edit_digital_clock.Initialize(nDigitalFontSize, _T("DS-Digital"));
 	m_edit_digital_clock.MoveWindow((thisRect.Width() - 5) / 2 / 2 + 5, 30 + 40 + (thisRect.Width() - 5) / 2 + (thisRect.Width() - 5) / 2 / 2 / 2, (thisRect.Width() - 5) / 2, nDigitalFontHeight);
 	
-	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("가비아 솔미체"), 15);
+	m_btn_analog_submit.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 15);
 	m_btn_analog_submit.SetTextColor(currentTheme->GetTextColor());
 	m_btn_analog_submit.MoveWindow(thisRect.Width() - 5 - 35 + 10, 30 + 35 + thisRect.Width() - 5 + 10, 30, 30);
 
@@ -373,7 +373,7 @@ void AnalogWatch::OnPaint()
 	borderAMPMPen.CreatePen(PS_GEOMETRIC, 1, borderAMPMPenColor);
 	boderAMPMBrush.CreateSolidBrush(borderAMPMBrushColor);
 	ellipseBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
-	font.CreatePointFont(watchRect.Width() / WATCH_HOURTEXT, _T("가비아 솔미체"));
+	font.CreatePointFont(watchRect.Width() / WATCH_HOURTEXT, currentTheme->GetThemeFontName());
 
 	pOldPen = dc.SelectObject(&borderAMPMPen);
 	pOldBrush = dc.SelectObject(&boderAMPMBrush);
@@ -465,7 +465,7 @@ void AnalogWatch::DrawTime(CDC& memDC)
 
 	// 시계 ampm
 	CFont ampmfont;
-	ampmfont.CreatePointFont(watchRect.Width() / WATCH_LOGOTEXT, _T("가비아 솔미체"));
+	ampmfont.CreatePointFont(watchRect.Width() / WATCH_LOGOTEXT, currentTheme->GetThemeFontName());
 	memDC.SelectObject(&ampmfont);
 	CRect ampmrect(watchRect);
 	ampmrect.OffsetRect(0, (int)((double)ampmrect.Height() / WATCH_LOGODOWN / WATCH_LOGODOWN));

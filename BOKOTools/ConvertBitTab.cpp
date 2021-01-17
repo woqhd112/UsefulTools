@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "ConvertBitTab.h"
+#include "Generalutil.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -78,31 +79,46 @@ BOOL ConvertBitTab::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 
-	m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_BIT_NOMAL, _T("PNG"));
-	m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_BIT_HOVER, _T("PNG"));
-	m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_BIT_CLICK, _T("PNG"));
+	int nBrightness = GetBrightness(GetRValue(currentTheme->GetFunctionSubColor()), GetGValue(currentTheme->GetFunctionSubColor()), GetBValue(currentTheme->GetFunctionSubColor()));
+
+	if (nBrightness > 120)
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_BIT_CLICK, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_BIT_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_BIT_NOMAL, _T("PNG"));
+	}
+	else
+	{
+		m_btn_icon.LoadStdImage(IDB_PNG_CONVERT_BIT_NOMAL, _T("PNG"));
+		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_BIT_HOVER, _T("PNG"));
+		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_BIT_CLICK, _T("PNG"));
+	}
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
 
-
-	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("휴먼매직체"), 14);
+	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_combo.m_bUseMouseBkGroundColorEvent = false;
-	m_btn_container.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, _T("굴림"), 14);
+	m_btn_container.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_container.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
 	m_btn_container.m_bUseMouseBkGroundColorEvent = false;
 	m_btn_combo.SetTextColor(currentTheme->GetFunctionTextColor());
 	m_btn_container.SetTextColor(currentTheme->GetFunctionTextColor());
 
-	m_edit_left_value.Initialize(18, _T("휴먼매직체"));
+	m_edit_left_value.Initialize(18, _T("고딕"));
 
-	m_stt_bit.Initialize(15, _T("휴먼매직체"));
-	m_stt_byte.Initialize(15, _T("휴먼매직체"));
-	m_stt_kbyte.Initialize(15, _T("휴먼매직체"));
-	m_stt_mbyte.Initialize(15, _T("휴먼매직체"));
-	m_stt_gbyte.Initialize(15, _T("휴먼매직체"));
-	m_stt_tbyte.Initialize(15, _T("휴먼매직체"));
-	m_stt_pbyte.Initialize(15, _T("휴먼매직체"));
-	m_stt_ebyte.Initialize(15, _T("휴먼매직체"));
+	m_stt_bit.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_byte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_kbyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_mbyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_gbyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_tbyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_pbyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_ebyte.Initialize(20, currentTheme->GetThemeFontName());
+
+	comboFont.CreateFontW(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		currentTheme->GetThemeFontName());
+	m_combo_left.SetFont(&comboFont);
 
 	m_combo_left.InsertString(0, _T("비트 (bit)"));
 	m_combo_left.InsertString(1, _T("바이트 (B)"));

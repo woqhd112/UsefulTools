@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(ResultTimeline, CDialogEx)
 	ON_WM_SIZE()
 	ON_WM_VSCROLL()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -92,7 +93,7 @@ void ResultTimeline::AppendTimeline(CString strFormula, CString strResult)
 	strFormat.Format(_T("%s =\r\n%s"), strFormula, strResult);
 	newEdit->SetWindowTextW(strFormat);
 	int lineCount = newEdit->GetLineCount();
-	newEdit->MoveWindow(10, nStartEditPos, int(thisRect.Width() * 0.9), lineCount * 20);
+	newEdit->MoveWindow(10, nStartEditPos, 180, lineCount * 20);
 	nStartEditPos += (lineCount * 20 + 10);
 	if (nViewHeight == 0) nViewHeight = 30;
 	nViewHeight += (lineCount * 20 + 10);
@@ -245,4 +246,12 @@ void ResultTimeline::OnOK()
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	//CDialogEx::OnOK();
+}
+
+
+void ResultTimeline::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 }

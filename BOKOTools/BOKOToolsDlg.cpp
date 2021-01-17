@@ -189,18 +189,18 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	LoadResourceItem(IDR_TEXT_FONT_GABIA_SOLMEE);
 	LoadResourceItem(IDR_TEXT_FONT_GODOMAUM);
 
-	m_stt_ampm.Initialize(15, _T("DS-Digital"));
-	m_stt_week.Initialize(15, _T("DS-Digital"));
-	m_stt_current_time.Initialize(40, _T("DS-Digital"));
-	m_stt_engineering.Initialize(20, _T("가비아 솔미체"));
-	m_stt_base.Initialize(20, _T("가비아 솔미체"));
-	m_stt_converter.Initialize(20, _T("가비아 솔미체"));
-	m_stt_date.Initialize(20, _T("가비아 솔미체"));
-	m_stt_stopwatch.Initialize(20, _T("가비아 솔미체"));
-	m_stt_worktimer.Initialize(20, _T("가비아 솔미체"));
-	m_stt_notepad.Initialize(20, _T("가비아 솔미체"));
-	m_stt_basetimer.Initialize(20, _T("가비아 솔미체"));
-	m_stt_world_clock.Initialize(20, _T("가비아 솔미체"));
+	m_stt_ampm.Initialize(17, _T("DS-Digital"));
+	m_stt_week.Initialize(17, _T("DS-Digital"));
+	m_stt_current_time.Initialize(45, _T("DS-Digital"));
+	m_stt_engineering.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_base.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_converter.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_date.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_stopwatch.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_worktimer.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_notepad.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_basetimer.Initialize(23, currentTheme->GetThemeFontName());
+	m_stt_world_clock.Initialize(23, currentTheme->GetThemeFontName());
 
 	LoadUserInterface(currentTheme);
 	
@@ -433,54 +433,63 @@ void CBOKOToolsDlg::LoadUserInterface(ThemeData* currentTheme)
 	m_btn_base_gdi.LoadStdImage(currentTheme->GetBaseIcon().nNormalID, _T("PNG"));
 	m_btn_base_gdi.LoadHovImage(currentTheme->GetBaseIcon().nHoverID, _T("PNG"));
 	m_btn_base_gdi.LoadAltImage(currentTheme->GetBaseIcon().nClickID, _T("PNG"));
+	m_stt_base.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_calculator_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_calculator_gdi.DeleteImage();
 	m_btn_calculator_gdi.LoadStdImage(currentTheme->GetEngineeringIcon().nNormalID, _T("PNG"));
 	m_btn_calculator_gdi.LoadHovImage(currentTheme->GetEngineeringIcon().nHoverID, _T("PNG"));
 	m_btn_calculator_gdi.LoadAltImage(currentTheme->GetEngineeringIcon().nClickID, _T("PNG"));
+	m_stt_engineering.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_stopwatch_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_stopwatch_gdi.DeleteImage();
 	m_btn_stopwatch_gdi.LoadStdImage(currentTheme->GetStopWatchIcon().nNormalID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadHovImage(currentTheme->GetStopWatchIcon().nHoverID, _T("PNG"));
 	m_btn_stopwatch_gdi.LoadAltImage(currentTheme->GetStopWatchIcon().nClickID, _T("PNG"));
+	m_stt_stopwatch.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_converter_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_converter_gdi.DeleteImage();
 	m_btn_converter_gdi.LoadStdImage(currentTheme->GetConverterIcon().nNormalID, _T("PNG"));
 	m_btn_converter_gdi.LoadHovImage(currentTheme->GetConverterIcon().nHoverID, _T("PNG"));
 	m_btn_converter_gdi.LoadAltImage(currentTheme->GetConverterIcon().nClickID, _T("PNG"));
+	m_stt_converter.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_date_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_date_gdi.DeleteImage();
 	m_btn_date_gdi.LoadStdImage(currentTheme->GetDateCalIcon().nNormalID, _T("PNG"));
 	m_btn_date_gdi.LoadHovImage(currentTheme->GetDateCalIcon().nHoverID, _T("PNG"));
 	m_btn_date_gdi.LoadAltImage(currentTheme->GetDateCalIcon().nClickID, _T("PNG"));
+	m_stt_date.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_worktimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_worktimer_gdi.DeleteImage();
 	m_btn_worktimer_gdi.LoadStdImage(currentTheme->GetWorkTimerIcon().nNormalID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadHovImage(currentTheme->GetWorkTimerIcon().nHoverID, _T("PNG"));
 	m_btn_worktimer_gdi.LoadAltImage(currentTheme->GetWorkTimerIcon().nClickID, _T("PNG"));
+	m_stt_worktimer.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_notepad_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_notepad_gdi.DeleteImage();
 	m_btn_notepad_gdi.LoadStdImage(currentTheme->GetNotePadIcon().nNormalID, _T("PNG"));
 	m_btn_notepad_gdi.LoadHovImage(currentTheme->GetNotePadIcon().nHoverID, _T("PNG"));
 	m_btn_notepad_gdi.LoadAltImage(currentTheme->GetNotePadIcon().nClickID, _T("PNG"));
+	m_stt_notepad.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_basetimer_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_basetimer_gdi.DeleteImage();
 	m_btn_basetimer_gdi.LoadStdImage(currentTheme->GetBaseTimerIcon().nNormalID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadHovImage(currentTheme->GetBaseTimerIcon().nHoverID, _T("PNG"));
 	m_btn_basetimer_gdi.LoadAltImage(currentTheme->GetBaseTimerIcon().nClickID, _T("PNG"));
+	m_stt_basetimer.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_world_clock_gdi.SetClickSound(IDR_WAVE_BUTTON_SOUND);
 	m_btn_world_clock_gdi.DeleteImage();
 	m_btn_world_clock_gdi.LoadStdImage(currentTheme->GetWorldClockIcon().nNormalID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadHovImage(currentTheme->GetWorldClockIcon().nHoverID, _T("PNG"));
 	m_btn_world_clock_gdi.LoadAltImage(currentTheme->GetWorldClockIcon().nClickID, _T("PNG"));
+	m_stt_world_clock.InvalidFont(currentTheme->GetThemeFontName());
 
 	m_btn_comingsoon_1.DeleteImage();
 	m_btn_comingsoon_1.LoadStdImage(currentTheme->GetCommingSoonIcon().nNormalID, _T("PNG"));

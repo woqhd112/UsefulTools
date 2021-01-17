@@ -51,6 +51,8 @@ private:
 	CBrush m_backBrush;
 	ThemeData* currentTheme;
 
+	CFont comboFont;
+
 	CRect drawBorderRect;
 	CRect drawComboBorderRect;
 
