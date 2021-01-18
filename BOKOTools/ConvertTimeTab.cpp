@@ -95,12 +95,41 @@ BOOL ConvertTimeTab::OnInitDialog()
 		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
 	}
 	m_stt_time_all_view.MoveWindow(0, 0, 529, 314);
-	m_stt_divide.MoveWindow(0, 0, 529, 62);
+	m_stt_divide.MoveWindow(0, 0, 529, 62 + 26);
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
-	//m_btn_test.MoveWindow(38 + 20, 18, 168 + 20, 26);
-	//m_btn_combo.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 26);
-	//m_edit_left_value.MoveWindow(38 + 20 + 10, 22, 168 + 20 - 50, 18);
-	//m_combo_left.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 90);
+
+	int nButtonStart_x = 48;
+	int nButtonStart_y = 18;
+	int nButtonWidth = 110;
+	int nButtonHeight = 26;
+	int nButtonMargin = 5;
+	int nEditMargin_xLeft = 5;
+	int nEditMargin_y = 2;
+	int nEditMargin_xRight = 30;
+
+	m_btn_test1.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 0, nButtonStart_y, nButtonWidth, nButtonHeight);
+	m_btn_test2.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 1, nButtonStart_y, nButtonWidth, nButtonHeight);
+	m_btn_test3.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 2, nButtonStart_y, nButtonWidth, nButtonHeight);
+	m_btn_test4.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 3, nButtonStart_y, nButtonWidth, nButtonHeight);
+
+	m_edit_date.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 0 + nEditMargin_xLeft, nButtonStart_y + nEditMargin_y, nButtonWidth - nEditMargin_xLeft * 2 - nEditMargin_xRight, nButtonHeight - nEditMargin_y * 2);
+	m_edit_hour.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 1 + nEditMargin_xLeft, nButtonStart_y + nEditMargin_y, nButtonWidth - nEditMargin_xLeft * 2 - nEditMargin_xRight, nButtonHeight - nEditMargin_y * 2);
+	m_edit_minute.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 2 + nEditMargin_xLeft, nButtonStart_y + nEditMargin_y, nButtonWidth - nEditMargin_xLeft * 2 - nEditMargin_xRight, nButtonHeight - nEditMargin_y * 2);
+	m_edit_second.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 3 + nEditMargin_xLeft, nButtonStart_y + nEditMargin_y, nButtonWidth - nEditMargin_xLeft * 2 - nEditMargin_xRight, nButtonHeight - nEditMargin_y * 2);
+
+	m_btn_reset.MoveWindow(nButtonStart_x + (nButtonWidth + nButtonMargin) * 3, nButtonStart_y + nButtonHeight + 10, nButtonWidth, nButtonHeight);
+	
+	int nStaticStart_x = 10;
+	int nStaticStart_y = 75 + 26 + 30;
+	int nStaticWidth = 260;
+	int nStaticHeight = 30;
+	int nStaticMargin_x = 10;
+	int nStaticMargin_y = 50;
+
+	m_stt_dhms.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, nStaticStart_y + (nStaticHeight + nStaticMargin_y) * 0, nStaticWidth, nStaticHeight);
+	m_stt_hms.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, nStaticStart_y + (nStaticHeight + nStaticMargin_y) * 0, nStaticWidth, nStaticHeight);
+	m_stt_ms.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, nStaticStart_y + (nStaticHeight + nStaticMargin_y) * 1, nStaticWidth, nStaticHeight);
+	m_stt_s.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, nStaticStart_y + (nStaticHeight + nStaticMargin_y) * 1, nStaticWidth, nStaticHeight);
 
 	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
@@ -126,10 +155,10 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_edit_minute.Initialize(18, _T("고딕"));
 	m_edit_second.Initialize(18, _T("고딕"));
 
-	m_stt_dhms.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_hms.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_ms.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_s.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_dhms.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_hms.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_ms.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_s.Initialize(22, currentTheme->GetThemeFontName());
 
 	m_btn_test1.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_test2.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -148,6 +177,11 @@ BOOL ConvertTimeTab::OnInitDialog()
 	m_edit_hour.BringWindowToTop();
 	m_edit_minute.BringWindowToTop();
 	m_edit_second.BringWindowToTop();
+
+	m_edit_date.LimitText(7);
+	m_edit_hour.LimitText(7);
+	m_edit_minute.LimitText(7);
+	m_edit_second.LimitText(7);
 
 	m_btn_test1.SetWindowTextW(_T("일"));
 	m_btn_test2.SetWindowTextW(_T("시간"));

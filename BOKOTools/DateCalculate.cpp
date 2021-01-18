@@ -46,6 +46,9 @@ void DateCalculate::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_LIMITDATE_VIEW, m_stt_limitdate_view);
 	DDX_Control(pDX, IDC_STATIC_LIMITDATE_DIVIDE_VIEW, m_stt_limitdate_divide_view);
 	DDX_Control(pDX, IDC_STATIC_LIMITDATE, m_stt_limitdate);
+	DDX_Control(pDX, IDC_STATIC_BASE_DATE, m_stt_base_date);
+	DDX_Control(pDX, IDC_STATIC_FIRST_OFFICIAL, m_stt_first_official);
+	DDX_Control(pDX, IDC_STATIC_LAST_OFFICIAL, m_stt_last_official);
 }
 
 
@@ -70,27 +73,41 @@ BOOL DateCalculate::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-
+	
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-	m_btn_afterdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_limitdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_afterdate.SetTextColor(currentTheme->GetTextColor());
-	m_btn_limitdate.SetTextColor(currentTheme->GetTextColor());
-	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
 
-	m_edit_baseedit.Initialize(12, _T("고딕"));
-	m_edit_afterdate.Initialize(12, _T("고딕"));
-	m_edit_afterdate_result.Initialize(12, _T("고딕"));
-	m_edit_limitdate_result.Initialize(12, _T("고딕"));
-	m_edit_limitdate.Initialize(12, _T("고딕"));
+	this->SetWindowPos(NULL, 0, 0, 320, 720, SWP_NOMOVE);
+	m_cal_calendar.SizeMinReq();
+	CRect calRect;
+	m_cal_calendar.GetWindowRect(calRect);
+	m_stt_base_date.MoveWindow(30, 30 + calRect.Height() + 20, 100, 30);
+	m_edit_baseedit.MoveWindow(30, 30 + calRect.Height() + 20 + 30, 150, 30);
+	m_btn_reset.MoveWindow(30 + 150 + 10, 30 + calRect.Height() + 20 + 30, 80, 30);
 
-	m_stt_limitdate.Initialize(16, _T("고딕"));
+	m_stt_limitdate.MoveWindow(30, 150 + calRect.Height(), 150, 30);
+	m_stt_limitdate_view.MoveWindow(25, 150 + calRect.Height() + 30 + 3, 255, 280);
+	m_stt_limitdate_divide_view.MoveWindow(25, 150 + calRect.Height() + 30 + 3 + 140, 255, 140);
 
-	m_edit_baseedit.SetLimitText(10);
-	m_edit_limitdate.SetLimitText(10);
+	int nDateFormatStartPos_x = 45;
+	int nFirstDateFormatStartPos_y = 215 + calRect.Height();
+	int nLastDateFormatStartPos_y = 355 + calRect.Height();
+	int nEditWidth = 120;
+	int nFirstStaticWidth = 70;
+	int nLastStaticWidth = 100;
+	int nButtonWidth = 50;
+	int nCtrlHeight = 30;
+	int nCtrlMargin = 20;
 
-	SetCalendar();
+
+	m_edit_afterdate.MoveWindow(nDateFormatStartPos_x, nFirstDateFormatStartPos_y, nEditWidth, nCtrlHeight);
+	m_stt_first_official.MoveWindow(nDateFormatStartPos_x + nEditWidth + nCtrlMargin, nFirstDateFormatStartPos_y, nFirstStaticWidth, nCtrlHeight);
+	m_btn_afterdate.MoveWindow(nDateFormatStartPos_x, nFirstDateFormatStartPos_y + nCtrlHeight + nCtrlMargin, nButtonWidth, nCtrlHeight);
+	m_edit_afterdate_result.MoveWindow(nDateFormatStartPos_x + nButtonWidth + nCtrlMargin, nFirstDateFormatStartPos_y + nCtrlHeight + nCtrlMargin, nEditWidth, nCtrlHeight);
+
+	m_edit_limitdate.MoveWindow(nDateFormatStartPos_x, nLastDateFormatStartPos_y, nEditWidth, nCtrlHeight);
+	m_stt_last_official.MoveWindow(nDateFormatStartPos_x + nEditWidth + nCtrlMargin - 10, nLastDateFormatStartPos_y, nLastStaticWidth, nCtrlHeight);
+	m_btn_limitdate.MoveWindow(nDateFormatStartPos_x, nLastDateFormatStartPos_y + nCtrlHeight + nCtrlMargin, nButtonWidth, nCtrlHeight);
+	m_edit_limitdate_result.MoveWindow(nDateFormatStartPos_x + nButtonWidth + nCtrlMargin, nLastDateFormatStartPos_y + nCtrlHeight + nCtrlMargin, nEditWidth, nCtrlHeight);
 
 	CRect borderRect, thisRect;
 	this->GetWindowRect(thisRect);
@@ -103,6 +120,31 @@ BOOL DateCalculate::OnInitDialog()
 	nLeft = int(borderRect.left - thisRect.left - 10);
 	nTop = int(borderRect.top - thisRect.top - 35);
 	drawBorderRect2 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
+
+	m_btn_afterdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_limitdate.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_afterdate.SetTextColor(currentTheme->GetTextColor());
+	m_btn_limitdate.SetTextColor(currentTheme->GetTextColor());
+	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
+
+	m_edit_baseedit.Initialize(20, _T("고딕"));
+	m_edit_afterdate.Initialize(20, _T("고딕"));
+	m_edit_afterdate_result.Initialize(20, _T("고딕"));
+	m_edit_limitdate_result.Initialize(12, _T("고딕"));
+	m_edit_limitdate.Initialize(12, _T("고딕"));
+
+	m_stt_limitdate.Initialize(25, currentTheme->GetThemeFontName());
+	m_stt_base_date.Initialize(25, currentTheme->GetThemeFontName());
+	m_stt_first_official.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_last_official.Initialize(20, currentTheme->GetThemeFontName());
+
+	m_edit_baseedit.SetLimitText(10);
+	m_edit_limitdate.SetLimitText(10);
+
+	SetCalendar();
+
+	
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

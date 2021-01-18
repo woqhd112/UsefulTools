@@ -48,6 +48,9 @@ private:
 	CalculateStatic m_stt_limitdate_view;
 	CalculateStatic m_stt_limitdate_divide_view;
 	CalculateStatic m_stt_limitdate;
+	CalculateStatic m_stt_base_date;
+	CalculateStatic m_stt_first_official;
+	CalculateStatic m_stt_last_official;
 
 	ThemeData* currentTheme;
 
