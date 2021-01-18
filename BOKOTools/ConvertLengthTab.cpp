@@ -50,6 +50,7 @@ void ConvertLengthTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_LEE, m_stt_lee);
 	DDX_Control(pDX, IDC_STATIC_HAELEE, m_stt_haelee);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE, m_stt_divide);
+	DDX_Control(pDX, IDC_STATIC_LENGTH_ALL_VIEW, m_stt_length_all_view);
 }
 
 
@@ -98,7 +99,50 @@ BOOL ConvertLengthTab::OnInitDialog()
 		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_LENGTH_HOVER, _T("PNG"));
 		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_LENGTH_CLICK, _T("PNG"));
 	}
+	m_stt_length_all_view.MoveWindow(0, 0, 529, 314);
+	m_stt_divide.MoveWindow(0, 0, 529, 62);
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
+	m_btn_test.MoveWindow(38 + 20, 18, 168 + 20, 26);
+	m_btn_combo.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 26);
+	m_edit_left_value.MoveWindow(38 + 20 + 10, 22, 168 + 20 - 50, 18);
+	m_combo_left.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 90);
+
+	int nStaticStart_x = 10;
+	int nStaticStart_y = 75;
+	int nStaticWidth = 165;
+	int nStaticHeight = 30;
+	int nStaticMargin_x = 10;
+	int nStaticMargin_y = 20;
+
+	m_stt_mm.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+	m_stt_cm.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+	m_stt_m.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+
+	m_stt_km.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+	m_stt_in.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+	m_stt_ft.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+	
+	m_stt_yd.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 2, 165, 30);
+	m_stt_miles.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 2, 165, 30);
+	m_stt_ja.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 2, 165, 30);
+
+	m_stt_gan.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 3, 165, 30);
+	m_stt_jung.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 3, 165, 30);
+	m_stt_lee.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 3, 165, 30);
+
+	m_stt_haelee.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 4, 165, 30);
+
+	CRect borderRect, thisRect;
+	m_btn_test.GetWindowRect(borderRect);
+	this->GetWindowRect(thisRect);
+	int nLeft = int(borderRect.left - thisRect.left - 2);
+	int nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_combo.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawComboBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
 
 
 	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
@@ -112,19 +156,19 @@ BOOL ConvertLengthTab::OnInitDialog()
 
 	m_edit_left_value.Initialize(18, _T("고딕"));
 	
-	m_stt_mm.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_cm.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_m.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_km.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_in.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_ft.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_yd.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_miles.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_ja.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_gan.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_jung.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_lee.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_haelee.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_mm.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_cm.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_m.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_km.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_in.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_ft.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_yd.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_miles.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_ja.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_gan.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_jung.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_lee.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_haelee.Initialize(22, currentTheme->GetThemeFontName());
 
 
 	comboFont.CreateFontW(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
@@ -196,18 +240,6 @@ BOOL ConvertLengthTab::OnInitDialog()
 	ConvertLength();
 
 	m_combo_left.ShowWindow(SW_HIDE);
-
-	CRect borderRect, thisRect;
-	m_btn_test.GetWindowRect(borderRect);
-	this->GetWindowRect(thisRect);
-	int nLeft = int(borderRect.left - thisRect.left - 2);
-	int nTop = int(borderRect.top - thisRect.top - 2);
-	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
-
-	m_btn_combo.GetWindowRect(borderRect);
-	nLeft = int(borderRect.left - thisRect.left - 2);
-	nTop = int(borderRect.top - thisRect.top - 2);
-	drawComboBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

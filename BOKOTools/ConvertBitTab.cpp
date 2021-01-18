@@ -45,6 +45,7 @@ void ConvertBitTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_EBYTE, m_stt_ebyte);
 	DDX_Control(pDX, IDC_BUTTON_CONTAINER4, m_btn_container);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE4, m_stt_divide);
+	DDX_Control(pDX, IDC_STATIC_BIT_ALL_VIEW, m_stt_bit_all_view);
 }
 
 
@@ -94,6 +95,42 @@ BOOL ConvertBitTab::OnInitDialog()
 		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_BIT_CLICK, _T("PNG"));
 	}
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
+	m_stt_bit_all_view.MoveWindow(0, 0, 529, 314);
+	m_stt_divide.MoveWindow(0, 0, 529, 62);
+	m_btn_container.MoveWindow(38 + 20, 18, 168 + 20, 26);
+	m_btn_combo.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 26);
+	m_edit_left_value.MoveWindow(38 + 20 + 10, 22, 168 + 20 - 50, 18);
+	m_combo_left.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 90);
+
+	int nStaticStart_x = 10;
+	int nStaticStart_y = 75;
+	int nStaticWidth = 165;
+	int nStaticHeight = 30;
+	int nStaticMargin_x = 10;
+	int nStaticMargin_y = 40;
+
+	m_stt_bit.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+	m_stt_byte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+	m_stt_kbyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 0, 165, 30);
+
+	m_stt_mbyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+	m_stt_gbyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+	m_stt_tbyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 2, 75 + (nStaticHeight + nStaticMargin_y) * 1, 165, 30);
+
+	m_stt_pbyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 0, 75 + (nStaticHeight + nStaticMargin_y) * 2, 165, 30);
+	m_stt_ebyte.MoveWindow(nStaticStart_x + (nStaticWidth + nStaticMargin_x) * 1, 75 + (nStaticHeight + nStaticMargin_y) * 2, 165, 30);
+
+	CRect borderRect, thisRect;
+	m_btn_container.GetWindowRect(borderRect);
+	this->GetWindowRect(thisRect);
+	int nLeft = int(borderRect.left - thisRect.left - 2);
+	int nTop = int(borderRect.top - thisRect.top - 2);
+	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
+
+	m_btn_combo.GetWindowRect(borderRect);
+	nLeft = int(borderRect.left - thisRect.left - 2);
+	nTop = int(borderRect.top - thisRect.top - 2);
+	drawComboBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
 
 	m_btn_combo.Initialize(currentTheme->GetFunctionSubColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 22);
 	m_btn_combo.SetAlignment(CMFCButton::AlignStyle::ALIGN_RIGHT);
@@ -106,14 +143,14 @@ BOOL ConvertBitTab::OnInitDialog()
 
 	m_edit_left_value.Initialize(18, _T("고딕"));
 
-	m_stt_bit.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_byte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_kbyte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_mbyte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_gbyte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_tbyte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_pbyte.Initialize(20, currentTheme->GetThemeFontName());
-	m_stt_ebyte.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_bit.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_byte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_kbyte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_mbyte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_gbyte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_tbyte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_pbyte.Initialize(22, currentTheme->GetThemeFontName());
+	m_stt_ebyte.Initialize(22, currentTheme->GetThemeFontName());
 
 	comboFont.CreateFontW(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
@@ -168,18 +205,7 @@ BOOL ConvertBitTab::OnInitDialog()
 
 	m_combo_left.ShowWindow(SW_HIDE);
 
-	CRect borderRect, thisRect;
-	m_btn_container.GetWindowRect(borderRect);
-	this->GetWindowRect(thisRect);
-	int nLeft = int(borderRect.left - thisRect.left - 2);
-	int nTop = int(borderRect.top - thisRect.top - 2);
-	drawBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
-
-	m_btn_combo.GetWindowRect(borderRect);
-	nLeft = int(borderRect.left - thisRect.left - 2);
-	nTop = int(borderRect.top - thisRect.top - 2);
-	drawComboBorderRect = { nLeft, nTop, nLeft + borderRect.Width() + 2, nTop + borderRect.Height() + 2 };
-
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }

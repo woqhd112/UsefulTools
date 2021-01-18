@@ -47,6 +47,7 @@ private:
 	CalculateStatic m_stt_lee;
 	CalculateStatic m_stt_haelee;
 	CalculateStatic m_stt_divide;
+	CalculateStatic m_stt_length_all_view;
 
 	CBrush m_backBrush;
 	ThemeData* currentTheme;

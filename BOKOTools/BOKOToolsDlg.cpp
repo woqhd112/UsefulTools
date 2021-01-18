@@ -63,6 +63,7 @@ CBOKOToolsDlg::CBOKOToolsDlg(CWnd* pParent /*=nullptr*/)
 
 CBOKOToolsDlg::~CBOKOToolsDlg()
 {
+	SetDisableCtlColor(RGB(0, 0, 0));
 	if (bCurTimeThread)
 	{
 		bCurTimeThread = false;

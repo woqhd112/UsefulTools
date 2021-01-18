@@ -744,6 +744,11 @@
 #define IDC_BUTTON_WORLDCLOCK_SYNCRONIZE 1308
 #define IDC_STATIC_CLOCK_OFFSET         1309
 #define IDC_BUTTON_THEME_BASIC          1310
+#define IDC_STATIC_LENGTH_ALL_VIEW      1311
+#define IDC_STATIC_BIT_ALL_VIEW         1312
+#define IDC_STATIC_WEIGHT_ALL_VIEW      1313
+#define IDC_STATIC_WIDTH_ALL_VIEW       1314
+#define IDC_STATIC_TIME_ALL_VIEW        1315
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -765,7 +770,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        653
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1311
+#define _APS_NEXT_CONTROL_VALUE         1316
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

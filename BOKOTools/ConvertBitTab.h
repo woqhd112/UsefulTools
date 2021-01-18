@@ -43,6 +43,7 @@ private:
 	CalculateStatic m_stt_pbyte;
 	CalculateStatic m_stt_ebyte;
 	CalculateStatic m_stt_divide;
+	CalculateStatic m_stt_bit_all_view;
 
 	CBrush m_backBrush;
 	ThemeData* currentTheme;

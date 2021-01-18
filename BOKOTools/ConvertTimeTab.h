@@ -43,6 +43,7 @@ private:
 	CalculateStatic m_stt_ms;
 	CalculateStatic m_stt_s;
 	CalculateStatic m_stt_divide;
+	CalculateStatic m_stt_time_all_view;
 
 	CBrush m_backBrush;
 	ThemeData* currentTheme;

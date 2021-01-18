@@ -45,6 +45,7 @@ private:
 	CalculateStatic m_stt_danbo;
 	CalculateStatic m_stt_jungbo;
 	CalculateStatic m_stt_divide;
+	CalculateStatic m_stt_width_all_view;
 
 	CBrush m_backBrush;
 	ThemeData* currentTheme;

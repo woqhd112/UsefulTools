@@ -98,7 +98,7 @@ BOOL BaseTimer::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
-	this->SetWindowPos(NULL, 0, 0, 320, 220, SWP_NOMOVE);
+	this->SetWindowPos(NULL, 0, 0, 320, 210, SWP_NOMOVE);
 
 	m_stt_basetimer_view.MoveWindow(50, 20, 200, 90);
 	drawBorderRect = { 49, 19, 202 + 49, 92 + 19 };

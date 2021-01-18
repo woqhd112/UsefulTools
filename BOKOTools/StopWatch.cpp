@@ -75,7 +75,7 @@ BOOL StopWatch::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_backBrush.CreateSolidBrush(currentTheme->GetFunctionSubColor());
 
-	this->SetWindowPos(NULL, 0, 0, 320, 210, SWP_NOMOVE);
+	this->SetWindowPos(NULL, 0, 0, 320, 190, SWP_NOMOVE);
 
 	GetWindowRect(&thisRect);
 
@@ -315,7 +315,7 @@ void StopWatch::OnBnClickedButtonLaptime()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bLaptime)
 	{
-		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + childRect.Height() + 60);
+		this->MoveWindow(thisRect.left, thisRect.top, thisRect.Width(), thisRect.Height() + childRect.Height() + 70);
 		laptime->ShowWindow(SW_SHOW);
 		m_btn_laptime_reset.ShowWindow(SW_SHOW);
 		bLaptime = true;

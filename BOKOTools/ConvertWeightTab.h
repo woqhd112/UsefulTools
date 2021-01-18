@@ -46,6 +46,7 @@ private:
 	CalculateStatic m_stt_geun;
 	CalculateStatic m_stt_guan;
 	CalculateStatic m_stt_divide;
+	CalculateStatic m_stt_weight_all_view;
 
 	CBrush m_backBrush;
 	ThemeData* currentTheme;

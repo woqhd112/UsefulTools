@@ -45,6 +45,7 @@ void ConvertTimeTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_MS_TIME, m_stt_ms);
 	DDX_Control(pDX, IDC_STATIC_S_TIME, m_stt_s);
 	DDX_Control(pDX, IDC_STATIC_DIVIDE5, m_stt_divide);
+	DDX_Control(pDX, IDC_STATIC_TIME_ALL_VIEW, m_stt_time_all_view);
 }
 
 
@@ -93,7 +94,13 @@ BOOL ConvertTimeTab::OnInitDialog()
 		m_btn_icon.LoadHovImage(IDB_PNG_CONVERT_TIME_HOVER, _T("PNG"));
 		m_btn_icon.LoadAltImage(IDB_PNG_CONVERT_TIME_CLICK, _T("PNG"));
 	}
+	m_stt_time_all_view.MoveWindow(0, 0, 529, 314);
+	m_stt_divide.MoveWindow(0, 0, 529, 62);
 	m_btn_icon.MoveWindow(5, 5, 24, 24);
+	//m_btn_test.MoveWindow(38 + 20, 18, 168 + 20, 26);
+	//m_btn_combo.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 26);
+	//m_edit_left_value.MoveWindow(38 + 20 + 10, 22, 168 + 20 - 50, 18);
+	//m_combo_left.MoveWindow(38 + 20 + 168 + 16 + 20, 18, 185 + 20, 90);
 
 	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_reset.SetTextColor(currentTheme->GetTextColor());
