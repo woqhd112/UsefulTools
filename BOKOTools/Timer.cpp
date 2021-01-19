@@ -175,17 +175,55 @@ BOOL Timer::OnInitDialog()
 
 	m_stt_work_time.MoveWindow(30, 125 + 5, 300, 20);
 	m_stt_work_time_view.MoveWindow(30, 155, 335, 65);
-	m_edit_work_hour_1.MoveWindow(50, 164, 25, 35);
+	m_edit_work_hour_1.MoveWindow(50, 164, 25, 43);
+	m_edit_work_hour_2.MoveWindow(75, 164, 25, 43);
+	m_btn_work_hour_up.MoveWindow(100, 165, 18, 21);
+	m_btn_work_hour_down.MoveWindow(100, 186, 18, 21);
+	m_stt_work_hour.MoveWindow(120, 187, 30, 20);
+	m_edit_work_minute_1.MoveWindow(155, 164, 25, 43);
+	m_edit_work_minute_2.MoveWindow(180, 164, 25, 43);
+	m_btn_work_minute_up.MoveWindow(205, 165, 18, 21);
+	m_btn_work_minute_down.MoveWindow(205, 186, 18, 21);
+	m_stt_work_minute.MoveWindow(225, 187, 30, 20);
+	m_edit_work_second_1.MoveWindow(260, 164, 25, 43);
+	m_edit_work_second_2.MoveWindow(285, 164, 25, 43);
+	m_btn_work_second_up.MoveWindow(310, 165, 18, 21);
+	m_btn_work_second_down.MoveWindow(310, 186, 18, 21);
+	m_stt_work_second.MoveWindow(330, 187, 30, 20);
 
 	m_stt_rest_time.MoveWindow(30, 220 + 5, 300, 20);
 	m_stt_rest_time_view.MoveWindow(30, 250, 335, 65);
+	m_edit_rest_hour_1.MoveWindow(50, 259, 25, 43);
+	m_edit_rest_hour_2.MoveWindow(75, 259, 25, 43);
+	m_btn_rest_hour_up.MoveWindow(100, 260, 18, 21);
+	m_btn_rest_hour_down.MoveWindow(100, 281, 18, 21);
+	m_stt_rest_hour.MoveWindow(120, 282, 30, 20);
+	m_edit_rest_minute_1.MoveWindow(155, 259, 25, 43);
+	m_edit_rest_minute_2.MoveWindow(180, 259, 25, 43);
+	m_btn_rest_minute_up.MoveWindow(205, 260, 18, 21);
+	m_btn_rest_minute_down.MoveWindow(205, 281, 18, 21);
+	m_stt_rest_minute.MoveWindow(225, 282, 30, 20);
+	m_edit_rest_second_1.MoveWindow(260, 259, 25, 43);
+	m_edit_rest_second_2.MoveWindow(285, 259, 25, 43);
+	m_btn_rest_second_up.MoveWindow(310, 260, 18, 21);
+	m_btn_rest_second_down.MoveWindow(310, 281, 18, 21);
+	m_stt_rest_second.MoveWindow(330, 282, 30, 20);
+
+	m_btn_startandpause.MoveWindow(30, 330, 105, 25);
+	m_btn_stop.MoveWindow(145, 330, 105, 25);
+	m_btn_reset.MoveWindow(260, 330, 105, 25);
+	m_btn_setting_divide.MoveWindow(0, 370, 392, 15);
 
 	m_stt_time_setting.MoveWindow(30, 390 + 5, 300, 20);
 	m_stt_time_setting_view.MoveWindow(30, 420, 335, 65);
+	m_stt_time_load.MoveWindow(50, 445, 100, 30);
+	m_btn_time_load.MoveWindow(150, 445, 24, 24);
+	m_stt_time_save.MoveWindow(200, 445, 100, 30);
+	m_btn_time_save.MoveWindow(300, 445, 24, 24);
 
-	m_btn_startandpause.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_stop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	m_btn_startandpause.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_stop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_work_hour_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_work_hour_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_work_minute_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -258,6 +296,14 @@ BOOL Timer::OnInitDialog()
 	m_stt_work_time.Initialize(20, currentTheme->GetThemeFontName());
 	m_stt_rest_time.Initialize(20, currentTheme->GetThemeFontName());
 	m_stt_state.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_work_hour.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_work_minute.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_work_second.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_rest_hour.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_rest_minute.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_rest_second.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_time_load.Initialize(18, currentTheme->GetThemeFontName());
+	m_stt_time_save.Initialize(18, currentTheme->GetThemeFontName());
 
 	m_edit_work_hour_1.SetLimitText(1);
 	m_edit_work_hour_2.SetLimitText(1);
@@ -324,7 +370,7 @@ void Timer::SetDivideMargin()
 	CRect divideRect, thisRect;
 	m_btn_setting_divide.GetWindowRect(divideRect);
 	this->GetWindowRect(thisRect);
-	nDivideMargin = thisRect.bottom - divideRect.bottom - divideRect.Height() + 10;
+	nDivideMargin = thisRect.bottom - 385 - 47;
 }
 
 void Timer::CreateConfigFile(CString& strFullPath)
@@ -1238,8 +1284,6 @@ void Timer::SetEnabledCtrl(BOOL bEnabled)
 	m_btn_rest_second_down.EnableWindow(bEnabled);
 	m_radio_infinite.EnableWindow(bEnabled);
 	m_radio_custom.EnableWindow(bEnabled);
-	m_btn_time_save.EnableWindow(bEnabled);
-	m_btn_time_load.EnableWindow(bEnabled);
 	m_btn_stop.EnableWindow(!bEnabled);
 
 	m_edit_work_hour_1.EnableWindow(bEnabled);
@@ -1575,6 +1619,7 @@ void Timer::StartTimer()
 				{
 					// 마무리 멘트 알람 함수
 					// func
+					Sleep(1000);
 					tr.ps = PROGRESS_STATE_WORKING_END_ALL;
 					tr.bSoundThread = true;
 					tr.m_soundThread = AfxBeginThread(thrLoadSound, this);
@@ -1878,6 +1923,8 @@ void Timer::SetOperateColor(COLORREF color, CString strOperateState)
 	nBkBrightness = GetBrightness(nRv, nGv, nBv);
 	OnCtlColor(m_edit_state.GetWindowDC(), &m_edit_state, CTLCOLOR_STATIC);
 	m_edit_state.SetWindowTextW(strOperateState);
+	m_btn_time_save.DisConnect();
+	m_btn_time_load.DisConnect();
 	this->SetBackgroundColor(color);
 	m_btn_setting_divide.SetFaceColor(color);
 	m_btn_setting_divide.m_defaultColor = color;
@@ -2042,6 +2089,11 @@ void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
 void Timer::OnBnClickedButtonTimeLoad()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (tr.bThread)
+	{
+		MessageBox(_T("타이머 작동중엔 기능이 제한됩니다."));
+		return;
+	}
 	CString szRoot = _T("");
 	CreateConfigFile(szRoot);
 
@@ -2110,6 +2162,11 @@ void Timer::OnBnClickedButtonTimeLoad()
 void Timer::OnBnClickedButtonTimeSave()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (tr.bThread)
+	{
+		MessageBox(_T("타이머 작동중엔 기능이 제한됩니다."));
+		return;
+	}
 	CString szRoot = _T("");
 	CreateConfigFile(szRoot);
 
