@@ -76,8 +76,9 @@ BOOL DateCalculate::OnInitDialog()
 	
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
-	this->SetWindowPos(NULL, 0, 0, 320, 720, SWP_NOMOVE);
-	m_cal_calendar.SizeMinReq();
+	this->SetWindowPos(NULL, 0, 0, 320, 690, SWP_NOMOVE);
+	//m_cal_calendar.SizeMinReq();
+	m_cal_calendar.MoveWindow(30, 30, 240, 150);
 	CRect calRect;
 	m_cal_calendar.GetWindowRect(calRect);
 	m_stt_base_date.MoveWindow(30, 30 + calRect.Height() + 20, 100, 30);
@@ -85,8 +86,8 @@ BOOL DateCalculate::OnInitDialog()
 	m_btn_reset.MoveWindow(30 + 150 + 10, 30 + calRect.Height() + 20 + 30, 80, 30);
 
 	m_stt_limitdate.MoveWindow(30, 150 + calRect.Height(), 150, 30);
-	m_stt_limitdate_view.MoveWindow(25, 150 + calRect.Height() + 30 + 3, 255, 280);
-	m_stt_limitdate_divide_view.MoveWindow(25, 150 + calRect.Height() + 30 + 3 + 140, 255, 140);
+	m_stt_limitdate_view.MoveWindow(25, 150 + calRect.Height() + 30 + 10, 255, 280);
+	m_stt_limitdate_divide_view.MoveWindow(25, 150 + calRect.Height() + 30 + 10 + 140, 255, 140);
 
 	int nDateFormatStartPos_x = 45;
 	int nFirstDateFormatStartPos_y = 215 + calRect.Height();

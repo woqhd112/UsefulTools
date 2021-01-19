@@ -146,15 +146,15 @@ private:
 	CalculateStatic m_stt_work_time_view;
 	CalculateStatic m_stt_rest_time_view;
 	CalculateStatic m_stt_time_setting_view;
-	CStatic m_stt_state;
-	CStatic m_stt_time_load;
-	CStatic m_stt_time_save;
-	CStatic m_stt_work_hour;
-	CStatic m_stt_work_minute;
-	CStatic m_stt_work_second;
-	CStatic m_stt_rest_hour;
-	CStatic m_stt_rest_minute;
-	CStatic m_stt_rest_second;
+	CalculateStatic m_stt_state;
+	CalculateStatic m_stt_time_load;
+	CalculateStatic m_stt_time_save;
+	CalculateStatic m_stt_work_hour;
+	CalculateStatic m_stt_work_minute;
+	CalculateStatic m_stt_work_second;
+	CalculateStatic m_stt_rest_hour;
+	CalculateStatic m_stt_rest_minute;
+	CalculateStatic m_stt_rest_second;
 
 	CBrush m_returnBrush;
 
@@ -162,6 +162,7 @@ private:
 	CRect drawBorderRect2;
 	CRect drawBorderRect3;
 	CRect drawBorderRect4;
+	CFont radioFont;
 
 	int nBkBrightness;
 	

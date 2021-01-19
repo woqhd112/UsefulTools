@@ -157,8 +157,31 @@ BOOL Timer::OnInitDialog()
 	tr.work_color = RGB(150, 150, 150);
 	tr.rest_color = currentTheme->GetFunctionSubColor();
 
+	radioFont.CreateFontW(20, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		currentTheme->GetThemeFontName());
+
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_returnBrush.CreateSolidBrush(RGB(255, 255, 255));
+
+	this->SetWindowPos(NULL, 0, 0, 410, 550, SWP_NOMOVE);
+	m_stt_repeat_setting.MoveWindow(30, 10 + 5, 300, 20);
+	m_stt_repeat_setting_view.MoveWindow(30, 40, 335, 85);
+	m_stt_state.MoveWindow(70, 55, 50, 20);
+	m_edit_state.MoveWindow(130, 50, 190, 25);
+	m_radio_infinite.MoveWindow(70, 85, 100, 30);
+	m_radio_custom.MoveWindow(180, 85, 100, 30);
+	m_edit_custom_count.MoveWindow(270, 85, 50, 25);
+
+	m_stt_work_time.MoveWindow(30, 125 + 5, 300, 20);
+	m_stt_work_time_view.MoveWindow(30, 155, 335, 65);
+	m_edit_work_hour_1.MoveWindow(50, 164, 25, 35);
+
+	m_stt_rest_time.MoveWindow(30, 220 + 5, 300, 20);
+	m_stt_rest_time_view.MoveWindow(30, 250, 335, 65);
+
+	m_stt_time_setting.MoveWindow(30, 390 + 5, 300, 20);
+	m_stt_time_setting_view.MoveWindow(30, 420, 335, 65);
 
 	m_btn_startandpause.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_stop.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
@@ -176,6 +199,8 @@ BOOL Timer::OnInitDialog()
 	m_btn_rest_second_up.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_rest_second_down.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
 	m_btn_setting_divide.Initialize(currentTheme->GetFunctionBkColor(), CMFCButton::FlatStyle::BUTTONSTYLE_3D);
+	m_radio_infinite.SetFont(&radioFont);
+	m_radio_custom.SetFont(&radioFont);
 
 	nBkBrightness = GetBrightness(GetRValue(tr.none_color), GetGValue(tr.none_color), GetBValue(tr.none_color));
 	
@@ -225,13 +250,14 @@ BOOL Timer::OnInitDialog()
 	m_edit_rest_minute_2.Initialize(25, _T("고딕"));
 	m_edit_rest_second_1.Initialize(25, _T("고딕"));
 	m_edit_rest_second_2.Initialize(25, _T("고딕"));
-	m_edit_custom_count.Initialize(15, _T("고딕"));
-	m_edit_state.Initialize(20, _T("고딕"));
+	m_edit_custom_count.Initialize(20, _T("고딕"));
+	m_edit_state.Initialize(25, currentTheme->GetThemeFontName());
 
-	m_stt_repeat_setting.Initialize(16, _T("고딕"));
-	m_stt_time_setting.Initialize(16, _T("고딕"));
-	m_stt_work_time.Initialize(16, _T("고딕"));
-	m_stt_rest_time.Initialize(16, _T("고딕"));
+	m_stt_repeat_setting.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_time_setting.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_work_time.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_rest_time.Initialize(20, currentTheme->GetThemeFontName());
+	m_stt_state.Initialize(18, currentTheme->GetThemeFontName());
 
 	m_edit_work_hour_1.SetLimitText(1);
 	m_edit_work_hour_2.SetLimitText(1);
@@ -245,6 +271,7 @@ BOOL Timer::OnInitDialog()
 	m_edit_rest_minute_2.SetLimitText(1);
 	m_edit_rest_second_1.SetLimitText(1);
 	m_edit_rest_second_2.SetLimitText(1);
+	m_edit_custom_count.LimitText(2);
 
 
 	EmptyTextCondition();
