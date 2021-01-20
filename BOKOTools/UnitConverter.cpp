@@ -17,11 +17,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(UnitConverter, CDialogEx)
 
-UnitConverter::UnitConverter(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+UnitConverter::UnitConverter(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_CONVERTER, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	bClickTab = false;
 }
 
@@ -55,6 +58,12 @@ UnitConverter::~UnitConverter()
 	{
 		delete m_convert_bit;
 		m_convert_bit = (ConvertBitTab*)nullptr;
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -168,6 +177,13 @@ BOOL UnitConverter::OnInitDialog()
 	m_btn_length.m_bClick = true;
 	pointDesc = CONVERT_LENGTH_DESC;
 	m_btn_length.CalculateButton::SetFont(CalculateButton::FontFlag::CLICK);
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
+
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

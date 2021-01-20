@@ -2,6 +2,7 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "LapTime.h"
+#include "UsingManualDialog.h"
 
 // Timer 대화 상자
 
@@ -10,7 +11,7 @@ class StopWatch : public CDialogEx
 	DECLARE_DYNAMIC(StopWatch)
 
 public:
-	StopWatch(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	StopWatch(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~StopWatch();
 
 // 대화 상자 데이터입니다.
@@ -42,6 +43,8 @@ private:
 	CalculateButton m_btn_laptime_reset;
 
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 	CBrush m_backBrush;
 

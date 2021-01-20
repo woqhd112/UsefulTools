@@ -3,7 +3,7 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "ResultTimeline.h"
-#include "GdipButton.h" 
+#include "UsingManualDialog.h"
 
 
 
@@ -14,7 +14,7 @@ class EngineeringCalculate : public CDialogEx
 	DECLARE_DYNAMIC(EngineeringCalculate)
 
 public:
-	EngineeringCalculate(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	EngineeringCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~EngineeringCalculate();
 
 // 대화 상자 데이터입니다.
@@ -90,6 +90,8 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 	Calculate* calculate;
 	CBrush m_backBrush;

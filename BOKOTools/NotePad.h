@@ -2,7 +2,7 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "NotePadList.h"
-
+#include "UsingManualDialog.h"
 
 // NotePad 대화 상자
 
@@ -11,7 +11,7 @@ class NotePad : public CDialogEx
 	DECLARE_DYNAMIC(NotePad)
 
 public:
-	NotePad(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	NotePad(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePad();
 
 // 대화 상자 데이터입니다.
@@ -32,6 +32,8 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 	NotePadList* notepadlist;
 

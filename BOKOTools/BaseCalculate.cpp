@@ -19,15 +19,24 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(BaseCalculate, CDialogEx)
 
-BaseCalculate::BaseCalculate(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+BaseCalculate::BaseCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 }
 
 BaseCalculate::~BaseCalculate()
 {
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
+	}
 }
 
 void BaseCalculate::DoDataExchange(CDataExchange* pDX)
@@ -91,6 +100,12 @@ BOOL BaseCalculate::OnInitDialog()
 	m_stt_output_result.MoveWindow(30, 170, 70, 20);
 	m_edit_output_select_from_base.MoveWindow(100, 165, 240, 30);
 	m_btn_result_select_from_base.MoveWindow(200, 205, 140, 30);
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

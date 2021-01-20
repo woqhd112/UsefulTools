@@ -4,6 +4,7 @@
 #include "ConvertTimeTab.h"
 #include "ConvertWeightTab.h"
 #include "ConvertWidthTab.h"
+#include "UsingManualDialog.h"
 
 // UnitConverter 대화 상자
 
@@ -12,7 +13,7 @@ class UnitConverter : public CDialogEx
 	DECLARE_DYNAMIC(UnitConverter)
 
 public:
-	UnitConverter(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	UnitConverter(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~UnitConverter();
 
 // 대화 상자 데이터입니다.
@@ -24,6 +25,8 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

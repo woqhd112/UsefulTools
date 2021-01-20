@@ -17,11 +17,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(BaseTimer, CDialogEx)
 
-BaseTimer::BaseTimer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+BaseTimer::BaseTimer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE_TIMER, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	bStart = true;
 	bThread = false;
 	bSoundThread = false;
@@ -55,6 +58,12 @@ BaseTimer::~BaseTimer()
 			delete m_thread;
 			m_thread = nullptr;
 		}
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -146,6 +155,12 @@ BOOL BaseTimer::OnInitDialog()
 	m_edit_basetimer_m.SetWindowTextW(_T("00"));
 	m_edit_basetimer_s.SetWindowTextW(_T("00"));
 	m_btn_startandstop.SetFocus();
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

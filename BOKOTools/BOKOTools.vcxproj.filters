@@ -91,24 +91,6 @@
     <ClCompile Include="ThemeData.cpp">
       <Filter>ThemeData</Filter>
     </ClCompile>
-    <ClCompile Include="SettingTheme.cpp">
-      <Filter>MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="SortIcon.cpp">
-      <Filter>MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomScroll.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SortButtonList.cpp">
-      <Filter>MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="AllButtonList.cpp">
-      <Filter>MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="DragDialog.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="NotePadList.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
@@ -117,6 +99,27 @@
     </ClCompile>
     <ClCompile Include="AnalogWatch.cpp">
       <Filter>WorldClock</Filter>
+    </ClCompile>
+    <ClCompile Include="AllButtonList.cpp">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="SortButtonList.cpp">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="SortIcon.cpp">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingTheme.cpp">
+      <Filter>MainMenu\SettingTheme</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomScroll.cpp">
+      <Filter>UI\Scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="DragDialog.cpp">
+      <Filter>UI\DragDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="UsingManualDialog.cpp">
+      <Filter>UI\UsingManualDialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -228,24 +231,6 @@
     <ClInclude Include="ThemeData.h">
       <Filter>ThemeData</Filter>
     </ClInclude>
-    <ClInclude Include="SettingTheme.h">
-      <Filter>MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="SortIcon.h">
-      <Filter>MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomScroll.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SortButtonList.h">
-      <Filter>MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="AllButtonList.h">
-      <Filter>MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="DragDialog.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="NotePadList.h">
       <Filter>NotePad</Filter>
     </ClInclude>
@@ -254,6 +239,27 @@
     </ClInclude>
     <ClInclude Include="AnalogWatch.h">
       <Filter>WorldClock</Filter>
+    </ClInclude>
+    <ClInclude Include="AllButtonList.h">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="SortButtonList.h">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="SortIcon.h">
+      <Filter>MainMenu\SortIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingTheme.h">
+      <Filter>MainMenu\SettingTheme</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomScroll.h">
+      <Filter>UI\Scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="DragDialog.h">
+      <Filter>UI\DragDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="UsingManualDialog.h">
+      <Filter>UI\UsingManualDialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1881,6 +1887,24 @@
     </Filter>
     <Filter Include="리소스\기본 테마\공학계산기 아이콘">
       <UniqueIdentifier>{f6d7bea2-e0f8-4193-8f5f-b356c607040a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainMenu\SortIcon">
+      <UniqueIdentifier>{a87e05fa-73f0-4242-8edf-59e85bcfe7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainMenu\SettingTheme">
+      <UniqueIdentifier>{e1284778-7393-44c7-b735-738a2d1c9582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainMenu\UsingManual">
+      <UniqueIdentifier>{022bb418-9d75-4273-89df-fd9683c95a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Scroll">
+      <UniqueIdentifier>{fa705b64-d277-4e85-97f8-01aabe399c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\DragDialog">
+      <UniqueIdentifier>{06eb455d-2dfe-4628-8b5b-adbd8bf824ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UsingManualDialog">
+      <UniqueIdentifier>{abd5841c-9867-46da-8ad2-32f5760ceb50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

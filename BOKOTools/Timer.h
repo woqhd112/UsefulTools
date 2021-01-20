@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "CalculateButton.h"
-#include "GdipButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
-#include "ThemeData.h"
+#include "UsingManualDialog.h"
 
 #pragma comment(lib, "winmm")
 #include <mmsystem.h>
@@ -21,7 +20,7 @@ class Timer : public CDialogEx
 	DECLARE_DYNAMIC(Timer)
 
 public:
-	Timer(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	Timer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~Timer();
 
 // 대화 상자 데이터입니다.
@@ -33,6 +32,8 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

@@ -4,6 +4,7 @@
 #include "AnalogWatch.h"
 #include "CMarkup/Markup.h"
 #include "CXml\Xml.h"
+#include "UsingManualDialog.h"
 
 // WorldClock 대화 상자
 
@@ -12,7 +13,7 @@ class WorldClock : public CDialogEx
 	DECLARE_DYNAMIC(WorldClock)
 
 public:
-	WorldClock(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	WorldClock(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~WorldClock();
 
 // 대화 상자 데이터입니다.
@@ -24,6 +25,8 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

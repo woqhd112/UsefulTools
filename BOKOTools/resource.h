@@ -403,6 +403,7 @@
 #define IDB_PNG_WORLDCLOCK_NOMAL_THEME_BASIC 650
 #define IDB_PNG_WORLDCLOCK_CLICK_THEME_BASIC 651
 #define IDB_PNG_WORLDCLOCK_HOVER_THEME_BASIC 652
+#define IDD_DIALOG_USING_MANUAL         653
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -749,6 +750,7 @@
 #define IDC_STATIC_WEIGHT_ALL_VIEW      1313
 #define IDC_STATIC_WIDTH_ALL_VIEW       1314
 #define IDC_STATIC_TIME_ALL_VIEW        1315
+#define IDC_CHECK_NEVER_LOOK_BACK       1316
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -768,9 +770,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        653
+#define _APS_NEXT_RESOURCE_VALUE        655
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1316
+#define _APS_NEXT_CONTROL_VALUE         1317
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

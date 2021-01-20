@@ -17,17 +17,25 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(DateCalculate, CDialogEx)
 
-DateCalculate::DateCalculate(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+DateCalculate::DateCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_TIME, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	bBaseEditMax = false;
 	bLimitEditMax = false;
 }
 
 DateCalculate::~DateCalculate()
 {
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
+	}
 }
 
 void DateCalculate::DoDataExchange(CDataExchange* pDX)
@@ -78,7 +86,7 @@ BOOL DateCalculate::OnInitDialog()
 
 	this->SetWindowPos(NULL, 0, 0, 320, 690, SWP_NOMOVE);
 	//m_cal_calendar.SizeMinReq();
-	m_cal_calendar.MoveWindow(30, 30, 240, 150);
+	m_cal_calendar.MoveWindow(30, 20, 240, 160);
 	CRect calRect;
 	m_cal_calendar.GetWindowRect(calRect);
 	m_stt_base_date.MoveWindow(30, 30 + calRect.Height() + 20, 100, 30);
@@ -145,7 +153,11 @@ BOOL DateCalculate::OnInitDialog()
 
 	SetCalendar();
 
-	
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

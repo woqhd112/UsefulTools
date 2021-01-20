@@ -241,6 +241,7 @@
     <ClInclude Include="ThemeData.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitConverter.h" />
+    <ClInclude Include="UsingManualDialog.h" />
     <ClInclude Include="WorldClock.h" />
     <ClInclude Include="WorldSearchList.h" />
   </ItemGroup>
@@ -287,6 +288,7 @@
     <ClCompile Include="ThemeData.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitConverter.cpp" />
+    <ClCompile Include="UsingManualDialog.cpp" />
     <ClCompile Include="WorldClock.cpp" />
     <ClCompile Include="WorldSearchList.cpp" />
   </ItemGroup>

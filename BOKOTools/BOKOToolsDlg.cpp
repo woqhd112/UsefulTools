@@ -183,6 +183,16 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	bTimer = false;
 	bNotepad = false;
 	bCurTimeThread = false;
+	// 임시용 xml추가해서 로드해야함
+	bBaseUsingManual = true;
+	bEngineeringUsingManual = true;
+	bConverterUsingManual = true;
+	bDateUsingManual = true;
+	bStopWatchUsingManual = true;
+	bTimerUsingManual = true;
+	bNotepadUsingManual = true;
+	bBaseTimerUsingManual = true;
+	bWorldClockUsingManual = true;
 
 	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
@@ -1002,7 +1012,7 @@ void CBOKOToolsDlg::OnBnClickedButtonBaseGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bBase)
 	{
-		base = new BaseCalculate(currentTheme, this);
+		base = new BaseCalculate(bBaseUsingManual, currentTheme, this);
 		base->Create(IDD_DIALOG_BASE, GetDesktopWindow());
 		base->ShowWindow(SW_SHOW);
 		bBase = true;
@@ -1015,7 +1025,7 @@ void CBOKOToolsDlg::OnBnClickedButtonCalculatorGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bEngineering)
 	{
-		engineering = new EngineeringCalculate(currentTheme, this);
+		engineering = new EngineeringCalculate(bEngineeringUsingManual, currentTheme, this);
 		engineering->Create(IDD_DIALOG_ENGINEERING, GetDesktopWindow());
 		engineering->ShowWindow(SW_SHOW);
 		bEngineering = true;
@@ -1028,7 +1038,7 @@ void CBOKOToolsDlg::OnBnClickedButtonStopwatchGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bStopWatch)
 	{
-		stopwatch = new StopWatch(currentTheme, this);
+		stopwatch = new StopWatch(bStopWatchUsingManual, currentTheme, this);
 		stopwatch->Create(IDD_DIALOG_STOPWATCH, GetDesktopWindow());
 		stopwatch->ShowWindow(SW_SHOW);
 		bStopWatch = true;
@@ -1042,7 +1052,7 @@ void CBOKOToolsDlg::OnBnClickedButtonConverterGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bConverter)
 	{
-		converter = new UnitConverter(currentTheme, this);
+		converter = new UnitConverter(bConverterUsingManual, currentTheme, this);
 		converter->Create(IDD_DIALOG_CONVERTER, GetDesktopWindow());
 		converter->ShowWindow(SW_SHOW);
 		bConverter = true;
@@ -1055,7 +1065,7 @@ void CBOKOToolsDlg::OnBnClickedButtonDateGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bDate)
 	{
-		date = new DateCalculate(currentTheme, this);
+		date = new DateCalculate(bDateUsingManual, currentTheme, this);
 		date->Create(IDD_DIALOG_DATE, GetDesktopWindow());
 		date->ShowWindow(SW_SHOW);
 		bDate = true;
@@ -1068,7 +1078,7 @@ void CBOKOToolsDlg::OnBnClickedButtonTimerGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bTimer)
 	{
-		timer = new Timer(currentTheme, this);
+		timer = new Timer(bTimerUsingManual, currentTheme, this);
 		timer->Create(IDD_DIALOG_TIMER, GetDesktopWindow());
 		timer->ShowWindow(SW_SHOW);
 		bTimer = true;
@@ -1081,7 +1091,7 @@ void CBOKOToolsDlg::OnBnClickedButtonNotepadGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bNotepad)
 	{
-		notepad = new NotePad(currentTheme, this);
+		notepad = new NotePad(bNotepadUsingManual, currentTheme, this);
 		notepad->Create(IDD_DIALOG_NOTEPAD, GetDesktopWindow());
 		notepad->ShowWindow(SW_SHOW);
 		bNotepad = true;
@@ -1093,7 +1103,7 @@ void CBOKOToolsDlg::OnBnClickedButtonBaseTimerGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bBaseTimer)
 	{
-		basetimer = new BaseTimer(currentTheme, this);
+		basetimer = new BaseTimer(bBaseTimerUsingManual, currentTheme, this);
 		basetimer->Create(IDD_DIALOG_BASE_TIMER, GetDesktopWindow());
 		basetimer->ShowWindow(SW_SHOW);
 		bBaseTimer = true;
@@ -1105,7 +1115,7 @@ void CBOKOToolsDlg::OnBnClickedButtonWorldClockGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bWorldClock)
 	{
-		worldclock = new WorldClock(currentTheme, this);
+		worldclock = new WorldClock(bWorldClockUsingManual, currentTheme, this);
 		worldclock->Create(IDD_DIALOG_WORLD_CLOCK, GetDesktopWindow());
 		worldclock->ShowWindow(SW_SHOW);
 		bWorldClock = true;

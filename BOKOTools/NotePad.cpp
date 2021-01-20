@@ -17,11 +17,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(NotePad, CDialogEx)
 
-NotePad::NotePad(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+NotePad::NotePad(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_NOTEPAD, pParent)
 {
 	this->pParent = pParent;
-	this->currentTheme = currentTheme;
+	this->currentTheme = currentTheme; 
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 }
 
 NotePad::~NotePad()
@@ -32,6 +35,11 @@ NotePad::~NotePad()
 		notepadlist = nullptr;
 	}
 
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
+	}
 }
 
 void NotePad::DoDataExchange(CDataExchange* pDX)
@@ -101,6 +109,12 @@ BOOL NotePad::OnInitDialog()
 	notepadlist->ShowWindow(SW_SHOW);
 
 	notepadlist->LoadNotePad();
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

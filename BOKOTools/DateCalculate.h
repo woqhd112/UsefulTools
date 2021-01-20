@@ -2,7 +2,7 @@
 #include "CalculateButton.h"
 #include "CalculateEdit.h"
 #include "CalculateStatic.h"
-#include "ThemeData.h"
+#include "UsingManualDialog.h"
 
 
 // DateCalculate 대화 상자
@@ -12,7 +12,7 @@ class DateCalculate : public CDialogEx
 	DECLARE_DYNAMIC(DateCalculate)
 
 public:
-	DateCalculate(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	DateCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~DateCalculate();
 
 // 대화 상자 데이터입니다.
@@ -53,6 +53,8 @@ private:
 	CalculateStatic m_stt_last_official;
 
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
+	bool bUsingManual;
 
 	CRect drawBorderRect1;
 	CRect drawBorderRect2;

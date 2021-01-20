@@ -19,11 +19,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(Timer, CDialogEx)
 
-Timer::Timer(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+Timer::Timer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_TIMER, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	nDivideMargin = 0;
 	bDivideClick = false;
 	//nBkBrightness = 0;
@@ -55,6 +58,12 @@ Timer::~Timer()
 			delete tr.m_thread;
 			tr.m_thread = nullptr;
 		}
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -359,6 +368,11 @@ BOOL Timer::OnInitDialog()
 	nTop = int(borderRect.top - thisRect.top - 35);
 	drawBorderRect4 = { nLeft, nTop, nLeft + borderRect.Width(), nTop + borderRect.Height() };
 
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 
 	return FALSE;  // return TRUE unless you set the focus to a control
@@ -370,7 +384,8 @@ void Timer::SetDivideMargin()
 	CRect divideRect, thisRect;
 	m_btn_setting_divide.GetWindowRect(divideRect);
 	this->GetWindowRect(thisRect);
-	nDivideMargin = thisRect.bottom - 385 - 47;
+	//nDivideMargin = thisRect.bottom - 385 - 47;
+	nDivideMargin = thisRect.bottom - divideRect.bottom - 9;
 }
 
 void Timer::CreateConfigFile(CString& strFullPath)

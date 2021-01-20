@@ -17,11 +17,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(WorldClock, CDialogEx)
 
-WorldClock::WorldClock(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+WorldClock::WorldClock(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_WORLD_CLOCK, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	bWillModify = false;
 	bCurTimeThread = false;
 	nErrorTimeHour = 0;
@@ -59,6 +62,12 @@ WorldClock::~WorldClock()
 			delete m_curtimeThread;
 			m_curtimeThread = nullptr;
 		}
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -168,6 +177,12 @@ BOOL WorldClock::OnInitDialog()
 
 		bCurTimeThread = true;
 		m_curtimeThread = AfxBeginThread(thrStartWorldClock, this);
+
+		if (bUsingManual)
+		{
+			usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+			usingManual->ShowWindow(SW_SHOW);
+		}
 	}
 	else
 	{

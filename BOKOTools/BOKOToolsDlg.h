@@ -134,6 +134,16 @@ public:
 	bool bBaseTimer;
 	bool bWorldClock;
 
+	bool bBaseUsingManual;
+	bool bEngineeringUsingManual;
+	bool bConverterUsingManual;
+	bool bDateUsingManual;
+	bool bStopWatchUsingManual;
+	bool bTimerUsingManual;
+	bool bNotepadUsingManual;
+	bool bBaseTimerUsingManual;
+	bool bWorldClockUsingManual;
+
 	void SetDisableCtlColor(COLORREF setColor);
 	void ExecuteSelectTheme(ThemeData* selectTheme);
 	void SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y);

@@ -17,11 +17,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(StopWatch, CDialogEx)
 
-StopWatch::StopWatch(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+StopWatch::StopWatch(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_STOPWATCH, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
+	this->bUsingManual = bUsingManual;
+	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
+	usingManual = new UsingManualDialog(manualList, currentTheme, this);
 	laptime = new LapTime(currentTheme);
 	bStart = true;
 	bLaptime = false;
@@ -37,6 +40,12 @@ StopWatch::~StopWatch()
 		laptime->DestroyWindow();
 		delete laptime;
 		laptime = nullptr;
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -112,6 +121,12 @@ BOOL StopWatch::OnInitDialog()
 	m_stt_hms.BringWindowToTop();
 
 	m_btn_laptime.EnableWindow(FALSE);
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
