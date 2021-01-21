@@ -13,8 +13,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // _DEBUG
 
-#pragma comment(lib, "UxTheme.lib")
-
 // Timer 대화 상자
 
 IMPLEMENT_DYNAMIC(Timer, CDialogEx)
@@ -25,8 +23,7 @@ Timer::Timer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullpt
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(IDD_DIALOG_TIMER, manualList, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_TIMER, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 	nDivideMargin = 0;
 	bDivideClick = false;
 	//nBkBrightness = 0;
@@ -370,10 +367,9 @@ BOOL Timer::OnInitDialog()
 
 	if (bUsingManual)
 	{
-		usingManual->Create(IDD_DIALOG_USING_MANUAL);
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
 		usingManual->ShowWindow(SW_SHOW);
 	}
-
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

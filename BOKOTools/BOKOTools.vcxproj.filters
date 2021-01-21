@@ -1391,6 +1391,7 @@
     <Image Include="res\Theme_Basic\WorldClock_U.png">
       <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
     </Image>
+    <Image Include="res\6391d2dc6fa43ed9479fcf952e781d4a.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">

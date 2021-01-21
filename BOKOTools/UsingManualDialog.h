@@ -1,6 +1,7 @@
 ﻿#pragma once
-#include "CustomScroll.h"
 #include "CustomXml.h"
+#include "GdipButton.h"
+#include "ThemeData.h"
 #include <vector>
 
 // UsingManualDialog 대화 상자
@@ -10,7 +11,7 @@ class UsingManualDialog : public CDialogEx
 	DECLARE_DYNAMIC(UsingManualDialog)
 
 public:
-	UsingManualDialog(int nParentID, std::vector<int> usingTypeManualVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	UsingManualDialog(bool bFuncPopUp, int nParentID, int nManualImageID, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~UsingManualDialog();
 
 // 대화 상자 데이터입니다.
@@ -27,11 +28,15 @@ private:
 
 	ThemeData* currentTheme;
 	int nParentID;
-
-	CustomScroll scroll;
-	std::vector<int> usingTypeManualVector;
+	bool bFuncPopUp;
+	int nManualImageID;
+	std::vector<CGdipButton*> manualButtonVector;
 
 	CButton m_btn_check_never_look_back;
+	CGdipButton m_btn_manual_image;
+
+	CFont checkFont;
+	CRect checkPosRect;
 
 	void SaveUsingManual();
 	CString GetDialogName(int nID);
@@ -42,6 +47,4 @@ public:
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };

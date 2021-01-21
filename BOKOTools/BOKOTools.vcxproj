@@ -301,6 +301,7 @@
     <None Include="res\BOKOTools.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\6391d2dc6fa43ed9479fcf952e781d4a.png" />
     <Image Include="res\Cal.ico" />
     <Image Include="res\CalculatorReport_B.png" />
     <Image Include="res\CalculatorReport_C.png" />

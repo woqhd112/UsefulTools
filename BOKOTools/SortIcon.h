@@ -13,7 +13,7 @@ class SortIcon : public CDialogEx
 	DECLARE_DYNAMIC(SortIcon)
 
 public:
-	SortIcon(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	SortIcon(bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~SortIcon();
 
 // 대화 상자 데이터입니다.
@@ -29,6 +29,7 @@ private:
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
 	std::vector<std::vector<int>> ctlVector;
 	std::vector<CGdipButton*> sortButtonVector;
 
@@ -36,9 +37,9 @@ private:
 	DragDialog* dragDlg;
 
 	int nButtonID;
+	bool bUsingManual;
 
 public:
-
 	CRect dragRect;
 	SortButtonList* sortButtonList;
 	AllButtonList* allButtonList;

@@ -268,15 +268,17 @@ void CBOKOToolsDlg::LoadUsingManual()
 			if (nUsing > 1) nUsing = 1;
 			else if (nUsing < 0) nUsing = 0;
 
-			if (strFuncName == _T("BaseCalculator")) bBaseUsingManual = nUsing;
-			else if (strFuncName == _T("EngineeringCalculator")) bEngineeringUsingManual = nUsing;
-			else if (strFuncName == _T("StopWatch")) bStopWatchUsingManual = nUsing;
-			else if (strFuncName == _T("UnitConverter")) bConverterUsingManual = nUsing;
-			else if (strFuncName == _T("DateCalculator")) bDateUsingManual = nUsing;
-			else if (strFuncName == _T("WorkTimer")) bTimerUsingManual = nUsing;
-			else if (strFuncName == _T("NotePad")) bNotepadUsingManual = nUsing;
-			else if (strFuncName == _T("BaseTimer")) bBaseTimerUsingManual = nUsing;
-			else if (strFuncName == _T("WorldClock")) bWorldClockUsingManual = nUsing;
+			if (strFuncName == _T("진법계산기")) bBaseUsingManual = nUsing;
+			else if (strFuncName == _T("공학계산기")) bEngineeringUsingManual = nUsing;
+			else if (strFuncName == _T("스탑워치")) bStopWatchUsingManual = nUsing;
+			else if (strFuncName == _T("단위변환기")) bConverterUsingManual = nUsing;
+			else if (strFuncName == _T("날짜계산기")) bDateUsingManual = nUsing;
+			else if (strFuncName == _T("업무타이머")) bTimerUsingManual = nUsing;
+			else if (strFuncName == _T("메모장")) bNotepadUsingManual = nUsing;
+			else if (strFuncName == _T("기본타이머")) bBaseTimerUsingManual = nUsing;
+			else if (strFuncName == _T("세계시계")) bWorldClockUsingManual = nUsing;
+			else if (strFuncName == _T("아이콘정렬")) bIconSortManual = nUsing;
+			else if (strFuncName == _T("테마세팅")) bSettingThemeManual = nUsing;
 		}
 	}
 	else
@@ -302,31 +304,37 @@ bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFile
 		markUp->AddElem(_T("Manual"));
 		markUp->IntoElem();
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("BaseCalculator"));
+		markUp->AddAttrib(_T("name"), _T("진법계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("EngineeringCalculator"));
+		markUp->AddAttrib(_T("name"), _T("공학계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("StopWatch"));
+		markUp->AddAttrib(_T("name"), _T("스탑워치"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("UnitConverter"));
+		markUp->AddAttrib(_T("name"), _T("단위변환기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("DateCalculator"));
+		markUp->AddAttrib(_T("name"), _T("날짜계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("WorkTimer"));
+		markUp->AddAttrib(_T("name"), _T("업무타이머"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("NotePad"));
+		markUp->AddAttrib(_T("name"), _T("메모장"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("BaseTimer"));
+		markUp->AddAttrib(_T("name"), _T("기본타이머"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("WorldClock"));
+		markUp->AddAttrib(_T("name"), _T("세계시계"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("아이콘정렬"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("테마세팅"));
 		markUp->AddAttrib(_T("use"), 1);
 
 		bBaseUsingManual = true;
@@ -338,6 +346,8 @@ bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFile
 		bNotepadUsingManual = true;
 		bBaseTimerUsingManual = true;
 		bWorldClockUsingManual = true;
+		bSettingThemeManual = true;
+		bIconSortManual = true;
 
 		bReturn = true;
 	}
@@ -1253,14 +1263,14 @@ HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CBOKOToolsDlg::OnMenuSettingTheme()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SettingTheme settingtheme(themeList, currentTheme, this);
+	SettingTheme settingtheme(bSettingThemeManual, themeList, currentTheme, this);
 	settingtheme.DoModal();
 }
 
 void CBOKOToolsDlg::OnMenuSortIcon()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SortIcon sorticon(ctlItemVector, currentTheme, this);
+	SortIcon sorticon(bIconSortManual, ctlItemVector, currentTheme, this);
 	sorticon.DoModal();
 }
 

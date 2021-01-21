@@ -17,17 +17,24 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SettingTheme, CDialogEx)
 
-SettingTheme::SettingTheme(std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SettingTheme::SettingTheme(bool bUsingManual, std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SETTING_THEME, pParent)
 {
 	this->themeList = themeList;
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
+	this->bUsingManual = bUsingManual;
 
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_SETTING_THEME, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 }
 
 SettingTheme::~SettingTheme()
 {
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
+	}
 }
 
 void SettingTheme::DoDataExchange(CDataExchange* pDX)
@@ -100,6 +107,12 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_neonsign.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN, _T("PNG"), true);
 
 	SetCtlPos();
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

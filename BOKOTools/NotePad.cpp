@@ -23,8 +23,7 @@ NotePad::NotePad(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nu
 	this->pParent = pParent;
 	this->currentTheme = currentTheme; 
 	this->bUsingManual = bUsingManual;
-	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(IDD_DIALOG_NOTEPAD, manualList, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_NOTEPAD, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 }
 
 NotePad::~NotePad()
@@ -112,7 +111,7 @@ BOOL NotePad::OnInitDialog()
 
 	if (bUsingManual)
 	{
-		usingManual->Create(IDD_DIALOG_USING_MANUAL);
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
 		usingManual->ShowWindow(SW_SHOW);
 	}
 

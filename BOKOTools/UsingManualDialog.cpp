@@ -12,12 +12,13 @@
 
 IMPLEMENT_DYNAMIC(UsingManualDialog, CDialogEx)
 
-UsingManualDialog::UsingManualDialog(int nParentID, std::vector<int> usingTypeManualVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+UsingManualDialog::UsingManualDialog(bool bFuncPopUp, int nParentID, int nManualImageID, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_USING_MANUAL, pParent)
 {
 	this->currentTheme = currentTheme;
-	this->usingTypeManualVector = usingTypeManualVector;
+	this->nManualImageID = nManualImageID;
 	this->nParentID = nParentID;
+	this->bFuncPopUp = bFuncPopUp;
 }
 
 UsingManualDialog::~UsingManualDialog()
@@ -28,14 +29,13 @@ void UsingManualDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHECK_NEVER_LOOK_BACK, m_btn_check_never_look_back);
+	DDX_Control(pDX, IDC_BUTTON_USING_MANUAL, m_btn_manual_image);
 }
 
 
 BEGIN_MESSAGE_MAP(UsingManualDialog, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
-	ON_WM_VSCROLL()
-	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -47,8 +47,25 @@ BOOL UsingManualDialog::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	SetWindowTheme(m_btn_check_never_look_back, _T(""), _T(""));
+
+	checkFont.CreateFontW(25, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+		currentTheme->GetThemeFontName());
+
+	int nThisHeight = bFuncPopUp ? 450 : 410;
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-	this->SetWindowPos(NULL, 0, 0, 500, 700, SWP_NOMOVE);
+	this->SetWindowPos(NULL, 0, 0, 600, nThisHeight, SWP_NOMOVE);
+
+	checkPosRect = { 200, 450 - 80, 200 + 180, 30 + 450 - 80 };
+	m_btn_check_never_look_back.MoveWindow(checkPosRect);
+	m_btn_check_never_look_back.SetFont(&checkFont);
+
+	m_btn_manual_image.LoadStdImage(nManualImageID, _T("PNG"));
+	m_btn_manual_image.LoadHovImage(nManualImageID, _T("PNG"));
+	m_btn_manual_image.LoadAltImage(nManualImageID, _T("PNG"));
+	m_btn_manual_image.m_bUseMouseEvent = false;
+	m_btn_manual_image.MoveWindow(10, 10, 560, 340);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -79,15 +96,17 @@ void UsingManualDialog::OnClose()
 CString UsingManualDialog::GetDialogName(int nID)
 {
 	CString strDialogName = _T("");
-	if (nID == IDD_DIALOG_BASE) strDialogName = _T("BaseCalculator");
-	else if (nID == IDD_DIALOG_ENGINEERING) strDialogName = _T("EngineeringCalculator");
-	else if (nID == IDD_DIALOG_STOPWATCH) strDialogName = _T("StopWatch");
-	else if (nID == IDD_DIALOG_CONVERTER) strDialogName = _T("UnitConverter");
-	else if (nID == IDD_DIALOG_DATE) strDialogName = _T("DateCalculator");
-	else if (nID == IDD_DIALOG_TIMER) strDialogName = _T("WorkTimer");
-	else if (nID == IDD_DIALOG_NOTEPAD) strDialogName = _T("NotePad");
-	else if (nID == IDD_DIALOG_BASE_TIMER) strDialogName = _T("BaseTimer");
-	else if (nID == IDD_DIALOG_WORLD_CLOCK) strDialogName = _T("WorldClock");
+	if (nID == IDD_DIALOG_BASE) strDialogName = _T("진법계산기");
+	else if (nID == IDD_DIALOG_ENGINEERING) strDialogName = _T("공학계산기");
+	else if (nID == IDD_DIALOG_STOPWATCH) strDialogName = _T("스탑워치");
+	else if (nID == IDD_DIALOG_CONVERTER) strDialogName = _T("단위변환기");
+	else if (nID == IDD_DIALOG_DATE) strDialogName = _T("날짜계산기");
+	else if (nID == IDD_DIALOG_TIMER) strDialogName = _T("업무타이머");
+	else if (nID == IDD_DIALOG_NOTEPAD) strDialogName = _T("메모장");
+	else if (nID == IDD_DIALOG_BASE_TIMER) strDialogName = _T("기본타이머");
+	else if (nID == IDD_DIALOG_WORLD_CLOCK) strDialogName = _T("세계시계");
+	else if (nID == IDD_DIALOG_SORT_ICON) strDialogName = _T("아이콘정렬");
+	else if (nID == IDD_DIALOG_SETTING_THEME) strDialogName = _T("테마세팅");
 
 	return strDialogName;
 }
@@ -118,6 +137,8 @@ void UsingManualDialog::SaveUsingManual()
 				else if (nParentID == IDD_DIALOG_NOTEPAD) mainFrame->bNotepadUsingManual = false;
 				else if (nParentID == IDD_DIALOG_BASE_TIMER) mainFrame->bBaseTimerUsingManual = false;
 				else if (nParentID == IDD_DIALOG_WORLD_CLOCK) mainFrame->bWorldClockUsingManual = false;
+				else if (nParentID == IDD_DIALOG_SORT_ICON) mainFrame->bIconSortManual = false;
+				else if (nParentID == IDD_DIALOG_SETTING_THEME) mainFrame->bSettingThemeManual = false;
 				break;
 			}
 		}
@@ -139,23 +160,22 @@ HBRUSH UsingManualDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  여기서 DC의 특성을 변경합니다.
+	if (nCtlColor == CTLCOLOR_BTN)
+	{
+		if (pWnd->GetDlgCtrlID() == m_btn_check_never_look_back.GetDlgCtrlID())
+		{
+			pDC->SetTextColor(currentTheme->GetTextColor());
+		}
+	}
+	else if (nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (pWnd->GetDlgCtrlID() == m_btn_check_never_look_back.GetDlgCtrlID())
+		{
+			pDC->SetTextColor(currentTheme->GetTextColor());
+		}
+	}
 
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
 
-
-void UsingManualDialog::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
-}
-
-
-BOOL UsingManualDialog::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
-}

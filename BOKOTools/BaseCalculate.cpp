@@ -25,9 +25,7 @@ BaseCalculate::BaseCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* p
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-
-	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(IDD_DIALOG_BASE, manualList, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_BASE, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 }
 
 BaseCalculate::~BaseCalculate()
@@ -103,7 +101,7 @@ BOOL BaseCalculate::OnInitDialog()
 
 	if (bUsingManual)
 	{
-		usingManual->Create(IDD_DIALOG_USING_MANUAL);
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
 		usingManual->ShowWindow(SW_SHOW);
 	}
 

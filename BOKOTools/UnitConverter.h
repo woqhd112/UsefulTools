@@ -33,6 +33,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

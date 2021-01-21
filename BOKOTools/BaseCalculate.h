@@ -55,6 +55,7 @@ private:
 	CalculateStatic m_stt_result_select;
 
 public:
+
 	afx_msg void OnBnClickedButtonResultTwoFrom2();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

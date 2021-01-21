@@ -44,6 +44,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
 public:
+
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual void PostNcDestroy();

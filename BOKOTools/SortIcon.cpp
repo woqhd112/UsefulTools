@@ -16,13 +16,16 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SortIcon, CDialogEx)
 
-SortIcon::SortIcon(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SortIcon::SortIcon(bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SORT_ICON, pParent)
 {
 	this->ctlVector = ctlVector;
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
+	this->bUsingManual = bUsingManual;
 	nButtonID = 40000;
+
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_SORT_ICON, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 }
 
 SortIcon::~SortIcon()
@@ -37,6 +40,12 @@ SortIcon::~SortIcon()
 	{
 		delete allButtonList;
 		allButtonList = nullptr;
+	}
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
 	}
 }
 
@@ -102,6 +111,12 @@ BOOL SortIcon::OnInitDialog()
 	m_btn_sort_save.MoveWindow(nStartPos_x + 474 - 10 + 30 + 5, nStartPos_y + 504 - 10 + 5, 730 - (nStartPos_x + 474 - 10 + 30 + 5) - 10, 25);
 
 	parentDlg = (CBOKOToolsDlg*)pParent;
+
+	if (bUsingManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
+		usingManual->ShowWindow(SW_SHOW);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

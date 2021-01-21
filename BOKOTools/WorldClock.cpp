@@ -23,8 +23,7 @@ WorldClock::WorldClock(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(IDD_DIALOG_WORLD_CLOCK, manualList, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_WORLD_CLOCK, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 	bWillModify = false;
 	bCurTimeThread = false;
 	nErrorTimeHour = 0;
@@ -180,7 +179,7 @@ BOOL WorldClock::OnInitDialog()
 
 		if (bUsingManual)
 		{
-			usingManual->Create(IDD_DIALOG_USING_MANUAL);
+			usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
 			usingManual->ShowWindow(SW_SHOW);
 		}
 	}

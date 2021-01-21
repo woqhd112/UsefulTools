@@ -141,6 +141,8 @@ public:
 	bool bNotepadUsingManual;
 	bool bBaseTimerUsingManual;
 	bool bWorldClockUsingManual;
+	bool bSettingThemeManual;
+	bool bIconSortManual;
 
 	void SetDisableCtlColor(COLORREF setColor);
 	void ExecuteSelectTheme(ThemeData* selectTheme);

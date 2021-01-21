@@ -23,8 +23,7 @@ DateCalculate::DateCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* p
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(IDD_DIALOG_DATE, manualList, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_DATE, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
 	bBaseEditMax = false;
 	bLimitEditMax = false;
 }
@@ -155,10 +154,9 @@ BOOL DateCalculate::OnInitDialog()
 
 	if (bUsingManual)
 	{
-		usingManual->Create(IDD_DIALOG_USING_MANUAL);
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
 		usingManual->ShowWindow(SW_SHOW);
 	}
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
