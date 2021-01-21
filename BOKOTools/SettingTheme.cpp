@@ -265,7 +265,9 @@ void SettingTheme::SaveCurrnetTheme()
 {
 	bool bSavedXml = false;
 	CMarkup markUp;
-	CString strFullPath = _T("Config\\Theme\\ThemeSetting.conf");
+	CString szRoot = _T("");
+	CustomXml::CreateConfigFile(szRoot);
+	CString strFullPath = szRoot + _T("\\ThemeSetting.conf");
 	if (markUp.Load(strFullPath))
 	{
 		markUp.FindElem(_T("Theme"));
@@ -275,19 +277,7 @@ void SettingTheme::SaveCurrnetTheme()
 			markUp.SetAttrib(_T("value"), currentTheme->GetThemeFlags());
 		}
 	}
-	SaveXml(&markUp, strFullPath);
-}
-
-void SettingTheme::SaveXml(CMarkup* markup, CString strSaveFullPath)
-{
-	CString strXML = markup->GetDoc();
-
-	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-	JWXml::CXml saveXML;
-	saveXML.LoadXml((LPCTSTR)strXML);
-	saveXML.SaveWithFormatted(strSaveFullPath);
-	saveXML.Close();
-	CoUninitialize();
+	CustomXml::SaveXml(&markUp, strFullPath);
 }
 
 HBRUSH SettingTheme::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

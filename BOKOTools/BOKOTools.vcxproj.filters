@@ -121,6 +121,9 @@
     <ClCompile Include="UsingManualDialog.cpp">
       <Filter>UI\UsingManualDialog</Filter>
     </ClCompile>
+    <ClCompile Include="CustomXml.cpp">
+      <Filter>XMLParsor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -260,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="UsingManualDialog.h">
       <Filter>UI\UsingManualDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomXml.h">
+      <Filter>XMLParsor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

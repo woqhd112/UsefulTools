@@ -24,7 +24,7 @@ BaseTimer::BaseTimer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
 	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(manualList, currentTheme, this);
+	usingManual = new UsingManualDialog(IDD_DIALOG_BASE_TIMER, manualList, currentTheme);
 	bStart = true;
 	bThread = false;
 	bSoundThread = false;
@@ -158,7 +158,7 @@ BOOL BaseTimer::OnInitDialog()
 
 	if (bUsingManual)
 	{
-		usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+		usingManual->Create(IDD_DIALOG_USING_MANUAL);
 		usingManual->ShowWindow(SW_SHOW);
 	}
 

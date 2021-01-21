@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CustomScroll.h"
+#include "CustomXml.h"
 #include <vector>
 
 // UsingManualDialog 대화 상자
@@ -9,7 +10,7 @@ class UsingManualDialog : public CDialogEx
 	DECLARE_DYNAMIC(UsingManualDialog)
 
 public:
-	UsingManualDialog(std::vector<int> usingTypeManualVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	UsingManualDialog(int nParentID, std::vector<int> usingTypeManualVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~UsingManualDialog();
 
 // 대화 상자 데이터입니다.
@@ -25,13 +26,17 @@ protected:
 private:
 
 	ThemeData* currentTheme;
-	CWnd* pParent;
+	int nParentID;
 
 	CustomScroll scroll;
 	std::vector<int> usingTypeManualVector;
 
-public:
 	CButton m_btn_check_never_look_back;
+
+	void SaveUsingManual();
+	CString GetDialogName(int nID);
+
+public:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	afx_msg void OnClose();

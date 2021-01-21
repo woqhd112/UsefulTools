@@ -85,24 +85,22 @@ private:
 	ThemeData* currentTheme;
 	CustomScroll scroll;
 
-
-	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void LoadTheme();
 	int LoadCurrnetTheme();
 	void LoadButtonPos();
+	void LoadUsingManual();
 	void LoadUserInterface(ThemeData* currentTheme);
 	void LoadResourceItem(int nResourceID);
-	void CreateConfigPosFile(CString& strFullPath);
 	bool CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector);
-	void CreateConfigThemeFile(CString& strFullPath);
 	bool CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, int& nThemeFlags);
-	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
-	void SaveXml(CMarkup* markup, CString strSaveFullPath);
+	bool CreateDefaultUsingManualXml(CMarkup* markUp, CString strFilePath);
+	void SavePosXml(std::vector<std::vector<int>> ctlItemVector);
+
+	void SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector);
 	void ButtonCtlDisConnect();
 	void ResetScrollAndButton();
 	int ConvertVectorToPos(int x, int y);
 	std::vector<int> ConvertPosToVector(int nPos);
-	void SavePosXml(std::vector<std::vector<int>> ctlItemVector);
 	void ChangeBackBrush();
 
 

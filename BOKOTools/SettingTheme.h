@@ -2,8 +2,7 @@
 #include "ThemeData.h"
 #include "GdipButton.h"
 #include "CalculateStatic.h"
-#include "CMarkup/Markup.h"
-#include "CXml\Xml.h"
+#include "CustomXml.h"
 #include "CustomScroll.h"
 #include <vector>
 
@@ -58,7 +57,6 @@ private:
 	void InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTheme);
 
 	void SaveCurrnetTheme();
-	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

@@ -24,7 +24,7 @@ WorldClock::WorldClock(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
 	std::vector<int> manualList = { IDB_PNG_BASE_CLICK_THEME_BASIC, IDB_PNG_BASE_CLICK_THEME_CLOUD, IDB_PNG_BASE_CLICK_THEME_DETECTIVE, IDB_PNG_BASE_CLICK_THEME_INK };
-	usingManual = new UsingManualDialog(manualList, currentTheme, this);
+	usingManual = new UsingManualDialog(IDD_DIALOG_WORLD_CLOCK, manualList, currentTheme);
 	bWillModify = false;
 	bCurTimeThread = false;
 	nErrorTimeHour = 0;
@@ -180,7 +180,7 @@ BOOL WorldClock::OnInitDialog()
 
 		if (bUsingManual)
 		{
-			usingManual->Create(IDD_DIALOG_USING_MANUAL, this);
+			usingManual->Create(IDD_DIALOG_USING_MANUAL);
 			usingManual->ShowWindow(SW_SHOW);
 		}
 	}
@@ -201,7 +201,7 @@ bool WorldClock::LoadWorldClockData()
 	CMarkup markUp;
 
 	CString szRoot = _T("");
-	CreateConfigClockFile(szRoot);
+	CustomXml::CreateConfigFile(szRoot);
 
 	CString strFullPath = szRoot + _T("\\WorldClock.conf");
 
@@ -230,11 +230,11 @@ bool WorldClock::LoadWorldClockData()
 	{
 		CString szRoot = _T("");
 
-		CreateConfigClockFile(szRoot);
+		CustomXml::CreateConfigFile(szRoot);
 		if (CreateDefaultClockXml(&markUp, szRoot)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			SaveXml(&markUp, strFullPath);
+			CustomXml::SaveXml(&markUp, strFullPath);
 		}
 	}
 
@@ -257,7 +257,7 @@ void WorldClock::SaveClockXml(int nClockIdx)
 {
 	CMarkup markUp;
 	CString szRoot = _T("");
-	CreateConfigClockFile(szRoot);
+	CustomXml::CreateConfigFile(szRoot);
 	CString strFullPath = szRoot + _T("\\WorldClock.conf");
 
 	if (markUp.Load(strFullPath))
@@ -278,52 +278,7 @@ void WorldClock::SaveClockXml(int nClockIdx)
 		}
 	}
 
-	SaveXml(&markUp, strFullPath);
-}
-
-void WorldClock::CreateConfigClockFile(CString& strFullPath)
-{
-	TCHAR chFilePath[256] = { 0, };
-	GetModuleFileName(NULL, chFilePath, 256);
-	strFullPath = (LPCTSTR)chFilePath;
-	int nLen = strFullPath.ReverseFind('\\');
-
-	if (nLen > 0)
-	{
-		strFullPath = strFullPath.Left(nLen);
-	}
-
-	CFileFind rootFind;
-	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
-		strFullPath += _T("\\BOKOTools");
-	}
-	rootFind.Close();
-
-	CreateDefaultDirectory(strFullPath, _T("\\Config"));
-	CreateDefaultDirectory(strFullPath, _T("\\WorldClock"));
-}
-
-void WorldClock::SaveXml(CMarkup* markup, CString strSaveFullPath)
-{
-	CString strXML = markup->GetDoc();
-
-	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-	JWXml::CXml saveXML;
-	saveXML.LoadXml((LPCTSTR)strXML);
-	saveXML.SaveWithFormatted(strSaveFullPath);
-	saveXML.Close();
-	CoUninitialize();
-}
-
-void WorldClock::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
-{
-	CFileFind findPath;
-	strFullPath += strAppendPath;
-	if (!findPath.FindFile(strFullPath))
-	{
-		CreateDirectory(strFullPath, NULL);
-	}
-	findPath.Close();
+	CustomXml::SaveXml(&markUp, strFullPath);
 }
 
 bool WorldClock::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)

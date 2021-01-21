@@ -183,16 +183,8 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	bTimer = false;
 	bNotepad = false;
 	bCurTimeThread = false;
-	// 임시용 xml추가해서 로드해야함
-	bBaseUsingManual = true;
-	bEngineeringUsingManual = true;
-	bConverterUsingManual = true;
-	bDateUsingManual = true;
-	bStopWatchUsingManual = true;
-	bTimerUsingManual = true;
-	bNotepadUsingManual = true;
-	bBaseTimerUsingManual = true;
-	bWorldClockUsingManual = true;
+
+	LoadUsingManual();
 
 	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
@@ -250,12 +242,278 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_basetimer.BringWindowToTop();
 	m_stt_world_clock.BringWindowToTop();
 
-	//SetCtlPos();
 	LoadButtonPos();
 	ShowCurrentTime();
 
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
+}
+
+void CBOKOToolsDlg::LoadUsingManual()
+{
+	bool bSavedXml = false;
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CustomXml::CreateConfigFile(szRoot);
+	CString strFullPath = szRoot + _T("\\UsingManual.conf");
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Manual"));
+		markUp.IntoElem();
+		while (markUp.FindElem(_T("func")))
+		{
+			CString strFuncName = markUp.GetAttrib(_T("name"));
+			CString strUsing = markUp.GetAttrib(_T("use"));
+			int nUsing = _ttoi(strUsing);
+			if (nUsing > 1) nUsing = 1;
+			else if (nUsing < 0) nUsing = 0;
+
+			if (strFuncName == _T("BaseCalculator")) bBaseUsingManual = nUsing;
+			else if (strFuncName == _T("EngineeringCalculator")) bEngineeringUsingManual = nUsing;
+			else if (strFuncName == _T("StopWatch")) bStopWatchUsingManual = nUsing;
+			else if (strFuncName == _T("UnitConverter")) bConverterUsingManual = nUsing;
+			else if (strFuncName == _T("DateCalculator")) bDateUsingManual = nUsing;
+			else if (strFuncName == _T("WorkTimer")) bTimerUsingManual = nUsing;
+			else if (strFuncName == _T("NotePad")) bNotepadUsingManual = nUsing;
+			else if (strFuncName == _T("BaseTimer")) bBaseTimerUsingManual = nUsing;
+			else if (strFuncName == _T("WorldClock")) bWorldClockUsingManual = nUsing;
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CustomXml::CreateConfigFile(szRoot);
+		if (CreateDefaultUsingManualXml(&markUp, szRoot)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			CustomXml::SaveXml(&markUp, szRoot + _T("\\UsingManual.conf"));
+		}
+	}
+}
+
+bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFilePath)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\UsingManual.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Manual"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("BaseCalculator"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("EngineeringCalculator"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("StopWatch"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("UnitConverter"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("DateCalculator"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("WorkTimer"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("NotePad"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("BaseTimer"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("WorldClock"));
+		markUp->AddAttrib(_T("use"), 1);
+
+		bBaseUsingManual = true;
+		bEngineeringUsingManual = true;
+		bConverterUsingManual = true;
+		bDateUsingManual = true;
+		bStopWatchUsingManual = true;
+		bTimerUsingManual = true;
+		bNotepadUsingManual = true;
+		bBaseTimerUsingManual = true;
+		bWorldClockUsingManual = true;
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+void CBOKOToolsDlg::LoadButtonPos()
+{
+	bool bSavedXml = false;
+	CMarkup markUp;
+
+	CString szRoot = _T("");
+	CustomXml::CreateConfigFile(szRoot);
+
+	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
+
+	std::vector<std::vector<int>> buttonCtlPosVector;
+
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Position"));
+		markUp.IntoElem();
+		while (markUp.FindElem(_T("button")))
+		{
+			int nButtonCtlID = _ttoi(markUp.GetAttrib(_T("bid")));
+			int nStaticCtlID = _ttoi(markUp.GetAttrib(_T("sid")));
+			int nButtonPos_x = _ttoi(markUp.GetAttrib(_T("posx")));
+			int nButtonPos_y = _ttoi(markUp.GetAttrib(_T("posy")));
+
+			std::vector<int> pos;
+			pos.push_back(nButtonCtlID);
+			pos.push_back(nStaticCtlID);
+			pos.push_back(nButtonPos_x);
+			pos.push_back(nButtonPos_y);
+			buttonCtlPosVector.push_back(pos);
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CustomXml::CreateConfigFile(szRoot);
+		if (CreateDefaultPosXml(&markUp, szRoot, buttonCtlPosVector)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			CustomXml::SaveXml(&markUp, strFullPath);
+		}
+	}
+
+	SetCtlPos(buttonCtlPosVector);
+}
+
+bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\ButtonPos.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Position"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CALCULATOR_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_ENGINEERING);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_STOPWATCH_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_STOPWATCH);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 1);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CONVERTER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_CONVERTER);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_DATE_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_DATE);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_TIMER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_TIMER1);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 2);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_NOTEPAD_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_NOTEPAD);
+		markUp->AddAttrib(_T("posx"), 1);
+		markUp->AddAttrib(_T("posy"), 3);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_TIMER_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE_TIMER);
+		markUp->AddAttrib(_T("posx"), 2);
+		markUp->AddAttrib(_T("posy"), 3);
+		markUp->AddElem(_T("button"));
+		markUp->AddAttrib(_T("bid"), IDC_BUTTON_WORLD_CLOCK_GDI);
+		markUp->AddAttrib(_T("sid"), IDC_STATIC_WORLD_CLOCK);
+		markUp->AddAttrib(_T("posx"), 3);
+		markUp->AddAttrib(_T("posy"), 3);
+
+		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_GDI ,IDC_STATIC_BASE, 1, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_CALCULATOR_GDI ,IDC_STATIC_ENGINEERING, 2, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_STOPWATCH_GDI ,IDC_STATIC_STOPWATCH, 3, 1 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_CONVERTER_GDI ,IDC_STATIC_CONVERTER, 1, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_DATE_GDI ,IDC_STATIC_DATE, 2, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_TIMER_GDI ,IDC_STATIC_TIMER1, 3, 2 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_NOTEPAD_GDI ,IDC_STATIC_NOTEPAD, 1, 3 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_TIMER_GDI ,IDC_STATIC_BASE_TIMER, 2, 3 });
+		buttonCtlPosVector.push_back({ IDC_BUTTON_WORLD_CLOCK_GDI ,IDC_STATIC_WORLD_CLOCK, 3, 3 });
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+int CBOKOToolsDlg::LoadCurrnetTheme()
+{
+	int nThemeFlags = 0;
+	bool bSavedXml = false;
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CustomXml::CreateConfigFile(szRoot);
+	CString strFullPath = szRoot + _T("\\ThemeSetting.conf");
+	if (markUp.Load(strFullPath))
+	{
+		markUp.FindElem(_T("Theme"));
+		markUp.IntoElem();
+		if (markUp.FindElem(_T("class")))
+		{
+			CString strThemeFlags = markUp.GetAttrib(_T("value"));
+			nThemeFlags = _ttoi(strThemeFlags);
+		}
+	}
+	else
+	{
+		CString szRoot = _T("");
+
+		CustomXml::CreateConfigFile(szRoot);
+		if (CreateDefaultThemeXml(&markUp, szRoot, nThemeFlags)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			CustomXml::SaveXml(&markUp, szRoot + _T("\\ThemeSetting.conf"));
+		}
+	}
+	return nThemeFlags;
+}
+
+
+bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, int& nThemeFlags)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	strFilePath += _T("\\ThemeSetting.conf");
+	if (!xmlFind.FindFile(strFilePath))
+	{
+		markUp->AddElem(_T("Theme"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("class"));
+		markUp->AddAttrib(_T("value"), _T("0"));
+		nThemeFlags = 0;
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
 }
 
 void CBOKOToolsDlg::LoadResourceItem(int nResourceID)
@@ -381,51 +639,6 @@ void CBOKOToolsDlg::StartCurrentTime()
 	}
 }
 
-void CBOKOToolsDlg::LoadButtonPos()
-{ 
-	bool bSavedXml = false;
-	CMarkup markUp;
-
-	CString szRoot = _T("");
-	CreateConfigPosFile(szRoot);
-
-	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
-
-	std::vector<std::vector<int>> buttonCtlPosVector;
-
-	if (markUp.Load(strFullPath))
-	{
-		markUp.FindElem(_T("Position"));
-		markUp.IntoElem();
-		while (markUp.FindElem(_T("button")))
-		{
-			int nButtonCtlID = _ttoi(markUp.GetAttrib(_T("bid")));
-			int nStaticCtlID = _ttoi(markUp.GetAttrib(_T("sid")));
-			int nButtonPos_x = _ttoi(markUp.GetAttrib(_T("posx")));
-			int nButtonPos_y = _ttoi(markUp.GetAttrib(_T("posy")));
-
-			std::vector<int> pos;
-			pos.push_back(nButtonCtlID);
-			pos.push_back(nStaticCtlID);
-			pos.push_back(nButtonPos_x);
-			pos.push_back(nButtonPos_y);
-			buttonCtlPosVector.push_back(pos);
-		}
-	}
-	else
-	{
-		CString szRoot = _T("");
-
-		CreateConfigPosFile(szRoot);
-		if (CreateDefaultPosXml(&markUp, szRoot, buttonCtlPosVector)) bSavedXml = true;
-		if (bSavedXml)
-		{
-			SaveXml(&markUp, strFullPath);
-		}
-	}
-
-	SetCtlPos(buttonCtlPosVector);
-}
 
 void CBOKOToolsDlg::ResetScrollAndButton()
 {
@@ -532,194 +745,6 @@ void CBOKOToolsDlg::LoadTheme()
 			currentTheme = theme;
 		}
 	}
-}
-
-int CBOKOToolsDlg::LoadCurrnetTheme()
-{
-	int nThemeFlags = 0;
-	bool bSavedXml = false;
-	CMarkup markUp;
-	CString strFullPath = _T("Config\\Theme\\ThemeSetting.conf");
-	if (markUp.Load(strFullPath))
-	{
-		markUp.FindElem(_T("Theme"));
-		markUp.IntoElem();
-		if (markUp.FindElem(_T("class")))
-		{
-			CString strThemeFlags = markUp.GetAttrib(_T("value"));
-			nThemeFlags = _ttoi(strThemeFlags);
-		}
-	}
-	else
-	{
-		CString szRoot = _T("");
-
-		CreateConfigThemeFile(szRoot);
-		if (CreateDefaultThemeXml(&markUp, szRoot, nThemeFlags)) bSavedXml = true;
-		if (bSavedXml)
-		{
-			SaveXml(&markUp, szRoot + _T("\\ThemeSetting.conf"));
-		}
-	}
-	return nThemeFlags;
-}
-
-void CBOKOToolsDlg::SaveXml(CMarkup* markup, CString strSaveFullPath)
-{
-	CString strXML = markup->GetDoc();
-
-	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-	JWXml::CXml saveXML;
-	saveXML.LoadXml((LPCTSTR)strXML);
-	saveXML.SaveWithFormatted(strSaveFullPath);
-	saveXML.Close();
-	CoUninitialize();
-}
-
-void CBOKOToolsDlg::CreateConfigPosFile(CString& strFullPath)
-{
-	TCHAR chFilePath[256] = { 0, };
-	GetModuleFileName(NULL, chFilePath, 256);
-	strFullPath = (LPCTSTR)chFilePath;
-	int nLen = strFullPath.ReverseFind('\\');
-
-	if (nLen > 0)
-	{
-		strFullPath = strFullPath.Left(nLen);
-	}
-
-	CFileFind rootFind;
-	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
-		strFullPath += _T("\\BOKOTools");
-	}
-	rootFind.Close();
-
-	CreateDefaultDirectory(strFullPath, _T("\\Config"));
-	CreateDefaultDirectory(strFullPath, _T("\\ButtonPos"));
-}
-
-bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, std::vector<std::vector<int>>& buttonCtlPosVector)
-{
-	bool bReturn = false;
-	CFileFind xmlFind;
-	strFilePath += _T("\\ButtonPos.conf");
-	if (!xmlFind.FindFile(strFilePath))
-	{
-		markUp->AddElem(_T("Position"));
-		markUp->IntoElem();
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE);
-		markUp->AddAttrib(_T("posx"), 1);
-		markUp->AddAttrib(_T("posy"), 1);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CALCULATOR_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_ENGINEERING);
-		markUp->AddAttrib(_T("posx"), 2);
-		markUp->AddAttrib(_T("posy"), 1);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_STOPWATCH_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_STOPWATCH);
-		markUp->AddAttrib(_T("posx"), 3);
-		markUp->AddAttrib(_T("posy"), 1);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_CONVERTER_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_CONVERTER);
-		markUp->AddAttrib(_T("posx"), 1);
-		markUp->AddAttrib(_T("posy"), 2);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_DATE_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_DATE);
-		markUp->AddAttrib(_T("posx"), 2);
-		markUp->AddAttrib(_T("posy"), 2);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_TIMER_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_TIMER1);
-		markUp->AddAttrib(_T("posx"), 3);
-		markUp->AddAttrib(_T("posy"), 2);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_NOTEPAD_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_NOTEPAD);
-		markUp->AddAttrib(_T("posx"), 1);
-		markUp->AddAttrib(_T("posy"), 3);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_BASE_TIMER_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_BASE_TIMER);
-		markUp->AddAttrib(_T("posx"), 2);
-		markUp->AddAttrib(_T("posy"), 3);
-		markUp->AddElem(_T("button"));
-		markUp->AddAttrib(_T("bid"), IDC_BUTTON_WORLD_CLOCK_GDI);
-		markUp->AddAttrib(_T("sid"), IDC_STATIC_WORLD_CLOCK);
-		markUp->AddAttrib(_T("posx"), 3);
-		markUp->AddAttrib(_T("posy"), 3);
-
-		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_GDI ,IDC_STATIC_BASE, 1, 1 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_CALCULATOR_GDI ,IDC_STATIC_ENGINEERING, 2, 1 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_STOPWATCH_GDI ,IDC_STATIC_STOPWATCH, 3, 1 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_CONVERTER_GDI ,IDC_STATIC_CONVERTER, 1, 2 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_DATE_GDI ,IDC_STATIC_DATE, 2, 2 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_TIMER_GDI ,IDC_STATIC_TIMER1, 3, 2 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_NOTEPAD_GDI ,IDC_STATIC_NOTEPAD, 1, 3 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_BASE_TIMER_GDI ,IDC_STATIC_BASE_TIMER, 2, 3 });
-		buttonCtlPosVector.push_back({ IDC_BUTTON_WORLD_CLOCK_GDI ,IDC_STATIC_WORLD_CLOCK, 3, 3 });
-
-		bReturn = true;
-	}
-	xmlFind.Close();
-
-	return bReturn;
-}
-
-void CBOKOToolsDlg::CreateConfigThemeFile(CString& strFullPath)
-{
-	TCHAR chFilePath[256] = { 0, };
-	GetModuleFileName(NULL, chFilePath, 256);
-	strFullPath = (LPCTSTR)chFilePath;
-	int nLen = strFullPath.ReverseFind('\\');
-
-	if (nLen > 0)
-	{
-		strFullPath = strFullPath.Left(nLen);
-	}
-
-	CFileFind rootFind;
-	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
-		strFullPath += _T("\\BOKOTools");
-	}
-	rootFind.Close();
-
-	CreateDefaultDirectory(strFullPath, _T("\\Config"));
-	CreateDefaultDirectory(strFullPath, _T("\\Theme"));
-}
-
-void CBOKOToolsDlg::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
-{
-	CFileFind findPath;
-	strFullPath += strAppendPath;
-	if (!findPath.FindFile(strFullPath))
-	{
-		CreateDirectory(strFullPath, NULL);
-	}
-	findPath.Close();
-}
-
-bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, int& nThemeFlags)
-{
-	bool bReturn = false;
-	CFileFind xmlFind;
-	strFilePath += _T("\\ThemeSetting.conf");
-	if (!xmlFind.FindFile(strFilePath))
-	{
-		markUp->AddElem(_T("Theme"));
-		markUp->IntoElem();
-		markUp->AddElem(_T("class"));
-		markUp->AddAttrib(_T("value"), _T("0"));
-		nThemeFlags = 0;
-		bReturn = true;
-	}
-	xmlFind.Close();
-
-	return bReturn;
 }
 
 void CBOKOToolsDlg::SetWhichSelectCtlItemPos(int nButtonCtlID, int nStaticCtlId, int nPos_x, int nPos_y)
@@ -1355,7 +1380,7 @@ void CBOKOToolsDlg::SavePosXml(std::vector<std::vector<int>> ctlItemVector)
 {
 	CMarkup markUp;
 	CString szRoot = _T("");
-	CreateConfigPosFile(szRoot);
+	CustomXml::CreateConfigFile(szRoot);
 	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
 
 	markUp.AddElem(_T("Position"));
@@ -1369,5 +1394,5 @@ void CBOKOToolsDlg::SavePosXml(std::vector<std::vector<int>> ctlItemVector)
 		markUp.AddAttrib(_T("posy"), ctlItemVector.at(i).at(3));
 	}
 
-	SaveXml(&markUp, strFullPath);
+	CustomXml::SaveXml(&markUp, strFullPath);
 }

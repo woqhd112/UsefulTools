@@ -2,8 +2,7 @@
 #include "CalculateEdit.h"
 #include "WorldSearchList.h"
 #include "AnalogWatch.h"
-#include "CMarkup/Markup.h"
-#include "CXml\Xml.h"
+#include "CustomXml.h"
 #include "UsingManualDialog.h"
 
 // WorldClock 대화 상자
@@ -63,10 +62,7 @@ private:
 	void ErrorTimeCalc(AnalogWatch::ClockData* inputTime);
 
 	bool LoadWorldClockData();
-	void CreateConfigClockFile(CString& strFullPath);
 	bool CreateDefaultClockXml(CMarkup* markUp, CString strFilePath);
-	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
-	void SaveXml(CMarkup* markup, CString strSaveFullPath);
 	void SaveClockXml(int nClockIdx);
 
 public:

@@ -1,4 +1,5 @@
 #pragma once
+#include "atlstr.h"
 
 inline int MinRGBColor(int nRv, int nCalcv)
 {

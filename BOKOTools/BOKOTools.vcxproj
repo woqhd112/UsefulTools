@@ -213,6 +213,7 @@
     <ClInclude Include="ConvertWeightTab.h" />
     <ClInclude Include="ConvertWidthTab.h" />
     <ClInclude Include="CustomScroll.h" />
+    <ClInclude Include="CustomXml.h" />
     <ClInclude Include="CXml\Xml.h" />
     <ClInclude Include="CXml\XmlNode.h" />
     <ClInclude Include="CXml\XmlNodes.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="BaseCalculate.cpp" />
     <ClCompile Include="BaseTimer.cpp" />
     <ClCompile Include="CustomScroll.cpp" />
+    <ClCompile Include="CustomXml.cpp" />
     <ClCompile Include="DragDialog.cpp" />
     <ClCompile Include="GdipButton.cpp" />
     <ClCompile Include="BOKOTools.cpp" />
