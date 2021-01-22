@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SortIcon, CDialogEx)
 
-SortIcon::SortIcon(bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SortIcon::SortIcon(int nManualImageID, bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SORT_ICON, pParent)
 {
 	this->ctlVector = ctlVector;
@@ -25,7 +25,7 @@ SortIcon::SortIcon(bool bUsingManual, std::vector<std::vector<int>> ctlVector, T
 	this->bUsingManual = bUsingManual;
 	nButtonID = 40000;
 
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_SORT_ICON, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_SORT_ICON, nManualImageID, currentTheme);
 }
 
 SortIcon::~SortIcon()

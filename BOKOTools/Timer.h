@@ -20,7 +20,7 @@ class Timer : public CDialogEx
 	DECLARE_DYNAMIC(Timer)
 
 public:
-	Timer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	Timer(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~Timer();
 
 // 대화 상자 데이터입니다.

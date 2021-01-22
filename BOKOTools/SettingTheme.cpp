@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SettingTheme, CDialogEx)
 
-SettingTheme::SettingTheme(bool bUsingManual, std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SettingTheme::SettingTheme(int nManualImageID, bool bUsingManual, std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SETTING_THEME, pParent)
 {
 	this->themeList = themeList;
@@ -25,7 +25,7 @@ SettingTheme::SettingTheme(bool bUsingManual, std::vector<ThemeData*> themeList,
 	this->pParent = pParent;
 	this->bUsingManual = bUsingManual;
 
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_SETTING_THEME, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_SETTING_THEME, nManualImageID, currentTheme);
 }
 
 SettingTheme::~SettingTheme()

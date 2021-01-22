@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(NotePad, CDialogEx)
 
-NotePad::NotePad(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+NotePad::NotePad(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_NOTEPAD, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme; 
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_NOTEPAD, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_NOTEPAD, nManualImageID, currentTheme);
 }
 
 NotePad::~NotePad()

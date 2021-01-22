@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(WorldClock, CDialogEx)
 
-WorldClock::WorldClock(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+WorldClock::WorldClock(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_WORLD_CLOCK, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_WORLD_CLOCK, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_WORLD_CLOCK, nManualImageID, currentTheme);
 	bWillModify = false;
 	bCurTimeThread = false;
 	nErrorTimeHour = 0;

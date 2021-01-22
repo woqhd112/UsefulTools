@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(DateCalculate, CDialogEx)
 
-DateCalculate::DateCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+DateCalculate::DateCalculate(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_TIME, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_DATE, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_DATE, nManualImageID, currentTheme);
 	bBaseEditMax = false;
 	bLimitEditMax = false;
 }

@@ -19,13 +19,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(BaseCalculate, CDialogEx)
 
-BaseCalculate::BaseCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+BaseCalculate::BaseCalculate(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_BASE, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_BASE, nManualImageID, currentTheme);
 }
 
 BaseCalculate::~BaseCalculate()

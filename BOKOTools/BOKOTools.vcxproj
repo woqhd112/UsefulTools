@@ -226,6 +226,7 @@
     <ClInclude Include="BOKOToolsDlg.h" />
     <ClInclude Include="GeneralUtil.h" />
     <ClInclude Include="LapTime.h" />
+    <ClInclude Include="ManualList.h" />
     <ClInclude Include="MemDC.h" />
     <ClInclude Include="NotePad.h" />
     <ClInclude Include="NotePadList.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="CXml\Xsl.cpp" />
     <ClCompile Include="EngineeringCalculate.cpp" />
     <ClCompile Include="LapTime.cpp" />
+    <ClCompile Include="ManualList.cpp" />
     <ClCompile Include="NotePad.cpp" />
     <ClCompile Include="NotePadList.cpp" />
     <ClCompile Include="pch.cpp">

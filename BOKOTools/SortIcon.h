@@ -13,7 +13,7 @@ class SortIcon : public CDialogEx
 	DECLARE_DYNAMIC(SortIcon)
 
 public:
-	SortIcon(bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	SortIcon(int nManualImageID, bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~SortIcon();
 
 // 대화 상자 데이터입니다.

@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(StopWatch, CDialogEx)
 
-StopWatch::StopWatch(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+StopWatch::StopWatch(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_STOPWATCH, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_STOPWATCH, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_STOPWATCH, nManualImageID, currentTheme);
 	laptime = new LapTime(currentTheme);
 	bStart = true;
 	bLaptime = false;

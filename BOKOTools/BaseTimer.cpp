@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(BaseTimer, CDialogEx)
 
-BaseTimer::BaseTimer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+BaseTimer::BaseTimer(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BASE_TIMER, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_BASE_TIMER, IDB_PNG_TEST_IMAGE, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_BASE_TIMER, nManualImageID, currentTheme);
 	bStart = true;
 	bThread = false;
 	bSoundThread = false;

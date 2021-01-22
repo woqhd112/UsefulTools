@@ -11,7 +11,7 @@ class BaseCalculate : public CDialogEx
 	DECLARE_DYNAMIC(BaseCalculate)
 
 public:
-	BaseCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	BaseCalculate(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~BaseCalculate();
 
 // 대화 상자 데이터입니다.

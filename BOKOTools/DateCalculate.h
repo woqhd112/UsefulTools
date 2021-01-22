@@ -12,7 +12,7 @@ class DateCalculate : public CDialogEx
 	DECLARE_DYNAMIC(DateCalculate)
 
 public:
-	DateCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	DateCalculate(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~DateCalculate();
 
 // 대화 상자 데이터입니다.

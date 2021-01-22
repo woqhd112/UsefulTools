@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// BOKOTools.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// BOKOTools.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -405,6 +405,7 @@
 #define IDB_PNG_WORLDCLOCK_HOVER_THEME_BASIC 652
 #define IDD_DIALOG_USING_MANUAL         653
 #define IDB_PNG_TEST_IMAGE              655
+#define IDD_DIALOG_MANUAL_LIST          656
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -440,6 +441,7 @@
 #define IDC_BUTTON_SORT_SAVE            1022
 #define IDC_BUTTON_WORLD_SEARCH         1022
 #define IDC_BUTTON_ANALOG_SUBMIT        1022
+#define IDC_BUTTON_BASE_CALCULATOR_MANUAL 1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_BUTTON_RESET                1023
@@ -753,6 +755,17 @@
 #define IDC_STATIC_WIDTH_ALL_VIEW       1314
 #define IDC_STATIC_TIME_ALL_VIEW        1315
 #define IDC_CHECK_NEVER_LOOK_BACK       1316
+#define IDC_BUTTON_ENGINEERING_CALCULATOR_MANUAL 1317
+#define IDC_BUTTON_STOPWATCH_MANUAL     1318
+#define IDC_BUTTON_UNIT_CONVERTER_MANUAL 1319
+#define IDC_DATE_CALCULATOR_MANUAL      1320
+#define IDC_BUTTON_WORK_TIMER_MANUAL    1321
+#define IDC_BUTTON_NOTEPAD_MANUAL       1322
+#define IDC_BUTTON_BASE_TIMER_MANUAL    1323
+#define IDC_BUTTON_WORLD_CLOCK_MANUAL   1324
+#define IDC_BUTTON_SORT_ICON_MANUAL     1325
+#define IDC_BUTTON_THEME_SETTING_MANUAL 1326
+#define IDC_BUTTON_MAIN_FRAME_MANUAL    1327
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -767,14 +780,16 @@
 #define ID_MENU_SETTING_THEME           32772
 #define ID_32773                        32773
 #define ID_MENU_SORT_ICON               32775
+#define ID_32776                        32776
+#define ID_MENU_USING_MANUAL            32777
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        656
-#define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1317
+#define _APS_NEXT_RESOURCE_VALUE        659
+#define _APS_NEXT_COMMAND_VALUE         32778
+#define _APS_NEXT_CONTROL_VALUE         1328
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

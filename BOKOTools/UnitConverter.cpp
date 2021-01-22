@@ -17,13 +17,13 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(UnitConverter, CDialogEx)
 
-UnitConverter::UnitConverter(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+UnitConverter::UnitConverter(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_CONVERTER, pParent)
 {
 	this->pParent = pParent;
 	this->currentTheme = currentTheme;
 	this->bUsingManual = bUsingManual;
-	usingManual = new UsingManualDialog(true, IDD_DIALOG_CONVERTER, IDB_PNG_BASE_CLICK_THEME_BASIC, currentTheme);
+	usingManual = new UsingManualDialog(true, IDD_DIALOG_CONVERTER, nManualImageID, currentTheme);
 	bClickTab = false;
 }
 

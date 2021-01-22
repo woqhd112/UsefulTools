@@ -124,6 +124,9 @@
     <ClCompile Include="CustomXml.cpp">
       <Filter>XMLParsor</Filter>
     </ClCompile>
+    <ClCompile Include="ManualList.cpp">
+      <Filter>MainMenu\UsingManual</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -266,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="CustomXml.h">
       <Filter>XMLParsor</Filter>
+    </ClInclude>
+    <ClInclude Include="ManualList.h">
+      <Filter>MainMenu\UsingManual</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -67,6 +67,10 @@ BOOL UsingManualDialog::OnInitDialog()
 	m_btn_manual_image.m_bUseMouseEvent = false;
 	m_btn_manual_image.MoveWindow(10, 10, 560, 340);
 
+	CString strParentName = GetDialogName(nParentID);
+
+	this->SetWindowTextW(strParentName + _T("의 설명서"));
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -96,17 +100,18 @@ void UsingManualDialog::OnClose()
 CString UsingManualDialog::GetDialogName(int nID)
 {
 	CString strDialogName = _T("");
-	if (nID == IDD_DIALOG_BASE) strDialogName = _T("진법계산기");
-	else if (nID == IDD_DIALOG_ENGINEERING) strDialogName = _T("공학계산기");
+	if (nID == IDD_DIALOG_BASE) strDialogName = _T("진법 계산기");
+	else if (nID == IDD_DIALOG_ENGINEERING) strDialogName = _T("공학 계산기");
 	else if (nID == IDD_DIALOG_STOPWATCH) strDialogName = _T("스탑워치");
-	else if (nID == IDD_DIALOG_CONVERTER) strDialogName = _T("단위변환기");
-	else if (nID == IDD_DIALOG_DATE) strDialogName = _T("날짜계산기");
-	else if (nID == IDD_DIALOG_TIMER) strDialogName = _T("업무타이머");
+	else if (nID == IDD_DIALOG_CONVERTER) strDialogName = _T("단위 변환기");
+	else if (nID == IDD_DIALOG_DATE) strDialogName = _T("날짜 계산기");
+	else if (nID == IDD_DIALOG_TIMER) strDialogName = _T("업무 타이머");
 	else if (nID == IDD_DIALOG_NOTEPAD) strDialogName = _T("메모장");
-	else if (nID == IDD_DIALOG_BASE_TIMER) strDialogName = _T("기본타이머");
-	else if (nID == IDD_DIALOG_WORLD_CLOCK) strDialogName = _T("세계시계");
-	else if (nID == IDD_DIALOG_SORT_ICON) strDialogName = _T("아이콘정렬");
-	else if (nID == IDD_DIALOG_SETTING_THEME) strDialogName = _T("테마세팅");
+	else if (nID == IDD_DIALOG_BASE_TIMER) strDialogName = _T("기본 타이머");
+	else if (nID == IDD_DIALOG_WORLD_CLOCK) strDialogName = _T("세계 시계");
+	else if (nID == IDD_DIALOG_SORT_ICON) strDialogName = _T("아이콘 정렬");
+	else if (nID == IDD_DIALOG_SETTING_THEME) strDialogName = _T("테마 세팅");
+	else if (nID == IDD_BASECALCULATOR_DIALOG) strDialogName = _T("메인 화면");
 
 	return strDialogName;
 }
@@ -139,6 +144,7 @@ void UsingManualDialog::SaveUsingManual()
 				else if (nParentID == IDD_DIALOG_WORLD_CLOCK) mainFrame->bWorldClockUsingManual = false;
 				else if (nParentID == IDD_DIALOG_SORT_ICON) mainFrame->bIconSortManual = false;
 				else if (nParentID == IDD_DIALOG_SETTING_THEME) mainFrame->bSettingThemeManual = false;
+				else if (nParentID == IDD_BASECALCULATOR_DIALOG) mainFrame->bMainFrameManual = false;
 				break;
 			}
 		}

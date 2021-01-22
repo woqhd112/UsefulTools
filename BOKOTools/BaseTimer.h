@@ -14,7 +14,7 @@ class BaseTimer : public CDialogEx
 	DECLARE_DYNAMIC(BaseTimer)
 
 public:
-	BaseTimer(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	BaseTimer(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~BaseTimer();
 
 // 대화 상자 데이터입니다.

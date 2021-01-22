@@ -82,7 +82,9 @@ private:
 	CBrush m_returnBrush;
 
 	std::vector<ThemeData*> themeList;
+	std::vector<int> usingManualIDVector;
 	ThemeData* currentTheme;
+	UsingManualDialog* usingManual;
 	CustomScroll scroll;
 
 	void LoadTheme();
@@ -143,6 +145,7 @@ public:
 	bool bWorldClockUsingManual;
 	bool bSettingThemeManual;
 	bool bIconSortManual;
+	bool bMainFrameManual;
 
 	void SetDisableCtlColor(COLORREF setColor);
 	void ExecuteSelectTheme(ThemeData* selectTheme);
@@ -173,4 +176,5 @@ public:
 	afx_msg void OnClose();
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnMenuUsingManual();
 };

@@ -14,7 +14,7 @@ class EngineeringCalculate : public CDialogEx
 	DECLARE_DYNAMIC(EngineeringCalculate)
 
 public:
-	EngineeringCalculate(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	EngineeringCalculate(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~EngineeringCalculate();
 
 // 대화 상자 데이터입니다.

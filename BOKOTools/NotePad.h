@@ -11,7 +11,7 @@ class NotePad : public CDialogEx
 	DECLARE_DYNAMIC(NotePad)
 
 public:
-	NotePad(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	NotePad(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePad();
 
 // 대화 상자 데이터입니다.

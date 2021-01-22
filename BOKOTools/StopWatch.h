@@ -11,7 +11,7 @@ class StopWatch : public CDialogEx
 	DECLARE_DYNAMIC(StopWatch)
 
 public:
-	StopWatch(bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	StopWatch(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~StopWatch();
 
 // 대화 상자 데이터입니다.

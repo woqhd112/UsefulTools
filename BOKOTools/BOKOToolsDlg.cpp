@@ -7,6 +7,7 @@
 #include "BOKOTools.h"
 #include "SortIcon.h"
 #include "SettingTheme.h"
+#include "ManualList.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
@@ -84,6 +85,12 @@ CBOKOToolsDlg::~CBOKOToolsDlg()
 		deleteTheme = nullptr;
 	}
 	themeList.clear();
+
+	if (usingManual)
+	{
+		delete usingManual;
+		usingManual = nullptr;
+	}
 }
 
 void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -135,6 +142,7 @@ BEGIN_MESSAGE_MAP(CBOKOToolsDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_VSCROLL()
 	ON_WM_MOUSEWHEEL()
+	ON_COMMAND(ID_MENU_USING_MANUAL, &CBOKOToolsDlg::OnMenuUsingManual)
 END_MESSAGE_MAP()
 
 
@@ -245,7 +253,13 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	LoadButtonPos();
 	ShowCurrentTime();
 
-	
+	usingManual = new UsingManualDialog(true, IDD_BASECALCULATOR_DIALOG, usingManualIDVector.at(11), currentTheme);
+	if (bMainFrameManual)
+	{
+		usingManual->Create(IDD_DIALOG_USING_MANUAL, GetDesktopWindow());
+		usingManual->ShowWindow(SW_SHOW);
+	}
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -268,17 +282,18 @@ void CBOKOToolsDlg::LoadUsingManual()
 			if (nUsing > 1) nUsing = 1;
 			else if (nUsing < 0) nUsing = 0;
 
-			if (strFuncName == _T("진법계산기")) bBaseUsingManual = nUsing;
-			else if (strFuncName == _T("공학계산기")) bEngineeringUsingManual = nUsing;
+			if (strFuncName == _T("진법 계산기")) bBaseUsingManual = nUsing;
+			else if (strFuncName == _T("공학 계산기")) bEngineeringUsingManual = nUsing;
 			else if (strFuncName == _T("스탑워치")) bStopWatchUsingManual = nUsing;
-			else if (strFuncName == _T("단위변환기")) bConverterUsingManual = nUsing;
-			else if (strFuncName == _T("날짜계산기")) bDateUsingManual = nUsing;
-			else if (strFuncName == _T("업무타이머")) bTimerUsingManual = nUsing;
+			else if (strFuncName == _T("단위 변환기")) bConverterUsingManual = nUsing;
+			else if (strFuncName == _T("날짜 계산기")) bDateUsingManual = nUsing;
+			else if (strFuncName == _T("업무 타이머")) bTimerUsingManual = nUsing;
 			else if (strFuncName == _T("메모장")) bNotepadUsingManual = nUsing;
-			else if (strFuncName == _T("기본타이머")) bBaseTimerUsingManual = nUsing;
-			else if (strFuncName == _T("세계시계")) bWorldClockUsingManual = nUsing;
-			else if (strFuncName == _T("아이콘정렬")) bIconSortManual = nUsing;
-			else if (strFuncName == _T("테마세팅")) bSettingThemeManual = nUsing;
+			else if (strFuncName == _T("기본 타이머")) bBaseTimerUsingManual = nUsing;
+			else if (strFuncName == _T("세계 시계")) bWorldClockUsingManual = nUsing;
+			else if (strFuncName == _T("아이콘 정렬")) bIconSortManual = nUsing;
+			else if (strFuncName == _T("테마 세팅")) bSettingThemeManual = nUsing;
+			else if (strFuncName == _T("메인 화면")) bMainFrameManual = nUsing;
 		}
 	}
 	else
@@ -292,6 +307,23 @@ void CBOKOToolsDlg::LoadUsingManual()
 			CustomXml::SaveXml(&markUp, szRoot + _T("\\UsingManual.conf"));
 		}
 	}
+
+	/* 이미지 순서
+	* 0 BaseCalculator
+	* 1 EngineeringCalculator
+	* 2 StopWatch
+	* 3 UnitConverter
+	* 4 DateCalculator
+	* 5 WorkTimer
+	* 6 NotePad
+	* 7 BaseTimer
+	* 8 WorldClock
+	* 9 SortIcon
+	* 10 SettingTheme
+	* 11 MainFrame
+	*/
+	usingManualIDVector = { IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE ,
+							IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE , IDB_PNG_TEST_IMAGE };
 }
 
 bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFilePath)
@@ -304,37 +336,40 @@ bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFile
 		markUp->AddElem(_T("Manual"));
 		markUp->IntoElem();
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("진법계산기"));
+		markUp->AddAttrib(_T("name"), _T("진법 계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("공학계산기"));
+		markUp->AddAttrib(_T("name"), _T("공학 계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
 		markUp->AddAttrib(_T("name"), _T("스탑워치"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("단위변환기"));
+		markUp->AddAttrib(_T("name"), _T("단위 변환기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("날짜계산기"));
+		markUp->AddAttrib(_T("name"), _T("날짜 계산기"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("업무타이머"));
+		markUp->AddAttrib(_T("name"), _T("업무 타이머"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
 		markUp->AddAttrib(_T("name"), _T("메모장"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("기본타이머"));
+		markUp->AddAttrib(_T("name"), _T("기본 타이머"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("세계시계"));
+		markUp->AddAttrib(_T("name"), _T("세계 시계"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("아이콘정렬"));
+		markUp->AddAttrib(_T("name"), _T("아이콘 정렬"));
 		markUp->AddAttrib(_T("use"), 1);
 		markUp->AddElem(_T("func"));
-		markUp->AddAttrib(_T("name"), _T("테마세팅"));
+		markUp->AddAttrib(_T("name"), _T("테마 세팅"));
+		markUp->AddAttrib(_T("use"), 1);
+		markUp->AddElem(_T("func"));
+		markUp->AddAttrib(_T("name"), _T("메인 화면"));
 		markUp->AddAttrib(_T("use"), 1);
 
 		bBaseUsingManual = true;
@@ -348,6 +383,7 @@ bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFile
 		bWorldClockUsingManual = true;
 		bSettingThemeManual = true;
 		bIconSortManual = true;
+		bMainFrameManual = true;
 
 		bReturn = true;
 	}
@@ -1047,7 +1083,7 @@ void CBOKOToolsDlg::OnBnClickedButtonBaseGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bBase)
 	{
-		base = new BaseCalculate(bBaseUsingManual, currentTheme, this);
+		base = new BaseCalculate(usingManualIDVector.at(0), bBaseUsingManual, currentTheme, this);
 		base->Create(IDD_DIALOG_BASE, GetDesktopWindow());
 		base->ShowWindow(SW_SHOW);
 		bBase = true;
@@ -1060,7 +1096,7 @@ void CBOKOToolsDlg::OnBnClickedButtonCalculatorGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bEngineering)
 	{
-		engineering = new EngineeringCalculate(bEngineeringUsingManual, currentTheme, this);
+		engineering = new EngineeringCalculate(usingManualIDVector.at(1), bEngineeringUsingManual, currentTheme, this);
 		engineering->Create(IDD_DIALOG_ENGINEERING, GetDesktopWindow());
 		engineering->ShowWindow(SW_SHOW);
 		bEngineering = true;
@@ -1073,7 +1109,7 @@ void CBOKOToolsDlg::OnBnClickedButtonStopwatchGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bStopWatch)
 	{
-		stopwatch = new StopWatch(bStopWatchUsingManual, currentTheme, this);
+		stopwatch = new StopWatch(usingManualIDVector.at(2), bStopWatchUsingManual, currentTheme, this);
 		stopwatch->Create(IDD_DIALOG_STOPWATCH, GetDesktopWindow());
 		stopwatch->ShowWindow(SW_SHOW);
 		bStopWatch = true;
@@ -1087,7 +1123,7 @@ void CBOKOToolsDlg::OnBnClickedButtonConverterGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bConverter)
 	{
-		converter = new UnitConverter(bConverterUsingManual, currentTheme, this);
+		converter = new UnitConverter(usingManualIDVector.at(3), bConverterUsingManual, currentTheme, this);
 		converter->Create(IDD_DIALOG_CONVERTER, GetDesktopWindow());
 		converter->ShowWindow(SW_SHOW);
 		bConverter = true;
@@ -1100,7 +1136,7 @@ void CBOKOToolsDlg::OnBnClickedButtonDateGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bDate)
 	{
-		date = new DateCalculate(bDateUsingManual, currentTheme, this);
+		date = new DateCalculate(usingManualIDVector.at(4), bDateUsingManual, currentTheme, this);
 		date->Create(IDD_DIALOG_DATE, GetDesktopWindow());
 		date->ShowWindow(SW_SHOW);
 		bDate = true;
@@ -1113,7 +1149,7 @@ void CBOKOToolsDlg::OnBnClickedButtonTimerGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bTimer)
 	{
-		timer = new Timer(bTimerUsingManual, currentTheme, this);
+		timer = new Timer(usingManualIDVector.at(5), bTimerUsingManual, currentTheme, this);
 		timer->Create(IDD_DIALOG_TIMER, GetDesktopWindow());
 		timer->ShowWindow(SW_SHOW);
 		bTimer = true;
@@ -1126,7 +1162,7 @@ void CBOKOToolsDlg::OnBnClickedButtonNotepadGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bNotepad)
 	{
-		notepad = new NotePad(bNotepadUsingManual, currentTheme, this);
+		notepad = new NotePad(usingManualIDVector.at(6), bNotepadUsingManual, currentTheme, this);
 		notepad->Create(IDD_DIALOG_NOTEPAD, GetDesktopWindow());
 		notepad->ShowWindow(SW_SHOW);
 		bNotepad = true;
@@ -1138,7 +1174,7 @@ void CBOKOToolsDlg::OnBnClickedButtonBaseTimerGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bBaseTimer)
 	{
-		basetimer = new BaseTimer(bBaseTimerUsingManual, currentTheme, this);
+		basetimer = new BaseTimer(usingManualIDVector.at(7), bBaseTimerUsingManual, currentTheme, this);
 		basetimer->Create(IDD_DIALOG_BASE_TIMER, GetDesktopWindow());
 		basetimer->ShowWindow(SW_SHOW);
 		bBaseTimer = true;
@@ -1150,7 +1186,7 @@ void CBOKOToolsDlg::OnBnClickedButtonWorldClockGdi()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!bWorldClock)
 	{
-		worldclock = new WorldClock(bWorldClockUsingManual, currentTheme, this);
+		worldclock = new WorldClock(usingManualIDVector.at(8), bWorldClockUsingManual, currentTheme, this);
 		worldclock->Create(IDD_DIALOG_WORLD_CLOCK, GetDesktopWindow());
 		worldclock->ShowWindow(SW_SHOW);
 		bWorldClock = true;
@@ -1263,15 +1299,22 @@ HBRUSH CBOKOToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CBOKOToolsDlg::OnMenuSettingTheme()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SettingTheme settingtheme(bSettingThemeManual, themeList, currentTheme, this);
+	SettingTheme settingtheme(usingManualIDVector.at(10), bSettingThemeManual, themeList, currentTheme, this);
 	settingtheme.DoModal();
 }
 
 void CBOKOToolsDlg::OnMenuSortIcon()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	SortIcon sorticon(bIconSortManual, ctlItemVector, currentTheme, this);
+	SortIcon sorticon(usingManualIDVector.at(9), bIconSortManual, ctlItemVector, currentTheme, this);
 	sorticon.DoModal();
+}
+
+void CBOKOToolsDlg::OnMenuUsingManual()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	ManualList manuallist(usingManualIDVector, currentTheme, this);
+	manuallist.DoModal();
 }
 
 void CBOKOToolsDlg::OnRButtonDown(UINT nFlags, CPoint point)

@@ -197,6 +197,7 @@ void CalculateButton::OnLButtonDown(UINT nFlags, CPoint point)
 	if (m_bUseMouseTextBoldEvent)
 	{
 		m_bDown = true;
+		this->CMFCButton::SetFont(&clickFont);
 	}
 
 
@@ -218,7 +219,7 @@ void CalculateButton::OnLButtonUp(UINT nFlags, CPoint point)
 		if (m_bDown)
 		{
 			m_bDown = false;
-			this->CMFCButton::SetFont(&clickFont);
+			this->CMFCButton::SetFont(&hoverFont);
 		}
 	}
 

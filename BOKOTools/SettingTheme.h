@@ -13,7 +13,7 @@ class SettingTheme : public CDialogEx
 	DECLARE_DYNAMIC(SettingTheme)
 
 public:
-	SettingTheme(bool bUsingManual, std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	SettingTheme(int nManualImageID, bool bUsingManual, std::vector<ThemeData*> themeList, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~SettingTheme();
 
 // 대화 상자 데이터입니다.
