@@ -26,11 +26,15 @@ private:
 	CalculateStatic m_stt_sort_view;
 	CalculateStatic m_stt_all_view;
 	CalculateButton m_btn_sort_save;
+	CalculateButton m_btn_sort_reset;
+
+	typedef std::vector<std::vector<int>> CtlVector;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
 	UsingManualDialog* usingManual;
-	std::vector<std::vector<int>> ctlVector;
+	CtlVector ctlVector;
+	CtlVector originCtlVector;
 	std::vector<CGdipButton*> sortButtonVector;
 
 	CBOKOToolsDlg* parentDlg;
@@ -58,4 +62,5 @@ public:
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnBnClickedButtonSortScrollLine();
 	afx_msg void OnBnClickedButtonSortSave();
+	afx_msg void OnBnClickedButtonSortReset();
 };

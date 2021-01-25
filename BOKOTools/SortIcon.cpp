@@ -56,6 +56,7 @@ void SortIcon::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_ALL_VIEW, m_stt_all_view);
 	DDX_Control(pDX, IDC_BUTTON_SORT_SCROLL_LINE, m_btn_sort_scroll_line);
 	DDX_Control(pDX, IDC_BUTTON_SORT_SAVE, m_btn_sort_save);
+	DDX_Control(pDX, IDC_BUTTON_SORT_RESET, m_btn_sort_reset);
 }
 
 
@@ -65,6 +66,7 @@ BEGIN_MESSAGE_MAP(SortIcon, CDialogEx)
 	ON_WM_MOVE()
 	ON_BN_CLICKED(IDC_BUTTON_SORT_SCROLL_LINE, &SortIcon::OnBnClickedButtonSortScrollLine)
 	ON_BN_CLICKED(IDC_BUTTON_SORT_SAVE, &SortIcon::OnBnClickedButtonSortSave)
+	ON_BN_CLICKED(IDC_BUTTON_SORT_RESET, &SortIcon::OnBnClickedButtonSortReset)
 END_MESSAGE_MAP()
 
 
@@ -82,6 +84,8 @@ BOOL SortIcon::OnInitDialog()
 
 	CRect thisRect;
 	this->GetWindowRect(thisRect);
+
+	originCtlVector = ctlVector;
 
 	int nBorderWidth = int((thisRect.Width() - 18) / 2);
 	int nStartPos_x = 10;
@@ -106,9 +110,17 @@ BOOL SortIcon::OnInitDialog()
 	m_btn_sort_scroll_line.SetTextColor(currentTheme->GetTextColor());
 	m_btn_sort_save.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_sort_save.SetTextColor(currentTheme->GetTextColor());
+	m_btn_sort_reset.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_sort_reset.SetTextColor(currentTheme->GetTextColor());
 
 	m_btn_sort_scroll_line.MoveWindow(nStartPos_x, nStartPos_y + 504 - 10 + 5, 474 - 10 + 30, 25);
-	m_btn_sort_save.MoveWindow(nStartPos_x + 474 - 10 + 30 + 5, nStartPos_y + 504 - 10 + 5, 730 - (nStartPos_x + 474 - 10 + 30 + 5) - 10, 25);
+
+	int nSortButtonStartPos_x = nStartPos_x + 474 - 10 + 30 + 5;
+	int nSortButtonStartPos_y = nStartPos_y + 504 - 10 + 5;
+	int nSortButtonWidth = (730 - nSortButtonStartPos_x - 10) / 2 - 5;
+	int nSortButtonHeight = 25;
+	m_btn_sort_save.MoveWindow(nSortButtonStartPos_x, nSortButtonStartPos_y, nSortButtonWidth, nSortButtonHeight);
+	m_btn_sort_reset.MoveWindow(nSortButtonStartPos_x + nSortButtonWidth + 10, nSortButtonStartPos_y, nSortButtonWidth, nSortButtonHeight);
 
 	parentDlg = (CBOKOToolsDlg*)pParent;
 
@@ -203,4 +215,27 @@ void SortIcon::OnBnClickedButtonSortSave()
 	allButtonList->ctlVector = sortButtonList->saveCtlVector;
 	ctlVector = sortButtonList->saveCtlVector;
 	parentDlg->SaveButtonCtlPos(ctlVector);
+}
+
+
+void SortIcon::OnBnClickedButtonSortReset()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (sortButtonList->saveCtlVector == originCtlVector)
+	{
+		return;
+	}
+
+	sortButtonList->ctlVector.clear();
+	sortButtonList->saveCtlVector.clear();
+	allButtonList->ctlVector.clear();
+	ctlVector.clear();
+	sortButtonList->ctlVector = originCtlVector;
+	sortButtonList->saveCtlVector = originCtlVector;
+	allButtonList->ctlVector = originCtlVector;
+	ctlVector = originCtlVector;
+
+	sortButtonList->LoadSortButton(ctlVector);
+	allButtonList->LoadAllButton();
+	Invalidate();
 }

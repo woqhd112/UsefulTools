@@ -9,6 +9,9 @@ class SortButtonList : public CDialogEx
 {
 	DECLARE_DYNAMIC(SortButtonList)
 
+	friend class SortIcon;
+	friend class AllButtonList;
+
 public:
 	SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~SortButtonList();
@@ -25,9 +28,12 @@ protected:
 
 private:
 
+	typedef std::vector<std::vector<int>> CtlVector;
+	typedef std::vector<CGdipButton*> ButtonVector;
+
 	CWnd* pParent;
 	ThemeData* currentTheme;
-	std::vector<CGdipButton*> sortButtonVector;
+	ButtonVector sortButtonVector;
 
 	CGdipButton* downButton;
 
@@ -57,7 +63,7 @@ private:
 
 	bool bSortButtonHoverEvent;
 
-	void LoadSortButton(std::vector<std::vector<int>> ctlVector);
+	void LoadSortButton(CtlVector ctlVector);
 	void CreateDragButton(CGdipButton* currentClickButton);
 	BOOL DragActivation(POINT mousePoint);
 	void HoverSignal(bool bSignal, bool* bSignalItem);
@@ -66,11 +72,9 @@ private:
 	ThemeData::FunctionIcon GetFunctionIconByButtonID(int nButtonID);
 	CString GetButtonNameByButtonID(int nButtonID);
 	void DrawEmptyLine();
-	void DeleteEmptyLine();
+	void DeleteButonVector(ButtonVector& buttonVector);
 	void ButtonBringToTop();
 	bool ExistButtonPos(int nButtonIndex);
-
-public:
 
 	DragDialog* dragDlg;
 	bool bDragActivation;
@@ -78,14 +82,16 @@ public:
 
 	CustomScroll scroll;
 	std::vector<CGdipButton*> iconMoveButtonVector;
-	std::vector<std::vector<int>> ctlVector;
-	std::vector<std::vector<int>> saveCtlVector;
+	CtlVector ctlVector;
+	CtlVector saveCtlVector;
 
 	void EnableEmptyLine(int bShow);
 
 	CRect SetButtonPosition(int nItemCount);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 	int ButtonLocationToPos(POINT pt);
+public:
+
 
 	virtual BOOL OnInitDialog();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);

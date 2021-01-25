@@ -11,6 +11,9 @@ class AllButtonList : public CDialogEx
 {
 	DECLARE_DYNAMIC(AllButtonList)
 
+	friend class SortIcon;
+	friend class SortButtonList;
+
 public:
 	AllButtonList(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~AllButtonList();
@@ -26,6 +29,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+
+	typedef std::vector<std::vector<int>> CtlVector;
+	typedef std::vector<CGdipButton*> ButtonVector;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
@@ -73,22 +79,17 @@ private:
 
 
 	bool bScrollButtonDetect;
-	/*bool bScrollThread;
-	int nScrollButtonDetectCount;
-	CWinThread* m_scrollThread;
-	static UINT thrScrollDetect(LPVOID method);
-	void StartScrollThread();*/
 
-
-public:
-
-	std::vector<std::vector<int>> ctlVector;
-	std::vector<CGdipButton*> allButtonVector;
+	CtlVector ctlVector;
+	ButtonVector allButtonVector;
 	DragDialog* dragDlg;
 	bool bDragActivation;
 
 	void LoadAllButton();
 	void DeleteAllButton();
+
+public:
+
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnInitDialog();

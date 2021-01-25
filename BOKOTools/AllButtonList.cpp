@@ -201,6 +201,7 @@ void AllButtonList::CtlToTop()
 
 void AllButtonList::LoadAllButton()
 {
+	DeleteAllButton();
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -471,7 +472,6 @@ BOOL AllButtonList::PreTranslateMessage(MSG* pMsg)
 							std::vector<int> ctlItem = { nButtonCtlID, nStaticCtlID, (nLocToPos + 1) + (9 * (sorticon->sortButtonList->scroll.GetCurrentLinePos() - 1)) };
 							ctlVector.push_back(ctlItem);
 
-							DeleteAllButton();
 							LoadAllButton();
 
 							break;

@@ -53,14 +53,8 @@ SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeDat
 
 SortButtonList::~SortButtonList()
 {
-	for (int i = 0; i < (int)sortButtonVector.size(); i++)
-	{
-		CGdipButton* button = sortButtonVector.at(i);
-		delete button;
-		button = nullptr;
-	}
-
-	DeleteEmptyLine();
+	DeleteButonVector(sortButtonVector);
+	DeleteButonVector(iconMoveButtonVector);
 }
 
 void SortButtonList::DoDataExchange(CDataExchange* pDX)
@@ -335,8 +329,10 @@ CString SortButtonList::GetButtonNameByButtonID(int nButtonID)
 	return _T("");
 }
 
-void SortButtonList::LoadSortButton(std::vector<std::vector<int>> ctlVector)
+void SortButtonList::LoadSortButton(CtlVector ctlVector)
 {
+	DeleteButonVector(sortButtonVector);
+
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -567,16 +563,16 @@ void SortButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
 
 }
 
-void SortButtonList::DeleteEmptyLine()
+void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 {
-	for (int i = 0; i < iconMoveButtonVector.size(); i++)
+	for (int i = 0; i < buttonVector.size(); i++)
 	{
-		CGdipButton* iconMoveButton = iconMoveButtonVector.at(i);
-		iconMoveButton->DestroyWindow();
-		delete iconMoveButton;
-		iconMoveButton = nullptr;
+		CGdipButton* deleteButton = buttonVector.at(i);
+		deleteButton->DestroyWindow();
+		delete deleteButton;
+		deleteButton = nullptr;
 	}
-	iconMoveButtonVector.clear();
+	buttonVector.clear();
 }
 
 void SortButtonList::CreateDragButton(CGdipButton* currentClickButton)
@@ -706,7 +702,6 @@ BOOL SortButtonList::PreTranslateMessage(MSG* pMsg)
 								break;
 							}
 						}
-						sorticon->allButtonList->DeleteAllButton();
 						sorticon->allButtonList->LoadAllButton();
 
 						sortButtonVector.erase(sortButtonVector.begin() + i);

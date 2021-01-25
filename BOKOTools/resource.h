@@ -766,6 +766,7 @@
 #define IDC_BUTTON_SORT_ICON_MANUAL     1325
 #define IDC_BUTTON_THEME_SETTING_MANUAL 1326
 #define IDC_BUTTON_MAIN_FRAME_MANUAL    1327
+#define IDC_BUTTON_SORT_RESET           1328
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -789,7 +790,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        659
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1328
+#define _APS_NEXT_CONTROL_VALUE         1329
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
