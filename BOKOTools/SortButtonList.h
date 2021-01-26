@@ -77,6 +77,7 @@ private:
 	bool ExistButtonPos(int nButtonIndex);
 
 	DragDialog* dragDlg;
+	bool bUseDragDlg;
 	bool bDragActivation;
 	int nLineEndCount;
 
@@ -90,6 +91,13 @@ private:
 	CRect SetButtonPosition(int nItemCount);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 	int ButtonLocationToPos(POINT pt);
+
+
+
+	BOOL DragEventUp(HWND upHWND, CPoint upPoint);
+	BOOL DragEventDown(HWND downHWND, CPoint downPoint);
+	BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+
 public:
 
 

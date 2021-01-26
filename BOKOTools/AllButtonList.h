@@ -84,9 +84,14 @@ private:
 	ButtonVector allButtonVector;
 	DragDialog* dragDlg;
 	bool bDragActivation;
+	bool bUseDragDlg;
 
 	void LoadAllButton();
 	void DeleteAllButton();
+
+	BOOL DragEventUp(HWND upHWND, CPoint upPoint);
+	BOOL DragEventDown(HWND downHWND, CPoint downPoint);
+	BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
 
 public:
 

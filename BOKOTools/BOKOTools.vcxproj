@@ -219,6 +219,7 @@
     <ClInclude Include="CXml\XmlNodes.h" />
     <ClInclude Include="CXml\Xsl.h" />
     <ClInclude Include="DragDialog.h" />
+    <ClInclude Include="DragWrapper.h" />
     <ClInclude Include="EngineeringCalculate.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GdipButton.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="CustomScroll.cpp" />
     <ClCompile Include="CustomXml.cpp" />
     <ClCompile Include="DragDialog.cpp" />
+    <ClCompile Include="DragWrapper.cpp" />
     <ClCompile Include="GdipButton.cpp" />
     <ClCompile Include="BOKOTools.cpp" />
     <ClCompile Include="BOKOToolsDlg.cpp" />

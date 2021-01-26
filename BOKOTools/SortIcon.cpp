@@ -214,6 +214,7 @@ void SortIcon::OnBnClickedButtonSortSave()
 	sortButtonList->ctlVector = sortButtonList->saveCtlVector;
 	allButtonList->ctlVector = sortButtonList->saveCtlVector;
 	ctlVector = sortButtonList->saveCtlVector;
+	originCtlVector = sortButtonList->saveCtlVector;
 	parentDlg->SaveButtonCtlPos(ctlVector);
 }
 
@@ -236,6 +237,6 @@ void SortIcon::OnBnClickedButtonSortReset()
 	ctlVector = originCtlVector;
 
 	sortButtonList->LoadSortButton(ctlVector);
+	sortButtonList->ButtonBringToTop();
 	allButtonList->LoadAllButton();
-	Invalidate();
 }

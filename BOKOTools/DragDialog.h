@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GdipButton.h"
+#include "Resource.h"
 
 // DragDialog 대화 상자
 
@@ -12,9 +13,7 @@ public:
 	virtual ~DragDialog();
 
 // 대화 상자 데이터입니다.
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_DRAG };
-#endif
+	enum { IDD = IDD_DIALOG_DRAG }; 
 
 private:
 

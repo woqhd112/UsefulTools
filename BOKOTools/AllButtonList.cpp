@@ -41,6 +41,7 @@ AllButtonList::AllButtonList(std::vector<std::vector<int>> ctlVector, ThemeData*
 	bComingSoon1 = true;
 	bComingSoon2 = true;
 	bComingSoon3 = true;
+	bUseDragDlg = false;
 
 	bDragActivation = false;
 	bTopOverDetect = false;
@@ -315,7 +316,7 @@ void AllButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
 
 BOOL AllButtonList::DragActivation(POINT mousePoint)
 {
-	if (dragDlg)
+	if (bUseDragDlg)
 	{
 		if (mousePoint.y <= sorticon->dragRect.top)
 		{
@@ -372,117 +373,106 @@ void AllButtonList::CreateDragButton(CGdipButton* currentClickButton)
 
 	dragDlg->Create(IDD_DIALOG_DRAG);
 	dragDlg->ShowWindow(SW_SHOW);
+	bUseDragDlg = true;
 }
 
-BOOL AllButtonList::PreTranslateMessage(MSG* pMsg)
+BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 {
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	
-	if (pMsg->message == WM_LBUTTONUP)
+	if (bUseDragDlg)
 	{
-		if (dragDlg)
+		ReleaseCapture();
+		bDragActivation = false;
+		//sorticon->Invalidate();
+
+		// sortbuttonlist의 좌표값 구하기
+		POINT convertPoint = upPoint;
+		sorticon->ScreenToClient(&convertPoint);
+		convertPoint.x = convertPoint.x - 10;
+		convertPoint.y = convertPoint.y - 10;
+		int nLocToPos = sorticon->sortButtonList->ButtonLocationToPos(convertPoint);
+		CRect rect = sorticon->sortButtonList->SetButtonPosition(nLocToPos);
+
+
+		if (PtInRect(rect, convertPoint))
 		{
-			ReleaseCapture();
-			bDragActivation = false;
-			//sorticon->Invalidate();
-
-			// sortbuttonlist의 좌표값 구하기
-			POINT convertPoint = pMsg->pt;
-			sorticon->ScreenToClient(&convertPoint);
-			convertPoint.x = convertPoint.x - 10;
-			convertPoint.y = convertPoint.y - 10;
-			int nLocToPos = sorticon->sortButtonList->ButtonLocationToPos(convertPoint);
-			CRect rect = sorticon->sortButtonList->SetButtonPosition(nLocToPos);
-
-			
-			if (PtInRect(rect, convertPoint))
+			if (sorticon->sortButtonList->InsertNewButton(nLocToPos, dragDlg->newButton->nStdImageID, dragDlg->newButton->nHovImageID, dragDlg->newButton->nAltImageID, dragDlg->newButton->strButtonName))
 			{
-				if (sorticon->sortButtonList->InsertNewButton(nLocToPos, dragDlg->newButton->nStdImageID, dragDlg->newButton->nHovImageID, dragDlg->newButton->nAltImageID, dragDlg->newButton->strButtonName))
+				for (int i = 0; i < (int)allButtonVector.size(); i++)
 				{
-					for (int i = 0; i < (int)allButtonVector.size(); i++)
+					CGdipButton* button = allButtonVector.at(i);
+					if (allButtonVector.at(i) == downButton)
 					{
-						CGdipButton* button = allButtonVector.at(i);
-						if (allButtonVector.at(i) == downButton)
+						nButtonStackCount = 0;
+						int nButtonCtlID = 0;
+						int nStaticCtlID = 0;
+
+						if (downButton->GetDlgCtrlID() == IDC_BUTTON_BASE_GDI + nButtonID)
 						{
-							nButtonStackCount = 0;
-							int nButtonCtlID = 0;
-							int nStaticCtlID = 0;
-
-							if (downButton->GetDlgCtrlID() == IDC_BUTTON_BASE_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_BASE_GDI;
-								nStaticCtlID = IDC_STATIC_BASE;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_CALCULATOR_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_CALCULATOR_GDI;
-								nStaticCtlID = IDC_STATIC_ENGINEERING;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_STOPWATCH_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_STOPWATCH_GDI;
-								nStaticCtlID = IDC_STATIC_STOPWATCH;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_CONVERTER_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_CONVERTER_GDI;
-								nStaticCtlID = IDC_STATIC_CONVERTER;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_DATE_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_DATE_GDI;
-								nStaticCtlID = IDC_STATIC_DATE;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_TIMER_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_TIMER_GDI;
-								nStaticCtlID = IDC_STATIC_TIMER1;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_NOTEPAD_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_NOTEPAD_GDI;
-								nStaticCtlID = IDC_STATIC_NOTEPAD;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_BASE_TIMER_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_BASE_TIMER_GDI;
-								nStaticCtlID = IDC_STATIC_BASE_TIMER;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_WORLD_CLOCK_GDI + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_WORLD_CLOCK_GDI;
-								nStaticCtlID = IDC_STATIC_WORLD_CLOCK;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI1 + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI1;
-								nStaticCtlID = 0;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI2 + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI2;
-								nStaticCtlID = 0;
-							}
-							else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI3 + nButtonID)
-							{
-								nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI3;
-								nStaticCtlID = 0;
-							}
-						
-							std::vector<int> ctlItem = { nButtonCtlID, nStaticCtlID, (nLocToPos + 1) + (9 * (sorticon->sortButtonList->scroll.GetCurrentLinePos() - 1)) };
-							ctlVector.push_back(ctlItem);
-
-							LoadAllButton();
-
-							break;
+							nButtonCtlID = IDC_BUTTON_BASE_GDI;
+							nStaticCtlID = IDC_STATIC_BASE;
 						}
-					}
-				}
-				else
-				{
-					for (int i = 0; i < allButtonVector.size(); i++)
-					{
-						allButtonVector.at(i)->ShowWindow(SW_SHOW);
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_CALCULATOR_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_CALCULATOR_GDI;
+							nStaticCtlID = IDC_STATIC_ENGINEERING;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_STOPWATCH_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_STOPWATCH_GDI;
+							nStaticCtlID = IDC_STATIC_STOPWATCH;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_CONVERTER_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_CONVERTER_GDI;
+							nStaticCtlID = IDC_STATIC_CONVERTER;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_DATE_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_DATE_GDI;
+							nStaticCtlID = IDC_STATIC_DATE;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_TIMER_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_TIMER_GDI;
+							nStaticCtlID = IDC_STATIC_TIMER1;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_NOTEPAD_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_NOTEPAD_GDI;
+							nStaticCtlID = IDC_STATIC_NOTEPAD;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_BASE_TIMER_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_BASE_TIMER_GDI;
+							nStaticCtlID = IDC_STATIC_BASE_TIMER;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_WORLD_CLOCK_GDI + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_WORLD_CLOCK_GDI;
+							nStaticCtlID = IDC_STATIC_WORLD_CLOCK;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI1 + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI1;
+							nStaticCtlID = 0;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI2 + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI2;
+							nStaticCtlID = 0;
+						}
+						else if (downButton->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI3 + nButtonID)
+						{
+							nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI3;
+							nStaticCtlID = 0;
+						}
+
+						std::vector<int> ctlItem = { nButtonCtlID, nStaticCtlID, (nLocToPos + 1) + (9 * (sorticon->sortButtonList->scroll.GetCurrentLinePos() - 1)) };
+						ctlVector.push_back(ctlItem);
+
+						LoadAllButton();
+
+						break;
 					}
 				}
 			}
@@ -493,197 +483,229 @@ BOOL AllButtonList::PreTranslateMessage(MSG* pMsg)
 					allButtonVector.at(i)->ShowWindow(SW_SHOW);
 				}
 			}
-
-			dragDlg->ShowWindow(SW_HIDE);
-			delete dragDlg;
-			dragDlg = nullptr;
-			sorticon->sortButtonList->EnableEmptyLine(SW_HIDE);
 		}
-		
-	}
-	else if (pMsg->message == WM_LBUTTONDOWN)
-	{
-		for (int i = 0; i < allButtonVector.size(); i++)
+		else
 		{
-			if (pMsg->hwnd == allButtonVector.at(i)->m_hWnd)
+			for (int i = 0; i < allButtonVector.size(); i++)
 			{
-				if (allButtonVector.at(i)->strButtonName == _T("Base"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("Engineering"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("StopWatch"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("Converter"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("DateCal"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("WorkTimer"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("NotePad"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("BaseTimer"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("WorldClock"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon1"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon2"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
-				else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon3"))
-				{
-					downButton = allButtonVector.at(i);
-					CreateDragButton(allButtonVector.at(i));
-					dragDlg->MoveWindow(pMsg->pt.x + 2, pMsg->pt.y + 2, 128, 128);
-					allButtonVector.at(i)->ShowWindow(SW_HIDE);
-					sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-					return TRUE;
-				}
+				allButtonVector.at(i)->ShowWindow(SW_SHOW);
+			}
+		}
+
+		dragDlg->ShowWindow(SW_HIDE);
+		delete dragDlg;
+		dragDlg = nullptr;
+		bUseDragDlg = false;
+		sorticon->sortButtonList->EnableEmptyLine(SW_HIDE);
+
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
+{
+	for (int i = 0; i < allButtonVector.size(); i++)
+	{
+		if (downHWND == allButtonVector.at(i)->m_hWnd)
+		{
+			if (allButtonVector.at(i)->strButtonName == _T("Base"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("Engineering"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("StopWatch"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("Converter"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("DateCal"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("WorkTimer"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("NotePad"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("BaseTimer"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("WorldClock"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon1"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon2"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
+			}
+			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon3"))
+			{
+				downButton = allButtonVector.at(i);
+				CreateDragButton(allButtonVector.at(i));
+				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+				allButtonVector.at(i)->ShowWindow(SW_HIDE);
+				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+				return TRUE;
 			}
 		}
 	}
-	else if (pMsg->message == WM_MOUSEMOVE)
+	return FALSE;
+}
+
+BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
+{
+	if (bDragActivation)
 	{
-		if (bDragActivation)
+		if (DragActivation(movePoint))
 		{
-			if (DragActivation(pMsg->pt))
+			// sortbuttonlist의 빈 테두리좌표영역 구하기
+			POINT convertPoint = movePoint;
+			sorticon->ScreenToClient(&convertPoint);
+			convertPoint.x = convertPoint.x - 10;
+			convertPoint.y = convertPoint.y - 10;
+			int nLocToPos = sorticon->sortButtonList->ButtonLocationToPos(convertPoint);
+			CRect rect = sorticon->sortButtonList->SetButtonPosition(nLocToPos);
+
+			// sortbuttonlist의 스크롤내기리 버튼 좌표값 구하기
+			POINT scrollButtonPoint = movePoint;
+			sorticon->ScreenToClient(&scrollButtonPoint);
+			CRect scrollButtonRect;
+			sorticon->m_btn_sort_scroll_line.GetWindowRect(scrollButtonRect);
+			sorticon->ScreenToClient(scrollButtonRect);
+
+			bool bScrollEvent = false;
+			if (PtInRect(scrollButtonRect, scrollButtonPoint))
 			{
-				// sortbuttonlist의 빈 테두리좌표영역 구하기
-				POINT convertPoint = pMsg->pt;
-				sorticon->ScreenToClient(&convertPoint);
-				convertPoint.x = convertPoint.x - 10;
-				convertPoint.y = convertPoint.y - 10;
-				int nLocToPos = sorticon->sortButtonList->ButtonLocationToPos(convertPoint);
-				CRect rect = sorticon->sortButtonList->SetButtonPosition(nLocToPos);
-
-				// sortbuttonlist의 스크롤내기리 버튼 좌표값 구하기
-				POINT scrollButtonPoint = pMsg->pt;
-				sorticon->ScreenToClient(&scrollButtonPoint);
-				CRect scrollButtonRect;
-				sorticon->m_btn_sort_scroll_line.GetWindowRect(scrollButtonRect);
-				sorticon->ScreenToClient(scrollButtonRect);
-
-				bool bScrollEvent = false;
-				if (PtInRect(scrollButtonRect, scrollButtonPoint))
+				if (!bScrollButtonDetect)
 				{
-					if (!bScrollButtonDetect)
+					bScrollButtonDetect = true;
+					sorticon->m_btn_sort_scroll_line.SetFaceColor(sorticon->m_btn_sort_scroll_line.m_hoverColor);
+					bScrollEvent = true;
+				}
+			}
+			else
+			{
+				if (bScrollButtonDetect)
+				{
+					bScrollButtonDetect = false;
+					sorticon->m_btn_sort_scroll_line.SetFaceColor(sorticon->m_btn_sort_scroll_line.m_defaultColor);
+					bScrollEvent = false;
+				}
+			}
+
+			if (!bScrollEvent)
+			{
+				if (PtInRect(rect, convertPoint))
+				{
+					if (nLocToPos != -1)
 					{
-						bScrollButtonDetect = true;
-						sorticon->m_btn_sort_scroll_line.SetFaceColor(sorticon->m_btn_sort_scroll_line.m_hoverColor);
-						bScrollEvent = true;
+						bSortButtonHoverEvent = true;
+						sorticon->sortButtonList->iconMoveButtonVector.at(nLocToPos)->UseHoverEvent();
 					}
 				}
 				else
 				{
-					if (bScrollButtonDetect)
+					if (bSortButtonHoverEvent)
 					{
-						bScrollButtonDetect = false;
-						sorticon->m_btn_sort_scroll_line.SetFaceColor(sorticon->m_btn_sort_scroll_line.m_defaultColor);
-						bScrollEvent = false;
-					}
-				}
-
-				if (!bScrollEvent)
-				{
-					if (PtInRect(rect, convertPoint))
-					{
-						if (nLocToPos != -1)
+						bSortButtonHoverEvent = false;
+						for (int i = 0; i < (int)sorticon->sortButtonList->iconMoveButtonVector.size(); i++)
 						{
-							bSortButtonHoverEvent = true;
-							sorticon->sortButtonList->iconMoveButtonVector.at(nLocToPos)->UseHoverEvent();
-						}
-					}
-					else
-					{
-						if (bSortButtonHoverEvent)
-						{
-							bSortButtonHoverEvent = false;
-							for (int i = 0; i < (int)sorticon->sortButtonList->iconMoveButtonVector.size(); i++)
-							{
-								sorticon->sortButtonList->iconMoveButtonVector.at(i)->UserLeaveEvent();
-							}
+							sorticon->sortButtonList->iconMoveButtonVector.at(i)->UserLeaveEvent();
 						}
 					}
 				}
-				return TRUE;
 			}
+			return TRUE;
 		}
+	}
+	return FALSE;
+}
+
+BOOL AllButtonList::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (DragEventUp(pMsg->hwnd, pMsg->pt)) return TRUE;
+	}
+	else if (pMsg->message == WM_LBUTTONDOWN)
+	{
+		if (DragEventDown(pMsg->hwnd, pMsg->pt)) return TRUE;
+	}
+	else if (pMsg->message == WM_MOUSEMOVE)
+	{
+		if (DragEventMove(pMsg->hwnd, pMsg->pt)) return TRUE;
 	}
 	else if (pMsg->message == WM_KEYDOWN)
 	{

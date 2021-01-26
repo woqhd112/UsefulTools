@@ -127,6 +127,9 @@
     <ClCompile Include="ManualList.cpp">
       <Filter>MainMenu\UsingManual</Filter>
     </ClCompile>
+    <ClCompile Include="DragWrapper.cpp">
+      <Filter>UI\DragDialog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -272,6 +275,9 @@
     </ClInclude>
     <ClInclude Include="ManualList.h">
       <Filter>MainMenu\UsingManual</Filter>
+    </ClInclude>
+    <ClInclude Include="DragWrapper.h">
+      <Filter>UI\DragDialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
