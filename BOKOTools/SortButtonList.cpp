@@ -26,8 +26,8 @@ SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeDat
 	nButtonID = 40000;
 	nEmptyDrawLineID = 50000;
 
-	bDragActivation = false;
-	bTopOverDetect = false;
+	//bDragActivation = false;
+	/*bTopOverDetect = false;
 	bLeftOverDetect = false;
 	bBottomOverDetect = false;
 	bRightOverDetect = false;
@@ -44,8 +44,8 @@ SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeDat
 	bWorldClock = true;
 	bComingSoon1 = true;
 	bComingSoon2 = true;
-	bComingSoon3 = true;
-	bUseDragDlg = false;
+	bComingSoon3 = true;*/
+	//bUseDragDlg = false;
 
 	nLineEndCount = 0;
 
@@ -56,6 +56,9 @@ SortButtonList::~SortButtonList()
 {
 	DeleteButonVector(sortButtonVector);
 	DeleteButonVector(iconMoveButtonVector);
+
+	delete dragWrap;
+	dragWrap = nullptr;
 }
 
 void SortButtonList::DoDataExchange(CDataExchange* pDX)
@@ -86,6 +89,8 @@ BOOL SortButtonList::OnInitDialog()
 	saveCtlVector = ctlVector;
 	LoadSortButton(ctlVector);
 	
+	dragWrap = new DragWrapper(this, sorticon->GetParent());
+
 	DrawEmptyLine();
 	EnableEmptyLine(SW_HIDE);
 
@@ -484,85 +489,85 @@ void SortButtonList::ButtonBringToTop()
 }
 
 
-BOOL SortButtonList::DragActivation(POINT mousePoint)
-{
-	if (bUseDragDlg)
-	{
-		/*if (mousePoint.y <= sorticon->dragRect.top)
-		{
-			bTopOverDetect = true;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.y > sorticon->dragRect.bottom)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = true;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.x <= sorticon->dragRect.left)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = true;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.x > sorticon->dragRect.right)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = true;
-		}
-		else
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}*/
+//BOOL SortButtonList::DragActivation(POINT mousePoint)
+//{
+//	if (bUseDragDlg)
+//	{
+//		if (mousePoint.y <= sorticon->dragRect.top)
+//		{
+//			bTopOverDetect = true;
+//			bLeftOverDetect = false;
+//			bBottomOverDetect = false;
+//			bRightOverDetect = false;
+//		}
+//		else if (mousePoint.y > sorticon->dragRect.bottom)
+//		{
+//			bTopOverDetect = false;
+//			bLeftOverDetect = false;
+//			bBottomOverDetect = true;
+//			bRightOverDetect = false;
+//		}
+//		else if (mousePoint.x <= sorticon->dragRect.left)
+//		{
+//			bTopOverDetect = false;
+//			bLeftOverDetect = true;
+//			bBottomOverDetect = false;
+//			bRightOverDetect = false;
+//		}
+//		else if (mousePoint.x > sorticon->dragRect.right)
+//		{
+//			bTopOverDetect = false;
+//			bLeftOverDetect = false;
+//			bBottomOverDetect = false;
+//			bRightOverDetect = true;
+//		}
+//		else
+//		{
+//			bTopOverDetect = false;
+//			bLeftOverDetect = false;
+//			bBottomOverDetect = false;
+//			bRightOverDetect = false;
+//		}
+//
+//		if (PtInRect(sorticon->dragRect, mousePoint))
+//		{
+//			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, 64, 64);
+//			dragDlg->newButton->DisConnect();
+//			return TRUE;
+//		}
+//	}
+//	return FALSE;
+//}
 
-		if (PtInRect(sorticon->dragRect, mousePoint))
-		{
-			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, 64, 64);
-			dragDlg->newButton->DisConnect();
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
 
-
-void SortButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
-{
-	if (bSignalItem == &bHoverBase) bHoverBase = !bSignal;
-	else bHoverBase = bSignal;
-	if (bSignalItem == &bHoverEngineering) bHoverEngineering = !bSignal;
-	else bHoverEngineering = bSignal;
-	if (bSignalItem == &bStopWatch) bStopWatch = !bSignal;
-	else bStopWatch = bSignal;
-	if (bSignalItem == &bConverter) bConverter = !bSignal;
-	else  bConverter = bSignal;
-	if (bSignalItem == &bDateCal) bDateCal = !bSignal;
-	else bDateCal = bSignal;
-	if (bSignalItem == &bWorkTimer) bWorkTimer = !bSignal;
-	else bWorkTimer = bSignal;
-	if (bSignalItem == &bNotePad) bNotePad = !bSignal;
-	else bNotePad = bSignal;
-	if (bSignalItem == &bBaseTimer) bBaseTimer = !bSignal;
-	else bBaseTimer = bSignal;
-	if (bSignalItem == &bWorldClock) bWorldClock = !bSignal;
-	else bWorldClock = bSignal;
-	if (bSignalItem == &bComingSoon1) bComingSoon1 = !bSignal;
-	else bComingSoon1 = bSignal;
-	if (bSignalItem == &bComingSoon2) bComingSoon2 = !bSignal;
-	else bComingSoon2 = bSignal;
-	if (bSignalItem == &bComingSoon3) bComingSoon3 = !bSignal;
-	else bComingSoon3 = bSignal;
-
-}
+//void SortButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
+//{
+//	if (bSignalItem == &bHoverBase) bHoverBase = !bSignal;
+//	else bHoverBase = bSignal;
+//	if (bSignalItem == &bHoverEngineering) bHoverEngineering = !bSignal;
+//	else bHoverEngineering = bSignal;
+//	if (bSignalItem == &bStopWatch) bStopWatch = !bSignal;
+//	else bStopWatch = bSignal;
+//	if (bSignalItem == &bConverter) bConverter = !bSignal;
+//	else  bConverter = bSignal;
+//	if (bSignalItem == &bDateCal) bDateCal = !bSignal;
+//	else bDateCal = bSignal;
+//	if (bSignalItem == &bWorkTimer) bWorkTimer = !bSignal;
+//	else bWorkTimer = bSignal;
+//	if (bSignalItem == &bNotePad) bNotePad = !bSignal;
+//	else bNotePad = bSignal;
+//	if (bSignalItem == &bBaseTimer) bBaseTimer = !bSignal;
+//	else bBaseTimer = bSignal;
+//	if (bSignalItem == &bWorldClock) bWorldClock = !bSignal;
+//	else bWorldClock = bSignal;
+//	if (bSignalItem == &bComingSoon1) bComingSoon1 = !bSignal;
+//	else bComingSoon1 = bSignal;
+//	if (bSignalItem == &bComingSoon2) bComingSoon2 = !bSignal;
+//	else bComingSoon2 = bSignal;
+//	if (bSignalItem == &bComingSoon3) bComingSoon3 = !bSignal;
+//	else bComingSoon3 = bSignal;
+//
+//}
 
 void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 {
@@ -576,25 +581,22 @@ void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 	buttonVector.clear();
 }
 
-void SortButtonList::CreateDragButton(CGdipButton* currentClickButton)
-{
-	SetCapture();
-	bDragActivation = true;
-	CGdipButton* hoverButton = currentClickButton;
-	dragDlg = new DragDialog(hoverButton, pParent->GetParent());
-
-	dragDlg->Create(IDD_DIALOG_DRAG);
-	dragDlg->ShowWindow(SW_SHOW);
-	bUseDragDlg = true;
-}
+//void SortButtonList::CreateDragButton(CGdipButton* currentClickButton)
+//{
+//	SetCapture();
+//	bDragActivation = true;
+//	CGdipButton* hoverButton = currentClickButton;
+//	dragDlg = new DragDialog(hoverButton, pParent->GetParent());
+//
+//	dragDlg->Create(IDD_DIALOG_DRAG);
+//	dragDlg->ShowWindow(SW_SHOW);
+//	bUseDragDlg = true;
+//}
 
 BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 {
-	if (bUseDragDlg)
+	if (dragWrap->ExistDragDlg())
 	{
-		ReleaseCapture();
-		bDragActivation = false;
-
 		POINT convertPoint = upPoint;
 		sorticon->ScreenToClient(&convertPoint);
 		convertPoint.x = convertPoint.x - 10;
@@ -717,7 +719,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		{
 			if (PtInRect(rect, convertPoint))
 			{
-				if (InsertNewButton(nLocToPos, dragDlg->newButton->nStdImageID, dragDlg->newButton->nHovImageID, dragDlg->newButton->nAltImageID, dragDlg->newButton->strButtonName))
+				if (InsertNewButton(nLocToPos, dragWrap->GetDragButtonStdID(), dragWrap->GetDragButtonHovID(), dragWrap->GetDragButtonAltID(), dragWrap->GetDragButtonName()))
 				{
 					for (int i = 0; i < sortButtonVector.size(); i++)
 					{
@@ -749,10 +751,11 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 			}
 		}
 
-		dragDlg->ShowWindow(SW_HIDE);
+		dragWrap->DeleteDragDlg();
+		/*dragDlg->ShowWindow(SW_HIDE);
 		delete dragDlg;
 		dragDlg = nullptr;
-		bUseDragDlg = false;
+		bUseDragDlg = false;*/
 		EnableEmptyLine(SW_HIDE);
 
 		return TRUE;
@@ -762,128 +765,31 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 
 BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 {
+	BOOL bReturn = FALSE;
 	for (int i = 0; i < sortButtonVector.size(); i++)
 	{
 		if (downHWND == sortButtonVector.at(i)->m_hWnd)
 		{
-			if (sortButtonVector.at(i)->strButtonName == _T("Base"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("Engineering"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("StopWatch"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("Converter"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("DateCal"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("WorkTimer"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("NotePad"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("BaseTimer"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("WorldClock"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("ComingSoon1"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("ComingSoon2"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (sortButtonVector.at(i)->strButtonName == _T("ComingSoon3"))
-			{
-				downButton = sortButtonVector.at(i);
-				CreateDragButton(sortButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				sortButtonVector.at(i)->ShowWindow(SW_HIDE);
-				EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
+			downButton = sortButtonVector.at(i);
+			sortButtonVector.at(i)->ShowWindow(SW_HIDE);
+			EnableEmptyLine(SW_SHOW);
+			bReturn = TRUE;
+			//CreateDragButton(sortButtonVector.at(i));
+			//dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
+			dragWrap->ExecuteDragEvent(sortButtonVector.at(i));
+			dragWrap->SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
+			break;
 		}
 	}
-	return FALSE;
+	return bReturn;
 }
 
 BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 {
-	if (bDragActivation)
+	if (dragWrap->IsDragging())
 	{
-		if (DragActivation(movePoint))
+		//if (DragActivation(movePoint))
+		if (dragWrap->DragActivation(sorticon->dragRect, movePoint))
 		{
 			POINT convertPoint = movePoint;
 			sorticon->ScreenToClient(&convertPoint);

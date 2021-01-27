@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GdipButton.h"
+#pragma warning(disable:4819)
 #include "Resource.h"
 
 // DragDialog 대화 상자

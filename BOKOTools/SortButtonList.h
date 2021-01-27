@@ -1,11 +1,12 @@
 ﻿#pragma once
 #include "CustomScroll.h"
-#include "DragDialog.h"
+#include "DragWrapper.h"
+//#include "DragDialog.h"
 
 // SortButtonList 대화 상자
 class SortIcon;
 
-class SortButtonList : public CDialogEx
+class SortButtonList : public CDialogEx, public DragWrapper
 {
 	DECLARE_DYNAMIC(SortButtonList)
 
@@ -35,12 +36,14 @@ private:
 	ThemeData* currentTheme;
 	ButtonVector sortButtonVector;
 
+	DragWrapper* dragWrap;
+
 	CGdipButton* downButton;
 
 	int nButtonID;
 	int nEmptyDrawLineID;
 
-	bool bButtonHover;
+	/*bool bButtonHover;
 	bool bHoverBase;
 	bool bHoverEngineering;
 	bool bStopWatch;
@@ -57,16 +60,16 @@ private:
 	bool bTopOverDetect;
 	bool bLeftOverDetect;
 	bool bBottomOverDetect;
-	bool bRightOverDetect;
+	bool bRightOverDetect;*/
 
 	SortIcon* sorticon;
 
 	bool bSortButtonHoverEvent;
 
 	void LoadSortButton(CtlVector ctlVector);
-	void CreateDragButton(CGdipButton* currentClickButton);
-	BOOL DragActivation(POINT mousePoint);
-	void HoverSignal(bool bSignal, bool* bSignalItem);
+	//void CreateDragButton(CGdipButton* currentClickButton);
+	//BOOL DragActivation(POINT mousePoint);
+	//void HoverSignal(bool bSignal, bool* bSignalItem);
 
 
 	ThemeData::FunctionIcon GetFunctionIconByButtonID(int nButtonID);
@@ -76,9 +79,9 @@ private:
 	void ButtonBringToTop();
 	bool ExistButtonPos(int nButtonIndex);
 
-	DragDialog* dragDlg;
-	bool bUseDragDlg;
-	bool bDragActivation;
+	//DragDialog* dragDlg;
+	//bool bUseDragDlg;
+	//bool bDragActivation;
 	int nLineEndCount;
 
 	CustomScroll scroll;
@@ -94,9 +97,9 @@ private:
 
 
 
-	BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
 
 public:
 
