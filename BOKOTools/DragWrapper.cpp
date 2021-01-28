@@ -3,20 +3,13 @@
 
 DragWrapper::DragWrapper()
 {
-
-}
-
-DragWrapper::DragWrapper(CWnd* dragUseWnd, CWnd* mainFrameParent)
-{
-	useWnd = dragUseWnd;
-	mainFrame = mainFrameParent;
-
 	nDragButtonStdID = 0;
 	nDragButtonHovID = 0;
 	nDragButtonAltID = 0;
 
 	bUseDragDlg = false;
 	ds = DRAG_STOP;
+	bd = BIND_REGULAR;
 }
 
 DragWrapper::~DragWrapper()
@@ -45,9 +38,11 @@ BOOL DragWrapper::DragEventMove(HWND moveHWND, CPoint movePoint)
 	return FALSE;
 }
 
-DragWrapper* DragWrapper::GetInstance()
+void DragWrapper::Init(CWnd* dragUseWnd, CWnd* mainFrameParent, BindDialog bd)
 {
-	return this;
+	useWnd = dragUseWnd;
+	mainFrame = mainFrameParent;
+	this->bd = bd;
 }
 
 BOOL DragWrapper::DragActivation(CRect dragRect, POINT mousePoint)
@@ -56,7 +51,7 @@ BOOL DragWrapper::DragActivation(CRect dragRect, POINT mousePoint)
 	{
 		if (PtInRect(dragRect, mousePoint))
 		{
-			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / 2, targetDragRect.Width() / 2);
+			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / (int)bd, targetDragRect.Width() / (int)bd);
 			dragDlg->newButton->DisConnect();
 			return TRUE;
 		}

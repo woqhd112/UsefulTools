@@ -26,12 +26,7 @@ SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeDat
 	nButtonID = 40000;
 	nEmptyDrawLineID = 50000;
 
-	//bDragActivation = false;
-	/*bTopOverDetect = false;
-	bLeftOverDetect = false;
-	bBottomOverDetect = false;
-	bRightOverDetect = false;
-
+	/*
 	bButtonHover = true;
 	bHoverBase = true;
 	bHoverEngineering = true;
@@ -45,7 +40,6 @@ SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeDat
 	bComingSoon1 = true;
 	bComingSoon2 = true;
 	bComingSoon3 = true;*/
-	//bUseDragDlg = false;
 
 	nLineEndCount = 0;
 
@@ -56,9 +50,6 @@ SortButtonList::~SortButtonList()
 {
 	DeleteButonVector(sortButtonVector);
 	DeleteButonVector(iconMoveButtonVector);
-
-	delete dragWrap;
-	dragWrap = nullptr;
 }
 
 void SortButtonList::DoDataExchange(CDataExchange* pDX)
@@ -89,7 +80,7 @@ BOOL SortButtonList::OnInitDialog()
 	saveCtlVector = ctlVector;
 	LoadSortButton(ctlVector);
 	
-	dragWrap = new DragWrapper(this, sorticon->GetParent());
+	Init(this, sorticon->GetParent(), BIND_HALF);
 
 	DrawEmptyLine();
 	EnableEmptyLine(SW_HIDE);
@@ -489,55 +480,6 @@ void SortButtonList::ButtonBringToTop()
 }
 
 
-//BOOL SortButtonList::DragActivation(POINT mousePoint)
-//{
-//	if (bUseDragDlg)
-//	{
-//		if (mousePoint.y <= sorticon->dragRect.top)
-//		{
-//			bTopOverDetect = true;
-//			bLeftOverDetect = false;
-//			bBottomOverDetect = false;
-//			bRightOverDetect = false;
-//		}
-//		else if (mousePoint.y > sorticon->dragRect.bottom)
-//		{
-//			bTopOverDetect = false;
-//			bLeftOverDetect = false;
-//			bBottomOverDetect = true;
-//			bRightOverDetect = false;
-//		}
-//		else if (mousePoint.x <= sorticon->dragRect.left)
-//		{
-//			bTopOverDetect = false;
-//			bLeftOverDetect = true;
-//			bBottomOverDetect = false;
-//			bRightOverDetect = false;
-//		}
-//		else if (mousePoint.x > sorticon->dragRect.right)
-//		{
-//			bTopOverDetect = false;
-//			bLeftOverDetect = false;
-//			bBottomOverDetect = false;
-//			bRightOverDetect = true;
-//		}
-//		else
-//		{
-//			bTopOverDetect = false;
-//			bLeftOverDetect = false;
-//			bBottomOverDetect = false;
-//			bRightOverDetect = false;
-//		}
-//
-//		if (PtInRect(sorticon->dragRect, mousePoint))
-//		{
-//			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, 64, 64);
-//			dragDlg->newButton->DisConnect();
-//			return TRUE;
-//		}
-//	}
-//	return FALSE;
-//}
 
 
 //void SortButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
@@ -581,21 +523,9 @@ void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 	buttonVector.clear();
 }
 
-//void SortButtonList::CreateDragButton(CGdipButton* currentClickButton)
-//{
-//	SetCapture();
-//	bDragActivation = true;
-//	CGdipButton* hoverButton = currentClickButton;
-//	dragDlg = new DragDialog(hoverButton, pParent->GetParent());
-//
-//	dragDlg->Create(IDD_DIALOG_DRAG);
-//	dragDlg->ShowWindow(SW_SHOW);
-//	bUseDragDlg = true;
-//}
-
 BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 {
-	if (dragWrap->ExistDragDlg())
+	if (ExistDragDlg())
 	{
 		POINT convertPoint = upPoint;
 		sorticon->ScreenToClient(&convertPoint);
@@ -719,7 +649,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		{
 			if (PtInRect(rect, convertPoint))
 			{
-				if (InsertNewButton(nLocToPos, dragWrap->GetDragButtonStdID(), dragWrap->GetDragButtonHovID(), dragWrap->GetDragButtonAltID(), dragWrap->GetDragButtonName()))
+				if (InsertNewButton(nLocToPos, GetDragButtonStdID(), GetDragButtonHovID(), GetDragButtonAltID(), GetDragButtonName()))
 				{
 					for (int i = 0; i < sortButtonVector.size(); i++)
 					{
@@ -751,11 +681,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 			}
 		}
 
-		dragWrap->DeleteDragDlg();
-		/*dragDlg->ShowWindow(SW_HIDE);
-		delete dragDlg;
-		dragDlg = nullptr;
-		bUseDragDlg = false;*/
+		DeleteDragDlg();
 		EnableEmptyLine(SW_HIDE);
 
 		return TRUE;
@@ -774,10 +700,8 @@ BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 			sortButtonVector.at(i)->ShowWindow(SW_HIDE);
 			EnableEmptyLine(SW_SHOW);
 			bReturn = TRUE;
-			//CreateDragButton(sortButtonVector.at(i));
-			//dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-			dragWrap->ExecuteDragEvent(sortButtonVector.at(i));
-			dragWrap->SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
+			ExecuteDragEvent(sortButtonVector.at(i));
+			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
 			break;
 		}
 	}
@@ -786,10 +710,9 @@ BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 
 BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 {
-	if (dragWrap->IsDragging())
+	if (IsDragging())
 	{
-		//if (DragActivation(movePoint))
-		if (dragWrap->DragActivation(sorticon->dragRect, movePoint))
+		if (DragActivation(sorticon->dragRect, movePoint))
 		{
 			POINT convertPoint = movePoint;
 			sorticon->ScreenToClient(&convertPoint);

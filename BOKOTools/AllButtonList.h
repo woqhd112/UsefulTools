@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "CustomScroll.h"
-#include "DragDialog.h"
+#include "DragWrapper.h"
 
 
 // AllButtonList 대화 상자
 
 class SortIcon;
 
-class AllButtonList : public CDialogEx
+class AllButtonList : public CDialogEx, public DragWrapper
 {
 	DECLARE_DYNAMIC(AllButtonList)
 
@@ -44,7 +44,7 @@ private:
 
 	bool bLineEnd;
 	
-	bool bButtonHover;
+	/*bool bButtonHover;
 	bool bHoverBase;
 	bool bHoverEngineering;
 	bool bStopWatch;
@@ -56,42 +56,32 @@ private:
 	bool bWorldClock;
 	bool bComingSoon1;
 	bool bComingSoon2;
-	bool bComingSoon3;
+	bool bComingSoon3;*/
 
 	SortIcon* sorticon;
-	
-	bool bTopOverDetect;
-	bool bLeftOverDetect;
-	bool bBottomOverDetect;
-	bool bRightOverDetect;
+	DragWrapper* dragWrap;
 
 	bool bSortButtonHoverEvent;
 
-	void HoverSignal(bool bSignal, bool* bSignalItem);
+	//void HoverSignal(bool bSignal, bool* bSignalItem);
 	void CtlToTop();
 	void CreateExitButton(int nButtonID);
 	ThemeData::FunctionIcon GetFunctionIconByButtonID(int nButtonID);
 	CString GetButtonNameByButtonID(int nButtonID);
 
 
-	void CreateDragButton(CGdipButton* currentClickButton);
-	BOOL DragActivation(POINT mousePoint);
-
-
 	bool bScrollButtonDetect;
 
 	CtlVector ctlVector;
 	ButtonVector allButtonVector;
-	DragDialog* dragDlg;
-	bool bDragActivation;
-	bool bUseDragDlg;
+	//DragDialog* dragDlg;
 
 	void LoadAllButton();
 	void DeleteAllButton();
 
-	BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
 
 public:
 

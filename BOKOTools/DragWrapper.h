@@ -8,23 +8,14 @@ class DragWrapper
 public:
 
 	DragWrapper();
-	DragWrapper(CWnd* dragUseWnd, CWnd* mainFrameParent);
 	~DragWrapper();
 
-	DragWrapper* GetInstance();
-	BOOL DragActivation(CRect dragRect, POINT mousePoint);
-	BOOL ExecuteDragEvent(CGdipButton* currentClickButton);
-	void DeleteDragDlg();
-	void SetSizeDragDlg(CRect dragSizeRect);
-
-	int GetDragButtonStdID();
-	int GetDragButtonHovID();
-	int GetDragButtonAltID();
-	CString GetDragButtonName();
-	BOOL IsDragging();
-	BOOL ExistDragDlg();
-
-
+	enum BindDialog
+	{
+		BIND_REGULAR = 1,
+		BIND_HALF = 2,
+		BIND_THIRD_DIVIDE = 3
+	};
 
 private:
 
@@ -38,6 +29,7 @@ private:
 	CWnd* useWnd;
 	CWnd* mainFrame;
 	DragDialog* dragDlg;
+	BindDialog bd;
 
 	CRect targetDragRect;
 	bool bUseDragDlg;
@@ -49,6 +41,19 @@ private:
 
 protected:
 
+	BOOL DragActivation(CRect dragRect, POINT mousePoint);
+	BOOL ExecuteDragEvent(CGdipButton* currentClickButton);
+	void DeleteDragDlg();
+	void SetSizeDragDlg(CRect dragSizeRect);
+
+	int GetDragButtonStdID();
+	int GetDragButtonHovID();
+	int GetDragButtonAltID();
+	CString GetDragButtonName();
+	BOOL IsDragging();
+	BOOL ExistDragDlg();
+
+	void Init(CWnd* dragUseWnd, CWnd* mainFrameParent, BindDialog bd);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);

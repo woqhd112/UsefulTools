@@ -93,6 +93,7 @@ HBRUSH DragDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  여기서 DC의 특성을 변경합니다.
 	if (nCtlColor == CTLCOLOR_DLG) // 다이얼로그일 경우
 	{
+		TRACE("!\n");
 		CBrush B;
 		B.CreateStockObject(NULL_BRUSH);
 		pDC->SetBkMode(TRANSPARENT); // 투명 설정 
@@ -111,7 +112,8 @@ void DragDialog::OnMove(int x, int y)
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	if (newButton)
 	{
-		//Invalidate();
+		//OnCtlColor(this->GetDC(), this, CTLCOLOR_DLG);
+		Invalidate();
 		//newButton->DisConnect();
 	}
 }

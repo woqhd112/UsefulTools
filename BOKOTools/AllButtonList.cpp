@@ -27,7 +27,7 @@ AllButtonList::AllButtonList(std::vector<std::vector<int>> ctlVector, ThemeData*
 	nButtonID = 45000;
 
 	bLineEnd = false;
-
+/*
 	bButtonHover = true;
 	bHoverBase = true;
 	bHoverEngineering = true;
@@ -41,14 +41,7 @@ AllButtonList::AllButtonList(std::vector<std::vector<int>> ctlVector, ThemeData*
 	bComingSoon1 = true;
 	bComingSoon2 = true;
 	bComingSoon3 = true;
-	bUseDragDlg = false;
-
-	bDragActivation = false;
-	bTopOverDetect = false;
-	bLeftOverDetect = false;
-	bBottomOverDetect = false;
-	bRightOverDetect = false;
-
+*/
 	bSortButtonHoverEvent = false;
 
 	bScrollButtonDetect = false;
@@ -91,6 +84,8 @@ BOOL AllButtonList::OnInitDialog()
 	sorticon = (SortIcon*)pParent;
 
 	LoadAllButton();
+
+	Init(this, sorticon->GetParent(), BIND_HALF);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -285,105 +280,39 @@ BOOL AllButtonList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void AllButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
-{
-	if (bSignalItem == &bHoverBase) bHoverBase = !bSignal;
-	else bHoverBase = bSignal;
-	if (bSignalItem == &bHoverEngineering) bHoverEngineering = !bSignal;
-	else bHoverEngineering = bSignal;
-	if (bSignalItem == &bStopWatch) bStopWatch = !bSignal;
-	else bStopWatch = bSignal;
-	if (bSignalItem == &bConverter) bConverter = !bSignal;
-	else  bConverter = bSignal;
-	if (bSignalItem == &bDateCal) bDateCal = !bSignal;
-	else bDateCal = bSignal;
-	if (bSignalItem == &bWorkTimer) bWorkTimer = !bSignal;
-	else bWorkTimer = bSignal;
-	if (bSignalItem == &bNotePad) bNotePad = !bSignal;
-	else bNotePad = bSignal;
-	if (bSignalItem == &bBaseTimer) bBaseTimer = !bSignal;
-	else bBaseTimer = bSignal;
-	if (bSignalItem == &bWorldClock) bWorldClock = !bSignal;
-	else bWorldClock = bSignal;
-	if (bSignalItem == &bComingSoon1) bComingSoon1 = !bSignal;
-	else bComingSoon1 = bSignal;
-	if (bSignalItem == &bComingSoon2) bComingSoon2 = !bSignal;
-	else bComingSoon2 = bSignal;
-	if (bSignalItem == &bComingSoon3) bComingSoon3 = !bSignal;
-	else bComingSoon3 = bSignal;
-
-}
-
-BOOL AllButtonList::DragActivation(POINT mousePoint)
-{
-	if (bUseDragDlg)
-	{
-		if (mousePoint.y <= sorticon->dragRect.top)
-		{
-			bTopOverDetect = true;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.y > sorticon->dragRect.bottom)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = true;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.x <= sorticon->dragRect.left)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = true;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}
-		else if (mousePoint.x > sorticon->dragRect.right)
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = true;
-		}
-		else
-		{
-			bTopOverDetect = false;
-			bLeftOverDetect = false;
-			bBottomOverDetect = false;
-			bRightOverDetect = false;
-		}
-
-		if (PtInRect(sorticon->dragRect, mousePoint))
-		{
-			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, 64, 64);
-			dragDlg->newButton->DisConnect();
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-void AllButtonList::CreateDragButton(CGdipButton* currentClickButton)
-{
-	SetCapture();
-	bDragActivation = true;
-	CGdipButton* hoverButton = currentClickButton;
-	dragDlg = new DragDialog(hoverButton, pParent->GetParent());
-
-	dragDlg->Create(IDD_DIALOG_DRAG);
-	dragDlg->ShowWindow(SW_SHOW);
-	bUseDragDlg = true;
-}
+//void AllButtonList::HoverSignal(bool bSignal, bool* bSignalItem)
+//{
+//	if (bSignalItem == &bHoverBase) bHoverBase = !bSignal;
+//	else bHoverBase = bSignal;
+//	if (bSignalItem == &bHoverEngineering) bHoverEngineering = !bSignal;
+//	else bHoverEngineering = bSignal;
+//	if (bSignalItem == &bStopWatch) bStopWatch = !bSignal;
+//	else bStopWatch = bSignal;
+//	if (bSignalItem == &bConverter) bConverter = !bSignal;
+//	else  bConverter = bSignal;
+//	if (bSignalItem == &bDateCal) bDateCal = !bSignal;
+//	else bDateCal = bSignal;
+//	if (bSignalItem == &bWorkTimer) bWorkTimer = !bSignal;
+//	else bWorkTimer = bSignal;
+//	if (bSignalItem == &bNotePad) bNotePad = !bSignal;
+//	else bNotePad = bSignal;
+//	if (bSignalItem == &bBaseTimer) bBaseTimer = !bSignal;
+//	else bBaseTimer = bSignal;
+//	if (bSignalItem == &bWorldClock) bWorldClock = !bSignal;
+//	else bWorldClock = bSignal;
+//	if (bSignalItem == &bComingSoon1) bComingSoon1 = !bSignal;
+//	else bComingSoon1 = bSignal;
+//	if (bSignalItem == &bComingSoon2) bComingSoon2 = !bSignal;
+//	else bComingSoon2 = bSignal;
+//	if (bSignalItem == &bComingSoon3) bComingSoon3 = !bSignal;
+//	else bComingSoon3 = bSignal;
+//
+//}
 
 BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 {
-	if (bUseDragDlg)
+	if (ExistDragDlg())
 	{
-		ReleaseCapture();
-		bDragActivation = false;
-		//sorticon->Invalidate();
-
 		// sortbuttonlist의 좌표값 구하기
 		POINT convertPoint = upPoint;
 		sorticon->ScreenToClient(&convertPoint);
@@ -395,7 +324,7 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 
 		if (PtInRect(rect, convertPoint))
 		{
-			if (sorticon->sortButtonList->InsertNewButton(nLocToPos, dragDlg->newButton->nStdImageID, dragDlg->newButton->nHovImageID, dragDlg->newButton->nAltImageID, dragDlg->newButton->strButtonName))
+			if (sorticon->sortButtonList->InsertNewButton(nLocToPos, GetDragButtonStdID(), GetDragButtonHovID(), GetDragButtonAltID(), GetDragButtonName()))
 			{
 				for (int i = 0; i < (int)allButtonVector.size(); i++)
 				{
@@ -492,10 +421,7 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 			}
 		}
 
-		dragDlg->ShowWindow(SW_HIDE);
-		delete dragDlg;
-		dragDlg = nullptr;
-		bUseDragDlg = false;
+		DeleteDragDlg();
 		sorticon->sortButtonList->EnableEmptyLine(SW_HIDE);
 
 		return TRUE;
@@ -505,118 +431,18 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 
 BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 {
+	BOOL bReturn = FALSE;
 	for (int i = 0; i < allButtonVector.size(); i++)
 	{
 		if (downHWND == allButtonVector.at(i)->m_hWnd)
 		{
-			if (allButtonVector.at(i)->strButtonName == _T("Base"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("Engineering"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("StopWatch"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("Converter"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("DateCal"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("WorkTimer"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("NotePad"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("BaseTimer"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("WorldClock"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon1"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon2"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
-			else if (allButtonVector.at(i)->strButtonName == _T("ComingSoon3"))
-			{
-				downButton = allButtonVector.at(i);
-				CreateDragButton(allButtonVector.at(i));
-				dragDlg->MoveWindow(downPoint.x + 2, downPoint.y + 2, 128, 128);
-				allButtonVector.at(i)->ShowWindow(SW_HIDE);
-				sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
-				return TRUE;
-			}
+			downButton = allButtonVector.at(i);
+			allButtonVector.at(i)->ShowWindow(SW_HIDE);
+			sorticon->sortButtonList->EnableEmptyLine(SW_SHOW);
+			bReturn = TRUE;
+			ExecuteDragEvent(allButtonVector.at(i));
+			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
+			break;
 		}
 	}
 	return FALSE;
@@ -624,9 +450,9 @@ BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 
 BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 {
-	if (bDragActivation)
+	if (IsDragging())
 	{
-		if (DragActivation(movePoint))
+		if (DragActivation(sorticon->dragRect, movePoint))
 		{
 			// sortbuttonlist의 빈 테두리좌표영역 구하기
 			POINT convertPoint = movePoint;

@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-//#include "DragDialog.h"
 
 // SortButtonList 대화 상자
 class SortIcon;
@@ -56,19 +55,13 @@ private:
 	bool bComingSoon1;
 	bool bComingSoon2;
 	bool bComingSoon3;
-
-	bool bTopOverDetect;
-	bool bLeftOverDetect;
-	bool bBottomOverDetect;
-	bool bRightOverDetect;*/
+*/
 
 	SortIcon* sorticon;
 
 	bool bSortButtonHoverEvent;
 
 	void LoadSortButton(CtlVector ctlVector);
-	//void CreateDragButton(CGdipButton* currentClickButton);
-	//BOOL DragActivation(POINT mousePoint);
 	//void HoverSignal(bool bSignal, bool* bSignalItem);
 
 
@@ -79,9 +72,6 @@ private:
 	void ButtonBringToTop();
 	bool ExistButtonPos(int nButtonIndex);
 
-	//DragDialog* dragDlg;
-	//bool bUseDragDlg;
-	//bool bDragActivation;
 	int nLineEndCount;
 
 	CustomScroll scroll;
