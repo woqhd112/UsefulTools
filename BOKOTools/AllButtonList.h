@@ -14,8 +14,10 @@ class AllButtonList : public CDialogEx, public DragWrapper
 	friend class SortIcon;
 	friend class SortButtonList;
 
+	typedef std::vector<std::vector<int>> CtlVector;
+	typedef std::vector<CGdipButton*> ButtonVector;
 public:
-	AllButtonList(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	AllButtonList(CtlVector ctlVector, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~AllButtonList();
 
 // 대화 상자 데이터입니다.
@@ -30,8 +32,6 @@ protected:
 
 private:
 
-	typedef std::vector<std::vector<int>> CtlVector;
-	typedef std::vector<CGdipButton*> ButtonVector;
 
 	CWnd* pParent;
 	ThemeData* currentTheme;
@@ -66,8 +66,6 @@ private:
 	//void HoverSignal(bool bSignal, bool* bSignalItem);
 	void CtlToTop();
 	void CreateExitButton(int nButtonID);
-	ThemeData::FunctionIcon GetFunctionIconByButtonID(int nButtonID);
-	CString GetButtonNameByButtonID(int nButtonID);
 
 
 	bool bScrollButtonDetect;

@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SortButtonList, CDialogEx)
 
-SortButtonList::SortButtonList(std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SortButtonList::SortButtonList(CtlVector ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SORT, pParent)
 {
 	this->ctlVector = ctlVector;
@@ -290,42 +290,6 @@ bool SortButtonList::InsertNewButton(int nButtonVectorIndex, int nStdID, int nHo
 }
 
 
-ThemeData::FunctionIcon SortButtonList::GetFunctionIconByButtonID(int nButtonID)
-{
-	if (nButtonID == IDC_BUTTON_BASE_GDI) return currentTheme->GetBaseIcon();
-	else if (nButtonID == IDC_BUTTON_CALCULATOR_GDI) return currentTheme->GetEngineeringIcon();
-	else if (nButtonID == IDC_BUTTON_STOPWATCH_GDI) return currentTheme->GetStopWatchIcon();
-	else if (nButtonID == IDC_BUTTON_CONVERTER_GDI) return currentTheme->GetConverterIcon();
-	else if (nButtonID == IDC_BUTTON_DATE_GDI) return currentTheme->GetDateCalIcon();
-	else if (nButtonID == IDC_BUTTON_TIMER_GDI) return currentTheme->GetWorkTimerIcon();
-	else if (nButtonID == IDC_BUTTON_NOTEPAD_GDI) return currentTheme->GetNotePadIcon();
-	else if (nButtonID == IDC_BUTTON_BASE_TIMER_GDI) return currentTheme->GetBaseTimerIcon();
-	else if (nButtonID == IDC_BUTTON_WORLD_CLOCK_GDI) return currentTheme->GetWorldClockIcon();
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI1) return currentTheme->GetCommingSoonIcon();
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI2) return currentTheme->GetCommingSoonIcon();
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI3) return currentTheme->GetCommingSoonIcon();
-
-	return currentTheme->GetBaseIcon();
-}
-
-CString SortButtonList::GetButtonNameByButtonID(int nButtonID)
-{
-	if (nButtonID == IDC_BUTTON_BASE_GDI) return _T("Base");
-	else if (nButtonID == IDC_BUTTON_CALCULATOR_GDI)  return _T("Engineering");
-	else if (nButtonID == IDC_BUTTON_STOPWATCH_GDI) return _T("StopWatch");
-	else if (nButtonID == IDC_BUTTON_CONVERTER_GDI) return _T("Converter");
-	else if (nButtonID == IDC_BUTTON_DATE_GDI) return _T("DateCal");
-	else if (nButtonID == IDC_BUTTON_TIMER_GDI) return _T("WorkTimer");
-	else if (nButtonID == IDC_BUTTON_NOTEPAD_GDI) return _T("NotePad");
-	else if (nButtonID == IDC_BUTTON_BASE_TIMER_GDI) return _T("BaseTimer");
-	else if (nButtonID == IDC_BUTTON_WORLD_CLOCK_GDI) return _T("WorldClock");
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI1) return _T("ComingSoon1");
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI2) return _T("ComingSoon2");
-	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI3) return _T("ComingSoon3");
-
-	return _T("");
-}
-
 void SortButtonList::LoadSortButton(CtlVector ctlVector)
 {
 	DeleteButonVector(sortButtonVector);
@@ -351,10 +315,10 @@ void SortButtonList::LoadSortButton(CtlVector ctlVector)
 
 		CRect ButtonPos = SetButtonPosition(ctlVector.at(i).at(2) - 1);
 
-		button->strButtonName = GetButtonNameByButtonID(ctlVector.at(i).at(0));
-		button->LoadStdImage(GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nNormalID, _T("PNG"));
-		button->LoadHovImage(GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nHoverID, _T("PNG"));
-		button->LoadAltImage(GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nClickID, _T("PNG"));
+		button->strButtonName = sorticon->GetButtonNameByButtonID(ctlVector.at(i).at(0));
+		button->LoadStdImage(sorticon->GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nNormalID, _T("PNG"));
+		button->LoadHovImage(sorticon->GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nHoverID, _T("PNG"));
+		button->LoadAltImage(sorticon->GetFunctionIconByButtonID(ctlVector.at(i).at(0)).nClickID, _T("PNG"));
 
 		sortButtonVector.push_back(button);
 		button->MoveWindow(ButtonPos);
@@ -525,6 +489,7 @@ void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 
 BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 {
+	BOOL bReturn = FALSE;
 	if (ExistDragDlg())
 	{
 		POINT convertPoint = upPoint;
@@ -550,72 +515,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 				CGdipButton* button = sortButtonVector.at(i);
 				if (sortButtonVector.at(i) == downButton)
 				{
-					int nButtonCtlID = 0;
-					int nStaticCtlID = 0;
-
-					if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_BASE_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_BASE_GDI;
-						nStaticCtlID = IDC_STATIC_BASE;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_CALCULATOR_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_CALCULATOR_GDI;
-						nStaticCtlID = IDC_STATIC_ENGINEERING;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_STOPWATCH_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_STOPWATCH_GDI;
-						nStaticCtlID = IDC_STATIC_STOPWATCH;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_CONVERTER_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_CONVERTER_GDI;
-						nStaticCtlID = IDC_STATIC_CONVERTER;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_DATE_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_DATE_GDI;
-						nStaticCtlID = IDC_STATIC_DATE;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_TIMER_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_TIMER_GDI;
-						nStaticCtlID = IDC_STATIC_TIMER1;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_NOTEPAD_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_NOTEPAD_GDI;
-						nStaticCtlID = IDC_STATIC_NOTEPAD;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_BASE_TIMER_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_BASE_TIMER_GDI;
-						nStaticCtlID = IDC_STATIC_BASE_TIMER;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_WORLD_CLOCK_GDI + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_WORLD_CLOCK_GDI;
-						nStaticCtlID = IDC_STATIC_WORLD_CLOCK;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI1 + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI1;
-						nStaticCtlID = 0;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI2 + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI2;
-						nStaticCtlID = 0;
-					}
-					else if (sortButtonVector.at(i)->GetDlgCtrlID() == IDC_BUTTON_COMINGSOON_GDI3 + nButtonID)
-					{
-						nButtonCtlID = IDC_BUTTON_COMINGSOON_GDI3;
-						nStaticCtlID = 0;
-					}
-
-					std::vector<int> ctlItem = { nButtonCtlID, nStaticCtlID, (nLocToPos + 1) + (9 * (scroll.GetCurrentLinePos() - 1)) };
-
+					int nButtonCtlID = sortButtonVector.at(i)->GetDlgCtrlID() - nButtonID;
 					for (int j = 0; j < saveCtlVector.size(); j++)
 					{
 						if (nButtonCtlID == saveCtlVector.at(j).at(0))
@@ -684,25 +584,25 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		DeleteDragDlg();
 		EnableEmptyLine(SW_HIDE);
 
-		return TRUE;
+		bReturn = TRUE;
 	}
-	return FALSE;
+	return bReturn;
 }
 
 BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 {
 	BOOL bReturn = FALSE;
-	for (int i = 0; i < sortButtonVector.size(); i++)
+	CGdipButton* findButton = NULL;
+	if (FindButtonSame(sortButtonVector, downHWND, &findButton))
 	{
-		if (downHWND == sortButtonVector.at(i)->m_hWnd)
+		if (findButton != NULL)
 		{
-			downButton = sortButtonVector.at(i);
-			sortButtonVector.at(i)->ShowWindow(SW_HIDE);
+			ExecuteDragEvent(findButton);
+			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
+			downButton = findButton;
+			findButton->ShowWindow(SW_HIDE);
 			EnableEmptyLine(SW_SHOW);
 			bReturn = TRUE;
-			ExecuteDragEvent(sortButtonVector.at(i));
-			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
-			break;
 		}
 	}
 	return bReturn;
@@ -710,42 +610,40 @@ BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 
 BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 {
-	if (IsDragging())
+	BOOL bReturn = FALSE;
+	if (IsDragging(sorticon->dragRect, movePoint))
 	{
-		if (DragActivation(sorticon->dragRect, movePoint))
+		POINT convertPoint = movePoint;
+		sorticon->ScreenToClient(&convertPoint);
+		convertPoint.x = convertPoint.x - 10;
+		convertPoint.y = convertPoint.y - 10;
+
+		int nLocToPos = ButtonLocationToPos(convertPoint);
+
+		CRect rect = SetButtonPosition(nLocToPos);
+		if (PtInRect(rect, convertPoint))
 		{
-			POINT convertPoint = movePoint;
-			sorticon->ScreenToClient(&convertPoint);
-			convertPoint.x = convertPoint.x - 10;
-			convertPoint.y = convertPoint.y - 10;
-
-			int nLocToPos = ButtonLocationToPos(convertPoint);
-
-			CRect rect = SetButtonPosition(nLocToPos);
-			if (PtInRect(rect, convertPoint))
+			if (nLocToPos != -1)
 			{
-				if (nLocToPos != -1)
-				{
-					bSortButtonHoverEvent = true;
-					iconMoveButtonVector.at(nLocToPos)->UseHoverEvent();
-				}
+				bSortButtonHoverEvent = true;
+				iconMoveButtonVector.at(nLocToPos)->UseHoverEvent();
 			}
-			else
-			{
-				if (bSortButtonHoverEvent)
-				{
-					bSortButtonHoverEvent = false;
-					for (int i = 0; i < (int)iconMoveButtonVector.size(); i++)
-					{
-						iconMoveButtonVector.at(i)->UserLeaveEvent();
-					}
-				}
-			}
-			return TRUE;
 		}
+		else
+		{
+			if (bSortButtonHoverEvent)
+			{
+				bSortButtonHoverEvent = false;
+				for (int i = 0; i < (int)iconMoveButtonVector.size(); i++)
+				{
+					iconMoveButtonVector.at(i)->UserLeaveEvent();
+				}
+			}
+		}
+		bReturn = TRUE;
 	}
 
-	return FALSE;
+	return bReturn;
 }
 
 BOOL SortButtonList::PreTranslateMessage(MSG* pMsg)

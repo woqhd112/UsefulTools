@@ -1,11 +1,13 @@
 #pragma once
 #include "DragDialog.h"
+#include <vector>
 
 
 class DragWrapper
 {
 
 public:
+	typedef std::vector<CGdipButton*> ButtonVector;
 
 	DragWrapper();
 	~DragWrapper();
@@ -41,16 +43,16 @@ private:
 
 protected:
 
-	BOOL DragActivation(CRect dragRect, POINT mousePoint);
 	BOOL ExecuteDragEvent(CGdipButton* currentClickButton);
 	void DeleteDragDlg();
 	void SetSizeDragDlg(CRect dragSizeRect);
+	BOOL FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton);
 
 	int GetDragButtonStdID();
 	int GetDragButtonHovID();
 	int GetDragButtonAltID();
 	CString GetDragButtonName();
-	BOOL IsDragging();
+	BOOL IsDragging(CRect dragRect, POINT mousePoint);
 	BOOL ExistDragDlg();
 
 	void Init(CWnd* dragUseWnd, CWnd* mainFrameParent, BindDialog bd);

@@ -93,7 +93,6 @@ HBRUSH DragDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  여기서 DC의 특성을 변경합니다.
 	if (nCtlColor == CTLCOLOR_DLG) // 다이얼로그일 경우
 	{
-		TRACE("!\n");
 		CBrush B;
 		B.CreateStockObject(NULL_BRUSH);
 		pDC->SetBkMode(TRANSPARENT); // 투명 설정 

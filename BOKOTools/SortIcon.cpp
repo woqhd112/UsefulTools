@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(SortIcon, CDialogEx)
 
-SortIcon::SortIcon(int nManualImageID, bool bUsingManual, std::vector<std::vector<int>> ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+SortIcon::SortIcon(int nManualImageID, bool bUsingManual, CtlVector ctlVector, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_SORT_ICON, pParent)
 {
 	this->ctlVector = ctlVector;
@@ -218,11 +218,35 @@ void SortIcon::OnBnClickedButtonSortSave()
 	parentDlg->SaveButtonCtlPos(ctlVector);
 }
 
+bool SortIcon::SameVectorCondition(CtlVector thisVector, CtlVector targetVector)
+{
+	if (thisVector.size() != targetVector.size()) return false;
+
+	bool bReturn = false;
+	unsigned short sSameIncreaseCount = 0;
+	for (int i = 0; i < (int)thisVector.size(); i++)
+	{
+		ControlList thisCtlList = thisVector.at(i);
+		for (int j = 0; j < (int)targetVector.size(); j++)
+		{
+			ControlList targetCtlList = targetVector.at(j);
+			if (thisCtlList == targetCtlList)
+			{
+				sSameIncreaseCount++;
+				break;
+			}
+		}
+	}
+	// 아 id값은 전부 같아도 위치가 달라서 증가안하는거였음ㅋㅋ 맞는부분임
+	if (sSameIncreaseCount == (int)thisVector.size() && sSameIncreaseCount == targetVector.size()) bReturn = true;
+
+	return bReturn;
+}
 
 void SortIcon::OnBnClickedButtonSortReset()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (sortButtonList->saveCtlVector == originCtlVector)
+	if (SameVectorCondition(sortButtonList->saveCtlVector, originCtlVector))
 	{
 		return;
 	}
@@ -239,4 +263,59 @@ void SortIcon::OnBnClickedButtonSortReset()
 	sortButtonList->LoadSortButton(ctlVector);
 	sortButtonList->ButtonBringToTop();
 	allButtonList->LoadAllButton();
+}
+
+ThemeData::FunctionIcon SortIcon::GetFunctionIconByButtonID(int nButtonID)
+{
+	if (nButtonID == IDC_BUTTON_BASE_GDI) return currentTheme->GetBaseIcon();
+	else if (nButtonID == IDC_BUTTON_CALCULATOR_GDI) return currentTheme->GetEngineeringIcon();
+	else if (nButtonID == IDC_BUTTON_STOPWATCH_GDI) return currentTheme->GetStopWatchIcon();
+	else if (nButtonID == IDC_BUTTON_CONVERTER_GDI) return currentTheme->GetConverterIcon();
+	else if (nButtonID == IDC_BUTTON_DATE_GDI) return currentTheme->GetDateCalIcon();
+	else if (nButtonID == IDC_BUTTON_TIMER_GDI) return currentTheme->GetWorkTimerIcon();
+	else if (nButtonID == IDC_BUTTON_NOTEPAD_GDI) return currentTheme->GetNotePadIcon();
+	else if (nButtonID == IDC_BUTTON_BASE_TIMER_GDI) return currentTheme->GetBaseTimerIcon();
+	else if (nButtonID == IDC_BUTTON_WORLD_CLOCK_GDI) return currentTheme->GetWorldClockIcon();
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI1) return currentTheme->GetCommingSoonIcon();
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI2) return currentTheme->GetCommingSoonIcon();
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI3) return currentTheme->GetCommingSoonIcon();
+
+	return currentTheme->GetBaseIcon();
+}
+
+CString SortIcon::GetButtonNameByButtonID(int nButtonID)
+{
+	if (nButtonID == IDC_BUTTON_BASE_GDI) return _T("Base");
+	else if (nButtonID == IDC_BUTTON_CALCULATOR_GDI)  return _T("Engineering");
+	else if (nButtonID == IDC_BUTTON_STOPWATCH_GDI) return _T("StopWatch");
+	else if (nButtonID == IDC_BUTTON_CONVERTER_GDI) return _T("Converter");
+	else if (nButtonID == IDC_BUTTON_DATE_GDI) return _T("DateCal");
+	else if (nButtonID == IDC_BUTTON_TIMER_GDI) return _T("WorkTimer");
+	else if (nButtonID == IDC_BUTTON_NOTEPAD_GDI) return _T("NotePad");
+	else if (nButtonID == IDC_BUTTON_BASE_TIMER_GDI) return _T("BaseTimer");
+	else if (nButtonID == IDC_BUTTON_WORLD_CLOCK_GDI) return _T("WorldClock");
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI1) return _T("ComingSoon1");
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI2) return _T("ComingSoon2");
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI3) return _T("ComingSoon3");
+
+	return _T("");
+}
+
+int SortIcon::GetStaticIDByButtonID(int nButtonID)
+{
+	int nStaticID = 0;
+	if (nButtonID == IDC_BUTTON_BASE_GDI) nStaticID = IDC_STATIC_BASE;
+	else if (nButtonID == IDC_BUTTON_CALCULATOR_GDI)  nStaticID = IDC_STATIC_ENGINEERING;
+	else if (nButtonID == IDC_BUTTON_STOPWATCH_GDI) nStaticID = IDC_STATIC_STOPWATCH;
+	else if (nButtonID == IDC_BUTTON_CONVERTER_GDI) nStaticID = IDC_STATIC_CONVERTER;
+	else if (nButtonID == IDC_BUTTON_DATE_GDI) nStaticID = IDC_STATIC_DATE;
+	else if (nButtonID == IDC_BUTTON_TIMER_GDI) nStaticID = IDC_STATIC_TIMER1;
+	else if (nButtonID == IDC_BUTTON_NOTEPAD_GDI) nStaticID = IDC_STATIC_NOTEPAD;
+	else if (nButtonID == IDC_BUTTON_BASE_TIMER_GDI) nStaticID = IDC_STATIC_BASE_TIMER;
+	else if (nButtonID == IDC_BUTTON_WORLD_CLOCK_GDI) nStaticID = IDC_STATIC_WORLD_CLOCK;
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI1) nStaticID = 0;
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI2) nStaticID = 0;
+	else if (nButtonID == IDC_BUTTON_COMINGSOON_GDI3) nStaticID = 0;
+
+	return nStaticID;
 }

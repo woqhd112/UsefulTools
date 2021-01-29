@@ -45,19 +45,6 @@ void DragWrapper::Init(CWnd* dragUseWnd, CWnd* mainFrameParent, BindDialog bd)
 	this->bd = bd;
 }
 
-BOOL DragWrapper::DragActivation(CRect dragRect, POINT mousePoint)
-{
-	if (bUseDragDlg)
-	{
-		if (PtInRect(dragRect, mousePoint))
-		{
-			dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / (int)bd, targetDragRect.Width() / (int)bd);
-			dragDlg->newButton->DisConnect();
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
 
 BOOL DragWrapper::ExecuteDragEvent(CGdipButton* currentClickButton)
 {
@@ -114,9 +101,23 @@ CString DragWrapper::GetDragButtonName()
 	return strDragButtonName;
 }
 
-BOOL DragWrapper::IsDragging()
+BOOL DragWrapper::IsDragging(CRect dragRect, POINT mousePoint)
 {
-	return ds == DRAG_MOVE ? TRUE : FALSE;
+	BOOL bReturn = FALSE;
+	if (ds == DRAG_MOVE)
+	{
+		if (bUseDragDlg)
+		{
+			if (PtInRect(dragRect, mousePoint))
+			{
+				dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / (int)bd, targetDragRect.Width() / (int)bd);
+				dragDlg->newButton->DisConnect();
+				bReturn = TRUE;
+			}
+		}
+	}
+
+	return bReturn;
 }
 
 BOOL DragWrapper::ExistDragDlg()
@@ -127,4 +128,19 @@ BOOL DragWrapper::ExistDragDlg()
 		ds = DRAG_STOP;
 	}
 	return bUseDragDlg ? TRUE : FALSE;
+}
+
+BOOL DragWrapper::FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton)
+{
+	BOOL bSuccess = FALSE;
+	for (int i = 0; i < (int)findVector.size(); i++)
+	{
+		if (findTargetHWND == findVector.at(i)->m_hWnd)
+		{
+			*returnButton = findVector.at(i);
+			bSuccess = TRUE;
+			break;
+		}
+	}
+	return bSuccess;
 }

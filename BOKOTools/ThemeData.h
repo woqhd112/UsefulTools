@@ -25,8 +25,7 @@ public:
 
 private:
 
-	friend class AllButtonList;
-	friend class SortButtonList;
+	friend class SortIcon;
 
 	struct FunctionIcon
 	{
