@@ -45,6 +45,8 @@ protected:
 	virtual void OnOK();
 public:
 
+	CRect dragRect;
+
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual void PostNcDestroy();
@@ -54,4 +56,5 @@ public:
 	afx_msg void OnBnClickedButtonEditItalic();
 	afx_msg void OnBnClickedButtonEditUnderline();
 	afx_msg void OnBnClickedButtonNotepadReport();
+	afx_msg void OnMove(int x, int y);
 };

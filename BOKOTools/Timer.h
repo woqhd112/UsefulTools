@@ -197,8 +197,6 @@ private:
 	void SetEnabledCtrl(BOOL bEnabled);
 	void EmptyTextCondition(int nExceptionEditCtlID = 0);
 	bool TimeToUnderTenSecondCondition(bool isWork);
-	void SaveXml(CMarkup* markup, CString strSaveFullPath);
-	void CreateConfigFile(CString& strFullPath);
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath);
 
 	bool bDivideClick;

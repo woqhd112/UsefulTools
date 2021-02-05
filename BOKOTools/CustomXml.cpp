@@ -5,23 +5,28 @@ namespace CustomXml
 {
 	void CreateConfigFile(CString& strFullPath)
 	{
+
+		GetModulePath(strFullPath);
+		CreateDefaultDirectory(strFullPath, _T("\\Config"));
+	}
+
+	void GetModulePath(CString& strPath)
+	{
+		CFileFind rootFind;
 		TCHAR chFilePath[256] = { 0, };
 		GetModuleFileName(NULL, chFilePath, 256);
-		strFullPath = (LPCTSTR)chFilePath;
-		int nLen = strFullPath.ReverseFind('\\');
+		strPath = (LPCTSTR)chFilePath;
+		int nLen = strPath.ReverseFind('\\');
 
 		if (nLen > 0)
 		{
-			strFullPath = strFullPath.Left(nLen);
+			strPath = strPath.Left(nLen);
 		}
 
-		CFileFind rootFind;
-		if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
-			strFullPath += _T("\\BOKOTools");
+		if (rootFind.FindFile(strPath + _T("\\BOKOTools"))) {
+			strPath += _T("\\BOKOTools");
 		}
 		rootFind.Close();
-
-		CreateDefaultDirectory(strFullPath, _T("\\Config"));
 	}
 
 	void CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
@@ -45,5 +50,16 @@ namespace CustomXml
 		saveXML.SaveWithFormatted(strSaveFullPath);
 		saveXML.Close();
 		CoUninitialize();
+	}
+
+	bool LoadConfigXml(CMarkup* markup, CString strFullPath)
+	{
+		bool bSavedXml = false;
+		if (markup->Load(strFullPath))
+		{
+			bSavedXml = true;
+		}
+
+		return bSavedXml;
 	}
 }

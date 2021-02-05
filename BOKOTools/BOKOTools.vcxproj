@@ -229,6 +229,7 @@
     <ClInclude Include="LapTime.h" />
     <ClInclude Include="ManualList.h" />
     <ClInclude Include="MemDC.h" />
+    <ClInclude Include="NoteFile.h" />
     <ClInclude Include="NotePad.h" />
     <ClInclude Include="NotePadList.h" />
     <ClInclude Include="pch.h" />
@@ -276,6 +277,7 @@
     <ClCompile Include="EngineeringCalculate.cpp" />
     <ClCompile Include="LapTime.cpp" />
     <ClCompile Include="ManualList.cpp" />
+    <ClCompile Include="NoteFile.cpp" />
     <ClCompile Include="NotePad.cpp" />
     <ClCompile Include="NotePadList.cpp" />
     <ClCompile Include="pch.cpp">

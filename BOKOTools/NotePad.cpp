@@ -60,6 +60,7 @@ BEGIN_MESSAGE_MAP(NotePad, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT_ITALIC, &NotePad::OnBnClickedButtonEditItalic)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT_UNDERLINE, &NotePad::OnBnClickedButtonEditUnderline)
 	ON_BN_CLICKED(IDC_BUTTON_NOTEPAD_REPORT, &NotePad::OnBnClickedButtonNotepadReport)
+	ON_WM_MOVE()
 END_MESSAGE_MAP()
 
 
@@ -75,10 +76,18 @@ BOOL NotePad::OnInitDialog()
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 
-	m_btn_edit_bold.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_edit_italic.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_edit_underline.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
-	m_btn_report.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS);
+	this->SetWindowPos(NULL, 0, 0, MARGIN_X(435), MARGIN_Y(580), SWP_NOMOVE);
+	m_btn_edit_bold.MoveWindow(20, 20, 25, 25);
+	m_btn_edit_italic.MoveWindow(50, 20, 25, 25);
+	m_btn_edit_underline.MoveWindow(80, 20, 25, 25);
+	m_richedit_note.MoveWindow(20, 50, 395, 200);
+	m_btn_report.MoveWindow(125, 235, 180, 25);
+	m_stt_notepad_list.MoveWindow(20, 280, 395, 280);
+
+	m_btn_edit_bold.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_edit_italic.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_edit_underline.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_report.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_edit_bold.m_bUseMouseTextItalicEvent = true;
 	m_btn_edit_italic.m_bUseMouseTextItalicEvent = true;
 	m_btn_edit_underline.m_bUseMouseTextItalicEvent = true;
@@ -86,7 +95,6 @@ BOOL NotePad::OnInitDialog()
 	m_btn_edit_italic.SetTextColor(currentTheme->GetTextColor());
 	m_btn_edit_underline.SetTextColor(currentTheme->GetTextColor());
 	m_btn_report.SetTextColor(currentTheme->GetTextColor());
-	//m_richedit_note.SetBackgroundColor(false, RGB(200, 200, 200));
 
 	m_btn_report.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_richedit_note.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -95,12 +103,13 @@ BOOL NotePad::OnInitDialog()
 
 	thisFont.CreateFontW(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
-		_T("고딕"));
+		currentTheme->GetThemeFontName());
 
 	m_richedit_note.SetFont(&thisFont);
 
-	CRect notepadlistRect;
+	CRect notepadlistRect, dragRect;
 	m_stt_notepad_list.GetWindowRect(notepadlistRect);
+	this->GetWindowRect(dragRect);
 
 	notepadlist = new NotePadList(currentTheme, this);
 	notepadlist->Create(IDD_DIALOG_NOTEPAD_LIST, &m_stt_notepad_list);
@@ -177,7 +186,7 @@ void NotePad::OnBnClickedButtonEditBold()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	long nStart = 0;
+	/*long nStart = 0;
 	long nEnd = 0;
 	m_richedit_note.GetSel(nStart, nEnd);
 	CString strText = m_richedit_note.GetSelText();
@@ -193,14 +202,14 @@ void NotePad::OnBnClickedButtonEditBold()
 	m_richedit_note.SetSelectionCharFormat(cf);
 	m_richedit_note.ReplaceSel(strText);
 	m_richedit_note.SetSel(nStart, nEnd);
-	m_richedit_note.SetFocus();
+	m_richedit_note.SetFocus();*/
 }
 
 
 void NotePad::OnBnClickedButtonEditItalic()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	long nStart = 0;
+	/*long nStart = 0;
 	long nEnd = 0;
 	m_richedit_note.GetSel(nStart, nEnd);
 	CString strText = m_richedit_note.GetSelText();
@@ -216,14 +225,14 @@ void NotePad::OnBnClickedButtonEditItalic()
 	m_richedit_note.SetSelectionCharFormat(cf);
 	m_richedit_note.ReplaceSel(strText);
 	m_richedit_note.SetSel(nStart, nEnd);
-	m_richedit_note.SetFocus();
+	m_richedit_note.SetFocus();*/
 }
 
 
 void NotePad::OnBnClickedButtonEditUnderline()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	long nStart = 0;
+	/*long nStart = 0;
 	long nEnd = 0;
 	m_richedit_note.GetSel(nStart, nEnd);
 	CString strText = m_richedit_note.GetSelText();
@@ -239,7 +248,7 @@ void NotePad::OnBnClickedButtonEditUnderline()
 	m_richedit_note.SetSelectionCharFormat(cf);
 	m_richedit_note.ReplaceSel(strText);
 	m_richedit_note.SetSel(nStart, nEnd);
-	m_richedit_note.SetFocus();
+	m_richedit_note.SetFocus();*/
 }
 
 
@@ -252,4 +261,19 @@ void NotePad::OnBnClickedButtonNotepadReport()
 	m_richedit_note.GetWindowTextW(strNoteContent);
 	
 	// title, content를 notepadlist에 전달해서 버튼생성
+	notepadlist->AddNotePad(strNoteTitle, strNoteContent);
+
+	m_richedit_note.SetWindowTextW(_T(""));
+}
+
+
+void NotePad::OnMove(int x, int y)
+{
+	CDialogEx::OnMove(x, y);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+
+	CRect changeRect;
+	GetWindowRect(&changeRect);
+	dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
 }

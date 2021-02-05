@@ -198,13 +198,10 @@ bool WorldClock::LoadWorldClockData()
 	bool bReturn = false;
 	bool bSavedXml = false;
 	CMarkup markUp;
-
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-
-	CString strFullPath = szRoot + _T("\\WorldClock.conf");
-
-	if (markUp.Load(strFullPath))
+	szRoot += _T("\\WorldClock.conf");
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
 	{
 		markUp.FindElem(_T("Clock"));
 		markUp.IntoElem();
@@ -227,13 +224,10 @@ bool WorldClock::LoadWorldClockData()
 	}
 	else
 	{
-		CString szRoot = _T("");
-
-		CustomXml::CreateConfigFile(szRoot);
 		if (CreateDefaultClockXml(&markUp, szRoot)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			CustomXml::SaveXml(&markUp, strFullPath);
+			CustomXml::SaveXml(&markUp, szRoot);
 		}
 	}
 
@@ -257,9 +251,8 @@ void WorldClock::SaveClockXml(int nClockIdx)
 	CMarkup markUp;
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-	CString strFullPath = szRoot + _T("\\WorldClock.conf");
-
-	if (markUp.Load(strFullPath))
+	szRoot += _T("\\WorldClock.conf");
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
 	{
 		if (markUp.FindElem(_T("Clock")))
 		{
@@ -277,14 +270,13 @@ void WorldClock::SaveClockXml(int nClockIdx)
 		}
 	}
 
-	CustomXml::SaveXml(&markUp, strFullPath);
+	CustomXml::SaveXml(&markUp, szRoot);
 }
 
 bool WorldClock::CreateDefaultClockXml(CMarkup* markUp, CString strFilePath)
 {
 	bool bReturn = false;
 	CFileFind xmlFind;
-	strFilePath += _T("\\WorldClock.conf");
 	if (!xmlFind.FindFile(strFilePath))
 	{
 		markUp->AddElem(_T("Clock"));

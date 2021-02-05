@@ -181,6 +181,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 
 	LoadTheme();
 
+	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 	SetDisableCtlColor(currentTheme->GetTextColor());
 
 	bBase = false;
@@ -193,8 +194,6 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	bCurTimeThread = false;
 
 	LoadUsingManual();
-
-	m_returnBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 
 	LoadResourceItem(IDR_TEXT_FONT_DIGITAL);
 	LoadResourceItem(IDR_TEXT_FONT_GABIA_SOLMEE);
@@ -213,8 +212,6 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_basetimer.Initialize(23, currentTheme->GetThemeFontName());
 	m_stt_world_clock.Initialize(23, currentTheme->GetThemeFontName());
 
-	LoadUserInterface(currentTheme);
-	
 	m_btn_base_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_stt_base.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	m_btn_calculator_gdi.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -250,6 +247,7 @@ BOOL CBOKOToolsDlg::OnInitDialog()
 	m_stt_basetimer.BringWindowToTop();
 	m_stt_world_clock.BringWindowToTop();
 
+	LoadUserInterface(currentTheme);
 	LoadButtonPos();
 	ShowCurrentTime();
 
@@ -269,8 +267,8 @@ void CBOKOToolsDlg::LoadUsingManual()
 	CMarkup markUp;
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-	CString strFullPath = szRoot + _T("\\UsingManual.conf");
-	if (markUp.Load(strFullPath))
+	szRoot += _T("\\UsingManual.conf");
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
 	{
 		markUp.FindElem(_T("Manual"));
 		markUp.IntoElem();
@@ -298,13 +296,10 @@ void CBOKOToolsDlg::LoadUsingManual()
 	}
 	else
 	{
-		CString szRoot = _T("");
-
-		CustomXml::CreateConfigFile(szRoot);
 		if (CreateDefaultUsingManualXml(&markUp, szRoot)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			CustomXml::SaveXml(&markUp, szRoot + _T("\\UsingManual.conf"));
+			CustomXml::SaveXml(&markUp, szRoot);
 		}
 	}
 
@@ -330,7 +325,6 @@ bool CBOKOToolsDlg::CreateDefaultUsingManualXml(CMarkup* markUp, CString strFile
 {
 	bool bReturn = false;
 	CFileFind xmlFind;
-	strFilePath += _T("\\UsingManual.conf");
 	if (!xmlFind.FindFile(strFilePath))
 	{
 		markUp->AddElem(_T("Manual"));
@@ -396,15 +390,13 @@ void CBOKOToolsDlg::LoadButtonPos()
 {
 	bool bSavedXml = false;
 	CMarkup markUp;
-
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-
-	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
+	szRoot += _T("\\ButtonPos.conf");
 
 	std::vector<std::vector<int>> buttonCtlPosVector;
 
-	if (markUp.Load(strFullPath))
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
 	{
 		markUp.FindElem(_T("Position"));
 		markUp.IntoElem();
@@ -425,13 +417,10 @@ void CBOKOToolsDlg::LoadButtonPos()
 	}
 	else
 	{
-		CString szRoot = _T("");
-
-		CustomXml::CreateConfigFile(szRoot);
 		if (CreateDefaultPosXml(&markUp, szRoot, buttonCtlPosVector)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			CustomXml::SaveXml(&markUp, strFullPath);
+			CustomXml::SaveXml(&markUp, szRoot);
 		}
 	}
 
@@ -442,7 +431,6 @@ bool CBOKOToolsDlg::CreateDefaultPosXml(CMarkup* markUp, CString strFilePath, st
 {
 	bool bReturn = false;
 	CFileFind xmlFind;
-	strFilePath += _T("\\ButtonPos.conf");
 	if (!xmlFind.FindFile(strFilePath))
 	{
 		markUp->AddElem(_T("Position"));
@@ -517,8 +505,8 @@ int CBOKOToolsDlg::LoadCurrnetTheme()
 	CMarkup markUp;
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-	CString strFullPath = szRoot + _T("\\ThemeSetting.conf");
-	if (markUp.Load(strFullPath))
+	szRoot += _T("\\ThemeSetting.conf");
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
 	{
 		markUp.FindElem(_T("Theme"));
 		markUp.IntoElem();
@@ -530,13 +518,10 @@ int CBOKOToolsDlg::LoadCurrnetTheme()
 	}
 	else
 	{
-		CString szRoot = _T("");
-
-		CustomXml::CreateConfigFile(szRoot);
 		if (CreateDefaultThemeXml(&markUp, szRoot, nThemeFlags)) bSavedXml = true;
 		if (bSavedXml)
 		{
-			CustomXml::SaveXml(&markUp, szRoot + _T("\\ThemeSetting.conf"));
+			CustomXml::SaveXml(&markUp, szRoot);
 		}
 	}
 	return nThemeFlags;
@@ -547,7 +532,6 @@ bool CBOKOToolsDlg::CreateDefaultThemeXml(CMarkup* markUp, CString strFilePath, 
 {
 	bool bReturn = false;
 	CFileFind xmlFind;
-	strFilePath += _T("\\ThemeSetting.conf");
 	if (!xmlFind.FindFile(strFilePath))
 	{
 		markUp->AddElem(_T("Theme"));
@@ -1434,7 +1418,7 @@ void CBOKOToolsDlg::SavePosXml(std::vector<std::vector<int>> ctlItemVector)
 	CMarkup markUp;
 	CString szRoot = _T("");
 	CustomXml::CreateConfigFile(szRoot);
-	CString strFullPath = szRoot + _T("\\ButtonPos.conf");
+	szRoot += _T("\\ButtonPos.conf");
 
 	markUp.AddElem(_T("Position"));
 	markUp.IntoElem();
@@ -1447,5 +1431,5 @@ void CBOKOToolsDlg::SavePosXml(std::vector<std::vector<int>> ctlItemVector)
 		markUp.AddAttrib(_T("posy"), ctlItemVector.at(i).at(3));
 	}
 
-	CustomXml::SaveXml(&markUp, strFullPath);
+	CustomXml::SaveXml(&markUp, szRoot);
 }

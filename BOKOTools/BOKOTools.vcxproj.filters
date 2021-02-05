@@ -130,6 +130,9 @@
     <ClCompile Include="DragWrapper.cpp">
       <Filter>UI\DragDialog</Filter>
     </ClCompile>
+    <ClCompile Include="NoteFile.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -278,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="DragWrapper.h">
       <Filter>UI\DragDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteFile.h">
+      <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

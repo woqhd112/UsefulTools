@@ -131,7 +131,6 @@ void AllButtonList::CreateExitButton(int nButtonCtlID)
 		button->LoadHovImage(sorticon->GetFunctionIconByButtonID(nButtonCtlID).nHoverID, _T("PNG"));
 		button->LoadAltImage(sorticon->GetFunctionIconByButtonID(nButtonCtlID).nClickID, _T("PNG"));
 		button->MoveWindow(nStartPos_x, nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * nButtonStackCount, nPictureSize, nPictureSize);
-		//button->MoveWindow(nStartPos_x, nStartPos_y + (nPictureSize - (nPictureSize / 2 / 2)) * nButtonStackCount, nPictureSize, nPictureSize);
 
 		allButtonVector.push_back(button);
 		nButtonStackCount++;
@@ -170,7 +169,6 @@ void AllButtonList::LoadAllButton()
 	csi.nAllPageSize = 0;
 	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = 504 - 40 + 9;
-	//csi.nOnePageSize = 20 + 128;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = 30;
 	csi.bLikeButtonEvent = false;
@@ -481,7 +479,7 @@ void AllButtonList::OnLButtonUp(UINT nFlags, CPoint point)
 void AllButtonList::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	//::SetCapture(this->GetSafeHwnd());
+
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 

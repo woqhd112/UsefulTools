@@ -35,8 +35,6 @@ private:
 	ThemeData* currentTheme;
 	ButtonVector sortButtonVector;
 
-	DragWrapper* dragWrap;
-
 	CGdipButton* downButton;
 
 	int nButtonID;

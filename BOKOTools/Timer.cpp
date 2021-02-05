@@ -384,28 +384,6 @@ void Timer::SetDivideMargin()
 	nDivideMargin = thisRect.bottom - divideRect.bottom - 9;
 }
 
-void Timer::CreateConfigFile(CString& strFullPath)
-{
-	TCHAR chFilePath[256] = { 0, };
-	GetModuleFileName(NULL, chFilePath, 256);
-	strFullPath = (LPCTSTR)chFilePath;
-	int nLen = strFullPath.ReverseFind('\\');
-
-	if (nLen > 0)
-	{
-		strFullPath = strFullPath.Left(nLen);
-	}
-
-	CFileFind rootFind;
-	if (rootFind.FindFile(strFullPath + _T("\\BOKOTools"))) {
-		strFullPath += _T("\\BOKOTools");
-	}
-	rootFind.Close();
-
-	CreateDefaultDirectory(strFullPath, _T("\\Config"));
-	CreateDefaultDirectory(strFullPath, _T("\\WorkTimer"));
-}
-
 void Timer::CreateDefaultDirectory(CString& strFullPath, CString strAppendPath)
 {
 	CFileFind findPath;
@@ -2084,18 +2062,6 @@ HBRUSH Timer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
-void Timer::SaveXml(CMarkup* markup, CString strSaveFullPath)
-{
-	CString strXML = markup->GetDoc();
-
-	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-	JWXml::CXml saveXML;
-	saveXML.LoadXml((LPCTSTR)strXML);
-	saveXML.SaveWithFormatted(strSaveFullPath);
-	saveXML.Close();
-	CoUninitialize();
-}
-
 
 void Timer::OnBnClickedButtonTimeLoad()
 {
@@ -2106,7 +2072,7 @@ void Timer::OnBnClickedButtonTimeLoad()
 		return;
 	}
 	CString szRoot = _T("");
-	CreateConfigFile(szRoot);
+	CustomXml::CreateConfigFile(szRoot);
 
 	CString szFilter = _T("Config File(*.conf)|*.conf||");
 	CFileDialog dlg(TRUE, L"*.conf", szRoot + _T("\\"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
@@ -2179,7 +2145,7 @@ void Timer::OnBnClickedButtonTimeSave()
 		return;
 	}
 	CString szRoot = _T("");
-	CreateConfigFile(szRoot);
+	CustomXml::CreateConfigFile(szRoot);
 
 	CString szFilter = _T("Config File(*.conf)|*.conf||");
 	CFileDialog dlg(FALSE, L"*.conf", szRoot + _T("\\"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
@@ -2225,7 +2191,7 @@ void Timer::OnBnClickedButtonTimeSave()
 		markUp.AddAttrib(_T("name"), _T("repeat"));
 		markUp.AddAttrib(_T("type"), m_radio_infinite.GetCheck() ? _T("infinite") : _T("custom"));
 		markUp.AddAttrib(_T("value"), strRepeatCount);
-		SaveXml(&markUp, strFullPath);
+		CustomXml::SaveXml(&markUp, strFullPath);
 	}
 }
 

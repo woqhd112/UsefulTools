@@ -121,50 +121,22 @@ int SortButtonList::ButtonLocationToPos(POINT pt)
 	int nPosX = pt.x;
 	int nPosY = pt.y;
 
-	if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 0 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 0 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 0 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 0)
+	int nCount = 0;
+	bool bFind = false;
+	for (int i = 0; i < 3; i++)
 	{
-		nResult = 0;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 1 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 1 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 0 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 0)
-	{
-		nResult = 1;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 2 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 2 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 0 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 0)
-	{
-		nResult = 2;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 0 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 0 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 1 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 1)
-	{
-		nResult = 3;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 1 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 1 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 1 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 1)
-	{
-		nResult = 4;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 2 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 2 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 1 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 1)
-	{
-		nResult = 5;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 0 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 0 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 2 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 2)
-	{
-		nResult = 6;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 1 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 1 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 2 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 2)
-	{
-		nResult = 7;
-	}
-	else if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * 2 && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * 2 &&
-		nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * 2 && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * 2)
-	{
-		nResult = 8;
+		for (int j = 0; j < 3; j++)
+		{
+			if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * j && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * j &&
+				nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * i && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * i)
+			{
+				nResult = nCount;
+				bFind = true;
+				break;
+			}
+			nCount++;
+		}
+		if (bFind) break;
 	}
 
 	return nResult;
