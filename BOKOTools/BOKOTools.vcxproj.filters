@@ -133,6 +133,12 @@
     <ClCompile Include="NoteFile.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="FolderList.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteItem.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -283,6 +289,12 @@
       <Filter>UI\DragDialog</Filter>
     </ClInclude>
     <ClInclude Include="NoteFile.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderList.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteItem.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1410,6 +1422,48 @@
       <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
     </Image>
     <Image Include="res\6391d2dc6fa43ed9479fcf952e781d4a.png" />
+    <Image Include="res\NotePad\클립\Clip_B.png" />
+    <Image Include="res\NotePad\클립\Clip_C.png" />
+    <Image Include="res\NotePad\클립\Clip_U.png" />
+    <Image Include="res\NotePad\클립\Out_Clip.png" />
+    <Image Include="res\Theme_Util\Base_B.png" />
+    <Image Include="res\Theme_Util\Base_C.png" />
+    <Image Include="res\Theme_Util\Base_U.png" />
+    <Image Include="res\Theme_Util\BaseTimer_B.png" />
+    <Image Include="res\Theme_Util\BaseTimer_C.png" />
+    <Image Include="res\Theme_Util\BaseTimer_U.png" />
+    <Image Include="res\Theme_Util\ComingSoon.png" />
+    <Image Include="res\Theme_Util\Converter_B.png" />
+    <Image Include="res\Theme_Util\Converter_C.png" />
+    <Image Include="res\Theme_Util\Converter_U.png" />
+    <Image Include="res\Theme_Util\DateCal_B.png" />
+    <Image Include="res\Theme_Util\DateCal_C.png" />
+    <Image Include="res\Theme_Util\DateCal_U.png" />
+    <Image Include="res\Theme_Util\Engineering_B.png" />
+    <Image Include="res\Theme_Util\Engineering_C.png" />
+    <Image Include="res\Theme_Util\Engineering_U.png" />
+    <Image Include="res\Theme_Util\NotePad_B.png" />
+    <Image Include="res\Theme_Util\NotePad_C.png" />
+    <Image Include="res\Theme_Util\NotePad_U.png" />
+    <Image Include="res\Theme_Util\Scroll_icon_A.png" />
+    <Image Include="res\Theme_Util\Scroll_icon_B.png" />
+    <Image Include="res\Theme_Util\StopWatch_B.png" />
+    <Image Include="res\Theme_Util\StopWatch_C.png" />
+    <Image Include="res\Theme_Util\StopWatch_U.png" />
+    <Image Include="res\Theme_Util\ThemaChange_B.png" />
+    <Image Include="res\Theme_Util\ThemaChange_C.png" />
+    <Image Include="res\Theme_Util\ThemaChange_U.png" />
+    <Image Include="res\Theme_Util\WorkTimer_B.png" />
+    <Image Include="res\Theme_Util\WorkTimer_C.png" />
+    <Image Include="res\Theme_Util\WorkTimer_U.png" />
+    <Image Include="res\Theme_Util\WorldClock_B.png" />
+    <Image Include="res\Theme_Util\WorldClock_C.png" />
+    <Image Include="res\Theme_Util\WorldClock_U.png" />
+    <Image Include="res\Theme_Util\Main_BK.bmp" />
+    <Image Include="res\Theme_Util\ThemaChoice_BK.bmp" />
+    <Image Include="res\NotePad\기록 버튼\Memo_save_B.png" />
+    <Image Include="res\NotePad\기록 버튼\Memo_save_C.png" />
+    <Image Include="res\NotePad\기록 버튼\Memo_save_U.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">

@@ -13,6 +13,7 @@
 #define THEME_WATERDROP	6
 #define THEME_PLANET	7
 #define THEME_NEONSIGN	8
+#define THEME_UTIL		9
 
 
 class ThemeData

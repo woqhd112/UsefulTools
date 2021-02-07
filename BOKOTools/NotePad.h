@@ -2,9 +2,18 @@
 #include "CalculateButton.h"
 #include "CalculateStatic.h"
 #include "NotePadList.h"
+#include "FolderList.h"
 #include "UsingManualDialog.h"
+#include "CustomXml.h"
+#include "NoteFile.h"
 
 // NotePad 대화 상자
+#define TAG_COLOR_1		RGB(245, 85, 79)
+#define TAG_COLOR_2		RGB(252, 184, 74)
+#define TAG_COLOR_3		RGB(115, 215, 108)
+#define TAG_COLOR_4		RGB(131, 94, 224)
+#define TAG_COLOR_5		RGB(160, 160, 160)
+#define TAG_COLOR_6		RGB(224, 153, 94)
 
 class NotePad : public CDialogEx
 {
@@ -21,11 +30,18 @@ public:
 
 private:
 
+	typedef std::vector<NoteItem*> ViewNoteList;
+
 	CalculateButton m_btn_edit_bold;
 	CalculateButton m_btn_edit_italic;
 	CalculateButton m_btn_edit_underline;
-	CalculateButton m_btn_report;
 	CalculateStatic m_stt_notepad_list;
+	CalculateStatic m_stt_folderlist;
+	CGdipButton m_btn_report;
+	CGdipButton m_btn_trash;
+	CGdipButton m_btn_addfolder;
+	CGdipButton m_btn_allfolder;
+	CGdipButton m_btn_otherfolder;
 	CRichEditCtrl m_richedit_note;
 
 	CFont thisFont;
@@ -36,7 +52,14 @@ private:
 	bool bUsingManual;
 
 	NotePadList* notepadlist;
+	FolderList* folderlist;
 
+	std::vector<ViewNoteList> allFolderList;
+	
+
+	void LoadNotePad();
+	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
+	void SaveNoteXml(int nIndex, bool bLocked);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -46,6 +69,8 @@ protected:
 public:
 
 	CRect dragRect;
+	COLORREF GetTagColorFromIndex(int nIndex);
+	int GetIndexFromTagColor(COLORREF tagcolor);
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);

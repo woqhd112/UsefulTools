@@ -49,6 +49,7 @@ void SettingTheme::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_THEME_PLANET, m_btn_theme_planet);
 	DDX_Control(pDX, IDC_BUTTON_THEME_NEONSIGN, m_btn_theme_neonsign);
 	DDX_Control(pDX, IDC_BUTTON_THEME_BASIC, m_btn_theme_basic);
+	DDX_Control(pDX, IDC_BUTTON_THEME_UTIL, m_btn_theme_util);
 }
 
 
@@ -106,6 +107,10 @@ BOOL SettingTheme::OnInitDialog()
 	m_btn_theme_neonsign.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_NEONSIGN, _T("PNG"), true);
 	m_btn_theme_neonsign.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_NEONSIGN, _T("PNG"), true);
 
+	m_btn_theme_util.LoadStdImage(IDB_PNG_CHANGE_NOMAL_THEME_UTIL, _T("PNG"), true);
+	m_btn_theme_util.LoadHovImage(IDB_PNG_CHANGE_HOVER_THEME_UTIL, _T("PNG"), true);
+	m_btn_theme_util.LoadAltImage(IDB_PNG_CHANGE_CLICK_THEME_UTIL, _T("PNG"), true);
+
 	SetCtlPos();
 
 	if (bUsingManual)
@@ -162,6 +167,8 @@ void SettingTheme::SetCtlPos()
 		// 세번째줄
 		SetButtonPos(m_btn_theme_waterdrop.GetDlgCtrlID(), m_btn_theme_planet.GetDlgCtrlID(), m_btn_theme_neonsign.GetDlgCtrlID(), 2);
 
+		// 네번째줄
+		SetButtonPos(m_btn_theme_util.GetDlgCtrlID(), 0, 0, 3);
 	}
 	scroll.LineEnd();
 
@@ -229,6 +236,11 @@ BOOL SettingTheme::PreTranslateMessage(MSG* pMsg)
 			ExecuteSelectTheme(THEME_NEONSIGN);
 			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_NEONSIGN, themeList.at(8));
 		}
+		else if (pMsg->hwnd == m_btn_theme_util.m_hWnd)
+		{
+			ExecuteSelectTheme(THEME_UTIL);
+			InvalidateTheme(IDB_BITMAP_CHOICE_BK_THEME_UTIL, themeList.at(9));
+		}
 	}
 	else if (pMsg->message == WM_KEYDOWN)
 	{
@@ -255,6 +267,7 @@ void SettingTheme::InvalidateTheme(int nSettingThemeBkIconID, ThemeData* hoverTh
 	m_btn_theme_waterdrop.DisConnect();
 	m_btn_theme_planet.DisConnect();
 	m_btn_theme_neonsign.DisConnect();
+	m_btn_theme_util.DisConnect();
 }
 
 void SettingTheme::ExecuteSelectTheme(int nThemeFlags)

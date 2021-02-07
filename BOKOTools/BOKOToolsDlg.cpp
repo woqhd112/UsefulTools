@@ -766,7 +766,7 @@ void CBOKOToolsDlg::LoadTheme()
 	// 테마 추가되면 설정하기
 	int nFlags = LoadCurrnetTheme();
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		ThemeData* theme = new ThemeData(i);
 		themeList.push_back(theme);

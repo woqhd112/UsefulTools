@@ -12,6 +12,6 @@ public:
 
 private:
 
-
+	char* UTF8toANSI(char *pszCode);
 };
 

@@ -1,16 +1,18 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "CustomXml.h"
 #include "CalculateStatic.h"
-#include "NoteFile.h"
+#include "NoteItem.h"
 
 // NotePadList 대화 상자
 class NotePad;
+class FolderList;
 
 class NotePadList : public CDialogEx, public DragWrapper
 {
 	DECLARE_DYNAMIC(NotePadList)
+
+	friend class FolderList;
 
 public:
 	NotePadList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
@@ -22,22 +24,16 @@ public:
 #endif
 
 private:
-	typedef std::vector<CString> NoteVector;
-	typedef std::vector<NoteVector> NoteList;
-	typedef std::vector<CGdipButton*> NoteButtonList;
-	typedef std::vector<CalculateStatic*> NoteTitleList;
-	typedef std::vector<CGdipButton*> LockButtonList;
+
+	typedef std::vector<NoteItem*> ViewNoteList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
 	NotePad* notepad;
-	NoteList notelist;
-	NoteButtonList notebuttonlist;
-	NoteTitleList notetitlelist;
-	LockButtonList lockbuttonlist;
 
-	CGdipButton* trashButton;
-	CGdipButton* downButton;
+	ViewNoteList viewNoteList;
+	std::vector<ViewNoteList> allFolderList;
+
 	CustomScroll scroll;
 
 	const int nButtonCount_X = 4;
@@ -49,11 +45,8 @@ private:
 	int nLineEndCount;
 	int nLineCount;
 
-	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
-	void SaveNoteXml(int nIndex, bool bLocked);
 	CRect SetButtonPosition(int nItemCount);
-	void InsertNewNote(bool isFolder, CString strFolderName, CString strNoteTitle, bool bLocked);
-	void ShowButtonCtl(bool bShow, int nStart, int nEnd);
+	void ViewNote(ViewNoteList notelist);
 	int ButtonLocationToPos(POINT pt);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 
@@ -68,7 +61,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	void LoadNotePad();
+	void LoadNotePad(std::vector<ViewNoteList> allFolderList);
 	void AddNotePad(CString strTitle, CString strContent);
 
 	virtual BOOL OnInitDialog();
