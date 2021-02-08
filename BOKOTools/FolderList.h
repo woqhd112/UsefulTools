@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "NoteItem.h"
-//#include "NotePadList.h"
+#include "FolderItem.h"
 
 
 // FolderList 대화 상자
@@ -27,21 +26,35 @@ public:
 
 public:
 
-	void LoadFolder();
 
 private:
 
-	typedef std::vector<NoteItem> AllNoteFolder, OtherNoteFolder, NoteFolder;
+	typedef std::vector<FolderItem0*> ViewFolderList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
 	NotePad* notepad;
+
+	int nButtonCount;
+	int nLineEndCount;
+
+	CustomScroll scroll;
+
+	void ViewFolder(ViewFolderList folderlist);
+	CRect SetButtonPosition(int nItemCount);
+
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
 public:
+
+	void LoadFolder(ViewFolderList allFolderList);
+
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

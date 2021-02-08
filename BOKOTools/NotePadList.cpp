@@ -83,7 +83,7 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	{
 		ViewNote(allFolderList.at(i));
 	}
-
+	
 	for (int i = 0; i <= nLineEndCount; i++)
 	{
 		scroll.LineEnd();
@@ -162,7 +162,6 @@ void NotePadList::ViewNote(ViewNoteList notelist)
 	{
 		NoteItem* targetNote = notelist.at(i);
 		CRect noteRect;
-		int n = scroll.GetCurrentLinePos();
 		noteRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 5));
 		targetNote->ShowWindow(true);
 		targetNote->ShowLock(targetNote->IsLock() ? true : false);

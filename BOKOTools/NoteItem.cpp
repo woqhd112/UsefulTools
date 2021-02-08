@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "NoteItem.h"
 
-static unsigned int s_ButtonID = 70000;
+static unsigned int n_ButtonID = 70000;
 
 NoteItem::NoteItem(ThemeData* currentTheme, CWnd* pParent)
 {
@@ -63,10 +63,10 @@ void NoteItem::Initialize(NoteInit init)
 	nFolderSequence = init.nFolderSequence;
 
 	// button create
-	wrapButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), pParent, s_ButtonID++);
-	lockButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), wrapButton, s_ButtonID++);
-	noteButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), wrapButton, s_ButtonID++);
-	tagButton->Create(_T(""), BS_PUSHBUTTON | BS_CENTER, CRect(0, 0, 0, 0), wrapButton, s_ButtonID++);
+	wrapButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), pParent, n_ButtonID++);
+	lockButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), wrapButton, n_ButtonID++);
+	noteButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), wrapButton, n_ButtonID++);
+	tagButton->Create(_T(""), BS_PUSHBUTTON | BS_CENTER, CRect(0, 0, 0, 0), wrapButton, n_ButtonID++);
 
 	// button initialize
 	wrapButton->Initialize(RGB(200, 200, 200), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 15);

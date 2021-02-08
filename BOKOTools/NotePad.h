@@ -14,6 +14,7 @@
 #define TAG_COLOR_4		RGB(131, 94, 224)
 #define TAG_COLOR_5		RGB(160, 160, 160)
 #define TAG_COLOR_6		RGB(224, 153, 94)
+#define TAG_COLOR_7		RGB(94, 165, 224)
 
 class NotePad : public CDialogEx
 {
@@ -31,6 +32,7 @@ public:
 private:
 
 	typedef std::vector<NoteItem*> ViewNoteList;
+	typedef std::vector<FolderItem0*> ViewFolderList;
 
 	CalculateButton m_btn_edit_bold;
 	CalculateButton m_btn_edit_italic;
@@ -54,7 +56,8 @@ private:
 	NotePadList* notepadlist;
 	FolderList* folderlist;
 
-	std::vector<ViewNoteList> allFolderList;
+	std::vector<ViewNoteList> allNoteList;
+	ViewFolderList allFolderList;
 	
 
 	void LoadNotePad();

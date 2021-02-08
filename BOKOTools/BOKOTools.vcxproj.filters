@@ -139,6 +139,9 @@
     <ClCompile Include="NoteItem.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="FolderItem.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -295,6 +298,9 @@
       <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="NoteItem.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderItem.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1422,48 +1428,174 @@
       <Filter>리소스\기본 테마\세계시계 아이콘</Filter>
     </Image>
     <Image Include="res\6391d2dc6fa43ed9479fcf952e781d4a.png" />
-    <Image Include="res\NotePad\클립\Clip_B.png" />
-    <Image Include="res\NotePad\클립\Clip_C.png" />
-    <Image Include="res\NotePad\클립\Clip_U.png" />
-    <Image Include="res\NotePad\클립\Out_Clip.png" />
-    <Image Include="res\Theme_Util\Base_B.png" />
-    <Image Include="res\Theme_Util\Base_C.png" />
-    <Image Include="res\Theme_Util\Base_U.png" />
-    <Image Include="res\Theme_Util\BaseTimer_B.png" />
-    <Image Include="res\Theme_Util\BaseTimer_C.png" />
-    <Image Include="res\Theme_Util\BaseTimer_U.png" />
-    <Image Include="res\Theme_Util\ComingSoon.png" />
-    <Image Include="res\Theme_Util\Converter_B.png" />
-    <Image Include="res\Theme_Util\Converter_C.png" />
-    <Image Include="res\Theme_Util\Converter_U.png" />
-    <Image Include="res\Theme_Util\DateCal_B.png" />
-    <Image Include="res\Theme_Util\DateCal_C.png" />
-    <Image Include="res\Theme_Util\DateCal_U.png" />
-    <Image Include="res\Theme_Util\Engineering_B.png" />
-    <Image Include="res\Theme_Util\Engineering_C.png" />
-    <Image Include="res\Theme_Util\Engineering_U.png" />
-    <Image Include="res\Theme_Util\NotePad_B.png" />
-    <Image Include="res\Theme_Util\NotePad_C.png" />
-    <Image Include="res\Theme_Util\NotePad_U.png" />
-    <Image Include="res\Theme_Util\Scroll_icon_A.png" />
-    <Image Include="res\Theme_Util\Scroll_icon_B.png" />
-    <Image Include="res\Theme_Util\StopWatch_B.png" />
-    <Image Include="res\Theme_Util\StopWatch_C.png" />
-    <Image Include="res\Theme_Util\StopWatch_U.png" />
-    <Image Include="res\Theme_Util\ThemaChange_B.png" />
-    <Image Include="res\Theme_Util\ThemaChange_C.png" />
-    <Image Include="res\Theme_Util\ThemaChange_U.png" />
-    <Image Include="res\Theme_Util\WorkTimer_B.png" />
-    <Image Include="res\Theme_Util\WorkTimer_C.png" />
-    <Image Include="res\Theme_Util\WorkTimer_U.png" />
-    <Image Include="res\Theme_Util\WorldClock_B.png" />
-    <Image Include="res\Theme_Util\WorldClock_C.png" />
-    <Image Include="res\Theme_Util\WorldClock_U.png" />
-    <Image Include="res\Theme_Util\Main_BK.bmp" />
-    <Image Include="res\Theme_Util\ThemaChoice_BK.bmp" />
-    <Image Include="res\NotePad\기록 버튼\Memo_save_B.png" />
-    <Image Include="res\NotePad\기록 버튼\Memo_save_C.png" />
-    <Image Include="res\NotePad\기록 버튼\Memo_save_U.png" />
+    <Image Include="res\Theme_Util\ThemaChange_B.png">
+      <Filter>리소스\유틸 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\ThemaChange_C.png">
+      <Filter>리소스\유틸 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\ThemaChange_U.png">
+      <Filter>리소스\유틸 테마\테마세팅 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\ThemaChoice_BK.bmp">
+      <Filter>리소스\유틸 테마\테마세팅 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\ComingSoon.png">
+      <Filter>리소스\유틸 테마\커밍순 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Base_B.png">
+      <Filter>리소스\유틸 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Base_C.png">
+      <Filter>리소스\유틸 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Base_U.png">
+      <Filter>리소스\유틸 테마\진법계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorkTimer_B.png">
+      <Filter>리소스\유틸 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorkTimer_C.png">
+      <Filter>리소스\유틸 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorkTimer_U.png">
+      <Filter>리소스\유틸 테마\업무타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\StopWatch_B.png">
+      <Filter>리소스\유틸 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\StopWatch_C.png">
+      <Filter>리소스\유틸 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\StopWatch_U.png">
+      <Filter>리소스\유틸 테마\스탑워치 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Scroll_icon_A.png">
+      <Filter>리소스\유틸 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Scroll_icon_B.png">
+      <Filter>리소스\유틸 테마\스크롤 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorldClock_B.png">
+      <Filter>리소스\유틸 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorldClock_C.png">
+      <Filter>리소스\유틸 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\WorldClock_U.png">
+      <Filter>리소스\유틸 테마\세계시계 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Main_BK.bmp">
+      <Filter>리소스\유틸 테마\메인 배경</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\NotePad_B.png">
+      <Filter>리소스\유틸 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\NotePad_C.png">
+      <Filter>리소스\유틸 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\NotePad_U.png">
+      <Filter>리소스\유틸 테마\메모장 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Converter_B.png">
+      <Filter>리소스\유틸 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Converter_C.png">
+      <Filter>리소스\유틸 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Converter_U.png">
+      <Filter>리소스\유틸 테마\단위변환기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\DateCal_B.png">
+      <Filter>리소스\유틸 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\DateCal_C.png">
+      <Filter>리소스\유틸 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\DateCal_U.png">
+      <Filter>리소스\유틸 테마\날짜계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\BaseTimer_B.png">
+      <Filter>리소스\유틸 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\BaseTimer_C.png">
+      <Filter>리소스\유틸 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\BaseTimer_U.png">
+      <Filter>리소스\유틸 테마\기본타이머 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Engineering_B.png">
+      <Filter>리소스\유틸 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Engineering_C.png">
+      <Filter>리소스\유틸 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\Theme_Util\Engineering_U.png">
+      <Filter>리소스\유틸 테마\공학계산기 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\클립\Clip_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\클립\Clip_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\클립\Clip_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\클립\Out_Clip.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\기록 버튼\Memo_save_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\기록 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\기록 버튼\Memo_save_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\기록 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\기록 버튼\Memo_save_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\기록 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_B.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_C.png" />
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_U.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -1984,6 +2116,60 @@
     </Filter>
     <Filter Include="UI\UsingManualDialog">
       <UniqueIdentifier>{abd5841c-9867-46da-8ad2-32f5760ceb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마">
+      <UniqueIdentifier>{b008a382-d189-448c-8a2d-c328bea027c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\테마세팅 아이콘">
+      <UniqueIdentifier>{ce49cdef-26f9-4ecd-8f22-192a58faccf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\테마세팅 배경">
+      <UniqueIdentifier>{7207e94f-3646-4b7c-91e4-89322a3429e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\커밍순 아이콘">
+      <UniqueIdentifier>{619b44f6-c6a5-449b-96fb-110a0c703166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\진법계산기 아이콘">
+      <UniqueIdentifier>{40870cc1-c13b-49ac-85c8-b97ce749d4d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\업무타이머 아이콘">
+      <UniqueIdentifier>{01321c65-fc53-409f-818a-404834a54733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\스탑워치 아이콘">
+      <UniqueIdentifier>{5b2855a5-1ce1-4479-b6c3-a498ff6f3492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\스크롤 아이콘">
+      <UniqueIdentifier>{8a905948-f2ee-4596-b756-82e0f26ef948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\세계시계 아이콘">
+      <UniqueIdentifier>{e3a3a482-75b7-4677-a522-490a80f31f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\메인 배경">
+      <UniqueIdentifier>{2aa76769-3f1b-4f76-b42f-0ceed20dcc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\메모장 아이콘">
+      <UniqueIdentifier>{300103f2-377f-4907-ba84-11d5ebc2bba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\단위변환기 아이콘">
+      <UniqueIdentifier>{bff7683e-2a78-47ab-a632-8c6df7b43deb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\날짜계산기 아이콘">
+      <UniqueIdentifier>{bf16be4c-3408-4a59-9f7c-48eb4d30992e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\기본타이머 아이콘">
+      <UniqueIdentifier>{056641e5-f031-43e1-8828-ffeadf1f868a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\유틸 테마\공학계산기 아이콘">
+      <UniqueIdentifier>{54f9cc5a-424d-41f6-ba94-d770804972db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘">
+      <UniqueIdentifier>{dd5590a4-4861-4ffe-904d-d3f197fc0442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\기록 아이콘">
+      <UniqueIdentifier>{7b660d3c-dedc-432c-9ede-9c3ddda9e286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘">
+      <UniqueIdentifier>{555180e1-35af-4112-9542-3c74814a1f7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

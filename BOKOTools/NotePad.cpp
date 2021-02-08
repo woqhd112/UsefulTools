@@ -161,8 +161,8 @@ BOOL NotePad::OnInitDialog()
 	folderlist->ShowWindow(SW_SHOW);
 
 	LoadNotePad();
-	notepadlist->LoadNotePad(allFolderList);
-	folderlist->LoadFolder();
+	notepadlist->LoadNotePad(allNoteList);
+	folderlist->LoadFolder(allFolderList);
 
 	if (bUsingManual)
 	{
@@ -182,6 +182,7 @@ COLORREF NotePad::GetTagColorFromIndex(int nIndex)
 	else if (nIndex == 4) return TAG_COLOR_4;
 	else if (nIndex == 5) return TAG_COLOR_5;
 	else if (nIndex == 6) return TAG_COLOR_6;
+	else if (nIndex == 7) return TAG_COLOR_7;
 
 	return NULL;
 }
@@ -194,6 +195,7 @@ int NotePad::GetIndexFromTagColor(COLORREF tagcolor)
 	else if (tagcolor == TAG_COLOR_4) return 4;
 	else if (tagcolor == TAG_COLOR_5) return 5;
 	else if (tagcolor == TAG_COLOR_6) return 6;
+	else if (tagcolor == TAG_COLOR_7) return 7;
 
 	return 0;
 }
@@ -216,12 +218,12 @@ void NotePad::LoadNotePad()
 			CString strFolderName = markUp.GetAttrib(_T("name"));
 			CString strTagColor = markUp.GetAttrib(_T("tagcolor"));
 			CString strFolderSize = markUp.GetAttrib(_T("size"));
-			COLORREF folderColor = GetTagColorFromIndex(_ttoi(strTagColor));
+			int nFolderColorIndex = _ttoi(strTagColor);
+			COLORREF folderColor = GetTagColorFromIndex(nFolderColorIndex);
 			int nFolderSequence = _ttoi(strFolderSequence);
 			int nFolderSize = _ttoi(strFolderSize);
 
-			// 여기에 FolderItem 할당
-
+			
 			/* folderseq 가 0 이면 other폴더
 			* 그외엔 생성폴더
 			* 총합이 all폴더
@@ -246,15 +248,15 @@ void NotePad::LoadNotePad()
 				if (file.NoteRead(strNotePath, strNoteContent))
 				{
 					NoteItem* newNote = new NoteItem(currentTheme, notepadlist);
-					NoteItem::NoteInit init;
-					init.nNoteName = _ttoi(strNoteName);
-					init.nFolderSequence = nFolderSequence;
-					init.strNoteContent = strNoteContent;
-					init.tagColor = folderColor;
-					init.isLock = bLocked;
-					init.nFolderSize = nFolderSize;
+					NoteItem::NoteInit noteinit;
+					noteinit.nNoteName = _ttoi(strNoteName);
+					noteinit.nFolderSequence = nFolderSequence;
+					noteinit.strNoteContent = strNoteContent;
+					noteinit.tagColor = folderColor;
+					noteinit.isLock = bLocked;
+					noteinit.nFolderSize = nFolderSize;
 
-					newNote->Initialize(init);
+					newNote->Initialize(noteinit);
 						
 					allocFolder.push_back(newNote);
 				}
@@ -264,8 +266,22 @@ void NotePad::LoadNotePad()
 				}
 			}
 			markUp.OutOfElem();
-			allFolderList.push_back(allocFolder);
+			allNoteList.push_back(allocFolder);
+
+			// 여기에 FolderItem 할당
+			FolderItem0* newFolder = new FolderItem0(currentTheme, folderlist);
+			FolderItem0::FolderInit folderinit;
+			folderinit.strFolderName = strFolderName;
+			folderinit.nFolderSequence = nFolderSequence;
+			folderinit.nFolderSize = nFolderSize;
+			folderinit.nFolderColorIndex = nFolderColorIndex;
+			folderinit.folder = allocFolder;
+
+			newFolder->Initialize(folderinit);
+
+			allFolderList.push_back(newFolder);
 		}
+
 	}
 	else
 	{

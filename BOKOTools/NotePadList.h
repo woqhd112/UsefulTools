@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "CalculateStatic.h"
-#include "NoteItem.h"
+#include "FolderItem.h"
 
 // NotePadList 대화 상자
 class NotePad;
