@@ -59,6 +59,10 @@ private:
 	std::vector<ViewNoteList> allNoteList;
 	ViewFolderList allFolderList;
 	
+	CBrush m_topBrush;
+	CBrush m_bottomBrush;
+	CRect wrapBorderRect;
+	CRect wrapCenterRect;
 
 	void LoadNotePad();
 	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
@@ -85,4 +89,5 @@ public:
 	afx_msg void OnBnClickedButtonEditUnderline();
 	afx_msg void OnBnClickedButtonNotepadReport();
 	afx_msg void OnMove(int x, int y);
+	afx_msg void OnPaint();
 };

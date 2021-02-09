@@ -13,7 +13,7 @@
 #define IDD_DIALOG_TIMELINE             147
 #define IDD_DIALOG_CONVERTER            154
 #define IDD_DIALOG_TIME                 159
-#define IDD_DIALOG_DATE                 159 
+#define IDD_DIALOG_DATE                 159
 #define IDD_DIALOG_STOPWATCH            161
 #define IDD_TAB_LENGTH                  166
 #define IDD_TAB_WEIGHT                  168
@@ -495,6 +495,7 @@
 #define IDB_PNG_NOTEPAD_FULL_COLORINDEX_2_CLICK 743
 #define IDB_PNG46                       744
 #define IDB_PNG_NOTEPAD_FULL_COLORINDEX_2_HOVER 744
+#define IDD_DIALOG_FOLDER               745
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -531,6 +532,7 @@
 #define IDC_BUTTON_WORLD_SEARCH         1022
 #define IDC_BUTTON_ANALOG_SUBMIT        1022
 #define IDC_BUTTON_BASE_CALCULATOR_MANUAL 1022
+#define IDC_BUTTON_FOLDER_COLORINDEX_1  1022
 #define IDC_BUTTON_CLEAR                1023
 #define IDC_BUTTON_TIME                 1023
 #define IDC_BUTTON_RESET                1023
@@ -862,6 +864,12 @@
 #define IDC_BUTTON_SORT_RESET           1328
 #define IDC_STATIC_FOLDER_LIST          1329
 #define IDC_BUTTON_THEME_UTIL           1330
+#define IDC_BUTTON_FOLDER_COLORINDEX_2  1332
+#define IDC_BUTTON_FOLDER_COLORINDEX_3  1333
+#define IDC_BUTTON_FOLDER_COLORINDEX_4  1334
+#define IDC_BUTTON_FOLDER_COLORINDEX_5  1335
+#define IDC_BUTTON_FOLDER_COLORINDEX_6  1336
+#define IDC_BUTTON_FOLDER_COLORINDEX_7  1337
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -883,9 +891,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        745
+#define _APS_NEXT_RESOURCE_VALUE        748
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1331
+#define _APS_NEXT_CONTROL_VALUE         1338
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -52,6 +52,7 @@ CGdipButton::CGdipButton()
 
 	m_bIsDisabled = FALSE;
 	m_bIsToggle = FALSE;
+	m_bToggleUp = false;
 
 	m_bIsHovering = FALSE;
 	m_bIsTracking = FALSE;
@@ -462,9 +463,27 @@ void CGdipButton::EnableToggle(BOOL bEnable)
 	m_bIsToggle = bEnable; 
 
 	// this actually makes it start in the std state since toggle is called before paint
-	if(bEnable)	m_pCurBtn = &m_dcAlt;
-	else		m_pCurBtn = &m_dcStd;
+	if(bEnable)	m_pCurBtn = &m_dcAltH;
+	else		m_pCurBtn = &m_dcStdH;
 
+}
+
+void CGdipButton::ToggleClickChange()
+{
+	if (m_bIsToggle)
+	{
+		if (m_pCurBtn == &m_dcAltH || m_pCurBtn == &m_dcHovH)
+		{
+			m_nCurType = STD_TYPE;
+			m_pCurBtn = &m_dcStdH;
+		}
+		else
+		{
+			m_nCurType = ALT_TYPE;
+			m_pCurBtn = &m_dcAltH;
+		}
+	}
+	Invalidate();
 }
 
 //=============================================================================
@@ -537,22 +556,31 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	BOOL bIsPressed = (lpDIS->itemState & ODS_SELECTED);
 
 	// handle toggle button
-	if(m_bIsToggle && bIsPressed)
+	if(m_bIsToggle && !bIsPressed && m_bToggleUp)
 	{
 		(m_nCurType == STD_TYPE) ? m_nCurType = ALT_TYPE : m_nCurType = STD_TYPE;
+		m_bToggleUp = false;
 	}
 
 	if(bIsPressed)
 	{
 		if (m_nCurType == STD_TYPE)
 		{
-			if (m_bHaveMinSize) m_pCurBtn = &m_dcAlt; 
-			else m_pCurBtn = &m_dcAltH; 
+			if (m_bIsToggle)
+			{
+				if (m_bHaveMinSize) m_pCurBtn = &m_dcHov;
+				else m_pCurBtn = &m_dcHovH;
+			}
+			else
+			{
+				if (m_bHaveMinSize) m_pCurBtn = &m_dcAlt; 
+				else m_pCurBtn = &m_dcAltH; 
+			}
 		}
 		else
 		{
 			if (m_bHaveMinSize) m_pCurBtn = &m_dcStd;
-			else m_pCurBtn = &m_dcStdH;
+			else m_pCurBtn = &m_dcAltH;
 		}
 	}
 	else if(m_bIsHovering)
@@ -757,7 +785,7 @@ void CGdipButton::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	if(m_bUseClickSoundEvent) m_soundThread = AfxBeginThread(thrLoadSound, this);
-
+	
 	CButton::OnLButtonDown(nFlags, point);
 }
 
@@ -765,7 +793,10 @@ void CGdipButton::OnLButtonDown(UINT nFlags, CPoint point)
 void CGdipButton::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	if (m_bIsToggle)
+	{
+		m_bToggleUp = true;
+	}
 	CButton::OnLButtonUp(nFlags, point);
 }
 

@@ -26,6 +26,13 @@ FolderItem0::~FolderItem0()
 		delete folderButton;
 		folderButton = nullptr;
 	}
+
+	if (folderStatic)
+	{
+		folderStatic->DestroyWindow();
+		delete folderStatic;
+		folderStatic = nullptr;
+	}
 }
 
 void FolderItem0::Initialize(FolderInit init)
@@ -42,6 +49,8 @@ void FolderItem0::Initialize(FolderInit init)
 
 	// button initialize
 	FolderImageInit(nFolderColorIndex, nFolderSize);
+	folderButton->EnableToggle();
+	folderButton->strButtonName = strFolderName;
 	folderStatic->Initialize(15, currentTheme->GetThemeFontName());
 
 	// button sizing

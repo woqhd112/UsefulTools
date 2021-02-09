@@ -16,11 +16,16 @@ public:
 		CUSTOM_SCROLL_TYPE_BUTTON	= 1
 	};
 
+	enum CustomScrollFlags
+	{
+		CUSTOM_SCROLL_FLAGS_VERTICAL	= SB_VERT,
+		CUSTOM_SCROLL_FLAGS_HORIZON		= SB_HORZ
+	};
 
 	struct CustomScrollInfo
 	{
 		CustomScrollType cst;
-		int nKindOfScrollFlags;
+		CustomScrollFlags csf;
 		int nWheelValue;
 		int nAllPageSize;
 		int nOnePageSize;

@@ -36,6 +36,7 @@ void UsingManualDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(UsingManualDialog, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_CHECK_NEVER_LOOK_BACK, &UsingManualDialog::OnBnClickedCheckNeverLookBack)
 END_MESSAGE_MAP()
 
 
@@ -88,11 +89,11 @@ void UsingManualDialog::OnClose()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	if (m_btn_check_never_look_back.GetCheck() == TRUE)
-	{
-		// 다시보지않기 저장함수
-		SaveUsingManual();
-	}
+	//if (m_btn_check_never_look_back.GetCheck() == TRUE)
+	//{
+	//	// 다시보지않기 저장함수
+	//	SaveUsingManual();
+	//}
 
 	CDialogEx::OnClose();
 }
@@ -185,3 +186,14 @@ HBRUSH UsingManualDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
+
+
+void UsingManualDialog::OnBnClickedCheckNeverLookBack()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_btn_check_never_look_back.GetCheck())
+	{
+		SaveUsingManual();
+		PostMessage(WM_CLOSE);
+	}
+}

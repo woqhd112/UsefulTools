@@ -166,8 +166,8 @@ void AllButtonList::LoadAllButton()
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = 504 - 40 + 9;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = 30;

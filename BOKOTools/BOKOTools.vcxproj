@@ -221,6 +221,7 @@
     <ClInclude Include="DragDialog.h" />
     <ClInclude Include="DragWrapper.h" />
     <ClInclude Include="EngineeringCalculate.h" />
+    <ClInclude Include="FolderDlg.h" />
     <ClInclude Include="FolderItem.h" />
     <ClInclude Include="FolderList.h" />
     <ClInclude Include="framework.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="CustomXml.cpp" />
     <ClCompile Include="DragDialog.cpp" />
     <ClCompile Include="DragWrapper.cpp" />
+    <ClCompile Include="FolderDlg.cpp" />
     <ClCompile Include="FolderItem.cpp" />
     <ClCompile Include="FolderList.cpp" />
     <ClCompile Include="GdipButton.cpp" />

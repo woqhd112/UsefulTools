@@ -77,6 +77,7 @@ public:
 	void DisConnect();
 	void UseHoverEvent();
 	void UserLeaveEvent();
+	void ToggleClickChange();
 
 	bool m_bUseMouseEvent;
 	CString strButtonName;
@@ -149,6 +150,8 @@ private:
 	CDC*	m_pCurBtn;		// current pointer to one of the above
 
 	CWinThread* m_soundThread;
+
+	bool m_bToggleUp;
 
 	static UINT thrLoadSound(LPVOID method);
 

@@ -73,8 +73,8 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = 252;
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);

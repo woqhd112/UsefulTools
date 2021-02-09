@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "FolderItem.h"
+#include "FolderDlg.h"
 
 
 // FolderList 대화 상자
@@ -37,11 +37,18 @@ private:
 
 	int nButtonCount;
 	int nLineEndCount;
+	ViewFolderList folderlist;
+	FolderItem0* downFolder;
 
 	CustomScroll scroll;
 
 	void ViewFolder(ViewFolderList folderlist);
 	CRect SetButtonPosition(int nItemCount);
+
+	bool bThread;
+	bool bPressMaintain;
+
+	static UINT thrPressMaintainButton(LPVOID method);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
@@ -54,6 +61,7 @@ protected:
 public:
 
 	void LoadFolder(ViewFolderList allFolderList);
+	void StartPressMaintainButton();
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -61,4 +69,7 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+protected:
+	afx_msg LRESULT OnPressMaintain(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnFolderOpen(WPARAM wParam, LPARAM lParam);
 };

@@ -142,6 +142,9 @@
     <ClCompile Include="FolderItem.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="FolderDlg.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -301,6 +304,9 @@
       <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="FolderItem.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderDlg.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1554,48 +1560,132 @@
     <Image Include="res\NotePad\기록 버튼\Memo_save_U.png">
       <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\기록 아이콘</Filter>
     </Image>
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_U.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_B.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_C.png" />
-    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_U.png" />
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_B_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_BR_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_G_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_GR_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_P_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_R_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Empty Clipboard_Y_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_B_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_BR_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_G_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_GR_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_P_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_R_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_C.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
+    <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -2170,6 +2260,12 @@
     </Filter>
     <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\클립 아이콘">
       <UniqueIdentifier>{555180e1-35af-4112-9542-3c74814a1f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\빈 폴더">
+      <UniqueIdentifier>{24cb4f86-0056-4280-be57-cfb8cbe98da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더">
+      <UniqueIdentifier>{01ad7ed5-66a1-4986-9faf-e710eb8b8863}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

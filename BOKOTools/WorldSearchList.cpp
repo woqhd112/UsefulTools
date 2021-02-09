@@ -163,8 +163,8 @@ bool WorldSearchList::SearchClockListFromInputText(CString strInputText)
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_DEFAULT;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = nSearchButtonHeight + 2;
 	csi.nScrollPos = 0;
 	csi.nWheelValue = nSearchButtonHeight + 2;

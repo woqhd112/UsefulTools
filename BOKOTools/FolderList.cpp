@@ -21,6 +21,8 @@ FolderList::FolderList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 	nButtonCount = 0;
 	nLineEndCount = 0;
+	bThread = false;
+	bPressMaintain = false;
 }
 
 FolderList::~FolderList()
@@ -37,6 +39,8 @@ BEGIN_MESSAGE_MAP(FolderList, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_HSCROLL()
 	ON_WM_MOUSEWHEEL()
+	ON_MESSAGE(PRESS_MAINTAIN, &FolderList::OnPressMaintain)
+	ON_MESSAGE(FOLDER_OPEN, &FolderList::OnFolderOpen)
 END_MESSAGE_MAP()
 
 
@@ -70,10 +74,75 @@ void FolderList::OnOK()
 BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		bThread = false;
+
+		// press 1초이상 동작 이벤트 활성화
+		if (bPressMaintain)
+		{
+			TRACE(_T("스레드 동작함\n"));
+			bPressMaintain = false;
+			downFolder->folderButton->ToggleClickChange();	//이부분이상함
+			return TRUE;
+		}
+		else // press 1초이상 동작 이벤트 비활성화
+		{
+			for (int i = 0; i < (int)folderlist.size(); i++)
+			{
+				FolderItem0* folder = folderlist.at(i);
+				CGdipButton* folderButton = folder->folderButton;
+				if (pMsg->hwnd == folderButton->m_hWnd)
+				{
+					PostMessage(FOLDER_OPEN, 0, 0);
+					break;
+				}
+			}
+		}
+	}
+	else if (pMsg->message == WM_LBUTTONDOWN)
+	{
+		for (int i = 0; i < (int)folderlist.size(); i++)
+		{
+			FolderItem0* folder = folderlist.at(i);
+			CGdipButton* folderButton = folder->folderButton;
+			if (pMsg->hwnd == folderButton->m_hWnd)
+			{
+				downFolder = folder;
+				PostMessage(PRESS_MAINTAIN, 0, 0);
+				break;
+			}
+		}
+	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
+UINT FolderList::thrPressMaintainButton(LPVOID method)
+{
+	FolderList* thisMethod = (FolderList*)method;
+
+	thisMethod->StartPressMaintainButton();
+
+	return 0;
+}
+
+void FolderList::StartPressMaintainButton()
+{
+	int nPressCount = 0;
+	bThread = true;
+	while (bThread)
+	{
+		nPressCount += 100;
+		Sleep(100);
+		if (nPressCount >= 1000)
+		{
+			bPressMaintain = true;
+			bThread = false;
+			// 아이콘 들어올리기 함수 실행
+		}
+	}
+}
 
 HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
@@ -91,20 +160,21 @@ HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 void FolderList::LoadFolder(ViewFolderList allFolderList)
 {
+	this->folderlist = allFolderList;
 	scroll.Destroy();
 
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_HORIZON;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_HORZ;
-	csi.nOnePageSize = 252;
+	csi.nOnePageSize = 74;
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);
 
 	ViewFolder(allFolderList);
 
-	for (int i = 0; i <= nLineEndCount; i++)
+	for (int i = 0; i < nButtonCount; i++)
 	{
 		scroll.LineEnd();
 	}
@@ -134,7 +204,7 @@ void FolderList::ViewFolder(ViewFolderList folderlist)
 CRect FolderList::SetButtonPosition(int nItemCount)
 {
 	int nStartPos_x = 20;
-	int nStartPos_y = 10;
+	int nStartPos_y = 20;
 	int nPictureSize = 64;
 
 	int nPictureToPictureMargin_x = 10;
@@ -174,7 +244,13 @@ BOOL FolderList::DragEventMove(HWND moveHWND, CPoint movePoint)
 void FolderList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	scroll.OperateScroll(nSBCode, nPos);
+	Invalidate();
+	for (int i = 0; i < (int)folderlist.size(); i++)
+	{
+		FolderItem0* folder = folderlist.at(i);
+		folder->folderButton->DisConnect();
+	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -182,6 +258,29 @@ void FolderList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 BOOL FolderList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	if (scroll.GetLineCount() > 1)
+	{
+		UINT nFlag = scroll.OperateWheel(zDelta);
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		else { OnHScroll(nFlag, 0, GetScrollBarCtrl(SB_HORZ)); }
+	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+afx_msg LRESULT FolderList::OnPressMaintain(WPARAM wParam, LPARAM lParam)
+{
+	AfxBeginThread(thrPressMaintainButton, this);
+
+	return 0;
+}
+
+
+afx_msg LRESULT FolderList::OnFolderOpen(WPARAM wParam, LPARAM lParam)
+{
+	FolderDlg dlg(downFolder, currentTheme, this);
+	dlg.DoModal();
+
+	return 0;
 }

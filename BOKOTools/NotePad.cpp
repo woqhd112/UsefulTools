@@ -54,13 +54,14 @@ void NotePad::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_EDIT_ITALIC, m_btn_edit_italic);
 	DDX_Control(pDX, IDC_BUTTON_EDIT_UNDERLINE, m_btn_edit_underline);
 	DDX_Control(pDX, IDC_RICHEDIT_NOTEPAD, m_richedit_note);
-	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_REPORT, m_btn_report);
+	//DDX_Control(pDX, IDC_BUTTON_NOTEPAD_REPORT, m_btn_report);
 	DDX_Control(pDX, IDC_STATIC_NOTEPAD_LIST, m_stt_notepad_list);
 	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_TRASH, m_btn_trash);
 	DDX_Control(pDX, IDC_STATIC_FOLDER_LIST, m_stt_folderlist);
 	DDX_Control(pDX, IDC_BUTTON_ADD_FOLDER, m_btn_addfolder);
 	DDX_Control(pDX, IDC_BUTTON_ALL_NOTEFOLDER, m_btn_allfolder);
 	DDX_Control(pDX, IDC_BUTTON_OTHER_NOTEFOLDER, m_btn_otherfolder);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_REPORT, m_btn_report);
 }
 
 
@@ -72,6 +73,7 @@ BEGIN_MESSAGE_MAP(NotePad, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT_UNDERLINE, &NotePad::OnBnClickedButtonEditUnderline)
 	ON_BN_CLICKED(IDC_BUTTON_NOTEPAD_REPORT, &NotePad::OnBnClickedButtonNotepadReport)
 	ON_WM_MOVE()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -86,14 +88,18 @@ BOOL NotePad::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-
+	m_topBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
+	m_bottomBrush.CreateSolidBrush(RGB(255, 255, 255));
+	
 	this->SetWindowPos(NULL, 0, 0, MARGIN_X(435), MARGIN_Y(674), SWP_NOMOVE);
 	m_btn_edit_bold.MoveWindow(20, 20, 25, 25);
 	m_btn_edit_italic.MoveWindow(50, 20, 25, 25);
 	m_btn_edit_underline.MoveWindow(80, 20, 25, 25);
 	m_richedit_note.MoveWindow(20, 50, 395, 120);
-	m_btn_report.MoveWindow(360, 125, 64, 64);
 	m_stt_notepad_list.MoveWindow(20, 320, 395, 254);
+	m_btn_report.MoveWindow(365, 125, 64, 64);
+	wrapBorderRect = { 15, 45, 405, 175 };
+	wrapCenterRect = { 20, 50, 415, 170 };
 
 	m_btn_allfolder.MoveWindow(20, 200, 30, 110);
 	m_btn_otherfolder.MoveWindow(60, 200, 30, 110);
@@ -112,6 +118,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_edit_italic.SetTextColor(currentTheme->GetTextColor());
 	m_btn_edit_underline.SetTextColor(currentTheme->GetTextColor());
 	//m_btn_report.SetTextColor(currentTheme->GetTextColor());
+
 
 	m_btn_report.LoadStdImage(IDB_PNG_NOTEPAD_REPORT_NOMAL, _T("PNG"));
 	m_btn_report.LoadHovImage(IDB_PNG_NOTEPAD_REPORT_HOVER, _T("PNG"));
@@ -134,7 +141,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_trash.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 
 	m_btn_report.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	m_richedit_note.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	m_richedit_note.ModifyStyle(0, WS_CLIPSIBLINGS, 0);
 
 	m_btn_report.BringWindowToTop();
 
@@ -482,4 +489,18 @@ void NotePad::OnMove(int x, int y)
 	CRect changeRect;
 	GetWindowRect(&changeRect);
 	dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
+}
+
+
+void NotePad::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+	CBrush *pOld;
+	dc.SelectObject(&m_topBrush);
+	dc.PatBlt(wrapBorderRect.left, wrapBorderRect.top, wrapBorderRect.Width(), wrapBorderRect.Height(), PATCOPY);
+	pOld = dc.SelectObject(&m_bottomBrush);
+	dc.PatBlt(wrapCenterRect.left, wrapCenterRect.top, wrapCenterRect.Width(), wrapCenterRect.Height(), PATCOPY);
+	dc.SelectObject(pOld);
 }

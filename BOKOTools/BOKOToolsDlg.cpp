@@ -59,7 +59,7 @@ END_MESSAGE_MAP()
 CBOKOToolsDlg::CBOKOToolsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_BASECALCULATOR_DIALOG, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1); 
 }
 
 CBOKOToolsDlg::~CBOKOToolsDlg()
@@ -91,6 +91,8 @@ CBOKOToolsDlg::~CBOKOToolsDlg()
 		delete usingManual;
 		usingManual = nullptr;
 	}
+
+	SetDisableCtlColor(RGB(200, 200, 200));
 }
 
 void CBOKOToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -819,8 +821,8 @@ void CBOKOToolsDlg::SetCtlPos(std::vector<std::vector<int>> buttonCtlPosVector)
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = 597 - 30 + 9;
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);

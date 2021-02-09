@@ -150,8 +150,8 @@ void SettingTheme::SetCtlPos()
 	scroll.Create(this);
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nKindOfScrollFlags = SB_VERT;
 	csi.nOnePageSize = 400 - 30 + 9;
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);

@@ -19,7 +19,7 @@ CustomScroll::~CustomScroll()
 
 void CustomScroll::Destroy()
 {
-	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, 0, 0, 0, 0, SB_VERT };
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, 0, 0, 0 };
 	for (int i = 0; i < (int)buttonVector.size(); i++)
 	{
 		CGdipButton* button = buttonVector.at(i);
@@ -36,7 +36,7 @@ void CustomScroll::Destroy()
 void CustomScroll::Create(CWnd* pDialogCtl)
 {
 	thisCtlDialog = pDialogCtl;
-	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, 0, 0, 0, 0, SB_VERT };
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, 0, 0, 0 };
 	nLineCount = 0;
 	nCurrentLinePos = 0;
 	nButtonID = 30000;
@@ -69,18 +69,14 @@ void CustomScroll::IncreaseScroll()
 		button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
 		button->ShowWindow(SW_SHOW);
 
-		CRect dialogRect;
-		thisCtlDialog->GetWindowRect(dialogRect);
-
 		int nButtonWidth = 10;
 		int nButtonHeight = 10;
-		int nButtonPos = (dialogRect.Height() - 10 - 47) / nLineCount;
-		int nButtonPos_x = 10;
-		int nButtonPos_y = 20;
+		int nButtonPos_x = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 10 : 20;
+		int nButtonPos_y = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 20 : 10;
 
 		for (int i = 0; i < nLineCount; i++)
 		{
-			nButtonPos_y += 12;
+			csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? nButtonPos_y += 12 : nButtonPos_x += 12;
 		}
 
 		CRect scrollPos;
@@ -118,17 +114,13 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 	{
 		if (nLineCount == 0) return;
 
-		CRect dialogRect;
-		thisCtlDialog->GetWindowRect(dialogRect);
-
 		CGdipButton* button;
 		
 
 		int nButtonWidth = 10;
 		int nButtonHeight = 10;
-		int nButtonPos = (dialogRect.Height() - 10 - 47) / nLineCount;
-		int nButtonPos_x = 10;
-		int nButtonPos_y = 20;
+		int nButtonPos_x = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 10 : 20;
+		int nButtonPos_y = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 20 : 10;
 
 		for (int i = 1; i <= nLineCount; i++)
 		{
@@ -136,7 +128,7 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 			button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
 			button->ShowWindow(SW_SHOW);
 
-			nButtonPos_y += 12;
+			csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? nButtonPos_y += 12 : nButtonPos_x += 12;
 
 			CRect scrollPos;
 			scrollPos = { nButtonPos_x, nButtonPos_y, nButtonPos_x + nButtonWidth, nButtonPos_y + nButtonHeight };
@@ -195,101 +187,97 @@ void CustomScroll::LoadScroll(int nThisHeight)
 	si.nMax = nScrollMax;
 	si.nPos = csi.nScrollPos;
 	si.nPage = csi.nOnePageSize;
-	thisCtlDialog->SetScrollInfo(csi.nKindOfScrollFlags, &si, TRUE);
+	thisCtlDialog->SetScrollInfo(csi.csf, &si, TRUE);
 }
 
 // 이 함수는 OnVScroll 이나 OnHScroll 함수안에서 호출할것.
 bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 {
 	int delta = 0;
-	if (csi.nKindOfScrollFlags == SB_VERT)	// 세로 스크롤
+	switch (nSBCode)
 	{
-		switch (nSBCode)
-		{
-			case SB_LINEUP:
-				delta = -csi.nWheelValue;
-				nCurrentLinePos--;
-				break;
-			case SB_PAGEUP:
-				delta = -csi.nOnePageSize;
-				nCurrentLinePos--;
-				break;
-			case SB_THUMBTRACK:
-				delta = static_cast<int>(nPos) - csi.nScrollPos;
-				break;
-			case SB_PAGEDOWN:
-				delta = csi.nOnePageSize;
-				nCurrentLinePos++;
-				break;
-			case SB_LINEDOWN:
-				delta = csi.nWheelValue;
-				nCurrentLinePos++;
-				break;
-			default:
-				return false;
-		}
+		case SB_LINEUP:
+			delta = -csi.nWheelValue;
+			nCurrentLinePos--;
+			break;
+		case SB_PAGEUP:
+			delta = -csi.nOnePageSize;
+			nCurrentLinePos--;
+			break;
+		case SB_THUMBTRACK:
+			delta = static_cast<int>(nPos) - csi.nScrollPos;
+			break;
+		case SB_PAGEDOWN:
+			delta = csi.nOnePageSize;
+			nCurrentLinePos++;
+			break;
+		case SB_LINEDOWN:
+			delta = csi.nWheelValue;
+			nCurrentLinePos++;
+			break;
+		default:
+			return false;
+	}
 
-		if (nCurrentLinePos < 0)
+	if (nCurrentLinePos < 0)
+	{
+		nCurrentLinePos = 0;
+		return false;
+	}
+	if (csi.bLikeButtonEvent)
+	{
+		if (nCurrentLinePos >= nLineCount)
 		{
-			nCurrentLinePos = 0;
+			nCurrentLinePos = nLineCount - 1;
 			return false;
 		}
-		if (csi.bLikeButtonEvent)
+	}
+
+	int scrollpos = csi.nScrollPos + delta;
+	int nMaxPos = csi.nAllPageSize - csi.nOnePageSize;
+
+	if (scrollpos < 0)
+	{
+		delta = -csi.nScrollPos;
+	}
+	else
+	{
+		if (scrollpos > nMaxPos)
 		{
-			if (nCurrentLinePos >= nLineCount)
-			{
-				nCurrentLinePos = nLineCount - 1;
-				return false;
-			}
+			delta = nMaxPos - csi.nScrollPos;
 		}
+	}
 
-		int scrollpos = csi.nScrollPos + delta;
-		int nMaxPos = csi.nAllPageSize - csi.nOnePageSize;
-
-		if (scrollpos < 0)
+	if (delta != 0)
+	{
+		csi.nScrollPos += delta;
+		thisCtlDialog->SetScrollPos(csi.csf, csi.nScrollPos, TRUE);
+		if(csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL)
+			thisCtlDialog->ScrollWindow(0, -delta);
+		else
+			thisCtlDialog->ScrollWindow(-delta, 0);
+			
+		if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
 		{
-			delta = -csi.nScrollPos;
+			for (int i = 0; i < (int)buttonVector.size(); i++)
+			{
+				if (nCurrentLinePos == i)
+				{
+					buttonVector.at(i)->UseHoverEvent();
+				}
+				else
+				{
+					buttonVector.at(i)->UserLeaveEvent();
+				}
+				buttonVector.at(i)->MoveWindow(buttonRect.at(i));
+			}
 		}
 		else
 		{
-			if (scrollpos > nMaxPos)
-			{
-				delta = nMaxPos - csi.nScrollPos;
-			}
+
 		}
 
-		if (delta != 0)
-		{
-			csi.nScrollPos += delta;
-			thisCtlDialog->SetScrollPos(csi.nKindOfScrollFlags, csi.nScrollPos, TRUE);
-			thisCtlDialog->ScrollWindow(0, -delta);
-			
-			if (csi.cst == CUSTOM_SCROLL_TYPE_BUTTON)
-			{
-				for (int i = 0; i < (int)buttonVector.size(); i++)
-				{
-					if (nCurrentLinePos == i)
-					{
-						buttonVector.at(i)->UseHoverEvent();
-					}
-					else
-					{
-						buttonVector.at(i)->UserLeaveEvent();
-					}
-					buttonVector.at(i)->MoveWindow(buttonRect.at(i));
-				}
-			}
-			else
-			{
-
-			}
-
-			return true;
-		}
-	}
-	else // 가로 스크롤
-	{
-
+		return true;
 	}
 
 
