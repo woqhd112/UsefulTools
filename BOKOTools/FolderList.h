@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "FolderDlg.h"
 
 
 // FolderList 대화 상자
@@ -39,6 +38,7 @@ private:
 	int nLineEndCount;
 	ViewFolderList folderlist;
 	FolderItem0* downFolder;
+	FolderItem0* undoFolder;
 
 	CustomScroll scroll;
 
@@ -71,5 +71,5 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 protected:
 	afx_msg LRESULT OnPressMaintain(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnFolderOpen(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnFolderView(WPARAM wParam, LPARAM lParam);
 };

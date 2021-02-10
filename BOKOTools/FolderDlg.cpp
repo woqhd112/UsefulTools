@@ -3,7 +3,6 @@
 
 #include "pch.h"
 #include "BOKOTools.h"
-#include "FolderList.h"
 #include "FolderDlg.h"
 #include "afxdialogex.h"
 
@@ -12,12 +11,12 @@
 
 IMPLEMENT_DYNAMIC(FolderDlg, CDialogEx)
 
-FolderDlg::FolderDlg(FolderItem0* folder, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOG_FOLDER, pParent)
+FolderDlg::FolderDlg(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/, COLORREF tagColor /*= TAG_COLOR_5*/)
+	: CDialogEx(IDD_DIALOG_CREATE_FOLDER, pParent)
 {
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
-	this->folder = folder;
+	this->tagColor = tagColor;
 }
 
 FolderDlg::~FolderDlg()
@@ -27,6 +26,14 @@ FolderDlg::~FolderDlg()
 void FolderDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_1, m_btn_colorindex_1);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_2, m_btn_colorindex_2);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_3, m_btn_colorindex_3);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_4, m_btn_colorindex_4);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_5, m_btn_colorindex_5);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_6, m_btn_colorindex_6);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_COLORINDEX_7, m_btn_colorindex_7);
+	DDX_Control(pDX, IDC_EDIT_NOTEPAD_FOLDER_NAME, m_edit_foldername);
 }
 
 
@@ -44,22 +51,10 @@ BOOL FolderDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-
-	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
-	this->SetWindowTextW(folder->GetFolderName());
-	
-	folderlist = (FolderList*)pParent;
+	this->SetBackgroundColor(tagColor);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
-}
-
-
-void FolderDlg::OnClose()
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	folder->folderButton->ToggleClickChange();
-	CDialogEx::OnClose();
 }
 
 
@@ -76,6 +71,14 @@ BOOL FolderDlg::PreTranslateMessage(MSG* pMsg)
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void FolderDlg::OnClose()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CDialogEx::OnClose();
 }
 
 

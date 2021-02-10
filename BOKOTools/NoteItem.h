@@ -41,6 +41,7 @@ public:
 	CString GetNoteTitle();
 	CString GetNoteContent();
 	CRect GetNoteRect();
+	bool IsCreating();
 
 private:
 
@@ -55,6 +56,7 @@ private:
 	int nFolderSize;
 	int nFolderSequence;
 	bool isLock;
+	bool isCreating;
 
 public:
 

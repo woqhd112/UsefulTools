@@ -65,12 +65,13 @@ using namespace Gdiplus;
 #include <afxcontrolbars.h>
 #include <afxcontrolbars.h>
 #include <afxcontrolbars.h>
+#include <afxcontrolbars.h>
 #pragma comment(lib, "UxTheme.lib")
 #pragma comment(lib, "gdiplus.lib")
 using namespace Gdiplus;
 
 #define PRESS_MAINTAIN WM_USER + 1
-#define FOLDER_OPEN WM_USER + 2
+#define FOLDER_VIEW	WM_USER + 2
 
 #endif
 

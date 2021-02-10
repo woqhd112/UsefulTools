@@ -68,6 +68,21 @@ BOOL NotePadList::OnInitDialog()
 
 void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 {
+	for (int i = 0; i < (int)this->allFolderList.size(); i++)
+	{
+		ViewNoteList notelist = this->allFolderList.at(i);
+		if (notelist.size() > 0)
+		{
+			for (int j = 0; j < (int)notelist.size(); j++)
+			{
+				notelist.at(j)->ShowWindow(false);
+			}
+		}
+	}
+
+	nButtonCount = 0;
+	nLineEndCount = 0;
+	this->allFolderList = allFolderList;
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -90,6 +105,7 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	}
 
 	scroll.ExecuteScrollPos(currentTheme);
+	Invalidate();
 }
 
 CRect NotePadList::SetButtonPosition(int nItemCount)

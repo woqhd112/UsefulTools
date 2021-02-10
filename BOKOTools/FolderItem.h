@@ -11,7 +11,7 @@ public:
 	FolderItem0(ThemeData* currentTheme, CWnd* pParent);
 	~FolderItem0();
 
-	typedef std::vector<NoteItem*> Folder;
+	typedef std::vector<NoteItem*> Folder, ViewNoteList;
 
 	struct FolderInit
 	{
@@ -36,6 +36,7 @@ public:
 	int GetFolderSequence();
 	int GetFolderColorIndex();
 	CRect GetFolderRect();
+	FolderItem0::Folder GetFolder();
 
 private:
 
@@ -48,7 +49,7 @@ private:
 	int nFolderColorIndex;
 	CRect folderRect;
 
-	Folder folder;
+	FolderItem0::Folder folder;
 
 	void FolderImageInit(int nFolderColorIndex, int nFolderSize);
 

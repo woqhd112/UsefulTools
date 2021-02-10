@@ -6,7 +6,6 @@ static unsigned int s_ButtonID = 75000;
 FolderItem0::FolderItem0(ThemeData* currentTheme, CWnd* pParent)
 {
 	this->currentTheme = currentTheme;
-	this->folder = folder;
 	this->pParent = pParent;
 
 	folderButton = new CGdipButton;
@@ -214,4 +213,9 @@ int FolderItem0::GetFolderColorIndex()
 CRect FolderItem0::GetFolderRect()
 {
 	return folderRect;
+}
+
+FolderItem0::Folder FolderItem0::GetFolder()
+{
+	return folder;
 }

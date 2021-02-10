@@ -19,6 +19,7 @@ NoteItem::NoteItem(ThemeData* currentTheme, CWnd* pParent)
 	nFolderSequence = 0;
 	isLock = false;
 	noteRect = { 0, 0, 365, 40 };
+	isCreating = false;
 }
 
 NoteItem::~NoteItem()
@@ -97,6 +98,12 @@ void NoteItem::Initialize(NoteInit init)
 	// button show
 	ShowWindow(false);
 	//lockButton->ShowWindow(SW_HIDE);
+	isCreating = true;
+}
+
+bool NoteItem::IsCreating()
+{
+	return isCreating;
 }
 
 void NoteItem::MoveWindow(int nLeft, int nTop)

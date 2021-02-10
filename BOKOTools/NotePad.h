@@ -20,6 +20,9 @@ class NotePad : public CDialogEx
 {
 	DECLARE_DYNAMIC(NotePad)
 
+	friend class FolderList;
+	friend class NotePadList;
+
 public:
 	NotePad(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePad();
@@ -41,9 +44,9 @@ private:
 	CalculateStatic m_stt_folderlist;
 	CGdipButton m_btn_report;
 	CGdipButton m_btn_trash;
-	CGdipButton m_btn_addfolder;
-	CGdipButton m_btn_allfolder;
-	CGdipButton m_btn_otherfolder;
+	CalculateButton m_btn_addfolder;
+	CalculateButton m_btn_allfolder;
+	CalculateButton m_btn_otherfolder;
 	CRichEditCtrl m_richedit_note;
 
 	CFont thisFont;
@@ -57,6 +60,7 @@ private:
 	FolderList* folderlist;
 
 	std::vector<ViewNoteList> allNoteList;
+	ViewNoteList otherNoteList;
 	ViewFolderList allFolderList;
 	
 	CBrush m_topBrush;
@@ -78,6 +82,8 @@ public:
 	CRect dragRect;
 	COLORREF GetTagColorFromIndex(int nIndex);
 	int GetIndexFromTagColor(COLORREF tagcolor);
+	void LoadAllNote();
+	void LoadOtherNote();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -90,4 +96,7 @@ public:
 	afx_msg void OnBnClickedButtonNotepadReport();
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnPaint();
+	afx_msg void OnBnClickedButtonAllNotefolder();
+	afx_msg void OnBnClickedButtonOtherNotefolder();
+	afx_msg void OnBnClickedButtonAddFolder();
 };

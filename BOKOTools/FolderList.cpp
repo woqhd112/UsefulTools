@@ -23,6 +23,8 @@ FolderList::FolderList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	nLineEndCount = 0;
 	bThread = false;
 	bPressMaintain = false;
+	undoFolder = nullptr;
+	downFolder = nullptr;
 }
 
 FolderList::~FolderList()
@@ -40,7 +42,7 @@ BEGIN_MESSAGE_MAP(FolderList, CDialogEx)
 	ON_WM_HSCROLL()
 	ON_WM_MOUSEWHEEL()
 	ON_MESSAGE(PRESS_MAINTAIN, &FolderList::OnPressMaintain)
-	ON_MESSAGE(FOLDER_OPEN, &FolderList::OnFolderOpen)
+	ON_MESSAGE(FOLDER_VIEW, &FolderList::OnFolderView)
 END_MESSAGE_MAP()
 
 
@@ -76,8 +78,6 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if (pMsg->message == WM_LBUTTONUP)
 	{
-		bThread = false;
-
 		// press 1초이상 동작 이벤트 활성화
 		if (bPressMaintain)
 		{
@@ -88,16 +88,9 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		}
 		else // press 1초이상 동작 이벤트 비활성화
 		{
-			for (int i = 0; i < (int)folderlist.size(); i++)
-			{
-				FolderItem0* folder = folderlist.at(i);
-				CGdipButton* folderButton = folder->folderButton;
-				if (pMsg->hwnd == folderButton->m_hWnd)
-				{
-					PostMessage(FOLDER_OPEN, 0, 0);
-					break;
-				}
-			}
+			bThread = false;
+			
+			PostMessage(FOLDER_VIEW, 0, 0);
 		}
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
@@ -157,6 +150,7 @@ HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
+
 
 void FolderList::LoadFolder(ViewFolderList allFolderList)
 {
@@ -277,10 +271,23 @@ afx_msg LRESULT FolderList::OnPressMaintain(WPARAM wParam, LPARAM lParam)
 }
 
 
-afx_msg LRESULT FolderList::OnFolderOpen(WPARAM wParam, LPARAM lParam)
+afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 {
-	FolderDlg dlg(downFolder, currentTheme, this);
-	dlg.DoModal();
+	// 폴더 클릭 시 notepadlist 초기화하고 해당 메모로만 출력
+
+	if (undoFolder != downFolder)
+	{
+		if (undoFolder) undoFolder->folderButton->ToggleClickChange();
+		std::vector<std::vector<NoteItem*>> allFolder;
+		allFolder.push_back(downFolder->GetFolder());
+		notepad->notepadlist->LoadNotePad(allFolder);
+		undoFolder = downFolder;
+	}
+	else
+	{
+		undoFolder = nullptr;
+		notepad->LoadAllNote();
+	}
 
 	return 0;
 }

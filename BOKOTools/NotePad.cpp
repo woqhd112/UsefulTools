@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "BOKOTools.h"
 #include "NotePad.h"
+#include "FolderDlg.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
@@ -74,6 +75,9 @@ BEGIN_MESSAGE_MAP(NotePad, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_NOTEPAD_REPORT, &NotePad::OnBnClickedButtonNotepadReport)
 	ON_WM_MOVE()
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BUTTON_ALL_NOTEFOLDER, &NotePad::OnBnClickedButtonAllNotefolder)
+	ON_BN_CLICKED(IDC_BUTTON_OTHER_NOTEFOLDER, &NotePad::OnBnClickedButtonOtherNotefolder)
+	ON_BN_CLICKED(IDC_BUTTON_ADD_FOLDER, &NotePad::OnBnClickedButtonAddFolder)
 END_MESSAGE_MAP()
 
 
@@ -124,17 +128,23 @@ BOOL NotePad::OnInitDialog()
 	m_btn_report.LoadHovImage(IDB_PNG_NOTEPAD_REPORT_HOVER, _T("PNG"));
 	m_btn_report.LoadAltImage(IDB_PNG_NOTEPAD_REPORT_CLICK, _T("PNG"));
 
-	m_btn_allfolder.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
+	/*m_btn_allfolder.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_allfolder.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_allfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 
 	m_btn_otherfolder.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_otherfolder.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
-	m_btn_otherfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
+	m_btn_otherfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);*/
 
-	m_btn_addfolder.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
+	/*m_btn_addfolder.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_addfolder.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
-	m_btn_addfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
+	m_btn_addfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);*/
+	m_btn_allfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
+	m_btn_allfolder.SetWindowTextW(_T("전\n체"));
+	m_btn_otherfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
+	m_btn_otherfolder.SetWindowTextW(_T("기\n타"));
+	m_btn_addfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
+	m_btn_addfolder.SetWindowTextW(_T("+"));
 
 	m_btn_trash.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_trash.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
@@ -168,6 +178,7 @@ BOOL NotePad::OnInitDialog()
 	folderlist->ShowWindow(SW_SHOW);
 
 	LoadNotePad();
+	otherNoteList = allNoteList.at(0);
 	notepadlist->LoadNotePad(allNoteList);
 	folderlist->LoadFolder(allFolderList);
 
@@ -301,6 +312,18 @@ void NotePad::LoadNotePad()
 			CustomXml::SaveXml(&markUp, szRoot);
 		}
 	}
+}
+
+void NotePad::LoadAllNote()
+{
+	notepadlist->LoadNotePad(allNoteList);
+}
+
+void NotePad::LoadOtherNote()
+{
+	std::vector<ViewNoteList> allocnotelist;  
+	allocnotelist.push_back(otherNoteList); 
+	notepadlist->LoadNotePad(allocnotelist); 
 }
 
 bool NotePad::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
@@ -503,4 +526,26 @@ void NotePad::OnPaint()
 	pOld = dc.SelectObject(&m_bottomBrush);
 	dc.PatBlt(wrapCenterRect.left, wrapCenterRect.top, wrapCenterRect.Width(), wrapCenterRect.Height(), PATCOPY);
 	dc.SelectObject(pOld);
+}
+
+
+void NotePad::OnBnClickedButtonAllNotefolder()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	LoadAllNote();
+}
+
+
+void NotePad::OnBnClickedButtonOtherNotefolder()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	LoadOtherNote();
+}
+
+
+void NotePad::OnBnClickedButtonAddFolder()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	FolderDlg createFolder(currentTheme, this);
+	createFolder.DoModal();
 }
