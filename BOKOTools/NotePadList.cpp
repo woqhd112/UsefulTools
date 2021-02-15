@@ -128,6 +128,46 @@ CRect NotePadList::SetButtonPosition(int nItemCount)
 
 void NotePadList::AddNotePad(CString strTitle, CString strContent)
 {
+	int nNoteName = (int)notepad->otherNoteList.size() + 1;
+	NoteItem* newNote = new NoteItem(currentTheme, this);
+	NoteItem::NoteInit noteinit;
+	noteinit.nNoteName = nNoteName;
+	noteinit.nFolderSequence = 0;
+	noteinit.strNoteContent = strContent;
+	noteinit.tagColor = TAG_COLOR_5;
+	noteinit.isLock = false;
+	noteinit.nFolderSize = nNoteName;
+
+	newNote->Initialize(noteinit);
+	notepad->otherNoteList.push_back(newNote);
+	notepad->allNoteList.at(0) = notepad->otherNoteList;
+
+	// Note 폴더에 파일추가
+	CString strTextPath = _T("");
+	CString strNoteName;
+	strNoteName.Format(_T("%d"), nNoteName);
+	CustomXml::GetModulePath(strTextPath);
+	strTextPath += (_T("\\Note\\") _T("0") + strNoteName + _T(".txt"));
+
+	NoteFile file;
+	if (file.NoteWrite(strTextPath, strContent))
+	{
+		NotePad::NoteSaveData saveNote;
+		saveNote.nFolderSequence = 0;
+		saveNote.nLock = 0;
+		saveNote.nNoteName = nNoteName;
+
+		NotePad::FolderSaveData saveFolder;
+		saveFolder.folderTagColor = TAG_COLOR_5;
+		saveFolder.nFolderSequence = 0;
+		saveFolder.nSize = nNoteName;
+		saveFolder.strFolderName = _T("other");
+
+		notepad->CreateNoteXml(saveNote);
+		notepad->SaveFolderXml(saveFolder);
+		LoadNotePad({ notepad->otherNoteList });
+	}
+
 	// 버튼생성 함수 (index와 f인지 n인지에 따라서 폴더이미지 또는 노트이미지 생성)
 	//CString strButtonName;
 	//strButtonName.Format(_T("%dn0n"), nButtonCount + 1);

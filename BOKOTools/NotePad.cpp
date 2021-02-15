@@ -5,6 +5,7 @@
 #include "BOKOTools.h"
 #include "NotePad.h"
 #include "FolderDlg.h"
+#include "NoteDlg.h"
 #include "BOKOToolsDlg.h"
 #include "afxdialogex.h"
 
@@ -63,6 +64,7 @@ void NotePad::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_ALL_NOTEFOLDER, m_btn_allfolder);
 	DDX_Control(pDX, IDC_BUTTON_OTHER_NOTEFOLDER, m_btn_otherfolder);
 	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_REPORT, m_btn_report);
+	DDX_Control(pDX, IDC_BUTTON_NOTEPAD_CREATE_NOTE, m_btn_create_note);
 }
 
 
@@ -78,12 +80,131 @@ BEGIN_MESSAGE_MAP(NotePad, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ALL_NOTEFOLDER, &NotePad::OnBnClickedButtonAllNotefolder)
 	ON_BN_CLICKED(IDC_BUTTON_OTHER_NOTEFOLDER, &NotePad::OnBnClickedButtonOtherNotefolder)
 	ON_BN_CLICKED(IDC_BUTTON_ADD_FOLDER, &NotePad::OnBnClickedButtonAddFolder)
+	ON_BN_CLICKED(IDC_BUTTON_NOTEPAD_CREATE_NOTE, &NotePad::OnBnClickedButtonNotepadCreateNote)
 END_MESSAGE_MAP()
 
 
 // NotePad 메시지 처리기
 
+bool NotePad::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	if (!xmlFind.FindFile(strFullPath))
+	{
+		markUp->AddElem(_T("NotePad"));
+		markUp->IntoElem();
 
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+void NotePad::SaveNoteXml(NoteSaveData notedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		while (markUp.FindElem(_T("folder")))
+		{
+			if (_ttoi(markUp.GetAttrib(_T("seq"))) == notedata.nFolderSequence)
+			{
+				markUp.IntoElem();
+				while (markUp.FindElem(_T("note")))
+				{
+					if (markUp.GetAttrib(_T("name")) == notedata.nNoteName)
+					{
+						markUp.SetAttrib(_T("lock"), notedata.nLock);
+					}
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePad::CreateNoteXml(NoteSaveData notedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		while (markUp.FindElem(_T("folder")))
+		{
+			if (_ttoi(markUp.GetAttrib(_T("seq"))) == notedata.nFolderSequence)
+			{
+				markUp.IntoElem();
+				markUp.AddElem(_T("note"));
+				markUp.AddAttrib(_T("name"), notedata.nNoteName);
+				markUp.AddAttrib(_T("lock"), notedata.nLock);
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePad::SaveFolderXml(FolderSaveData folderdata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		while (markUp.FindElem(_T("folder")))
+		{
+			if (_ttoi(markUp.GetAttrib(_T("seq"))) == folderdata.nFolderSequence)
+			{
+				markUp.SetAttrib(_T("name"), folderdata.strFolderName);
+				markUp.SetAttrib(_T("tagcolor"), GetIndexFromTagColor(folderdata.folderTagColor));
+				markUp.SetAttrib(_T("size"), folderdata.nSize);
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePad::CreateFolderXml(FolderSaveData folderdata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		markUp.AddElem(_T("folder"));
+		markUp.AddAttrib(_T("seq"), folderdata.nFolderSequence);
+		markUp.AddAttrib(_T("name"), folderdata.strFolderName);
+		markUp.AddAttrib(_T("tagcolor"), GetIndexFromTagColor(folderdata.folderTagColor));
+		markUp.AddAttrib(_T("size"), folderdata.nSize);
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePad::InvalidateSame()
+{
+	notepadlist->Invalidate();
+	folderlist->Invalidate();
+}
 
 BOOL NotePad::OnInitDialog()
 {
@@ -99,6 +220,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_edit_bold.MoveWindow(20, 20, 25, 25);
 	m_btn_edit_italic.MoveWindow(50, 20, 25, 25);
 	m_btn_edit_underline.MoveWindow(80, 20, 25, 25);
+	m_btn_create_note.MoveWindow(390, 20, 25, 25);
 	m_richedit_note.MoveWindow(20, 50, 395, 120);
 	m_stt_notepad_list.MoveWindow(20, 320, 395, 254);
 	m_btn_report.MoveWindow(365, 125, 64, 64);
@@ -114,6 +236,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_edit_bold.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_edit_italic.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_edit_underline.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	m_btn_create_note.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	//m_btn_report.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
 	m_btn_edit_bold.m_bUseMouseTextItalicEvent = true;
 	m_btn_edit_italic.m_bUseMouseTextItalicEvent = true;
@@ -121,6 +244,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_edit_bold.SetTextColor(currentTheme->GetTextColor());
 	m_btn_edit_italic.SetTextColor(currentTheme->GetTextColor());
 	m_btn_edit_underline.SetTextColor(currentTheme->GetTextColor());
+	m_btn_create_note.SetTextColor(currentTheme->GetTextColor());
 	//m_btn_report.SetTextColor(currentTheme->GetTextColor());
 
 
@@ -140,11 +264,14 @@ BOOL NotePad::OnInitDialog()
 	m_btn_addfolder.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_addfolder.LoadAltImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);*/
 	m_btn_allfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
-	m_btn_allfolder.SetWindowTextW(_T("전\n체"));
+	m_btn_allfolder.SetWindowTextW(_T("\n전\n체"));
+	m_btn_allfolder.SetTextColor(currentTheme->GetTextColor());
 	m_btn_otherfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
-	m_btn_otherfolder.SetWindowTextW(_T("기\n타"));
+	m_btn_otherfolder.SetWindowTextW(_T("\n기\n타"));
+	m_btn_otherfolder.SetTextColor(currentTheme->GetTextColor());
 	m_btn_addfolder.Initialize(currentTheme->GetButtonColor(), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 30);
 	m_btn_addfolder.SetWindowTextW(_T("+"));
+	m_btn_addfolder.SetTextColor(currentTheme->GetTextColor());
 
 	m_btn_trash.LoadStdImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
 	m_btn_trash.LoadHovImage(IDB_PNG_TEST_IMAGE, _T("PNG"), true);
@@ -155,7 +282,7 @@ BOOL NotePad::OnInitDialog()
 
 	m_btn_report.BringWindowToTop();
 
-	thisFont.CreateFontW(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+	thisFont.CreateFontW(25, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
 		currentTheme->GetThemeFontName());
 
@@ -324,44 +451,6 @@ void NotePad::LoadOtherNote()
 	std::vector<ViewNoteList> allocnotelist;  
 	allocnotelist.push_back(otherNoteList); 
 	notepadlist->LoadNotePad(allocnotelist); 
-}
-
-bool NotePad::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
-{
-	bool bReturn = false;
-	CFileFind xmlFind;
-	if (!xmlFind.FindFile(strFullPath))
-	{
-		markUp->AddElem(_T("NotePad"));
-		markUp->IntoElem();
-
-		bReturn = true;
-	}
-	xmlFind.Close();
-
-	return bReturn;
-}
-
-void NotePad::SaveNoteXml(int nIndex, bool bLocked)
-{
-	CMarkup markUp;
-	CString strFullPath = _T("");
-	CustomXml::CreateConfigFile(strFullPath);
-	strFullPath += _T("\\NotePad.conf");
-	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
-	{
-		markUp.FindElem(_T("NotePad"));
-		markUp.IntoElem();
-
-		while (markUp.FindElem(_T("list")))
-		{
-			if (_ttoi(markUp.GetAttrib(_T("idx"))) == nIndex)
-			{
-				markUp.SetAttrib(_T("lock"), bLocked ? 1 : 0);
-			}
-		}
-	}
-	CustomXml::SaveXml(&markUp, strFullPath);
 }
 
 void NotePad::OnOK()
@@ -546,6 +635,39 @@ void NotePad::OnBnClickedButtonOtherNotefolder()
 void NotePad::OnBnClickedButtonAddFolder()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	FolderDlg createFolder(currentTheme, this);
-	createFolder.DoModal();
+	COLORREF createTagColor;
+	CString strCreateFolderName;
+	FolderDlg createFolder(FOLDER_CREATE, currentTheme, &createTagColor, &strCreateFolderName, this);
+	if (createFolder.DoModal() == IDOK)
+	{
+		FolderItem0* newFolder = new FolderItem0(currentTheme, folderlist);
+		FolderItem0::FolderInit folderinit;
+		folderinit.strFolderName = strCreateFolderName;
+		folderinit.nFolderSequence = (int)allFolderList.size();
+		folderinit.nFolderSize = 0;
+		folderinit.nFolderColorIndex = GetIndexFromTagColor(createTagColor);
+		folderinit.folder = { };
+
+		FolderSaveData folderdata;
+		folderdata.strFolderName = strCreateFolderName;
+		folderdata.folderTagColor = createTagColor;
+		folderdata.nFolderSequence = (int)allFolderList.size();
+		folderdata.nSize = 0;
+		CreateFolderXml(folderdata);
+
+		newFolder->Initialize(folderinit);
+		allFolderList.push_back(newFolder);
+		folderlist->LoadFolder(allFolderList);
+	}
+}
+
+
+void NotePad::OnBnClickedButtonNotepadCreateNote()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	NoteDlg createNote(NOTE_CREATE, currentTheme, this);
+	if (createNote.DoModal() == IDOK)
+	{
+	}
 }

@@ -38,6 +38,8 @@ public:
 	CRect GetFolderRect();
 	FolderItem0::Folder GetFolder();
 
+	void Update(FolderInit init);
+
 private:
 
 	ThemeData* currentTheme;
@@ -52,6 +54,7 @@ private:
 	FolderItem0::Folder folder;
 
 	void FolderImageInit(int nFolderColorIndex, int nFolderSize);
+	void ExecuteFolderInitData(FolderInit init);
 
 public:
 

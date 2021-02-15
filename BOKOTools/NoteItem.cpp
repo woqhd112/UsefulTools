@@ -55,13 +55,7 @@ NoteItem::~NoteItem()
 
 void NoteItem::Initialize(NoteInit init)
 {
-	strNoteContent = init.strNoteContent;
-	strNoteTitle = strNoteContent.Left(18);
-	tagColor = init.tagColor;
-	nNoteName = init.nNoteName;
-	nFolderSize = init.nFolderSize;
-	isLock = init.isLock;
-	nFolderSequence = init.nFolderSequence;
+	ExecuteNoteInitData(init);
 
 	// button create
 	wrapButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), pParent, n_ButtonID++);
@@ -131,6 +125,25 @@ void NoteItem::ShowLock(bool isShow)
 	lockButton->ShowWindow(isShow ? SW_SHOW : SW_HIDE);
 }
 
+void NoteItem::ExecuteNoteInitData(NoteInit init)
+{
+	strNoteContent = init.strNoteContent;
+	strNoteTitle = strNoteContent.Left(18);
+	tagColor = init.tagColor;
+	nNoteName = init.nNoteName;
+	nFolderSize = init.nFolderSize;
+	isLock = init.isLock;
+	nFolderSequence = init.nFolderSequence;
+}
+
+void NoteItem::Update(NoteInit init)
+{
+	ExecuteNoteInitData(init);
+	tagButton->SetFaceColor(init.tagColor);
+	noteButton->SetWindowTextW(init.strNoteContent.Left(18));
+	ShowLock(init.isLock);
+}
+
 void NoteItem::SetNoteContent(CString strNoteContent)
 {
 	this->strNoteContent = strNoteContent;
@@ -155,6 +168,11 @@ void NoteItem::SetLockSetting(bool isLock)
 void NoteItem::SetFolderSequence(int nFolderSequence)
 {
 	this->nFolderSequence = nFolderSequence;
+}
+
+void NoteItem::SetNoteName(int nNoteName)
+{
+	this->nNoteName = nNoteName;
 }
 
 int NoteItem::GetFolderSequence()
@@ -190,4 +208,9 @@ CString NoteItem::GetNoteContent()
 CRect NoteItem::GetNoteRect()
 {
 	return noteRect;
+}
+
+int NoteItem::GetNoteName()
+{
+	return nNoteName;
 }

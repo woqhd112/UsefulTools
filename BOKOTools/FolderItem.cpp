@@ -36,11 +36,7 @@ FolderItem0::~FolderItem0()
 
 void FolderItem0::Initialize(FolderInit init)
 {
-	this->strFolderName = init.strFolderName;
-	this->nFolderSize = init.nFolderSize;
-	this->nFolderSequence = init.nFolderSequence;
-	this->folder = init.folder;
-	this->nFolderColorIndex = init.nFolderColorIndex;
+	ExecuteFolderInitData(init);
 
 	// button create
 	folderButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), pParent, s_ButtonID++);
@@ -61,6 +57,7 @@ void FolderItem0::Initialize(FolderInit init)
 
 void FolderItem0::FolderImageInit(int nFolderColorIndex, int nFolderSize)
 {
+	folderButton->DisConnect();
 	folderButton->DeleteImage();
 	if (nFolderSize > 0)	// 폴더가 차있을때
 	{
@@ -170,6 +167,22 @@ void FolderItem0::ShowWindow(bool isShow)
 	folderStatic->ShowWindow(isShow ? SW_SHOW : SW_HIDE);
 }
 
+void FolderItem0::Update(FolderInit init)
+{
+	ExecuteFolderInitData(init);
+	FolderImageInit(init.nFolderColorIndex, init.nFolderSize);
+	folderStatic->SetWindowTextW(init.strFolderName);
+}
+
+void FolderItem0::ExecuteFolderInitData(FolderInit init)
+{
+	this->strFolderName = init.strFolderName;
+	this->nFolderSize = init.nFolderSize;
+	this->nFolderSequence = init.nFolderSequence;
+	this->folder = init.folder;
+	this->nFolderColorIndex = init.nFolderColorIndex;
+}
+
 void FolderItem0::SetFolderName(CString strFolderName)
 {
 	this->strFolderName = strFolderName;
@@ -219,3 +232,4 @@ FolderItem0::Folder FolderItem0::GetFolder()
 {
 	return folder;
 }
+

@@ -46,8 +46,8 @@ bool NoteFile::NoteWrite(CString strPath, CString strContent)
 	{
 		try
 		{
-			CStringA uniContent = CStringA(strContent);
-			createFile.Write(uniContent, uniContent.GetLength());
+			CT2CA outputString(strContent, CP_UTF8);
+			createFile.Write(outputString, ::strlen(outputString));
 			createFile.Close();
 			bReturn = true;
 		}

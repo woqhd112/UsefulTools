@@ -145,6 +145,9 @@
     <ClCompile Include="FolderDlg.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="NoteDlg.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -307,6 +310,9 @@
       <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="FolderDlg.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteDlg.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>

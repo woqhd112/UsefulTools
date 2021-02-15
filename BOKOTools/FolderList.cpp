@@ -89,8 +89,14 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		else // press 1초이상 동작 이벤트 비활성화
 		{
 			bThread = false;
+			for (int i = 0; i < (int)folderlist.size(); i++)
+			{
+				if (pMsg->hwnd == folderlist.at(i)->folderButton->m_hWnd)
+				{
+					PostMessage(FOLDER_VIEW, 0, 0);
+				}
+			}
 			
-			PostMessage(FOLDER_VIEW, 0, 0);
 		}
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
@@ -104,6 +110,17 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 				downFolder = folder;
 				PostMessage(PRESS_MAINTAIN, 0, 0);
 				break;
+			}
+		}
+	}
+	else  if (pMsg->message == WM_LBUTTONDBLCLK)
+	{
+		for (int i = 0; i < (int)folderlist.size(); i++)
+		{
+			if (pMsg->hwnd == folderlist.at(i)->folderButton->m_hWnd)
+			{
+				UpdateFolder(folderlist.at(i));
+				return TRUE;
 			}
 		}
 	}
@@ -154,6 +171,7 @@ HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 void FolderList::LoadFolder(ViewFolderList allFolderList)
 {
+	nButtonCount = 0;
 	this->folderlist = allFolderList;
 	scroll.Destroy();
 
@@ -291,3 +309,45 @@ afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
+
+void FolderList::UpdateFolder(FolderItem0* folderItem)
+{
+	COLORREF updateColor = notepad->GetTagColorFromIndex(folderItem->GetFolderColorIndex());
+	CString strUpdateFolderName = folderItem->GetFolderName();
+	FolderDlg createFolder(FOLDER_UPDATE, currentTheme, &updateColor, &strUpdateFolderName, this);
+
+	if (createFolder.DoModal() == IDOK)
+	{
+		FolderItem0::FolderInit updateFolder;
+		updateFolder.nFolderSequence = folderItem->GetFolderSequence();
+		updateFolder.nFolderSize = (int)folderItem->GetFolderSize();
+		updateFolder.strFolderName = strUpdateFolderName;
+		updateFolder.nFolderColorIndex = notepad->GetIndexFromTagColor(updateColor);
+		updateFolder.folder = folderItem->GetFolder();
+		folderItem->Update(updateFolder);
+
+		ViewNoteList notelist = folderItem->GetFolder();
+		for (int i = 0; i < (int)notelist.size(); i++)
+		{
+			NoteItem* noteItem = notelist.at(i);
+			NoteItem::NoteInit updateNote;
+			updateNote.isLock = noteItem->IsLock();
+			updateNote.nFolderSequence = updateFolder.nFolderSequence;
+			updateNote.nFolderSize = updateFolder.nFolderSize;
+			updateNote.nNoteName = noteItem->GetNoteName();
+			updateNote.strNoteContent = noteItem->GetNoteContent();
+			updateNote.tagColor = updateColor;
+			noteItem->Update(updateNote);
+		}
+
+		NotePad::FolderSaveData saveFolder;
+		saveFolder.folderTagColor = updateColor;
+		saveFolder.nFolderSequence = updateFolder.nFolderSequence;
+		saveFolder.nSize = updateFolder.nFolderSize;
+		saveFolder.strFolderName = strUpdateFolderName;
+
+		notepad->SaveFolderXml(saveFolder);
+		notepad->InvalidateSame();
+	}
+}
+

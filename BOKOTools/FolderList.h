@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
+#include "FolderDlg.h"
 
 
 // FolderList 대화 상자
@@ -29,6 +30,7 @@ public:
 private:
 
 	typedef std::vector<FolderItem0*> ViewFolderList;
+	typedef std::vector<NoteItem*> ViewNoteList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
@@ -44,6 +46,7 @@ private:
 
 	void ViewFolder(ViewFolderList folderlist);
 	CRect SetButtonPosition(int nItemCount);
+	void UpdateFolder(FolderItem0* folderItem);
 
 	bool bThread;
 	bool bPressMaintain;

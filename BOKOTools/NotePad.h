@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include "CalculateButton.h"
-#include "CalculateStatic.h"
 #include "NotePadList.h"
 #include "FolderList.h"
 #include "UsingManualDialog.h"
@@ -40,6 +38,7 @@ private:
 	CalculateButton m_btn_edit_bold;
 	CalculateButton m_btn_edit_italic;
 	CalculateButton m_btn_edit_underline;
+	CalculateButton m_btn_create_note;
 	CalculateStatic m_stt_notepad_list;
 	CalculateStatic m_stt_folderlist;
 	CGdipButton m_btn_report;
@@ -68,9 +67,28 @@ private:
 	CRect wrapBorderRect;
 	CRect wrapCenterRect;
 
+	struct NoteSaveData
+	{
+		int nNoteName;
+		int nLock;
+		int nFolderSequence;
+	};
+
+	struct FolderSaveData
+	{
+		int nFolderSequence;
+		int nSize;
+		CString strFolderName;
+		COLORREF folderTagColor;
+	};
+
 	void LoadNotePad();
 	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
-	void SaveNoteXml(int nIndex, bool bLocked);
+	void SaveNoteXml(NoteSaveData notedata);
+	void CreateNoteXml(NoteSaveData notedata);
+	void SaveFolderXml(FolderSaveData folderdata);
+	void CreateFolderXml(FolderSaveData folderdata);
+	void InvalidateSame();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -99,4 +117,5 @@ public:
 	afx_msg void OnBnClickedButtonAllNotefolder();
 	afx_msg void OnBnClickedButtonOtherNotefolder();
 	afx_msg void OnBnClickedButtonAddFolder();
+	afx_msg void OnBnClickedButtonNotepadCreateNote();
 };

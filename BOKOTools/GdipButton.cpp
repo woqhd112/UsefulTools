@@ -514,8 +514,8 @@ void CGdipButton::PreSubclassWindow()
 //=============================================================================
 BOOL CGdipButton::PreTranslateMessage(MSG* pMsg) 
 {
-	if (pMsg->message == WM_LBUTTONDBLCLK)
-		pMsg->message = WM_LBUTTONDOWN;
+	/*if (pMsg->message == WM_LBUTTONDBLCLK)
+		pMsg->message = WM_LBUTTONDOWN;*/
 
 	if (m_pToolTip != NULL)
 	{

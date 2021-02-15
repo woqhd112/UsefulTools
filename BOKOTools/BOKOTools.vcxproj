@@ -232,6 +232,7 @@
     <ClInclude Include="LapTime.h" />
     <ClInclude Include="ManualList.h" />
     <ClInclude Include="MemDC.h" />
+    <ClInclude Include="NoteDlg.h" />
     <ClInclude Include="NoteFile.h" />
     <ClInclude Include="NoteItem.h" />
     <ClInclude Include="NotePad.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="EngineeringCalculate.cpp" />
     <ClCompile Include="LapTime.cpp" />
     <ClCompile Include="ManualList.cpp" />
+    <ClCompile Include="NoteDlg.cpp" />
     <ClCompile Include="NoteFile.cpp" />
     <ClCompile Include="NoteItem.cpp" />
     <ClCompile Include="NotePad.cpp" />

@@ -33,6 +33,7 @@ public:
 	void SetFolderSize(int FolderSize);
 	void SetLockSetting(bool isLock);
 	void SetFolderSequence(int nFolderSequence);
+	void SetNoteName(int nNoteName);
 
 	bool IsLock();
 	int GetFolderSize();
@@ -42,6 +43,9 @@ public:
 	CString GetNoteContent();
 	CRect GetNoteRect();
 	bool IsCreating();
+	int GetNoteName();
+
+	void Update(NoteInit init);
 
 private:
 
@@ -57,6 +61,8 @@ private:
 	int nFolderSequence;
 	bool isLock;
 	bool isCreating;
+
+	void ExecuteNoteInitData(NoteInit init);
 
 public:
 
