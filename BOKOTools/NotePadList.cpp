@@ -5,6 +5,7 @@
 #include "BOKOTools.h"
 #include "NotePadList.h"
 #include "NotePad.h"
+#include "NoteDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -28,6 +29,7 @@ NotePadList::NotePadList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	nButtonCount = 0;
 	nLineEndCount = 0;
 	nLineCount = 0;
+	noteClickState = NOTE_CLICK_STATE_NONE;
 }
 
 NotePadList::~NotePadList()
@@ -98,6 +100,7 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	{
 		ViewNote(allFolderList.at(i));
 	}
+	viewNoteList = allFolderList;
 	
 	for (int i = 0; i <= nLineEndCount; i++)
 	{
@@ -126,7 +129,39 @@ CRect NotePadList::SetButtonPosition(int nItemCount)
 	return ButtonPos;
 }
 
-void NotePadList::AddNotePad(CString strTitle, CString strContent)
+void NotePadList::UpdateNotePad(NoteItem* updateNote, CString strContent, bool isLock)
+{
+	NoteItem::NoteInit init;
+	init.nNoteName = updateNote->GetNoteName();
+	init.nFolderSequence = updateNote->GetFolderSequence();
+	init.strNoteContent = strContent;
+	init.tagColor = updateNote->GetTagColor();
+	init.isLock = isLock;
+	init.nFolderSize = updateNote->GetFolderSize();
+	updateNote->Update(init);
+
+	// Note 폴더에 파일추가
+	CString strTextPath = _T("");
+	CString strNoteName, strFolderSequence;
+	strNoteName.Format(_T("%d"), init.nNoteName);
+	strFolderSequence.Format(_T("%d"), init.nFolderSequence);
+	CustomXml::GetModulePath(strTextPath);
+	strTextPath += (_T("\\Note\\") + strFolderSequence + strNoteName + _T(".txt"));
+
+	NoteFile file;
+	if (file.NoteWrite(strTextPath, strContent))
+	{
+		NotePad::NoteSaveData saveNote;
+		saveNote.nFolderSequence = init.nFolderSequence;
+		saveNote.nLock = init.isLock;
+		saveNote.nNoteName = init.nNoteName;
+
+		notepad->SaveNoteXml(saveNote);
+		LoadNotePad(viewNoteList);
+	}
+}
+
+void NotePadList::AddNotePad(CString strContent, bool isLock)
 {
 	int nNoteName = (int)notepad->otherNoteList.size() + 1;
 	NoteItem* newNote = new NoteItem(currentTheme, this);
@@ -135,7 +170,7 @@ void NotePadList::AddNotePad(CString strTitle, CString strContent)
 	noteinit.nFolderSequence = 0;
 	noteinit.strNoteContent = strContent;
 	noteinit.tagColor = TAG_COLOR_5;
-	noteinit.isLock = false;
+	noteinit.isLock = isLock;
 	noteinit.nFolderSize = nNoteName;
 
 	newNote->Initialize(noteinit);
@@ -147,7 +182,7 @@ void NotePadList::AddNotePad(CString strTitle, CString strContent)
 	CString strNoteName;
 	strNoteName.Format(_T("%d"), nNoteName);
 	CustomXml::GetModulePath(strTextPath);
-	strTextPath += (_T("\\Note\\") _T("0") + strNoteName + _T(".txt"));
+	strTextPath += (_T("\\Note\\0") + strNoteName + _T(".txt"));
 
 	NoteFile file;
 	if (file.NoteWrite(strTextPath, strContent))
@@ -167,49 +202,6 @@ void NotePadList::AddNotePad(CString strTitle, CString strContent)
 		notepad->SaveFolderXml(saveFolder);
 		LoadNotePad({ notepad->otherNoteList });
 	}
-
-	// 버튼생성 함수 (index와 f인지 n인지에 따라서 폴더이미지 또는 노트이미지 생성)
-	//CString strButtonName;
-	//strButtonName.Format(_T("%dn0n"), nButtonCount + 1);
-	//InsertNewNote(false, strButtonName, strContent, false);
-	//if (nButtonCount != 1)
-	//{
-	//	if ((nButtonCount - 1) % 4 == 0)
-	//		scroll.IncreaseScroll();
-	//}
-
-	//for (int i = scroll.GetCurrentLinePos(); i < scroll.GetLineCount(); i++)
-	//{
-	//	OnVScroll(SB_PAGEDOWN, 0, GetScrollBarCtrl(SB_VERT));
-	//}
-
-	//// NotePad.conf에 추가
-	//CMarkup markUp;
-	//CString strFullPath = _T("");
-	//CustomXml::CreateConfigFile(strFullPath);
-	//strFullPath += _T("\\NotePad.conf");
-	//if (CustomXml::LoadConfigXml(&markUp, strFullPath))
-	//{
-	//	markUp.FindElem(_T("NotePad"));
-	//	markUp.IntoElem();
-
-	//	markUp.AddElem(_T("list"));
-	//	markUp.AddAttrib(_T("idx"), nButtonCount - 1);
-	//	markUp.AddAttrib(_T("name"), strButtonName);
-	//	markUp.AddAttrib(_T("lock"), 0);
-	//}
-	//CustomXml::SaveXml(&markUp, strFullPath);
-
-	//// Note 폴더에 파일추가
-	//CString strTextPath = _T("");
-	//CustomXml::GetModulePath(strTextPath);
-	//strTextPath += _T("\\Note\\");
-
-	//NoteFile file;
-	//if (file.NoteWrite(strTextPath + strButtonName + _T(".txt"), strContent))
-	//{
-
-	//}
 }
 
 void NotePadList::ViewNote(ViewNoteList notelist)
@@ -218,7 +210,7 @@ void NotePadList::ViewNote(ViewNoteList notelist)
 	{
 		NoteItem* targetNote = notelist.at(i);
 		CRect noteRect;
-		noteRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 5));
+		noteRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 6));
 		targetNote->ShowWindow(true);
 		targetNote->ShowLock(targetNote->IsLock() ? true : false);
 		targetNote->MoveWindow(noteRect.left, noteRect.top);
@@ -228,7 +220,7 @@ void NotePadList::ViewNote(ViewNoteList notelist)
 		nButtonCount++;
 		if (nButtonCount > 1)
 		{
-			if ((nButtonCount - 1) % 5 == 0)
+			if ((nButtonCount - 1) % 6 == 0)
 				nLineEndCount++;
 		}
 	}
@@ -297,6 +289,33 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint)
 	return bReturn;
 }
 
+NoteItem* NotePadList::FindNoteButton(HWND clickWND)
+{
+	for (int i = 0; i < (int)viewNoteList.size(); i++)
+	{
+		ViewNoteList notelists = viewNoteList.at(i);
+		for (int j = 0; j < (int)notelists.size(); j++)
+		{
+			if (notelists.at(j)->noteButton->m_hWnd == clickWND)
+			{
+				noteClickState = NOTE_CLICK_STATE_NOTE;
+				return notelists.at(j);
+			}
+			else if (notelists.at(j)->wrapButton->m_hWnd == clickWND)
+			{
+				noteClickState = NOTE_CLICK_STATE_WRAP;
+				return notelists.at(j);
+			}
+			else if (notelists.at(j)->tagButton->m_hWnd == clickWND)
+			{
+				noteClickState = NOTE_CLICK_STATE_TAG;
+				return notelists.at(j);
+			}
+		}
+	}
+	return nullptr;
+}
+
 BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -309,7 +328,29 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_LBUTTONUP)
 	{
-		if (DragEventUp(pMsg->hwnd, pMsg->pt)) return TRUE;
+		NoteItem* findNote = FindNoteButton(pMsg->hwnd);
+		if (findNote != nullptr)
+		{
+			if (noteClickState == NOTE_CLICK_STATE_TAG)
+			{
+				if (DragEventUp(pMsg->hwnd, pMsg->pt)) return TRUE;
+			}
+			else if (noteClickState == NOTE_CLICK_STATE_WRAP)
+			{
+				TRACE(L"click wrap\n");
+			}
+			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
+			{
+				bool isLock = findNote->IsLock();
+				CString strNoteContent = findNote->GetNoteContent();
+				NoteDlg createNote(NOTE_UPDATE, currentTheme, &strNoteContent, &isLock, notepad);
+				if (createNote.DoModal() == IDOK)
+				{
+					UpdateNotePad(findNote, strNoteContent, isLock);
+				}
+				return TRUE;
+			}
+		}
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
 	{

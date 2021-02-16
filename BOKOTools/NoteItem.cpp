@@ -3,6 +3,11 @@
 
 static unsigned int n_ButtonID = 70000;
 
+NoteItem::NoteItem()
+{
+
+}
+
 NoteItem::NoteItem(ThemeData* currentTheme, CWnd* pParent)
 {
 	this->currentTheme = currentTheme;
@@ -80,11 +85,10 @@ void NoteItem::Initialize(NoteInit init)
 	noteButton->MoveWindow(40, 5, 320, 30);
 
 	// button z-order
-	/*wrapButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	/*wrapButton->ModifyStyle(0, WS_CLIPSIBLINGS, 0);
 	tagButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	lockButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	noteButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-	wrapButton->BringWindowToTop();
 	tagButton->BringWindowToTop();
 	lockButton->BringWindowToTop();
 	noteButton->BringWindowToTop();*/
@@ -148,6 +152,7 @@ void NoteItem::SetNoteContent(CString strNoteContent)
 {
 	this->strNoteContent = strNoteContent;
 	this->strNoteTitle = strNoteContent.Left(18);
+	noteButton->SetWindowTextW(strNoteTitle);
 }
 
 void NoteItem::SetTagColor(COLORREF tagColor)

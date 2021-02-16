@@ -11,12 +11,15 @@
 
 IMPLEMENT_DYNAMIC(NoteDlg, CDialogEx)
 
-NoteDlg::NoteDlg(int nFolderMode, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+NoteDlg::NoteDlg(int nFolderMode, ThemeData* currentTheme, CString* strNoteContent, bool* isLock, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_CREATE_NOTE, pParent)
 {
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
 	this->nFolderMode = nFolderMode;
+	this->strNoteContent = strNoteContent;
+	this->isLock = isLock;
+	bLock = false;
 }
 
 NoteDlg::~NoteDlg()
@@ -39,6 +42,8 @@ BEGIN_MESSAGE_MAP(NoteDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BUTTON_CREATE_NOTE_LOCK, &NoteDlg::OnBnClickedButtonCreateNoteLock)
+	ON_BN_CLICKED(IDC_BUTTON_CREATE_NOTE_REPORT, &NoteDlg::OnBnClickedButtonCreateNoteReport)
 END_MESSAGE_MAP()
 
 
@@ -50,6 +55,17 @@ BOOL NoteDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	if (nFolderMode == NOTE_CREATE)
+	{
+		this->SetWindowTextW(_T("메모 생성"));
+		m_richedit_notepad.SetWindowTextW(_T(""));
+	}
+	else
+	{
+		this->SetWindowTextW(_T("메모 수정"));
+		m_richedit_notepad.SetWindowTextW(*strNoteContent);
+	}
+
 	this->SetBackgroundColor(currentTheme->GetFunctionBkColor());
 	m_topBrush.CreateSolidBrush(currentTheme->GetFunctionBkColor());
 	m_bottomBrush.CreateSolidBrush(RGB(255, 255, 255));
@@ -81,9 +97,20 @@ BOOL NoteDlg::OnInitDialog()
 	m_btn_report.LoadHovImage(IDB_PNG_NOTEPAD_REPORT_HOVER, _T("PNG"));
 	m_btn_report.LoadAltImage(IDB_PNG_NOTEPAD_REPORT_CLICK, _T("PNG"));
 
-	m_btn_lock.LoadStdImage(IDB_PNG_NOTEPAD_LOCK_NOMAL, _T("PNG"));
-	m_btn_lock.LoadHovImage(IDB_PNG_NOTEPAD_LOCK_HOVER, _T("PNG"));
-	m_btn_lock.LoadAltImage(IDB_PNG_NOTEPAD_LOCK_CLICK, _T("PNG"));
+	if (*isLock)
+	{
+		m_btn_lock.LoadStdImage(IDB_PNG_NOTEPAD_LOCK_CLICK, _T("PNG"));
+		m_btn_lock.LoadHovImage(IDB_PNG_NOTEPAD_LOCK_HOVER, _T("PNG"));
+		m_btn_lock.LoadAltImage(IDB_PNG_NOTEPAD_LOCK_NOMAL, _T("PNG"));
+		bLock = true;
+	}
+	else
+	{
+		m_btn_lock.LoadStdImage(IDB_PNG_NOTEPAD_LOCK_NOMAL, _T("PNG"));
+		m_btn_lock.LoadHovImage(IDB_PNG_NOTEPAD_LOCK_HOVER, _T("PNG"));
+		m_btn_lock.LoadAltImage(IDB_PNG_NOTEPAD_LOCK_CLICK, _T("PNG"));
+		bLock = false;
+	}
 	m_btn_lock.EnableToggle();
 
 	m_btn_report.ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
@@ -150,4 +177,32 @@ void NoteDlg::OnPaint()
 	pOld = dc.SelectObject(&m_bottomBrush);
 	dc.PatBlt(wrapCenterRect.left, wrapCenterRect.top, wrapCenterRect.Width(), wrapCenterRect.Height(), PATCOPY);
 	dc.SelectObject(pOld);
+}
+
+
+void NoteDlg::OnBnClickedButtonCreateNoteLock()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (bLock)
+	{
+		bLock = false;
+	}
+	else
+	{
+		bLock = true;
+	}
+}
+
+
+void NoteDlg::OnBnClickedButtonCreateNoteReport()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strNote;
+	m_richedit_notepad.GetWindowTextW(strNote);
+	if (!strNote.IsEmpty())
+	{
+		*strNoteContent = strNote;
+		*isLock = bLock;
+		NoteDlg::OnOK();
+	}
 }

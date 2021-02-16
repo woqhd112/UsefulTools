@@ -812,3 +812,11 @@ void CGdipButton::StartSound()
 {
 	PlaySound(MAKEINTRESOURCE(nSoundResourceID), AfxGetInstanceHandle(), SND_ASYNC | SND_RESOURCE);
 }
+
+
+BOOL CGdipButton::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CButton::OnCommand(wParam, lParam);
+}

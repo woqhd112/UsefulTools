@@ -10,6 +10,7 @@ class NoteItem
 
 public:
 
+	NoteItem();
 	NoteItem(ThemeData* currentTheme, CWnd* pParent);
 	~NoteItem();
 

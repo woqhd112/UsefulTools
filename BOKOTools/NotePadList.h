@@ -30,7 +30,15 @@ private:
 	CWnd* pParent;
 	NotePad* notepad;
 
-	ViewNoteList viewNoteList;
+	enum NoteClickState
+	{
+		NOTE_CLICK_STATE_NONE	= 0,
+		NOTE_CLICK_STATE_WRAP	= 1,
+		NOTE_CLICK_STATE_TAG	= 2,
+		NOTE_CLICK_STATE_NOTE	= 3
+	};
+
+	std::vector<ViewNoteList> viewNoteList;
 	std::vector<ViewNoteList> allFolderList;
 
 	CustomScroll scroll;
@@ -43,12 +51,14 @@ private:
 	int nButtonCount;
 	int nLineEndCount;
 	int nLineCount;
+	NoteClickState noteClickState;
 
 	CRect SetButtonPosition(int nItemCount);
 	void ViewNote(ViewNoteList notelist);
 	int ButtonLocationToPos(POINT pt);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 
+	NoteItem* FindNoteButton(HWND clickWND);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
@@ -61,7 +71,8 @@ protected:
 public:
 
 	void LoadNotePad(std::vector<ViewNoteList> allFolderList);
-	void AddNotePad(CString strTitle, CString strContent);
+	void AddNotePad(CString strContent, bool isLock);
+	void UpdateNotePad(NoteItem* updateNote, CString strContent, bool isLock);
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

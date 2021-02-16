@@ -11,7 +11,7 @@ class NoteDlg : public CDialogEx
 	DECLARE_DYNAMIC(NoteDlg)
 
 public:
-	NoteDlg(int nFolderMode, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	NoteDlg(int nFolderMode, ThemeData* currentTheme, CString* strNoteContent, bool* isLock, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NoteDlg();
 
 // 대화 상자 데이터입니다.
@@ -44,6 +44,10 @@ private:
 	CRect wrapCenterRect;
 	CFont thisFont;
 
+	bool* isLock;
+	bool bLock;
+	CString* strNoteContent;
+
 public:
 	
 	virtual BOOL OnInitDialog();
@@ -52,4 +56,6 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnPaint();
+	afx_msg void OnBnClickedButtonCreateNoteLock();
+	afx_msg void OnBnClickedButtonCreateNoteReport();
 };

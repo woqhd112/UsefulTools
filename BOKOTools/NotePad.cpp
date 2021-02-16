@@ -579,14 +579,12 @@ void NotePad::OnBnClickedButtonEditUnderline()
 void NotePad::OnBnClickedButtonNotepadReport()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_richedit_note.SetSel(0, 18);
-	CString strNoteTitle = m_richedit_note.GetSelText();
 	CString strNoteContent;
 	m_richedit_note.GetWindowTextW(strNoteContent);
 	
 	// title, content를 notepadlist에 전달해서 버튼생성
 	if (!strNoteContent.IsEmpty())
-		notepadlist->AddNotePad(strNoteTitle, strNoteContent);
+		notepadlist->AddNotePad(strNoteContent, false);
 
 	m_richedit_note.SetWindowTextW(_T(""));
 }
@@ -665,9 +663,12 @@ void NotePad::OnBnClickedButtonAddFolder()
 void NotePad::OnBnClickedButtonNotepadCreateNote()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	NoteDlg createNote(NOTE_CREATE, currentTheme, this);
+	bool isLock = false;
+	CString strNoteContent;
+	NoteDlg createNote(NOTE_CREATE, currentTheme, &strNoteContent, &isLock, this);
 	if (createNote.DoModal() == IDOK)
 	{
+		notepadlist->AddNotePad(strNoteContent, isLock);
 	}
 }
+
