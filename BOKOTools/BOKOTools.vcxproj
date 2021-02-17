@@ -262,7 +262,6 @@
     <ClCompile Include="CustomScroll.cpp" />
     <ClCompile Include="CustomXml.cpp" />
     <ClCompile Include="DragDialog.cpp" />
-    <ClCompile Include="DragWrapper.cpp" />
     <ClCompile Include="FolderDlg.cpp" />
     <ClCompile Include="FolderItem.cpp" />
     <ClCompile Include="FolderList.cpp" />

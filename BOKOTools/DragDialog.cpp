@@ -16,11 +16,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(DragDialog, CDialogEx)
 
-DragDialog::DragDialog(CGdipButton* eventButton, CWnd* pParent /*=nullptr*/)
+DragDialog::DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_DRAG, pParent)
 {
 	this->hoverButton = eventButton;
+	this->hoverStatic = eventStatic;
 	this->pParent = pParent;
+	this->nButtonWidth = nButtonWidth;
+	this->nButtonHeight = nButtonHeight;
 }
 
 DragDialog::~DragDialog()
@@ -28,8 +31,17 @@ DragDialog::~DragDialog()
 	if (newButton)
 	{
 		newButton->ShowWindow(SW_HIDE);
+		newStatic->DestroyWindow();
 		delete newButton;
 		newButton = nullptr;
+	}
+
+	if (newStatic)
+	{
+		newStatic->ShowWindow(SW_HIDE);
+		newStatic->DestroyWindow();
+		delete newStatic;
+		newStatic = nullptr;
 	}
 }
 
@@ -54,19 +66,31 @@ BOOL DragDialog::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	newButton = new CGdipButton;
-	newButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, 50000);
+	if (hoverButton)
+	{
+		newButton = new CGdipButton;
+		newButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), this, 50000);
 
-	int nStd = hoverButton->nStdImageID;
-	int nHov = hoverButton->nHovImageID;
-	int nAlt = hoverButton->nStdImageID;
+		int nStd = hoverButton->nStdImageID;
+		int nHov = hoverButton->nHovImageID;
+		int nAlt = hoverButton->nStdImageID;
 
-	newButton->strButtonName = hoverButton->strButtonName;
-	newButton->LoadStdImage(nStd, _T("PNG"), true);
-	newButton->LoadHovImage(nHov, _T("PNG"), true);
-	newButton->LoadAltImage(nAlt, _T("PNG"), true);
-	newButton->ShowWindow(SW_SHOW);
-	newButton->MoveWindow(0, 0, 64, 64);
+		newButton->strButtonName = hoverButton->strButtonName;
+		newButton->LoadStdImage(nStd, _T("PNG"), true);
+		newButton->LoadHovImage(nHov, _T("PNG"), true);
+		newButton->LoadAltImage(nAlt, _T("PNG"), true);
+		newButton->ShowWindow(SW_SHOW);
+		newButton->MoveWindow(0, 0, nButtonWidth, nButtonHeight);
+	}
+
+	if (hoverStatic)
+	{
+		newStatic = new CalculateStatic;
+		newStatic->Create(_T(""), SS_CENTER, CRect(0, 0, 0, 0), this, 50001);
+		newStatic->Initialize(15, hoverStatic->strFontName);
+		newStatic->ShowWindow(SW_SHOW);
+		newStatic->MoveWindow(0, 0, nButtonWidth, 20);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

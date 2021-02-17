@@ -9,7 +9,7 @@
 class NotePad;
 class NotePadList;
 
-class FolderList : public CDialogEx, public DragWrapper
+class FolderList : public CDialogEx, public DragWrapper<FolderItem0*>
 {
 	DECLARE_DYNAMIC(FolderList)
 
@@ -29,8 +29,8 @@ public:
 
 private:
 
-	typedef std::vector<FolderItem0*> ViewFolderList;
 	typedef std::vector<NoteItem*> ViewNoteList;
+	typedef std::vector<FolderItem0*> ViewFolderList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;

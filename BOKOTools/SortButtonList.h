@@ -5,7 +5,7 @@
 // SortButtonList 대화 상자
 class SortIcon;
 
-class SortButtonList : public CDialogEx, public DragWrapper
+class SortButtonList : public CDialogEx, public DragWrapper<CGdipButton*>
 {
 	DECLARE_DYNAMIC(SortButtonList)
 
@@ -69,6 +69,11 @@ private:
 
 	int nLineEndCount;
 
+	int nStdID;
+	int nHovID;
+	int nAltID;
+	CString strButtonName;
+
 	CustomScroll scroll;
 	std::vector<CGdipButton*> iconMoveButtonVector;
 	CtlVector ctlVector;
@@ -79,12 +84,12 @@ private:
 	CRect SetButtonPosition(int nItemCount);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 	int ButtonLocationToPos(POINT pt);
+	BOOL FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton);
 
 
-
-	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findbutton = nullptr);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, CGdipButton* findbutton = nullptr);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint, CGdipButton* findbutton = nullptr);
 
 public:
 

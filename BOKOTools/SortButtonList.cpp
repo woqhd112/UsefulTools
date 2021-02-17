@@ -26,6 +26,11 @@ SortButtonList::SortButtonList(CtlVector ctlVector, ThemeData* currentTheme, CWn
 	nButtonID = 40000;
 	nEmptyDrawLineID = 50000;
 
+	nStdID = 0;
+	nHovID = 0;
+	nAltID = 0;
+	strButtonName = _T("");
+
 	/*
 	bButtonHover = true;
 	bHoverBase = true;
@@ -80,7 +85,7 @@ BOOL SortButtonList::OnInitDialog()
 	saveCtlVector = ctlVector;
 	LoadSortButton(ctlVector);
 	
-	Init(this, sorticon->GetParent(), BIND_HALF);
+	Init(this, sorticon->GetParent(), BIND_HALF, MODE_BUTTONVIEW);
 
 	DrawEmptyLine();
 	EnableEmptyLine(SW_HIDE);
@@ -459,7 +464,7 @@ void SortButtonList::DeleteButonVector(ButtonVector& buttonVector)
 	buttonVector.clear();
 }
 
-BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
+BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	if (ExistDragDlg())
@@ -521,7 +526,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		{
 			if (PtInRect(rect, convertPoint))
 			{
-				if (InsertNewButton(nLocToPos, GetDragButtonStdID(), GetDragButtonHovID(), GetDragButtonAltID(), GetDragButtonName()))
+				if (InsertNewButton(nLocToPos, nStdID, nHovID, nAltID, strButtonName))
 				{
 					for (int i = 0; i < sortButtonVector.size(); i++)
 					{
@@ -554,6 +559,10 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		}
 
 		DeleteDragDlg();
+		nStdID = 0;
+		nHovID = 0;
+		nAltID = 0;
+		strButtonName = _T("");
 		EnableEmptyLine(SW_HIDE);
 
 		bReturn = TRUE;
@@ -561,7 +570,7 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 	return bReturn;
 }
 
-BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
+BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	CGdipButton* findButton = NULL;
@@ -570,6 +579,10 @@ BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 		if (findButton != NULL)
 		{
 			ExecuteDragEvent(findButton);
+			nStdID = findButton->nStdImageID;
+			nHovID = findButton->nHovImageID;
+			nAltID = findButton->nAltImageID;
+			strButtonName = findButton->strButtonName;
 			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
 			downButton = findButton;
 			findButton->ShowWindow(SW_HIDE);
@@ -580,7 +593,7 @@ BOOL SortButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 	return bReturn;
 }
 
-BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
+BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	if (IsDragging(sorticon->dragRect, movePoint))
@@ -616,6 +629,21 @@ BOOL SortButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 	}
 
 	return bReturn;
+}
+
+BOOL SortButtonList::FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton)
+{
+	BOOL bSuccess = FALSE;
+	for (int i = 0; i < (int)findVector.size(); i++)
+	{
+		if (findTargetHWND == findVector.at(i)->m_hWnd)
+		{
+			*returnButton = findVector.at(i);
+			bSuccess = TRUE;
+			break;
+		}
+	}
+	return bSuccess;
 }
 
 BOOL SortButtonList::PreTranslateMessage(MSG* pMsg)

@@ -29,7 +29,9 @@ NotePadList::NotePadList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	nButtonCount = 0;
 	nLineEndCount = 0;
 	nLineCount = 0;
+	nEventPos = 0;
 	noteClickState = NOTE_CLICK_STATE_NONE;
+	notePosState = NOTE_POS_STATE_NONE;
 }
 
 NotePadList::~NotePadList()
@@ -62,7 +64,7 @@ BOOL NotePadList::OnInitDialog()
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
 	notepad = (NotePad*)pParent;
 
-	Init(this, notepad->GetParent(), BIND_REGULAR);
+	Init(this, notepad->GetParent(), BIND_REGULAR, MODE_MOUSEPOINT);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -70,9 +72,9 @@ BOOL NotePadList::OnInitDialog()
 
 void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 {
-	for (int i = 0; i < (int)this->allFolderList.size(); i++)
+	for (int i = 0; i < (int)this->viewNoteList.size(); i++)
 	{
-		ViewNoteList notelist = this->allFolderList.at(i);
+		ViewNoteList notelist = this->viewNoteList.at(i);
 		if (notelist.size() > 0)
 		{
 			for (int j = 0; j < (int)notelist.size(); j++)
@@ -84,7 +86,6 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 
 	nButtonCount = 0;
 	nLineEndCount = 0;
-	this->allFolderList = allFolderList;
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -115,17 +116,18 @@ CRect NotePadList::SetButtonPosition(int nItemCount)
 {
 	int nStartPos_x = 25;
 	int nStartPos_y = 2;
-	int nPictureSize = 40;
+	int nPictureSize_x = 365;
+	int nPictureSize_y = 40;
 
 	int nPictureToPictureMargin_y = 2;
 	//int nPictureToPictureMargin_x = 30;
 	CRect ButtonPos;
 
-	nStartPos_y += ((nPictureSize + nPictureToPictureMargin_y) * (nItemCount));
+	nStartPos_y += ((nPictureSize_y + nPictureToPictureMargin_y) * (nItemCount));
 
 	//nStartPos_x += ((nPictureSize + nPictureToPictureMargin_x) * (nItemCount % 4));
 
-	ButtonPos = { nStartPos_x, nStartPos_y, nStartPos_x + nPictureSize, nStartPos_y + nPictureSize };
+	ButtonPos = { nStartPos_x, nStartPos_y, nStartPos_x + nPictureSize_x, nStartPos_y + nPictureSize_y };
 	return ButtonPos;
 }
 
@@ -231,32 +233,23 @@ int NotePadList::ButtonLocationToPos(POINT pt)
 {
 	int nResult = -1;
 
-	int nStartPos_x = 35;
-	int nStartPos_y = 20;
-	int nPictureSize = 128;
+	int nStartPos_x = 25;
+	int nStartPos_y = 2;
+	int nPictureSize_x = 365;
+	int nPictureSize_y = 40;
 
-	int nPictureToPictureMargin_y = 30;
-	int nPictureToPictureMargin_x = 20;
+	int nPictureToPictureMargin_y = 2;
 
 	int nPosX = pt.x;
 	int nPosY = pt.y;
 
-	int nCount = 0;
-	bool bFind = false;
-	for (int i = 0; i < nButtonCount_X; i++)
+	for (int i = 0; i < 6; i++)
 	{
-		for (int j = 0; j < nLineCount; j++)
+		if (nPosY >= nStartPos_y + (nPictureSize_y + nPictureToPictureMargin_y) * i && nPosY <= nStartPos_y + nPictureSize_y + (nPictureSize_y + nPictureToPictureMargin_y) * i)
 		{
-			if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * j && nPosX <= nStartPos_x + nPictureSize + (nPictureToPictureMargin_x + nPictureSize) * j &&
-				nPosY >= nStartPos_y + (nPictureSize + nPictureToPictureMargin_y) * i && nPosY <= nStartPos_y + nPictureSize + (nPictureSize + nPictureToPictureMargin_y) * i)
-			{
-				nResult = nCount;
-				bFind = true;
-				break;
-			}
-			nCount++;
+			nResult = i;
+			break;
 		}
-		if (bFind) break;
 	}
 
 	return nResult;
@@ -268,29 +261,153 @@ bool NotePadList::InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID
 	return true;
 }
 
-BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint)
+BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 {
 	BOOL bReturn = FALSE;
+	if (ExistDragDlg())
+	{
+
+	}
+	
+	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
+	return bReturn;
+}
+
+BOOL NotePadList::DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findnote)
+{
+	BOOL bReturn = FALSE;
+	ExecuteDragEvent(findnote);
+
+	POINT convertPoint = downPoint;
+	ScreenToClient(&convertPoint);
+
+	nEventPos = ButtonLocationToPos(convertPoint);
+
+	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
+	findnote->ShowWindow(false);
 	
 	return bReturn;
 }
 
-BOOL NotePadList::DragEventDown(HWND downHWND, CPoint downPoint)
+BOOL NotePadList::DetectionPtInRect(const RECT* lprc, POINT pt)
+{
+	// 마우스가 rect에 포함되어 있고
+	// 마우스 좌표가 중앙보다 작을경우 (rect에서 상단에 위치할경우 /정중앙도 포함)
+	if (lprc->bottom >= pt.y && lprc->top <= pt.y &&
+		lprc->left <= pt.x && lprc->right >= pt.x &&
+		(lprc->bottom - ((lprc->bottom - lprc->top) / 2)) >= pt.y)
+	{
+		notePosState = NOTE_POS_STATE_HALF_UP;
+		return TRUE;
+	}
+	// 마우스가 rect에 포함되어 있고
+	// 마우스 좌표가 중앙보다 클경우 (rect에서 하단에 위치할경우)
+	else if (lprc->bottom >= pt.y && lprc->top <= pt.y &&
+		lprc->left <= pt.x && lprc->right >= pt.x &&
+		(lprc->bottom - ((lprc->bottom - lprc->top) / 2)) < pt.y)
+	{
+		notePosState = NOTE_POS_STATE_HALF_DOWN;
+		return TRUE;
+	}
+	// 그밖 (모두 포함안되는 경우)
+	else
+	{
+		notePosState = NOTE_POS_STATE_NONE;
+	}
+	return FALSE;
+}
+
+BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findnote)
 {
 	BOOL bReturn = FALSE;
 	
-	return bReturn;
-}
+	if (IsDragging(CRect(0, 0, 0, 0), movePoint))
+	{
+		POINT convertPoint = movePoint;
+		ScreenToClient(&convertPoint);
 
-BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint)
-{
-	BOOL bReturn = FALSE;
+		int nLocToPos = ButtonLocationToPos(convertPoint);
+
+		CRect rect = SetButtonPosition(nLocToPos);
+		/*TRACE(L"pt x : %ld\n", convertPoint.x);
+		TRACE(L"pt y : %ld\n", convertPoint.y);
+		TRACE(L"loc : %d\n", nLocToPos);
+		TRACE(L"rect left : %ld\n", rect.left);
+		TRACE(L"rect top : %ld\n", rect.top);
+		TRACE(L"rect width : %d\n", rect.Width());
+		TRACE(L"rect height : %d\n", rect.Height());*/
+		if (DetectionPtInRect(rect, convertPoint))
+		{
+			if (nEventPos != nLocToPos)
+			{
+				if (notePosState == NOTE_POS_STATE_HALF_UP)	// 마우스 포인트가 노트의 상단부분에 있을때
+				{
+					NoteItem* eventItem = viewNoteList.at(findnote->GetFolderSequence()).at(nLocToPos);	// 마우스 위치에있는 노트아이템을 찾는다
+					if (eventItem != findnote)	// 찾은 노트아이템과 들어올린 노트와 다를때만 
+					{
+						ViewNoteList notelists = viewNoteList.at(findnote->GetFolderSequence());
+					
+						std::iter_swap(notelists.begin() + nEventPos, notelists.begin() + nLocToPos);
+						int nSwapName = 0;
+						NoteItem* eventSwapItem = notelists.at(nEventPos);
+						NoteItem* findSwapItem = notelists.at(nLocToPos);
+
+						nSwapName = findSwapItem->GetNoteName();
+						eventSwapItem->SetNoteName(findSwapItem->GetNoteName());
+						findSwapItem->SetNoteName(nSwapName);
+
+						CRect eventChangeRect = SetButtonPosition(nEventPos);
+						eventItem->MoveWindow(eventChangeRect.left, eventChangeRect.top);
+						
+						CString strEventNoteTagSequnce = eventItem->GetNoteTagSequence();
+						eventItem->SetNoteTagSequence(findnote->GetNoteTagSequence());
+						findnote->SetNoteTagSequence(strEventNoteTagSequnce);
+
+						nEventPos = nLocToPos;
+					}
+				}
+				else if (notePosState == NOTE_POS_STATE_HALF_DOWN)
+				{
+					NoteItem* eventItem = viewNoteList.at(findnote->GetFolderSequence()).at(nLocToPos);	// 마우스 위치에있는 노트아이템을 찾는다
+					if (eventItem != findnote)	// 찾은 노트아이템과 들어올린 노트와 다를때만 
+					{
+						ViewNoteList notelists = viewNoteList.at(findnote->GetFolderSequence());
+
+						std::iter_swap(notelists.begin() + nEventPos, notelists.begin() + nLocToPos);
+						int nSwapName = 0;
+						NoteItem* eventSwapItem = notelists.at(nEventPos);
+						NoteItem* findSwapItem = notelists.at(nLocToPos);
+
+						nSwapName = findSwapItem->GetNoteName();
+						eventSwapItem->SetNoteName(findSwapItem->GetNoteName());
+						findSwapItem->SetNoteName(nSwapName);
+
+						CRect eventChangeRect = SetButtonPosition(nEventPos);
+						eventItem->MoveWindow(eventChangeRect.left, eventChangeRect.top);
+
+						CString strEventNoteTagSequnce = eventItem->GetNoteTagSequence();
+						eventItem->SetNoteTagSequence(findnote->GetNoteTagSequence());
+						findnote->SetNoteTagSequence(strEventNoteTagSequnce);
+
+						nEventPos = nLocToPos;
+					}
+				}
+			}
+		}
+		else
+		{
+		
+		}
+		bReturn = TRUE;
+	}
 
 	return bReturn;
 }
 
 NoteItem* NotePadList::FindNoteButton(HWND clickWND)
 {
+	noteClickState = NOTE_CLICK_STATE_NONE;
+
 	for (int i = 0; i < (int)viewNoteList.size(); i++)
 	{
 		ViewNoteList notelists = viewNoteList.at(i);
@@ -333,18 +450,13 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 		{
 			if (noteClickState == NOTE_CLICK_STATE_TAG)
 			{
-				if (DragEventUp(pMsg->hwnd, pMsg->pt)) return TRUE;
-			}
-			else if (noteClickState == NOTE_CLICK_STATE_WRAP)
-			{
-				TRACE(L"click wrap\n");
+				if (DragEventUp(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
 			{
 				bool isLock = findNote->IsLock();
 				CString strNoteContent = findNote->GetNoteContent();
-				NoteDlg createNote(NOTE_UPDATE, currentTheme, &strNoteContent, &isLock, notepad);
-				if (createNote.DoModal() == IDOK)
+				if (OpenNoteDlg(NOTE_UPDATE, &strNoteContent, &isLock))
 				{
 					UpdateNotePad(findNote, strNoteContent, isLock);
 				}
@@ -354,11 +466,29 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
 	{
-		if (DragEventDown(pMsg->hwnd, pMsg->pt)) return TRUE;
+		NoteItem* findNote = FindNoteButton(pMsg->hwnd);
+		if (findNote != nullptr)
+		{
+			if (noteClickState == NOTE_CLICK_STATE_TAG)
+			{
+				if (DragEventDown(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
+			}
+			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
+			{
+				TRACE(L"down note\n");
+			}
+		}
 	}
 	else if (pMsg->message == WM_MOUSEMOVE)
 	{
-		if (DragEventMove(pMsg->hwnd, pMsg->pt)) return TRUE;
+		NoteItem* findNote = FindNoteButton(pMsg->hwnd);
+		if (findNote != nullptr)
+		{
+			if (noteClickState == NOTE_CLICK_STATE_TAG)
+			{
+				if (DragEventMove(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
+			}
+		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
@@ -407,4 +537,14 @@ BOOL NotePadList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
 	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+bool NotePadList::OpenNoteDlg(int nNoteMode, CString* strNoteContent, bool* isLock)
+{
+	NoteDlg createNote(nNoteMode, currentTheme, strNoteContent, isLock, notepad);
+	if (createNote.DoModal() == IDOK)
+	{
+		return true;
+	}
+	return false;
 }

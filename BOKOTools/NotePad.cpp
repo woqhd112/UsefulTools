@@ -665,8 +665,7 @@ void NotePad::OnBnClickedButtonNotepadCreateNote()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	bool isLock = false;
 	CString strNoteContent;
-	NoteDlg createNote(NOTE_CREATE, currentTheme, &strNoteContent, &isLock, this);
-	if (createNote.DoModal() == IDOK)
+	if (notepadlist->OpenNoteDlg(NOTE_CREATE, &strNoteContent, &isLock))
 	{
 		notepadlist->AddNotePad(strNoteContent, isLock);
 	}

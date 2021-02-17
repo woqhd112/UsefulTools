@@ -14,11 +14,11 @@ public:
 	void Initialize(int nFontSize, CString strFontName);
 	void InvalidFont(CString strFontName);
 
+	CString strFontName;
+	int nFontSize;
 private:
 
 	CFont thisFont;
-	CString strFontName;
-	int nFontSize;
 
 protected:
 	DECLARE_MESSAGE_MAP()

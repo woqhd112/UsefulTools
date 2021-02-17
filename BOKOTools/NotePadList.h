@@ -2,12 +2,13 @@
 #include "CustomScroll.h"
 #include "DragWrapper.h"
 #include "FolderItem.h"
+#include <algorithm>
 
 // NotePadList 대화 상자
 class NotePad;
 class FolderList;
 
-class NotePadList : public CDialogEx, public DragWrapper
+class NotePadList : public CDialogEx, public DragWrapper<NoteItem*>
 {
 	DECLARE_DYNAMIC(NotePadList)
 
@@ -38,8 +39,14 @@ private:
 		NOTE_CLICK_STATE_NOTE	= 3
 	};
 
+	enum NoteDragPosState
+	{
+		NOTE_POS_STATE_NONE			= 0,
+		NOTE_POS_STATE_HALF_UP		= 1,
+		NOTE_POS_STATE_HALF_DOWN	= 2
+	};
+
 	std::vector<ViewNoteList> viewNoteList;
-	std::vector<ViewNoteList> allFolderList;
 
 	CustomScroll scroll;
 
@@ -51,7 +58,10 @@ private:
 	int nButtonCount;
 	int nLineEndCount;
 	int nLineCount;
+
+	int nEventPos;
 	NoteClickState noteClickState;
+	NoteDragPosState notePosState;
 
 	CRect SetButtonPosition(int nItemCount);
 	void ViewNote(ViewNoteList notelist);
@@ -59,10 +69,11 @@ private:
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 
 	NoteItem* FindNoteButton(HWND clickWND);
+	BOOL DetectionPtInRect(const RECT* lprc, POINT pt);
 
-	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote = nullptr);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findnote = nullptr);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findnote = nullptr);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -73,6 +84,7 @@ public:
 	void LoadNotePad(std::vector<ViewNoteList> allFolderList);
 	void AddNotePad(CString strContent, bool isLock);
 	void UpdateNotePad(NoteItem* updateNote, CString strContent, bool isLock);
+	bool OpenNoteDlg(int nNoteMode, CString* strNoteContent, bool* isLock);
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

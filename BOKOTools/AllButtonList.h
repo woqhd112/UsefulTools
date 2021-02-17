@@ -7,7 +7,7 @@
 
 class SortIcon;
 
-class AllButtonList : public CDialogEx, public DragWrapper
+class AllButtonList : public CDialogEx, public DragWrapper<CGdipButton*>
 {
 	DECLARE_DYNAMIC(AllButtonList)
 
@@ -43,7 +43,12 @@ private:
 	int nButtonID;
 
 	bool bLineEnd;
-	
+
+	int nStdID;
+	int nHovID;
+	int nAltID;
+	CString strButtonName;
+
 	/*bool bButtonHover;
 	bool bHoverBase;
 	bool bHoverEngineering;
@@ -66,6 +71,7 @@ private:
 	//void HoverSignal(bool bSignal, bool* bSignalItem);
 	void CtlToTop();
 	void CreateExitButton(int nButtonID);
+	BOOL FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton);
 
 
 	bool bScrollButtonDetect;
@@ -77,9 +83,9 @@ private:
 	void LoadAllButton();
 	void DeleteAllButton();
 
-	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findbutton = nullptr);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, CGdipButton* findbutton = nullptr);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint, CGdipButton* findbutton = nullptr);
 
 public:
 

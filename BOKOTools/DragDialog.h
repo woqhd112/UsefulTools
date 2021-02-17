@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GdipButton.h"
+#include "CalculateStatic.h"
 #pragma warning(disable:4819)
 #include "Resource.h"
 
@@ -10,7 +11,8 @@ class DragDialog : public CDialogEx
 	DECLARE_DYNAMIC(DragDialog)
 
 public:
-	DragDialog(CGdipButton* eventButton, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	
+	DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~DragDialog();
 
 // 대화 상자 데이터입니다.
@@ -20,6 +22,9 @@ private:
 
 	CWnd* pParent;
 	CGdipButton* hoverButton;
+	CalculateStatic* hoverStatic;
+	int nButtonWidth;
+	int nButtonHeight;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -27,6 +32,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CGdipButton* newButton;
+	CalculateStatic* newStatic;
 
 	//void Initialize(ThemeData* currentTheme, CGdipButton* eventButton);
 

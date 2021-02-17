@@ -27,6 +27,10 @@ AllButtonList::AllButtonList(CtlVector ctlVector, ThemeData* currentTheme, CWnd*
 	nButtonID = 45000;
 
 	bLineEnd = false;
+	nStdID = 0;
+	nHovID = 0;
+	nAltID = 0;
+	strButtonName = _T("");
 /*
 	bButtonHover = true;
 	bHoverBase = true;
@@ -85,7 +89,7 @@ BOOL AllButtonList::OnInitDialog()
 
 	LoadAllButton();
 
-	Init(this, sorticon->GetParent(), BIND_HALF);
+	Init(this, sorticon->GetParent(), BIND_HALF, MODE_BUTTONVIEW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -271,7 +275,7 @@ BOOL AllButtonList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 //
 //}
 
-BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
+BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	if (ExistDragDlg())
@@ -287,7 +291,7 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 
 		if (PtInRect(rect, convertPoint))
 		{
-			if (sorticon->sortButtonList->InsertNewButton(nLocToPos, GetDragButtonStdID(), GetDragButtonHovID(), GetDragButtonAltID(), GetDragButtonName()))
+			if (sorticon->sortButtonList->InsertNewButton(nLocToPos, nStdID, nHovID, nAltID, strButtonName))
 			{
 				for (int i = 0; i < (int)allButtonVector.size(); i++)
 				{
@@ -324,6 +328,10 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 		}
 
 		DeleteDragDlg();
+		nStdID = 0;
+		nHovID = 0;
+		nAltID = 0;
+		strButtonName = _T("");
 		sorticon->sortButtonList->EnableEmptyLine(SW_HIDE);
 
 		bReturn = TRUE;
@@ -331,7 +339,7 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint)
 	return bReturn;
 }
 
-BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
+BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	CGdipButton* findButton = NULL;
@@ -340,6 +348,10 @@ BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 		if (findButton != NULL)
 		{
 			ExecuteDragEvent(findButton);
+			nStdID = findButton->nStdImageID;
+			nHovID = findButton->nHovImageID;
+			nAltID = findButton->nAltImageID;
+			strButtonName = findButton->strButtonName;
 			SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 128, downPoint.y + 2 + 128));
 			downButton = findButton;
 			findButton->ShowWindow(SW_HIDE);
@@ -350,7 +362,7 @@ BOOL AllButtonList::DragEventDown(HWND downHWND, CPoint downPoint)
 	return bReturn;
 }
 
-BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
+BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint, CGdipButton* findbutton)
 {
 	BOOL bReturn = FALSE;
 	if (IsDragging(sorticon->dragRect, movePoint))
@@ -415,6 +427,21 @@ BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint)
 		bReturn = TRUE;
 	}
 	return bReturn;
+}
+
+BOOL AllButtonList::FindButtonSame(ButtonVector findVector, HWND findTargetHWND, CGdipButton** returnButton)
+{
+	BOOL bSuccess = FALSE;
+	for (int i = 0; i < (int)findVector.size(); i++)
+	{
+		if (findTargetHWND == findVector.at(i)->m_hWnd)
+		{
+			*returnButton = findVector.at(i);
+			bSuccess = TRUE;
+			break;
+		}
+	}
+	return bSuccess;
 }
 
 BOOL AllButtonList::PreTranslateMessage(MSG* pMsg)

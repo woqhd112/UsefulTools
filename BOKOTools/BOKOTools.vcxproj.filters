@@ -127,9 +127,6 @@
     <ClCompile Include="ManualList.cpp">
       <Filter>MainMenu\UsingManual</Filter>
     </ClCompile>
-    <ClCompile Include="DragWrapper.cpp">
-      <Filter>UI\DragDialog</Filter>
-    </ClCompile>
     <ClCompile Include="NoteFile.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>

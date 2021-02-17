@@ -180,6 +180,25 @@ void NoteItem::SetNoteName(int nNoteName)
 	this->nNoteName = nNoteName;
 }
 
+void NoteItem::SetNoteTagSequence(int nNoteSequnece)
+{
+	CString strNoteSequence;
+	strNoteSequence.Format(_T("%d"), nNoteSequnece);
+	SetNoteTagSequence(strNoteSequence);
+}
+
+void NoteItem::SetNoteTagSequence(CString strNoteSequnece)
+{
+	tagButton->SetWindowTextW(strNoteSequnece);
+}
+
+CString NoteItem::GetNoteTagSequence()
+{
+	CString strFindNoteSequence;
+	tagButton->GetWindowTextW(strFindNoteSequence);
+	return strFindNoteSequence;
+}
+
 int NoteItem::GetFolderSequence()
 {
 	return nFolderSequence;
