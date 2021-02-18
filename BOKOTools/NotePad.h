@@ -89,6 +89,7 @@ private:
 	void SaveFolderXml(FolderSaveData folderdata);
 	void CreateFolderXml(FolderSaveData folderdata);
 	void InvalidateSame();
+	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

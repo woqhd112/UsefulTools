@@ -1,5 +1,12 @@
 #include "pch.h"
 #include "NoteItem.h"
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 static unsigned int n_ButtonID = 70000;
 
@@ -45,16 +52,16 @@ NoteItem::~NoteItem()
 
 	if (tagButton)
 	{
-		lockButton->DestroyWindow();
-		delete lockButton;
-		lockButton = nullptr;
+		tagButton->DestroyWindow();
+		delete tagButton;
+		tagButton = nullptr;
 	}
 
 	if (wrapButton)
 	{
-		lockButton->DestroyWindow();
-		delete lockButton;
-		lockButton = nullptr;
+		wrapButton->DestroyWindow();
+		delete wrapButton;
+		wrapButton = nullptr;
 	}
 }
 

@@ -41,12 +41,12 @@ private:
 
 	enum NoteDragPosState
 	{
-		NOTE_POS_STATE_NONE			= 0,
-		NOTE_POS_STATE_HALF_UP		= 1,
-		NOTE_POS_STATE_HALF_DOWN	= 2
+		NOTE_POS_STATE_NONE			= 0,	// 아무상태 아닐때
+		NOTE_POS_STATE_HALF_DETECT		= 1,	// 마우스가 아래로 내려갈때 버튼 위에 댔을때
 	};
 
 	std::vector<ViewNoteList> viewNoteList;
+	std::vector<ViewNoteList> baseViewNoteList;
 
 	CustomScroll scroll;
 
@@ -62,14 +62,20 @@ private:
 	int nEventPos;
 	NoteClickState noteClickState;
 	NoteDragPosState notePosState;
+	POINT postMousePoint;
+
+
+	int nFindSaveFolderSequence;
+	ViewNoteList saveNoteList;
 
 	CRect SetButtonPosition(int nItemCount);
 	void ViewNote(ViewNoteList notelist);
 	int ButtonLocationToPos(POINT pt);
 	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
+	void UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 
 	NoteItem* FindNoteButton(HWND clickWND);
-	BOOL DetectionPtInRect(const RECT* lprc, POINT pt);
+	BOOL DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt, unsigned int nJump);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote = nullptr);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findnote = nullptr);

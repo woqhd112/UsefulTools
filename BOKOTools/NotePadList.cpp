@@ -32,11 +32,12 @@ NotePadList::NotePadList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	nEventPos = 0;
 	noteClickState = NOTE_CLICK_STATE_NONE;
 	notePosState = NOTE_POS_STATE_NONE;
+	postMousePoint = { 0, 0 };
 }
 
 NotePadList::~NotePadList()
 {
-	
+	viewNoteList.clear();
 }
 
 void NotePadList::DoDataExchange(CDataExchange* pDX)
@@ -102,6 +103,7 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 		ViewNote(allFolderList.at(i));
 	}
 	viewNoteList = allFolderList;
+	baseViewNoteList = allFolderList;
 	
 	for (int i = 0; i <= nLineEndCount; i++)
 	{
@@ -266,8 +268,32 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 	BOOL bReturn = FALSE;
 	if (ExistDragDlg())
 	{
+		findnote->ShowWindow(true);
+		POINT convertPoint = upPoint;
+		ScreenToClient(&convertPoint);
 
+		int nLocToPos = ButtonLocationToPos(convertPoint);
+		CRect rect = SetButtonPosition(nLocToPos);
+			TRACE(L"loc : %d\n", nLocToPos);
+		if (PtInRect(rect, convertPoint))
+		{
+			TRACE(L"접근\n");
+			// 스왑한 노트정보를 현재 상속된 폴더에 업데이트한다.
+			notepad->folderlist->UpdateFolderVector(saveNoteList, nFindSaveFolderSequence);
+
+			// 스왑한 노트정보를 notepad에 있는 전체폴더에 업데이트한다.
+			notepad->UpdateAllNoteVector(saveNoteList, nFindSaveFolderSequence);
+
+			nFindSaveFolderSequence = 0;
+			saveNoteList.clear();
+			baseViewNoteList = viewNoteList;
+		}
+		else
+		{
+			LoadNotePad(baseViewNoteList);
+		}
 	}
+	
 	
 	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
 	return bReturn;
@@ -289,31 +315,27 @@ BOOL NotePadList::DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findn
 	return bReturn;
 }
 
-BOOL NotePadList::DetectionPtInRect(const RECT* lprc, POINT pt)
+BOOL NotePadList::DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt, unsigned int nJump)
 {
-	// 마우스가 rect에 포함되어 있고
-	// 마우스 좌표가 중앙보다 작을경우 (rect에서 상단에 위치할경우 /정중앙도 포함)
-	if (lprc->bottom >= pt.y && lprc->top <= pt.y &&
-		lprc->left <= pt.x && lprc->right >= pt.x &&
-		(lprc->bottom - ((lprc->bottom - lprc->top) / 2)) >= pt.y)
+	int nRECTPosError = abs(int(targetRECT->top - thisRECT->top));
+	
+	if (nRECTPosError > 20)
 	{
-		notePosState = NOTE_POS_STATE_HALF_UP;
-		return TRUE;
+
+		if (targetRECT->bottom >= pt.y && targetRECT->top <= pt.y &&
+			targetRECT->left <= pt.x && targetRECT->right >= pt.x)
+		{
+			
+			notePosState = NOTE_POS_STATE_HALF_DETECT;
+			postMousePoint = pt;
+			return TRUE;
+		}
+		else
+		{
+			notePosState = NOTE_POS_STATE_NONE;
+		}
 	}
-	// 마우스가 rect에 포함되어 있고
-	// 마우스 좌표가 중앙보다 클경우 (rect에서 하단에 위치할경우)
-	else if (lprc->bottom >= pt.y && lprc->top <= pt.y &&
-		lprc->left <= pt.x && lprc->right >= pt.x &&
-		(lprc->bottom - ((lprc->bottom - lprc->top) / 2)) < pt.y)
-	{
-		notePosState = NOTE_POS_STATE_HALF_DOWN;
-		return TRUE;
-	}
-	// 그밖 (모두 포함안되는 경우)
-	else
-	{
-		notePosState = NOTE_POS_STATE_NONE;
-	}
+
 	return FALSE;
 }
 
@@ -327,8 +349,9 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 		ScreenToClient(&convertPoint);
 
 		int nLocToPos = ButtonLocationToPos(convertPoint);
-
+		
 		CRect rect = SetButtonPosition(nLocToPos);
+		CRect rect1 = SetButtonPosition(nEventPos);
 		/*TRACE(L"pt x : %ld\n", convertPoint.x);
 		TRACE(L"pt y : %ld\n", convertPoint.y);
 		TRACE(L"loc : %d\n", nLocToPos);
@@ -336,61 +359,56 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 		TRACE(L"rect top : %ld\n", rect.top);
 		TRACE(L"rect width : %d\n", rect.Width());
 		TRACE(L"rect height : %d\n", rect.Height());*/
-		if (DetectionPtInRect(rect, convertPoint))
+		int nJump = nEventPos - nLocToPos;
+		int absJump = abs(nJump);
+		
+		if (DetectionPtInRect(rect, rect1, convertPoint, absJump))
 		{
-			if (nEventPos != nLocToPos)
+			if (notePosState == NOTE_POS_STATE_HALF_DETECT)
 			{
-				if (notePosState == NOTE_POS_STATE_HALF_UP)	// 마우스 포인트가 노트의 상단부분에 있을때
+				//int nFindFolderSequence = findnote->GetFolderSequence();
+				//ViewNoteList notelists;	
+				nFindSaveFolderSequence = findnote->GetFolderSequence();
+
+				// 사이즈가 1보다 클경우는 전체 폴더리스트
+				if ((int)viewNoteList.size() > 1)
+					saveNoteList = viewNoteList.at(nFindSaveFolderSequence);
+				else
+					saveNoteList = viewNoteList.at(0);
+
+				if (nLocToPos > ((int)saveNoteList.size() - 1) || nEventPos > ((int)saveNoteList.size() - 1)) return FALSE;
+
+				NoteItem* eventItem = saveNoteList.at(nLocToPos);
+
+				// 찾은 노트아이템과 들어올린 노트와 다를때만 
+				if (eventItem != findnote)	
 				{
-					NoteItem* eventItem = viewNoteList.at(findnote->GetFolderSequence()).at(nLocToPos);	// 마우스 위치에있는 노트아이템을 찾는다
-					if (eventItem != findnote)	// 찾은 노트아이템과 들어올린 노트와 다를때만 
-					{
-						ViewNoteList notelists = viewNoteList.at(findnote->GetFolderSequence());
-					
-						std::iter_swap(notelists.begin() + nEventPos, notelists.begin() + nLocToPos);
-						int nSwapName = 0;
-						NoteItem* eventSwapItem = notelists.at(nEventPos);
-						NoteItem* findSwapItem = notelists.at(nLocToPos);
+					// 현재 출력중인 노트리스트에서 노트를 스왑한다
+					std::iter_swap(saveNoteList.begin() + nEventPos, saveNoteList.begin() + nLocToPos);
+					int nSwapName = 0;
+					NoteItem* eventSwapItem = saveNoteList.at(nEventPos);
+					NoteItem* findSwapItem = saveNoteList.at(nLocToPos);
 
-						nSwapName = findSwapItem->GetNoteName();
-						eventSwapItem->SetNoteName(findSwapItem->GetNoteName());
-						findSwapItem->SetNoteName(nSwapName);
+					// 노트의 이름명을 스왑한다.
+					nSwapName = eventItem->GetNoteName();
+					eventItem->SetNoteName(findnote->GetNoteName());
+					findnote->SetNoteName(nSwapName);
 
-						CRect eventChangeRect = SetButtonPosition(nEventPos);
-						eventItem->MoveWindow(eventChangeRect.left, eventChangeRect.top);
-						
-						CString strEventNoteTagSequnce = eventItem->GetNoteTagSequence();
-						eventItem->SetNoteTagSequence(findnote->GetNoteTagSequence());
-						findnote->SetNoteTagSequence(strEventNoteTagSequnce);
+					// 노트의 위치를 스왑한다.
+					CRect eventChangeRect = SetButtonPosition(nEventPos);
+					CRect findChangeRect = SetButtonPosition(nLocToPos);
+					eventItem->MoveWindow(eventChangeRect.left, eventChangeRect.top);
+					findnote->MoveWindow(findChangeRect.left, findChangeRect.top);
 
-						nEventPos = nLocToPos;
-					}
-				}
-				else if (notePosState == NOTE_POS_STATE_HALF_DOWN)
-				{
-					NoteItem* eventItem = viewNoteList.at(findnote->GetFolderSequence()).at(nLocToPos);	// 마우스 위치에있는 노트아이템을 찾는다
-					if (eventItem != findnote)	// 찾은 노트아이템과 들어올린 노트와 다를때만 
-					{
-						ViewNoteList notelists = viewNoteList.at(findnote->GetFolderSequence());
+					// 노트의 태그 시퀀스를 스왑한다.
+					CString strEventNoteTagSequnce = eventItem->GetNoteTagSequence();
+					eventItem->SetNoteTagSequence(findnote->GetNoteTagSequence());
+					findnote->SetNoteTagSequence(strEventNoteTagSequnce);
 
-						std::iter_swap(notelists.begin() + nEventPos, notelists.begin() + nLocToPos);
-						int nSwapName = 0;
-						NoteItem* eventSwapItem = notelists.at(nEventPos);
-						NoteItem* findSwapItem = notelists.at(nLocToPos);
+					// 현재 출력중인 노트리스트를 업데이트한다.
+					UpdateNoteVector(saveNoteList, nFindSaveFolderSequence);
 
-						nSwapName = findSwapItem->GetNoteName();
-						eventSwapItem->SetNoteName(findSwapItem->GetNoteName());
-						findSwapItem->SetNoteName(nSwapName);
-
-						CRect eventChangeRect = SetButtonPosition(nEventPos);
-						eventItem->MoveWindow(eventChangeRect.left, eventChangeRect.top);
-
-						CString strEventNoteTagSequnce = eventItem->GetNoteTagSequence();
-						eventItem->SetNoteTagSequence(findnote->GetNoteTagSequence());
-						findnote->SetNoteTagSequence(strEventNoteTagSequnce);
-
-						nEventPos = nLocToPos;
-					}
+					nEventPos = nLocToPos;
 				}
 			}
 		}
@@ -547,4 +565,19 @@ bool NotePadList::OpenNoteDlg(int nNoteMode, CString* strNoteContent, bool* isLo
 		return true;
 	}
 	return false;
+}
+
+void NotePadList::UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex)
+{
+	std::vector<ViewNoteList> newAllocNoteList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocNoteList.push_back(viewNoteList.at(i));
+	}
+	newAllocNoteList.push_back(updateNoteList);
+	for (int i = (int)newAllocNoteList.size(); i < (int)viewNoteList.size(); i++)
+	{
+		newAllocNoteList.push_back(viewNoteList.at(i));
+	}
+	viewNoteList.assign(newAllocNoteList.begin(), newAllocNoteList.end());
 }

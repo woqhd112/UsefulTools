@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "FolderItem.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW 
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 static unsigned int s_ButtonID = 75000;
 
 FolderItem0::FolderItem0(ThemeData* currentTheme, CWnd* pParent)
@@ -201,6 +207,11 @@ void FolderItem0::SetFolderSequence(int nFolderSequence)
 void FolderItem0::SetFolderColorIndex(int nFolderColorIndex)
 {
 	this->nFolderColorIndex = nFolderColorIndex;
+}
+
+void FolderItem0::SetFolder(FolderItem0::Folder folder)
+{
+	this->folder = folder;
 }
 
 CString FolderItem0::GetFolderName()

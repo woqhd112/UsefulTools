@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "NoteFile.h"
-
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 NoteFile::NoteFile()
 {
@@ -25,7 +29,9 @@ bool NoteFile::NoteRead(CString strPath, CString& strBuffer)
 			{
 				char pbufWrite[1000] = { 0, };
 				dwCount = noteFile.Read(pbufWrite, sizeof(pbufWrite));
-				strBuffer.Append((CString)UTF8toANSI(pbufWrite), dwCount);
+				char* utfFormat = UTF8toANSI(pbufWrite);
+				strBuffer.Append((CString)utfFormat, dwCount);
+				delete[] utfFormat;
 			} while (dwCount > 0);
 			noteFile.Close();
 			bReturn = true;
@@ -47,7 +53,7 @@ bool NoteFile::NoteWrite(CString strPath, CString strContent)
 		try
 		{
 			CT2CA outputString(strContent, CP_UTF8);
-			createFile.Write(outputString, ::strlen(outputString));
+			createFile.Write(outputString, (UINT)::strlen(outputString));
 			createFile.Close();
 			bReturn = true;
 		}

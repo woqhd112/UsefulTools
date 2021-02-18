@@ -47,6 +47,7 @@ private:
 	void ViewFolder(ViewFolderList folderlist);
 	CRect SetButtonPosition(int nItemCount);
 	void UpdateFolder(FolderItem0* folderItem);
+	void UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex);
 
 	bool bThread;
 	bool bPressMaintain;

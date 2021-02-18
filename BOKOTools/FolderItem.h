@@ -30,6 +30,7 @@ public:
 	void SetFolderSize(int nFolderSize);
 	void SetFolderSequence(int nFolderSequence);
 	void SetFolderColorIndex(int nFolderColorIndex);
+	void SetFolder(FolderItem0::Folder folder);
 
 	CString GetFolderName();
 	int GetFolderSize();

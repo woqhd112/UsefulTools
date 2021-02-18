@@ -31,7 +31,7 @@ DragDialog::~DragDialog()
 	if (newButton)
 	{
 		newButton->ShowWindow(SW_HIDE);
-		newStatic->DestroyWindow();
+		newButton->DestroyWindow();
 		delete newButton;
 		newButton = nullptr;
 	}

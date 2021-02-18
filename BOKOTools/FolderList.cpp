@@ -29,6 +29,7 @@ FolderList::FolderList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 FolderList::~FolderList()
 {
+	folderlist.clear();
 }
 
 void FolderList::DoDataExchange(CDataExchange* pDX)
@@ -295,8 +296,9 @@ afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 
 	if (undoFolder != downFolder)
 	{
-		if (undoFolder) undoFolder->folderButton->ToggleClickChange();
-		std::vector<std::vector<NoteItem*>> allFolder;
+		if (undoFolder)
+			undoFolder->folderButton->ToggleClickChange();
+		std::vector<ViewNoteList> allFolder;
 		allFolder.push_back(downFolder->GetFolder());
 		notepad->notepadlist->LoadNotePad(allFolder);
 		undoFolder = downFolder;
@@ -349,5 +351,10 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 		notepad->SaveFolderXml(saveFolder);
 		notepad->InvalidateSame();
 	}
+}
+
+void FolderList::UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex)
+{
+	folderlist.at(nUpdateIndex)->SetFolder(updateNoteList);
 }
 

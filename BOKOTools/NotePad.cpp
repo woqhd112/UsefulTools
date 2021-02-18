@@ -47,6 +47,28 @@ NotePad::~NotePad()
 		delete usingManual;
 		usingManual = nullptr;
 	}
+
+	for (int i = 0; i < (int)allNoteList.size(); i++)
+	{
+		ViewNoteList deleteNoteList = allNoteList.at(i);
+		for (int j = 0; j < (int)deleteNoteList.size(); j++)
+		{
+			NoteItem* deleteNote = deleteNoteList.at(j);
+			delete deleteNote;
+			deleteNote = nullptr;
+		}
+		deleteNoteList.clear();
+	}
+	otherNoteList.clear();
+	allNoteList.clear();
+
+	for (int i = 0; i < (int)allFolderList.size(); i++)
+	{
+		FolderItem0* deleteFolder = allFolderList.at(i);
+		delete deleteFolder;
+		deleteFolder = nullptr;
+	}
+	allFolderList.clear();
 }
 
 void NotePad::DoDataExchange(CDataExchange* pDX)
@@ -671,3 +693,19 @@ void NotePad::OnBnClickedButtonNotepadCreateNote()
 	}
 }
 
+void NotePad::UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex)
+{
+	std::vector<ViewNoteList> newAllocNoteList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocNoteList.push_back(allNoteList.at(i));
+	}
+	newAllocNoteList.push_back(updateNoteList);
+	for (int i = (int)newAllocNoteList.size(); i < (int)allNoteList.size(); i++)
+	{
+		newAllocNoteList.push_back(allNoteList.at(i));
+	}
+	allNoteList.assign(newAllocNoteList.begin(), newAllocNoteList.end());
+
+	if (nUpdateIndex == 0) otherNoteList = updateNoteList;	// 만약 업데이트 인덱스가 0번(기타)일 경우 other벡터도 업데이트
+}
