@@ -26,7 +26,6 @@ private:
 	CWnd* pParent;
 	int nFolderMode;
 	COLORREF* tagColor;
-	COLORREF selectColor;
 	CString* strFolderName;
 
 	CalculateButton m_btn_colorindex_1;

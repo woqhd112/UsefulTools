@@ -633,7 +633,7 @@ void CGdipButton::UseHoverEvent()
 	}
 }
 
-void CGdipButton::UserLeaveEvent()
+void CGdipButton::UseLeaveEvent()
 {
 	m_bIsTracking = FALSE;
 	m_bIsHovering = FALSE;
@@ -659,7 +659,7 @@ LRESULT CGdipButton::OnMouseLeave(WPARAM wparam, LPARAM lparam)
 {
 	if (m_bUseMouseEvent)
 	{
-		UserLeaveEvent();
+		UseLeaveEvent();
 	}
 	return 0;
 }

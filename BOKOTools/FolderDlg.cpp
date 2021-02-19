@@ -157,7 +157,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_1);
-	selectColor = TAG_COLOR_1;
+	*tagColor = TAG_COLOR_1;
 }
 
 
@@ -165,7 +165,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_2);
-	selectColor = TAG_COLOR_2;
+	*tagColor = TAG_COLOR_2;
 }
 
 
@@ -173,7 +173,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_3);
-	selectColor = TAG_COLOR_3;
+	*tagColor = TAG_COLOR_3;
 }
 
 
@@ -181,7 +181,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex4()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_4);
-	selectColor = TAG_COLOR_4;
+	*tagColor = TAG_COLOR_4;
 }
 
 
@@ -189,7 +189,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex5()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_5);
-	selectColor = TAG_COLOR_5;
+	*tagColor = TAG_COLOR_5;
 }
 
 
@@ -197,7 +197,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex6()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_6);
-	selectColor = TAG_COLOR_6;
+	*tagColor = TAG_COLOR_6;
 }
 
 
@@ -205,7 +205,7 @@ void FolderDlg::OnBnClickedButtonNotepadColorindex7()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	this->SetBackgroundColor(TAG_COLOR_7);
-	selectColor = TAG_COLOR_7;
+	*tagColor = TAG_COLOR_7;
 }
 
 
@@ -220,7 +220,7 @@ void FolderDlg::OnBnClickedButtonNotepadFolderSave()
 		m_edit_foldername.SetFocus();
 		return;
 	}
-	*tagColor = selectColor;
+	*tagColor = *tagColor;
 	*strFolderName = strFolderNameText;
 	FolderDlg::OnOK();
 }

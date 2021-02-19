@@ -14,6 +14,7 @@ class FolderList : public CDialogEx, public DragWrapper<FolderItem0*>
 	DECLARE_DYNAMIC(FolderList)
 
 	friend class NotePadList;
+	friend class NotePad;
 
 public:
 	FolderList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
@@ -45,9 +46,12 @@ private:
 	CustomScroll scroll;
 
 	void ViewFolder(ViewFolderList folderlist);
+	int ButtonLocationToPos(POINT pt);
+	int LocationAndScrollToFolderSequence(int nLocToPos);
 	CRect SetButtonPosition(int nItemCount);
 	void UpdateFolder(FolderItem0* folderItem);
 	void UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex);
+	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
 
 	bool bThread;
 	bool bPressMaintain;

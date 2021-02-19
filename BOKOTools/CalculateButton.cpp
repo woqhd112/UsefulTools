@@ -51,31 +51,7 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 	this->m_bDrawFocus = FALSE;
 
 	nID = this->GetDlgCtrlID();
-	int nRv = GetRValue(color);
-	int nGv = GetGValue(color);
-	int nBv = GetBValue(color);
-
-	if (nID == IDC_BUTTON_0 ||
-		nID == IDC_BUTTON_1 ||
-		nID == IDC_BUTTON_2 ||
-		nID == IDC_BUTTON_3 ||
-		nID == IDC_BUTTON_4 ||
-		nID == IDC_BUTTON_5 ||
-		nID == IDC_BUTTON_6 ||
-		nID == IDC_BUTTON_7 ||
-		nID == IDC_BUTTON_8 ||
-		nID == IDC_BUTTON_9)
-	{
-		m_defaultColor = color;
-		m_hoverColor = RGB(MinRGBColor(nRv, 30), MinRGBColor(nGv, 30), MinRGBColor(nBv, 30));
-		m_downColor = RGB(MinRGBColor(nRv, 80), MinRGBColor(nGv, 80), MinRGBColor(nBv, 80));
-	}
-	else
-	{
-		m_defaultColor = color;
-		m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
-		m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
-	}
+	ColorUpdate(color);
 
 	defaultFont.CreateFontW(nFontSize, 0, 0, 0, nFontFlags, FALSE, FALSE, 0, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
@@ -92,6 +68,35 @@ void CalculateButton::Initialize(COLORREF color, FlatStyle style, CString strFon
 
 	this->CMFCButton::SetFont(&defaultFont);
 	this->m_nFlatStyle = style;
+}
+
+void CalculateButton::ColorUpdate(COLORREF updateColor)
+{
+	int nRv = GetRValue(updateColor);
+	int nGv = GetGValue(updateColor);
+	int nBv = GetBValue(updateColor);
+
+	if (nID == IDC_BUTTON_0 ||
+		nID == IDC_BUTTON_1 ||
+		nID == IDC_BUTTON_2 ||
+		nID == IDC_BUTTON_3 ||
+		nID == IDC_BUTTON_4 ||
+		nID == IDC_BUTTON_5 ||
+		nID == IDC_BUTTON_6 ||
+		nID == IDC_BUTTON_7 ||
+		nID == IDC_BUTTON_8 ||
+		nID == IDC_BUTTON_9)
+	{
+		m_defaultColor = updateColor;
+		m_hoverColor = RGB(MinRGBColor(nRv, 30), MinRGBColor(nGv, 30), MinRGBColor(nBv, 30));
+		m_downColor = RGB(MinRGBColor(nRv, 80), MinRGBColor(nGv, 80), MinRGBColor(nBv, 80));
+	}
+	else
+	{
+		m_defaultColor = updateColor;
+		m_hoverColor = RGB(MinRGBColor(nRv, 20), MinRGBColor(nGv, 20), MinRGBColor(nBv, 20));
+		m_downColor = RGB(MinRGBColor(nRv, 70), MinRGBColor(nGv, 70), MinRGBColor(nBv, 70));
+	}
 }
 
 void CalculateButton::SetAlignment(CMFCButton::AlignStyle style)

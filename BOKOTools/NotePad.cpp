@@ -124,6 +124,36 @@ bool NotePad::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
 	return bReturn;
 }
 
+void NotePad::UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		while (markUp.FindElem(_T("folder")))
+		{
+			if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+			{
+				markUp.IntoElem();
+				while (markUp.FindElem(_T("note")))
+				{
+					if (markUp.GetAttrib(_T("name")) == origindata.nNoteName)
+					{
+						markUp.SetAttrib(_T("name"), updatedata.nNoteName);
+						markUp.SetAttrib(_T("lock"), updatedata.nLock);
+					}
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
 void NotePad::SaveNoteXml(NoteSaveData notedata)
 {
 	CMarkup markUp;
@@ -142,7 +172,7 @@ void NotePad::SaveNoteXml(NoteSaveData notedata)
 				markUp.IntoElem();
 				while (markUp.FindElem(_T("note")))
 				{
-					if (markUp.GetAttrib(_T("name")) == notedata.nNoteName)
+					if (_ttoi(markUp.GetAttrib(_T("name"))) == notedata.nNoteName)
 					{
 						markUp.SetAttrib(_T("lock"), notedata.nLock);
 					}
@@ -196,6 +226,31 @@ void NotePad::SaveFolderXml(FolderSaveData folderdata)
 				markUp.SetAttrib(_T("name"), folderdata.strFolderName);
 				markUp.SetAttrib(_T("tagcolor"), GetIndexFromTagColor(folderdata.folderTagColor));
 				markUp.SetAttrib(_T("size"), folderdata.nSize);
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePad::UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		while (markUp.FindElem(_T("folder")))
+		{
+			if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+			{
+				markUp.SetAttrib(_T("seq"), updatedata.nFolderSequence);
+				markUp.SetAttrib(_T("name"), updatedata.strFolderName);
+				markUp.SetAttrib(_T("tagcolor"), GetIndexFromTagColor(updatedata.folderTagColor));
+				markUp.SetAttrib(_T("size"), updatedata.nSize);
 			}
 		}
 	}
@@ -642,6 +697,15 @@ void NotePad::OnBnClickedButtonAllNotefolder()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	LoadAllNote();
+	for (int i = 0; i < (int)allFolderList.size(); i++)
+	{
+		FolderItem0* targetFolder = allFolderList.at(i);
+		if (targetFolder == folderlist->downFolder)
+		{
+			targetFolder->folderButton->ToggleClickChange();
+			folderlist->undoFolder = nullptr;
+		}
+	}
 }
 
 
@@ -649,6 +713,15 @@ void NotePad::OnBnClickedButtonOtherNotefolder()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	LoadOtherNote();
+	for (int i = 0; i < (int)allFolderList.size(); i++)
+	{
+		FolderItem0* targetFolder = allFolderList.at(i);
+		if (targetFolder == folderlist->downFolder)
+		{
+			targetFolder->folderButton->ToggleClickChange();
+			folderlist->undoFolder = nullptr;
+		}
+	}
 }
 
 
@@ -708,4 +781,19 @@ void NotePad::UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex)
 	allNoteList.assign(newAllocNoteList.begin(), newAllocNoteList.end());
 
 	if (nUpdateIndex == 0) otherNoteList = updateNoteList;	// 만약 업데이트 인덱스가 0번(기타)일 경우 other벡터도 업데이트
+}
+
+void NotePad::UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex)
+{
+	ViewFolderList newAllocFolderList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocFolderList.push_back(allFolderList.at(i));
+	}
+	newAllocFolderList.push_back(updateFolder);
+	for (int i = (int)newAllocFolderList.size(); i < (int)allFolderList.size(); i++)
+	{
+		newAllocFolderList.push_back(allFolderList.at(i));
+	}
+	allFolderList.assign(newAllocFolderList.begin(), newAllocFolderList.end());
 }

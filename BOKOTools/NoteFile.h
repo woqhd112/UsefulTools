@@ -9,6 +9,7 @@ public:
 
 	bool NoteRead(CString strPath, CString& strBuffer);
 	bool NoteWrite(CString strPath, CString strContent);
+	void NoteRename(CString strOldNoteName, CString strNewNoteName);
 
 private:
 

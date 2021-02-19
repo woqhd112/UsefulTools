@@ -90,14 +90,10 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		else // press 1초이상 동작 이벤트 비활성화
 		{
 			bThread = false;
-			for (int i = 0; i < (int)folderlist.size(); i++)
+			if (pMsg->hwnd == downFolder->folderButton->m_hWnd)
 			{
-				if (pMsg->hwnd == folderlist.at(i)->folderButton->m_hWnd)
-				{
-					PostMessage(FOLDER_VIEW, 0, 0);
-				}
+				PostMessage(FOLDER_VIEW, 0, 0);
 			}
-			
 		}
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
@@ -212,6 +208,49 @@ void FolderList::ViewFolder(ViewFolderList folderlist)
 				nLineEndCount++;
 		}
 	}
+}
+
+int FolderList::ButtonLocationToPos(POINT pt)
+{
+	int nResult = -1;
+
+	int nStartPos_x = 20;
+	int nStartPos_y = 20;
+	int nPictureSize = 64;
+
+	int nPictureToPictureMargin_x = 10;
+
+	int nPosX = pt.x;
+	int nPosY = pt.y;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (nPosX >= nStartPos_x + (nPictureSize + nPictureToPictureMargin_x) * i && nPosX <= nStartPos_x + nPictureSize + (nPictureSize + nPictureToPictureMargin_x) * i)
+		{
+			nResult = i;
+			break;
+		}
+	}
+
+	return nResult;
+}
+
+int FolderList::LocationAndScrollToFolderSequence(int nLocToPos)
+{
+	int nReturnSequence = -1;
+	if (nLocToPos == -1) return nReturnSequence;
+
+	// 첫스크롤일때
+	if (scroll.GetCurrentLinePos() == 1)
+	{
+		nReturnSequence = nLocToPos;
+	}
+	else
+	{
+		nReturnSequence = nLocToPos + (scroll.GetCurrentLinePos() - 1);
+	}
+
+	return nReturnSequence;
 }
 
 CRect FolderList::SetButtonPosition(int nItemCount)
@@ -358,3 +397,17 @@ void FolderList::UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateInde
 	folderlist.at(nUpdateIndex)->SetFolder(updateNoteList);
 }
 
+void FolderList::UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex)
+{
+	ViewFolderList newAllocFolderList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocFolderList.push_back(folderlist.at(i));
+	}
+	newAllocFolderList.push_back(updateFolder);
+	for (int i = (int)newAllocFolderList.size(); i < (int)folderlist.size(); i++)
+	{
+		newAllocFolderList.push_back(folderlist.at(i));
+	}
+	folderlist.assign(newAllocFolderList.begin(), newAllocFolderList.end());
+}

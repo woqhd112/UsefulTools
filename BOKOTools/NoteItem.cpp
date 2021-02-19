@@ -151,6 +151,7 @@ void NoteItem::Update(NoteInit init)
 {
 	ExecuteNoteInitData(init);
 	tagButton->SetFaceColor(init.tagColor);
+	tagButton->ColorUpdate(init.tagColor);
 	noteButton->SetWindowTextW(init.strNoteContent.Left(18));
 	ShowLock(init.isLock);
 }

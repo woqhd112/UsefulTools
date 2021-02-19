@@ -85,11 +85,14 @@ private:
 	void LoadNotePad();
 	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
 	void SaveNoteXml(NoteSaveData notedata);
+	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
 	void CreateNoteXml(NoteSaveData notedata);
 	void SaveFolderXml(FolderSaveData folderdata);
+	void UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata);
 	void CreateFolderXml(FolderSaveData folderdata);
 	void InvalidateSame();
 	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
+	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

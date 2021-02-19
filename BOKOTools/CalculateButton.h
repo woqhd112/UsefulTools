@@ -23,6 +23,7 @@ public:
 	void InsertImage(int nImageID);
 	void SetFont(FontFlag flag);
 	void SetAlignment(CMFCButton::AlignStyle style);
+	void ColorUpdate(COLORREF updateColor);
 
 	COLORREF m_defaultColor;
 	COLORREF m_hoverColor;

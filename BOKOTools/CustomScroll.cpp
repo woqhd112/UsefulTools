@@ -267,7 +267,7 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 				}
 				else
 				{
-					buttonVector.at(i)->UserLeaveEvent();
+					buttonVector.at(i)->UseLeaveEvent();
 				}
 				buttonVector.at(i)->MoveWindow(buttonRect.at(i));
 			}

@@ -76,7 +76,7 @@ public:
 	void StartSound();
 	void DisConnect();
 	void UseHoverEvent();
-	void UserLeaveEvent();
+	void UseLeaveEvent();
 	void ToggleClickChange();
 
 	bool m_bUseMouseEvent;

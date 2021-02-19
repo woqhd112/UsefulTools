@@ -13,6 +13,7 @@ class NotePadList : public CDialogEx, public DragWrapper<NoteItem*>
 	DECLARE_DYNAMIC(NotePadList)
 
 	friend class FolderList;
+	friend class NotePad;
 
 public:
 	NotePadList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
@@ -26,6 +27,7 @@ public:
 private:
 
 	typedef std::vector<NoteItem*> ViewNoteList;
+	typedef std::vector<FolderItem0*> ViewFolderList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
@@ -45,6 +47,13 @@ private:
 		NOTE_POS_STATE_HALF_DETECT		= 1,	// 마우스가 아래로 내려갈때 버튼 위에 댔을때
 	};
 
+	enum DragSectorPos
+	{
+		DRAG_SECTOR_PARENT = 0,
+		DRAG_SECTOR_NOTE = 1,
+		DRAG_SECTOR_FOLDER = 2,
+	};
+
 	std::vector<ViewNoteList> viewNoteList;
 	std::vector<ViewNoteList> baseViewNoteList;
 
@@ -62,20 +71,25 @@ private:
 	int nEventPos;
 	NoteClickState noteClickState;
 	NoteDragPosState notePosState;
+	DragSectorPos dragSectorPos;
 	POINT postMousePoint;
 
 
 	int nFindSaveFolderSequence;
 	ViewNoteList saveNoteList;
 
+	CGdipButton* findFolderButton;
+	int nSelectFolderSequence;
+	bool bMousePointFolderAccess;
+
+
 	CRect SetButtonPosition(int nItemCount);
 	void ViewNote(ViewNoteList notelist);
 	int ButtonLocationToPos(POINT pt);
-	bool InsertNewButton(int nButtonVectorIndex, int nStdID, int nHovID, int nAltID, CString strButtonName);
 	void UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 
 	NoteItem* FindNoteButton(HWND clickWND);
-	BOOL DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt, unsigned int nJump);
+	BOOL DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote = nullptr);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findnote = nullptr);

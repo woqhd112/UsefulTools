@@ -419,7 +419,7 @@ BOOL AllButtonList::DragEventMove(HWND moveHWND, CPoint movePoint, CGdipButton* 
 					bSortButtonHoverEvent = false;
 					for (int i = 0; i < (int)sorticon->sortButtonList->iconMoveButtonVector.size(); i++)
 					{
-						sorticon->sortButtonList->iconMoveButtonVector.at(i)->UserLeaveEvent();
+						sorticon->sortButtonList->iconMoveButtonVector.at(i)->UseLeaveEvent();
 					}
 				}
 			}

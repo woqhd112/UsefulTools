@@ -65,6 +65,11 @@ bool NoteFile::NoteWrite(CString strPath, CString strContent)
 	return bReturn;
 }
 
+void NoteFile::NoteRename(CString strOldNoteName, CString strNewNoteName)
+{
+	CFile::Rename(strOldNoteName, strNewNoteName);
+}
+
 char* NoteFile::UTF8toANSI(char *pszCode)
 {
 	BSTR    bstrWide;
