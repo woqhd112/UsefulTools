@@ -145,6 +145,9 @@
     <ClCompile Include="NoteDlg.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="NotePadRecycle.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -310,6 +313,9 @@
       <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="NoteDlg.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePadRecycle.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1689,6 +1695,18 @@
     <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_U.png">
       <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더</Filter>
     </Image>
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_B.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_FB.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_FU.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘</Filter>
+    </Image>
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_U.png">
+      <Filter>리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="리소스">
@@ -2269,6 +2287,9 @@
     </Filter>
     <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\찬 폴더">
       <UniqueIdentifier>{01ad7ed5-66a1-4986-9faf-e710eb8b8863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘">
+      <UniqueIdentifier>{320e3b52-5726-441c-a5df-4eebbbbc3a89}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

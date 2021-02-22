@@ -31,7 +31,6 @@ NoteItem::NoteItem(ThemeData* currentTheme, CWnd* pParent)
 	nFolderSequence = 0;
 	isLock = false;
 	noteRect = { 0, 0, 365, 40 };
-	isCreating = false;
 }
 
 NoteItem::~NoteItem()
@@ -103,12 +102,6 @@ void NoteItem::Initialize(NoteInit init)
 	// button show
 	ShowWindow(false);
 	//lockButton->ShowWindow(SW_HIDE);
-	isCreating = true;
-}
-
-bool NoteItem::IsCreating()
-{
-	return isCreating;
 }
 
 void NoteItem::MoveWindow(int nLeft, int nTop)
@@ -145,6 +138,8 @@ void NoteItem::ExecuteNoteInitData(NoteInit init)
 	nFolderSize = init.nFolderSize;
 	isLock = init.isLock;
 	nFolderSequence = init.nFolderSequence;
+	createTime = init.createTime;
+	updateTime = init.updateTime;
 }
 
 void NoteItem::Update(NoteInit init)
@@ -200,6 +195,16 @@ void NoteItem::SetNoteTagSequence(CString strNoteSequnece)
 	tagButton->SetWindowTextW(strNoteSequnece);
 }
 
+void NoteItem::SetCreateTime(CTime createTime)
+{
+	this->createTime = createTime;
+}
+
+void NoteItem::SetUpdateTime(CTime updateTime)
+{
+	this->updateTime = updateTime;
+}
+
 CString NoteItem::GetNoteTagSequence()
 {
 	CString strFindNoteSequence;
@@ -245,4 +250,14 @@ CRect NoteItem::GetNoteRect()
 int NoteItem::GetNoteName()
 {
 	return nNoteName;
+}
+
+CTime NoteItem::GetCreateTime()
+{
+	return createTime;
+}
+
+CTime NoteItem::GetUpdateTime()
+{
+	return updateTime;
 }

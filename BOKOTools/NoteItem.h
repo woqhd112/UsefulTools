@@ -18,6 +18,8 @@ public:
 	{
 		COLORREF tagColor = RGB(0, 0, 0);
 		CString strNoteContent = _T("");
+		CTime createTime;
+		CTime updateTime;
 		int nNoteName = 0;
 		int nFolderSize = 0;
 		int nFolderSequence = 0;
@@ -37,6 +39,8 @@ public:
 	void SetNoteName(int nNoteName);
 	void SetNoteTagSequence(int nNoteSequnece);
 	void SetNoteTagSequence(CString strNoteSequnece);
+	void SetCreateTime(CTime createTime);
+	void SetUpdateTime(CTime updateTime);
 
 	bool IsLock();
 	int GetFolderSize();
@@ -45,9 +49,10 @@ public:
 	CString GetNoteTitle();
 	CString GetNoteContent();
 	CRect GetNoteRect();
-	bool IsCreating();
 	int GetNoteName();
 	CString GetNoteTagSequence();
+	CTime GetCreateTime();
+	CTime GetUpdateTime();
 
 	void Update(NoteInit init);
 
@@ -60,11 +65,12 @@ private:
 	COLORREF tagColor;
 	CString strNoteTitle;
 	CString strNoteContent;
+	CTime createTime;
+	CTime updateTime;
 	int nNoteName;
 	int nFolderSize;
 	int nFolderSequence;
 	bool isLock;
-	bool isCreating;
 
 	void ExecuteNoteInitData(NoteInit init);
 

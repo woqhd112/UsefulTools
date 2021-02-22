@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
-// BOKOTools.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
+// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+// BOKOTools.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -497,6 +497,11 @@
 #define IDB_PNG_NOTEPAD_FULL_COLORINDEX_2_HOVER 744
 #define IDD_DIALOG_CREATE_FOLDER        748
 #define IDD_DIALOG_CREATE_NOTE          751
+#define IDB_PNG_NOTEPAD_RECYCLE_EMPTY_NOMAL 754
+#define IDB_PNG_NOTEPAD_RECYCLE_EMPTY_CLICK_FULL_NOMAL 755
+#define IDB_PNG_NOTEPAD_RECYCLE_FULL_HOVER_CLICK 756
+#define IDB_PNG_NOTEPAD_RECYCLE_EMPTY_HOVER 757
+#define IDD_DIALOG_NOTEPAD_RECYCLE      758
 #define IDC_INPUT_10_FROM2              1000
 #define IDC_INPUT_2_FROM2               1001
 #define IDC_OUTPUT_2_FROM2              1002
@@ -883,6 +888,7 @@
 #define IDC_BUTTON_NOTEPAD_CREATE_NOTE  1349
 #define IDC_BUTTON_CREATE_NOTE_ITALIC   1350
 #define IDC_BUTTON_CREATE_NOTE_UNDERLINE 1351
+#define IDC_EDIT_NOTEPAD_LATELY_NOTE    1352
 #define IDC_BUTTON_0                    2000
 #define IDC_BUTTON_1                    2001
 #define IDC_BUTTON_2                    2002
@@ -904,9 +910,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        754
+#define _APS_NEXT_RESOURCE_VALUE        760
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1352
+#define _APS_NEXT_CONTROL_VALUE         1353
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

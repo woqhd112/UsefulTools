@@ -237,6 +237,7 @@
     <ClInclude Include="NoteItem.h" />
     <ClInclude Include="NotePad.h" />
     <ClInclude Include="NotePadList.h" />
+    <ClInclude Include="NotePadRecycle.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Resource.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="NoteItem.cpp" />
     <ClCompile Include="NotePad.cpp" />
     <ClCompile Include="NotePadList.cpp" />
+    <ClCompile Include="NotePadRecycle.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -421,6 +423,10 @@
     <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_B.png" />
     <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_C.png" />
     <Image Include="res\NotePad\메모_폴더\Full Clipboard_Y_U.png" />
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_B.png" />
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_FB.png" />
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_FU.png" />
+    <Image Include="res\NotePad\쓰레기통\Recycle Bin_U.png" />
     <Image Include="res\NotePad\클립\Clip_B.png" />
     <Image Include="res\NotePad\클립\Clip_C.png" />
     <Image Include="res\NotePad\클립\Clip_U.png" />

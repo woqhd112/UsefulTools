@@ -87,6 +87,7 @@ private:
 	void ViewNote(ViewNoteList notelist);
 	int ButtonLocationToPos(POINT pt);
 	void UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
+	void SuccessUpdate();
 
 	NoteItem* FindNoteButton(HWND clickWND);
 	BOOL DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt);

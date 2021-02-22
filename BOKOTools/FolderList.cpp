@@ -84,15 +84,29 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		{
 			TRACE(_T("스레드 동작함\n"));
 			bPressMaintain = false;
-			downFolder->folderButton->ToggleClickChange();	//이부분이상함
+			if (downFolder)
+			{
+				downFolder->folderButton->ToggleClickChange();	//이부분이상함
+			}
 			return TRUE;
 		}
 		else // press 1초이상 동작 이벤트 비활성화
 		{
 			bThread = false;
-			if (pMsg->hwnd == downFolder->folderButton->m_hWnd)
+			if (downFolder)
 			{
-				PostMessage(FOLDER_VIEW, 0, 0);
+				if (pMsg->hwnd == downFolder->folderButton->m_hWnd)
+				{
+					PostMessage(FOLDER_VIEW, 0, 0);
+				}
+				else
+				{
+					return TRUE;
+				}
+			}
+			else
+			{
+				return TRUE;
 			}
 		}
 	}
@@ -344,6 +358,7 @@ afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 	}
 	else
 	{
+		downFolder = nullptr;
 		undoFolder = nullptr;
 		notepad->LoadAllNote();
 	}
@@ -365,6 +380,8 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 		updateFolder.strFolderName = strUpdateFolderName;
 		updateFolder.nFolderColorIndex = notepad->GetIndexFromTagColor(updateColor);
 		updateFolder.folder = folderItem->GetFolder();
+		updateFolder.createTime = folderItem->GetCreateTime();
+		updateFolder.updateTime = CTime::GetCurrentTime();
 		folderItem->Update(updateFolder);
 
 		ViewNoteList notelist = folderItem->GetFolder();
@@ -386,6 +403,8 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 		saveFolder.nFolderSequence = updateFolder.nFolderSequence;
 		saveFolder.nSize = updateFolder.nFolderSize;
 		saveFolder.strFolderName = strUpdateFolderName;
+		saveFolder.strCreateTime = notepad->GetTimeCal(updateFolder.createTime);
+		saveFolder.strUpdateTime = notepad->GetTimeCal(updateFolder.updateTime);
 
 		notepad->SaveFolderXml(saveFolder);
 		notepad->InvalidateSame();

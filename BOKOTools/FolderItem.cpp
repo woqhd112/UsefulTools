@@ -187,6 +187,8 @@ void FolderItem0::ExecuteFolderInitData(FolderInit init)
 	this->nFolderSequence = init.nFolderSequence;
 	this->folder = init.folder;
 	this->nFolderColorIndex = init.nFolderColorIndex;
+	this->createTime = init.createTime;
+	this->updateTime = init.updateTime;
 }
 
 void FolderItem0::SetFolderName(CString strFolderName)
@@ -212,6 +214,16 @@ void FolderItem0::SetFolderColorIndex(int nFolderColorIndex)
 void FolderItem0::SetFolder(FolderItem0::Folder folder)
 {
 	this->folder = folder;
+}
+
+void FolderItem0::SetCreateTime(CTime createTime)
+{
+	this->createTime = createTime;
+}
+
+void FolderItem0::SetUpdateTime(CTime updateTime)
+{
+	this->updateTime = updateTime;
 }
 
 CString FolderItem0::GetFolderName()
@@ -244,3 +256,12 @@ FolderItem0::Folder FolderItem0::GetFolder()
 	return folder;
 }
 
+CTime FolderItem0::GetCreateTime()
+{
+	return createTime;
+}
+
+CTime FolderItem0::GetUpdateTime()
+{
+	return updateTime;
+}

@@ -4,6 +4,7 @@
 #include "UsingManualDialog.h"
 #include "CustomXml.h"
 #include "NoteFile.h"
+#include "CalculateEdit.h"
 
 // NotePad 대화 상자
 #define TAG_COLOR_1		RGB(245, 85, 79)
@@ -47,6 +48,7 @@ private:
 	CalculateButton m_btn_allfolder;
 	CalculateButton m_btn_otherfolder;
 	CRichEditCtrl m_richedit_note;
+	CalculateEdit m_edit_lately_note;
 
 	CFont thisFont;
 
@@ -61,14 +63,22 @@ private:
 	std::vector<ViewNoteList> allNoteList;
 	ViewNoteList otherNoteList;
 	ViewFolderList allFolderList;
+
+	ViewNoteList recycleNoteList;
+	ViewFolderList recycleFolderList;
 	
 	CBrush m_topBrush;
 	CBrush m_bottomBrush;
 	CRect wrapBorderRect;
 	CRect wrapCenterRect;
+	CRect otherButtonRect;
+	CRect trashButtonRect;
+	CString strLatelyNoteContent;
 
 	struct NoteSaveData
 	{
+		CString strUpdateTime;
+		CString strCreateTime;
 		int nNoteName;
 		int nLock;
 		int nFolderSequence;
@@ -76,10 +86,12 @@ private:
 
 	struct FolderSaveData
 	{
-		int nFolderSequence;
-		int nSize;
+		CString strUpdateTime;
+		CString strCreateTime;
 		CString strFolderName;
 		COLORREF folderTagColor;
+		int nFolderSequence;
+		int nSize;
 	};
 
 	void LoadNotePad();
@@ -93,6 +105,9 @@ private:
 	void InvalidateSame();
 	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
+	void SetLatelyNote(CString strLatelyNote);
+	CTime GetTimeCal(CString strTime);
+	CString GetTimeCal(CTime calTime);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -122,4 +137,5 @@ public:
 	afx_msg void OnBnClickedButtonOtherNotefolder();
 	afx_msg void OnBnClickedButtonAddFolder();
 	afx_msg void OnBnClickedButtonNotepadCreateNote();
+	afx_msg void OnBnClickedButtonNotepadTrash();
 };

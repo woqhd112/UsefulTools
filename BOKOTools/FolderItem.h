@@ -16,6 +16,8 @@ public:
 	struct FolderInit
 	{
 		Folder folder;
+		CTime createTime;
+		CTime updateTime;
 		CString strFolderName;
 		int nFolderColorIndex;
 		int nFolderSize;
@@ -31,6 +33,8 @@ public:
 	void SetFolderSequence(int nFolderSequence);
 	void SetFolderColorIndex(int nFolderColorIndex);
 	void SetFolder(FolderItem0::Folder folder);
+	void SetCreateTime(CTime createTime);
+	void SetUpdateTime(CTime updateTime);
 
 	CString GetFolderName();
 	int GetFolderSize();
@@ -38,8 +42,11 @@ public:
 	int GetFolderColorIndex();
 	CRect GetFolderRect();
 	FolderItem0::Folder GetFolder();
+	CTime GetCreateTime();
+	CTime GetUpdateTime();
 
 	void Update(FolderInit init);
+	void FolderImageInit(int nFolderColorIndex, int nFolderSize);
 
 private:
 
@@ -50,11 +57,12 @@ private:
 	int nFolderSize;
 	int nFolderSequence;
 	int nFolderColorIndex;
+	CTime createTime;
+	CTime updateTime;
 	CRect folderRect;
 
 	FolderItem0::Folder folder;
 
-	void FolderImageInit(int nFolderColorIndex, int nFolderSize);
 	void ExecuteFolderInitData(FolderInit init);
 
 public:
