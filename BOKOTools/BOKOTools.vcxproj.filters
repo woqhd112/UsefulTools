@@ -40,9 +40,6 @@
     <ClCompile Include="DateCalculate.cpp">
       <Filter>DateCalculator</Filter>
     </ClCompile>
-    <ClCompile Include="NotePad.cpp">
-      <Filter>NotePad</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>WorkTimer</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
     <ClCompile Include="ThemeData.cpp">
       <Filter>ThemeData</Filter>
     </ClCompile>
-    <ClCompile Include="NotePadList.cpp">
-      <Filter>NotePad</Filter>
-    </ClCompile>
     <ClCompile Include="WorldSearchList.cpp">
       <Filter>WorldClock</Filter>
     </ClCompile>
@@ -127,29 +121,35 @@
     <ClCompile Include="ManualList.cpp">
       <Filter>MainMenu\UsingManual</Filter>
     </ClCompile>
-    <ClCompile Include="NoteFile.cpp">
-      <Filter>NotePad</Filter>
-    </ClCompile>
-    <ClCompile Include="FolderList.cpp">
-      <Filter>NotePad</Filter>
+    <ClCompile Include="FolderItem.cpp">
+      <Filter>NotePad\Data</Filter>
     </ClCompile>
     <ClCompile Include="NoteItem.cpp">
-      <Filter>NotePad</Filter>
-    </ClCompile>
-    <ClCompile Include="FolderItem.cpp">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\Data</Filter>
     </ClCompile>
     <ClCompile Include="FolderDlg.cpp">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
     </ClCompile>
     <ClCompile Include="NoteDlg.cpp">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FolderList.cpp">
+      <Filter>NotePad\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="NotePad.cpp">
+      <Filter>NotePad\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="NotePadList.cpp">
+      <Filter>NotePad\UI</Filter>
     </ClCompile>
     <ClCompile Include="NotePadRecycle.cpp">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
     </ClCompile>
     <ClCompile Include="NotePadManager.cpp">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteFile.cpp">
+      <Filter>NotePad\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="DateCalculate.h">
       <Filter>DateCalculator</Filter>
-    </ClInclude>
-    <ClInclude Include="NotePad.h">
-      <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>WorkTimer</Filter>
@@ -261,9 +258,6 @@
     <ClInclude Include="ThemeData.h">
       <Filter>ThemeData</Filter>
     </ClInclude>
-    <ClInclude Include="NotePadList.h">
-      <Filter>NotePad</Filter>
-    </ClInclude>
     <ClInclude Include="WorldSearchList.h">
       <Filter>WorldClock</Filter>
     </ClInclude>
@@ -300,29 +294,35 @@
     <ClInclude Include="DragWrapper.h">
       <Filter>UI\DragDialog</Filter>
     </ClInclude>
-    <ClInclude Include="NoteFile.h">
-      <Filter>NotePad</Filter>
-    </ClInclude>
-    <ClInclude Include="FolderList.h">
-      <Filter>NotePad</Filter>
+    <ClInclude Include="FolderItem.h">
+      <Filter>NotePad\Data</Filter>
     </ClInclude>
     <ClInclude Include="NoteItem.h">
-      <Filter>NotePad</Filter>
-    </ClInclude>
-    <ClInclude Include="FolderItem.h">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\Data</Filter>
     </ClInclude>
     <ClInclude Include="FolderDlg.h">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
     </ClInclude>
     <ClInclude Include="NoteDlg.h">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderList.h">
+      <Filter>NotePad\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePad.h">
+      <Filter>NotePad\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePadList.h">
+      <Filter>NotePad\UI</Filter>
     </ClInclude>
     <ClInclude Include="NotePadRecycle.h">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\UI</Filter>
     </ClInclude>
     <ClInclude Include="NotePadManager.h">
-      <Filter>NotePad</Filter>
+      <Filter>NotePad\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteFile.h">
+      <Filter>NotePad\File</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2296,6 +2296,18 @@
     </Filter>
     <Filter Include="리소스\공통 아이콘\메모장 유틸 아이콘\휴지통 아이콘">
       <UniqueIdentifier>{320e3b52-5726-441c-a5df-4eebbbbc3a89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotePad\Data">
+      <UniqueIdentifier>{bb557832-a075-4f7b-b7fc-45444ce154ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotePad\UI">
+      <UniqueIdentifier>{e2e94ec5-9058-42fc-bd41-52323f6ab7ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotePad\Process">
+      <UniqueIdentifier>{1dd19404-6ea1-48c1-88f4-d3744a8049f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NotePad\File">
+      <UniqueIdentifier>{13c39df9-ddd9-4c12-8b73-53a4e63a2375}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
