@@ -46,7 +46,7 @@ void FolderItem0::Initialize(FolderInit init)
 
 	// button create
 	folderButton->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), pParent, s_ButtonID++);
-	folderStatic->Create(_T(""), SS_CENTER, CRect(0 ,0 ,0, 0), pParent, s_ButtonID++);
+	folderStatic->Create(init.strFolderName, SS_CENTER, CRect(0 ,0 ,0, 0), pParent, s_ButtonID++);
 
 	// button initialize
 	FolderImageInit(nFolderColorIndex, nFolderSize);

@@ -1,0 +1,734 @@
+#include "pch.h"
+#include "NotePadManager.h"
+#include "NotePadList.h"
+#include "FolderList.h"
+#include "NotePadRecycle.h"
+
+
+NotePadManager::NotePadManager(ThemeData* currentTheme)
+{
+	this->currentTheme = currentTheme;
+	bInit = false;
+	strLatelyNoteContent = _T("");
+	viewState = NOTE_VIEW_ALL;
+}
+
+NotePadManager::~NotePadManager()
+{
+	for (int i = 0; i < (int)m_allNoteList.size(); i++)
+	{
+		ViewNoteList deleteNoteList = m_allNoteList.at(i);
+		for (int j = 0; j < (int)deleteNoteList.size(); j++)
+		{
+			NoteItem* deleteNote = deleteNoteList.at(j);
+			delete deleteNote;
+			deleteNote = nullptr;
+		}
+		deleteNoteList.clear();
+	}
+	m_otherNoteList.clear();
+	m_allNoteList.clear();
+
+	for (int i = 0; i < (int)m_allFolderList.size(); i++)
+	{
+		FolderItem0* deleteFolder = m_allFolderList.at(i);
+		delete deleteFolder;
+		deleteFolder = nullptr;
+	}
+	m_allFolderList.clear();
+
+	for (int i = 0; i < (int)m_recycleNoteList.size(); i++)
+	{
+		NoteItem* deleteNote = m_recycleNoteList.at(i);
+		delete deleteNote;
+		deleteNote = nullptr;
+	}
+	m_recycleNoteList.clear();
+
+	for (int i = 0; i < (int)m_recycleFolderList.size(); i++)
+	{
+		FolderItem0* deleteFolder = m_recycleFolderList.at(i);
+		ViewNoteList deleteNoteList = deleteFolder->GetFolder();
+		for (int j = 0; j < (int)deleteNoteList.size(); j++)
+		{
+			NoteItem* deleteNote = deleteNoteList.at(j);
+			delete deleteNote;
+			deleteNote = nullptr;
+		}
+		deleteNoteList.clear();
+
+		delete deleteFolder;
+		deleteFolder = nullptr;
+	}
+	m_recycleFolderList.clear();
+}
+
+void NotePadManager::Init(NotePadList* pNotePadList, FolderList* pFolderList, NotePadRecycle* pRecycleDlg)
+{
+	this->pNotePadList = pNotePadList;
+	this->pFolderList = pFolderList;
+	this->pRecycleDlg = pRecycleDlg;
+	bInit = true;
+}
+
+bool NotePadManager::LoadNotePadData()
+{
+	if (!bInit) return false;
+
+	bool bSavedXml = false;
+	CMarkup markUp;
+	CString szRoot = _T("");
+	CustomXml::CreateConfigFile(szRoot);
+	szRoot += _T("\\NotePad.conf");
+
+	CTime compareUpdateNoteTime;
+	if (CustomXml::LoadConfigXml(&markUp, szRoot))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				CString strFolderSequence = markUp.GetAttrib(_T("seq"));
+				CString strFolderName = markUp.GetAttrib(_T("name"));
+				CString strTagColor = markUp.GetAttrib(_T("tagcolor"));
+				CString strFolderSize = markUp.GetAttrib(_T("size"));
+				CString strFolderCreateTime = markUp.GetAttrib(_T("create"));
+				CString strFolderUpdateTime = markUp.GetAttrib(_T("update"));
+
+				CTime createFolderTime = GetTimeCal(strFolderCreateTime);
+				CTime updateFolderTime = GetTimeCal(strFolderUpdateTime);
+
+				int nFolderColorIndex = _ttoi(strTagColor);
+				COLORREF folderColor = GetTagColorFromIndex(nFolderColorIndex);
+				int nFolderSequence = _ttoi(strFolderSequence);
+				int nFolderSize = _ttoi(strFolderSize);
+
+
+				/* folderseq 가 0 이면 other폴더
+				* 그외엔 생성폴더
+				* 총합이 all폴더
+				*/
+				markUp.IntoElem();
+				ViewNoteList allocFolder;
+				while (markUp.FindElem(_T("note")))
+				{
+					CString strNotePath;
+					CString strNoteName = markUp.GetAttrib(_T("name"));
+					CString strLocked = markUp.GetAttrib(_T("lock"));
+					CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
+					CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
+					CString strNoteFolderSequence = markUp.GetAttrib(_T("seq"));
+
+					CTime createNoteTime = GetTimeCal(strNoteCreateTime);
+					CTime updateNoteTime = GetTimeCal(strNoteUpdateTime);
+
+
+					int nNoteFolderSequence = _ttoi(strNoteFolderSequence);
+					int nLocked = _ttoi(strLocked);
+					if (nLocked <= 0) nLocked = 0;
+					else nLocked = 1;
+					bool bLocked = (bool)nLocked;
+
+					CustomXml::GetModulePath(strNotePath);
+					strNotePath += (_T("\\Note\\") + strFolderSequence + strNoteName + _T(".txt"));
+
+					NoteFile file;
+					CString strNoteContent = _T("");
+					if (file.NoteRead(strNotePath, strNoteContent))
+					{
+						NoteItem* newNote = new NoteItem(currentTheme, pNotePadList);
+						NoteItem::NoteInit noteinit;
+						noteinit.nNoteName = _ttoi(strNoteName);
+						noteinit.nFolderSequence = nNoteFolderSequence;
+						noteinit.strNoteContent = strNoteContent;
+						noteinit.tagColor = folderColor;
+						noteinit.isLock = bLocked;
+						noteinit.nFolderSize = nFolderSize;
+						noteinit.createTime = createNoteTime;
+						noteinit.updateTime = updateNoteTime;
+
+						if (updateNoteTime > compareUpdateNoteTime)
+						{
+							strLatelyNoteContent = noteinit.strNoteContent;
+						}
+
+						newNote->Initialize(noteinit);
+
+						allocFolder.push_back(newNote);
+					}
+					else
+					{
+						AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
+					}
+				}
+				markUp.OutOfElem();
+				m_allNoteList.push_back(allocFolder);
+
+				// 여기에 FolderItem 할당
+				FolderItem0* newFolder = new FolderItem0(currentTheme, pFolderList);
+				FolderItem0::FolderInit folderinit;
+				folderinit.strFolderName = strFolderName;
+				folderinit.nFolderSequence = nFolderSequence;
+				folderinit.nFolderSize = nFolderSize;
+				folderinit.nFolderColorIndex = nFolderColorIndex;
+				folderinit.folder = allocFolder;
+				folderinit.createTime = createFolderTime;
+				folderinit.updateTime = updateFolderTime;
+
+				newFolder->Initialize(folderinit);
+
+				m_allFolderList.push_back(newFolder);
+			}
+			markUp.OutOfElem();
+		}
+
+		if (markUp.FindElem(_T("recy")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				CString strFolderSequence = markUp.GetAttrib(_T("seq"));
+				CString strFolderName = markUp.GetAttrib(_T("name"));
+				CString strTagColor = markUp.GetAttrib(_T("tagcolor"));
+				CString strFolderSize = markUp.GetAttrib(_T("size"));
+				CString strFolderCreateTime = markUp.GetAttrib(_T("create"));
+				CString strFolderUpdateTime = markUp.GetAttrib(_T("update"));
+
+				CTime createFolderTime = GetTimeCal(strFolderCreateTime);
+				CTime updateFolderTime = GetTimeCal(strFolderUpdateTime);
+
+				int nFolderColorIndex = _ttoi(strTagColor);
+				COLORREF folderColor = GetTagColorFromIndex(nFolderColorIndex);
+				int nFolderSequence = _ttoi(strFolderSequence);
+				int nFolderSize = _ttoi(strFolderSize);
+
+				markUp.IntoElem();
+				ViewNoteList allocFolder;
+				while (markUp.FindElem(_T("note")))
+				{
+					CString strNotePath;
+					CString strNoteName = markUp.GetAttrib(_T("name"));
+					CString strLocked = markUp.GetAttrib(_T("lock"));
+					CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
+					CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
+					CString strNoteFolderSequence = markUp.GetAttrib(_T("seq"));
+
+					CTime createNoteTime = GetTimeCal(strNoteCreateTime);
+					CTime updateNoteTime = GetTimeCal(strNoteUpdateTime);
+
+
+					int nNoteFolderSequence = _ttoi(strNoteFolderSequence);
+					int nLocked = _ttoi(strLocked);
+					if (nLocked <= 0) nLocked = 0;
+					else nLocked = 1;
+					bool bLocked = (bool)nLocked;
+
+					CustomXml::GetModulePath(strNotePath);
+					strNotePath += (_T("\\Note\\r") + strFolderSequence + strNoteName + _T(".txt"));
+
+					NoteFile file;
+					CString strNoteContent = _T("");
+					if (file.NoteRead(strNotePath, strNoteContent))
+					{
+						NoteItem* newNote = new NoteItem(currentTheme, pRecycleDlg);
+						NoteItem::NoteInit noteinit;
+						noteinit.nNoteName = _ttoi(strNoteName);
+						noteinit.nFolderSequence = nNoteFolderSequence;
+						noteinit.strNoteContent = strNoteContent;
+						noteinit.tagColor = folderColor;
+						noteinit.isLock = bLocked;
+						noteinit.nFolderSize = nFolderSize;
+						noteinit.createTime = createNoteTime;
+						noteinit.updateTime = updateNoteTime;
+
+						newNote->Initialize(noteinit);
+
+						allocFolder.push_back(newNote);
+					}
+					else
+					{
+						AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
+					}
+				}
+				markUp.OutOfElem();
+
+				// 여기에 FolderItem 할당
+				FolderItem0* newFolder = new FolderItem0(currentTheme, pRecycleDlg);
+				FolderItem0::FolderInit folderinit;
+				folderinit.strFolderName = strFolderName;
+				folderinit.nFolderSequence = nFolderSequence;
+				folderinit.nFolderSize = nFolderSize;
+				folderinit.nFolderColorIndex = nFolderColorIndex;
+				folderinit.folder = allocFolder;
+				folderinit.createTime = createFolderTime;
+				folderinit.updateTime = updateFolderTime;
+
+				newFolder->Initialize(folderinit);
+
+				m_recycleFolderList.push_back(newFolder);
+			}
+
+			while (markUp.FindElem(_T("note")))
+			{
+				CString strNotePath;
+				CString strNoteName = markUp.GetAttrib(_T("name"));
+				CString strLocked = markUp.GetAttrib(_T("lock"));
+				CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
+				CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
+				CString strNoteFolderSequence = markUp.GetAttrib(_T("seq"));
+
+				CTime createNoteTime = GetTimeCal(strNoteCreateTime);
+				CTime updateNoteTime = GetTimeCal(strNoteUpdateTime);
+
+
+				int nNoteFolderSequence = _ttoi(strNoteFolderSequence);
+				int nLocked = _ttoi(strLocked);
+				if (nLocked <= 0) nLocked = 0;
+				else nLocked = 1;
+				bool bLocked = (bool)nLocked;
+
+				CustomXml::GetModulePath(strNotePath);
+				strNotePath += (_T("\\Note\\sr") + strNoteFolderSequence + strNoteName + _T(".txt"));
+
+				NoteFile file;
+				CString strNoteContent = _T("");
+				if (file.NoteRead(strNotePath, strNoteContent))
+				{
+					NoteItem* newNote = new NoteItem(currentTheme, pRecycleDlg);
+					NoteItem::NoteInit noteinit;
+					noteinit.nNoteName = _ttoi(strNoteName);
+					noteinit.nFolderSequence = nNoteFolderSequence;
+					noteinit.strNoteContent = strNoteContent;
+					noteinit.tagColor = TAG_COLOR_5;
+					noteinit.isLock = bLocked;
+					noteinit.nFolderSize = 0;
+					noteinit.createTime = createNoteTime;
+					noteinit.updateTime = updateNoteTime;
+
+					newNote->Initialize(noteinit);
+
+					m_recycleNoteList.push_back(newNote);
+				}
+				else
+				{
+					AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
+				}
+			}
+
+			markUp.OutOfElem();
+		}
+	}
+	else
+	{
+		CString strFullPath = _T("");
+		CustomXml::GetModulePath(strFullPath);
+		CustomXml::CreateDefaultDirectory(strFullPath, _T("\\Note"));
+		if (CreateDefaultNoteXml(&markUp, szRoot)) bSavedXml = true;
+		if (bSavedXml)
+		{
+			CustomXml::SaveXml(&markUp, szRoot);
+		}
+	}
+
+	m_otherNoteList = m_allNoteList.at(0);
+
+	return true;
+}
+
+void NotePadManager::UpdateViewNoteList(std::vector<ViewNoteList> updateViewNoteList)
+{
+	m_viewNoteList = updateViewNoteList;
+}
+
+void NotePadManager::AddFolder(FolderItem0* newFolder)
+{
+	m_allFolderList.push_back(newFolder);
+	m_allNoteList.push_back({});
+	m_viewNoteList = {};
+}
+
+void NotePadManager::AddNote(NoteItem* newNote)
+{
+	if (m_viewNoteList.at(0) == m_otherNoteList)
+	{
+		m_viewNoteList.at(0).push_back(newNote);
+	}
+
+	m_otherNoteList.push_back(newNote);
+	m_allNoteList.at(0) = m_otherNoteList;
+}
+
+void NotePadManager::SetNoteView(std::vector<ViewNoteList> viewNoteList, FolderViewState viewState)
+{
+	this->m_viewNoteList = viewNoteList;
+	this->viewState = viewState;
+}
+
+void NotePadManager::UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex)
+{
+	std::vector<ViewNoteList> newAllocNoteList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocNoteList.push_back(m_allNoteList.at(i));
+	}
+	newAllocNoteList.push_back(updateNoteList);
+	for (int i = (int)newAllocNoteList.size(); i < (int)m_allNoteList.size(); i++)
+	{
+		newAllocNoteList.push_back(m_allNoteList.at(i));
+	}
+	m_allNoteList.assign(newAllocNoteList.begin(), newAllocNoteList.end());
+
+	if (nUpdateIndex == 0) m_otherNoteList = updateNoteList;	// 만약 업데이트 인덱스가 0번(기타)일 경우 other벡터도 업데이트
+}
+
+
+void NotePadManager::UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex)
+{
+	m_allFolderList.at(nUpdateIndex)->SetFolder(updateNoteList);
+}
+
+
+void NotePadManager::UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex)
+{
+	ViewFolderList newAllocFolderList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocFolderList.push_back(m_allFolderList.at(i));
+	}
+	newAllocFolderList.push_back(updateFolder);
+	for (int i = (int)newAllocFolderList.size(); i < (int)m_allFolderList.size(); i++)
+	{
+		newAllocFolderList.push_back(m_allFolderList.at(i));
+	}
+	m_allFolderList.assign(newAllocFolderList.begin(), newAllocFolderList.end());
+}
+
+bool NotePadManager::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
+{
+	bool bReturn = false;
+	CFileFind xmlFind;
+	if (!xmlFind.FindFile(strFullPath))
+	{
+		markUp->AddElem(_T("NotePad"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("bin"));
+		markUp->IntoElem();
+		markUp->AddElem(_T("folder"));
+		markUp->AddAttrib(_T("seq"), 0);
+		markUp->AddAttrib(_T("name"), _T("other"));
+		markUp->AddAttrib(_T("tagcolor"), 5);
+		markUp->AddAttrib(_T("size"), 0);
+		CTime createTime = CTime::GetCurrentTime();
+		CString strCreateTime = GetTimeCal(createTime);
+		markUp->AddAttrib(_T("create"), strCreateTime);
+		markUp->AddAttrib(_T("update"), strCreateTime);
+		markUp->OutOfElem();
+		markUp->AddElem(_T("recy"));
+
+		FolderItem0* newFolder = new FolderItem0(currentTheme, pFolderList);
+		FolderItem0::FolderInit folderinit;
+		folderinit.strFolderName = _T("other");
+		folderinit.nFolderSequence = 0;
+		folderinit.nFolderSize = 0;
+		folderinit.nFolderColorIndex = TAG_COLOR_5;
+		folderinit.folder = {};
+		folderinit.createTime = createTime;
+		folderinit.updateTime = createTime;
+
+		m_allNoteList.push_back({});
+		m_allFolderList.push_back(newFolder);
+
+		bReturn = true;
+	}
+	xmlFind.Close();
+
+	return bReturn;
+}
+
+CString NotePadManager::GetTimeCal(CTime calTime)
+{
+	CString strReturnTime;
+	strReturnTime.Format(_T("%04d-%02d-%02d-%02d-%02d-%02d"), calTime.GetYear(), calTime.GetMonth(), calTime.GetDay(), calTime.GetHour(), calTime.GetMinute(), calTime.GetSecond());
+
+	return strReturnTime;
+}
+
+CTime NotePadManager::GetTimeCal(CString strTime)
+{
+	CString strYear, strMonth, strDay, strHour, strMinute, strSecond;
+
+	AfxExtractSubString(strYear, strTime, 0, '-');
+	AfxExtractSubString(strMonth, strTime, 1, '-');
+	AfxExtractSubString(strDay, strTime, 2, '-');
+	AfxExtractSubString(strHour, strTime, 3, '-');
+	AfxExtractSubString(strMinute, strTime, 4, '-');
+	AfxExtractSubString(strSecond, strTime, 5, '-');
+
+	CTime returnTime(_ttoi(strYear), _ttoi(strMonth), _ttoi(strDay), _ttoi(strHour), _ttoi(strMinute), _ttoi(strSecond));
+
+	return returnTime;
+}
+
+
+int NotePadManager::MaxFolderSequence()
+{
+	int nMaxSequence = 0;
+
+	for (int i = 0; i < (int)m_allFolderList.size(); i++)
+	{
+		FolderItem0* folder = m_allFolderList.at(i);
+		int nCompareSequence = folder->GetFolderSequence();
+		if (nMaxSequence < nCompareSequence)
+			nMaxSequence = nCompareSequence;
+	}
+
+	for (int i = 0; i < (int)m_recycleFolderList.size(); i++)
+	{
+		FolderItem0* folder = m_recycleFolderList.at(i);
+		int nCompareSequence = folder->GetFolderSequence();
+		if (nMaxSequence < nCompareSequence)
+			nMaxSequence = nCompareSequence;
+	}
+
+	return nMaxSequence;
+}
+
+COLORREF NotePadManager::GetTagColorFromIndex(int nIndex)
+{
+	if (nIndex == 1) return TAG_COLOR_1;
+	else if (nIndex == 2) return TAG_COLOR_2;
+	else if (nIndex == 3) return TAG_COLOR_3;
+	else if (nIndex == 4) return TAG_COLOR_4;
+	else if (nIndex == 5) return TAG_COLOR_5;
+	else if (nIndex == 6) return TAG_COLOR_6;
+	else if (nIndex == 7) return TAG_COLOR_7;
+
+	return NULL;
+}
+
+int NotePadManager::GetIndexFromTagColor(COLORREF tagcolor)
+{
+	if (tagcolor == TAG_COLOR_1) return 1;
+	else if (tagcolor == TAG_COLOR_2) return 2;
+	else if (tagcolor == TAG_COLOR_3) return 3;
+	else if (tagcolor == TAG_COLOR_4) return 4;
+	else if (tagcolor == TAG_COLOR_5) return 5;
+	else if (tagcolor == TAG_COLOR_6) return 6;
+	else if (tagcolor == TAG_COLOR_7) return 7;
+
+	return 0;
+}
+
+CString NotePadManager::GetLatleyNoteContent()
+{
+	return strLatelyNoteContent;
+}
+
+
+void NotePadManager::UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+				{
+					int nResetNoteName = 0;
+					int nFolderSize = _ttoi(markUp.GetAttrib(_T("size")));
+					markUp.SetAttrib(_T("size"), nFolderSize == 0 ? nFolderSize : nFolderSize - 1);
+					markUp.IntoElem();
+					while (markUp.FindElem(_T("note")))
+					{
+						if (_ttoi(markUp.GetAttrib(_T("name"))) == origindata.nNoteName)
+						{
+							markUp.RemoveElem();
+						}
+						else
+						{
+							markUp.SetAttrib(_T("name"), nResetNoteName);
+							nResetNoteName++;
+						}
+					}
+					markUp.OutOfElem();
+				}
+				else if (_ttoi(markUp.GetAttrib(_T("seq"))) == updatedata.nFolderSequence)
+				{
+					markUp.SetAttrib(_T("size"), _ttoi(markUp.GetAttrib(_T("size"))) + 1);
+					markUp.IntoElem();
+					markUp.AddElem(_T("note"));
+					markUp.AddAttrib(_T("seq"), updatedata.nFolderSequence);
+					markUp.AddAttrib(_T("name"), updatedata.nNoteName);
+					markUp.AddAttrib(_T("lock"), updatedata.nLock);
+					markUp.AddAttrib(_T("create"), updatedata.strCreateTime);
+					markUp.AddAttrib(_T("update"), updatedata.strUpdateTime);
+					markUp.OutOfElem();
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePadManager::SaveNoteXml(NoteSaveData notedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == notedata.nFolderSequence)
+				{
+					markUp.IntoElem();
+					while (markUp.FindElem(_T("note")))
+					{
+						if (_ttoi(markUp.GetAttrib(_T("name"))) == notedata.nNoteName)
+						{
+							markUp.SetAttrib(_T("seq"), notedata.nFolderSequence);
+							markUp.SetAttrib(_T("lock"), notedata.nLock);
+							markUp.SetAttrib(_T("update"), notedata.strUpdateTime);
+						}
+					}
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePadManager::CreateNoteXml(NoteSaveData notedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == notedata.nFolderSequence)
+				{
+					markUp.IntoElem();
+					markUp.AddElem(_T("note"));
+					markUp.AddAttrib(_T("seq"), notedata.nFolderSequence);
+					markUp.AddAttrib(_T("name"), notedata.nNoteName);
+					markUp.AddAttrib(_T("lock"), notedata.nLock);
+					markUp.AddAttrib(_T("create"), notedata.strCreateTime);
+					markUp.AddAttrib(_T("update"), notedata.strUpdateTime);
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePadManager::SaveFolderXml(FolderSaveData folderdata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == folderdata.nFolderSequence)
+				{
+					markUp.SetAttrib(_T("name"), folderdata.strFolderName);
+					markUp.SetAttrib(_T("tagcolor"), GetIndexFromTagColor(folderdata.folderTagColor));
+					markUp.SetAttrib(_T("size"), folderdata.nSize);
+					markUp.SetAttrib(_T("update"), folderdata.strUpdateTime);
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePadManager::UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+				{
+					markUp.SetAttrib(_T("seq"), updatedata.nFolderSequence);
+					markUp.SetAttrib(_T("name"), updatedata.strFolderName);
+					markUp.SetAttrib(_T("tagcolor"), GetIndexFromTagColor(updatedata.folderTagColor));
+					markUp.SetAttrib(_T("size"), updatedata.nSize);
+					markUp.SetAttrib(_T("update"), updatedata.strUpdateTime);
+				}
+			}
+		}
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}
+
+void NotePadManager::CreateFolderXml(FolderSaveData folderdata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+		markUp.FindElem(_T("bin"));
+		markUp.IntoElem();
+
+		markUp.AddElem(_T("folder"));
+		markUp.AddAttrib(_T("seq"), folderdata.nFolderSequence);
+		markUp.AddAttrib(_T("name"), folderdata.strFolderName);
+		markUp.AddAttrib(_T("tagcolor"), GetIndexFromTagColor(folderdata.folderTagColor));
+		markUp.AddAttrib(_T("size"), folderdata.nSize);
+		markUp.AddAttrib(_T("create"), folderdata.strCreateTime);
+		markUp.AddAttrib(_T("update"), folderdata.strUpdateTime);
+	}
+	CustomXml::SaveXml(&markUp, strFullPath);
+}

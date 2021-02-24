@@ -148,6 +148,9 @@
     <ClCompile Include="NotePadRecycle.cpp">
       <Filter>NotePad</Filter>
     </ClCompile>
+    <ClCompile Include="NotePadManager.cpp">
+      <Filter>NotePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -316,6 +319,9 @@
       <Filter>NotePad</Filter>
     </ClInclude>
     <ClInclude Include="NotePadRecycle.h">
+      <Filter>NotePad</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePadManager.h">
       <Filter>NotePad</Filter>
     </ClInclude>
   </ItemGroup>

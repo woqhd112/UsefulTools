@@ -18,11 +18,12 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(NotePadList, CDialogEx)
 
-NotePadList::NotePadList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+NotePadList::NotePadList(NotePadManager* notePadManager, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_NOTEPAD_LIST, pParent)
 {
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
+	this->notePadManager = notePadManager;
 	nButtonID = 70000;
 	nStaticID = 75000;
 	nLockID = 80000;
@@ -40,7 +41,7 @@ NotePadList::NotePadList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 NotePadList::~NotePadList()
 {
-	viewNoteList.clear();
+	//viewNoteList.clear();
 }
 
 void NotePadList::DoDataExchange(CDataExchange* pDX)
@@ -76,9 +77,9 @@ BOOL NotePadList::OnInitDialog()
 
 void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 {
-	for (int i = 0; i < (int)this->viewNoteList.size(); i++)
+	for (int i = 0; i < (int)viewNoteList.size(); i++)
 	{
-		ViewNoteList notelist = this->viewNoteList.at(i);
+		ViewNoteList notelist = viewNoteList.at(i);
 		if (notelist.size() > 0)
 		{
 			for (int j = 0; j < (int)notelist.size(); j++)
@@ -105,8 +106,8 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	{
 		ViewNote(allFolderList.at(i));
 	}
+	notePadManager->m_viewNoteList = allFolderList;
 	viewNoteList = allFolderList;
-	baseViewNoteList = allFolderList;
 	
 	for (int i = 0; i <= nLineEndCount; i++)
 	{
@@ -121,7 +122,7 @@ void NotePadList::SuccessUpdate()
 {
 	nFindSaveFolderSequence = 0;
 	saveNoteList.clear();
-	baseViewNoteList = viewNoteList;
+	notePadManager->UpdateViewNoteList(viewNoteList);
 }
 
 CRect NotePadList::SetButtonPosition(int nItemCount)
@@ -167,26 +168,26 @@ void NotePadList::UpdateNotePad(NoteItem* updateNote, CString strContent, bool i
 	NoteFile file;
 	if (file.NoteWrite(strTextPath, strContent))
 	{
-		NotePad::NoteSaveData saveNote;
+		NotePadManager::NoteSaveData saveNote;
 		saveNote.nFolderSequence = init.nFolderSequence;
 		saveNote.nLock = init.isLock;
 		saveNote.nNoteName = init.nNoteName;
-		saveNote.strCreateTime = notepad->GetTimeCal(init.createTime);
-		saveNote.strUpdateTime = notepad->GetTimeCal(init.updateTime);
+		saveNote.strCreateTime = notePadManager->GetTimeCal(init.createTime);
+		saveNote.strUpdateTime = notePadManager->GetTimeCal(init.updateTime);
 
-		notepad->SaveNoteXml(saveNote);
-		LoadNotePad(viewNoteList);
+		notePadManager->SaveNoteXml(saveNote);
+		LoadNotePad(notePadManager->m_viewNoteList);
 	}
 }
 
 void NotePadList::AddNotePad(CString strContent, bool isLock)
 {
-	int nNoteName = (int)notepad->otherNoteList.size() + 1;
+	int nNoteName = (int)notePadManager->m_otherNoteList.size();
 	NoteItem* newNote = new NoteItem(currentTheme, this);
 	NoteItem::NoteInit noteinit;
 
 	CTime currentTime = CTime::GetCurrentTime();
-	CString strCreateTime = notepad->GetTimeCal(currentTime);
+	CString strCreateTime = notePadManager->GetTimeCal(currentTime);
 
 	noteinit.nNoteName = nNoteName;
 	noteinit.nFolderSequence = 0;
@@ -196,10 +197,9 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 	noteinit.nFolderSize = nNoteName;
 	noteinit.createTime = currentTime;
 	noteinit.updateTime = currentTime;
-
 	newNote->Initialize(noteinit);
-	notepad->otherNoteList.push_back(newNote);
-	notepad->allNoteList.at(0) = notepad->otherNoteList;
+
+	notePadManager->AddNote(newNote);
 
 	// Note 폴더에 파일추가
 	CString strTextPath = _T("");
@@ -211,14 +211,14 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 	NoteFile file;
 	if (file.NoteWrite(strTextPath, strContent))
 	{
-		NotePad::NoteSaveData saveNote;
+		NotePadManager::NoteSaveData saveNote;
 		saveNote.nFolderSequence = 0;
 		saveNote.nLock = 0;
 		saveNote.nNoteName = nNoteName;
 		saveNote.strCreateTime = strCreateTime;
 		saveNote.strUpdateTime = strCreateTime;
 
-		NotePad::FolderSaveData saveFolder;
+		NotePadManager::FolderSaveData saveFolder;
 		saveFolder.folderTagColor = TAG_COLOR_5;
 		saveFolder.nFolderSequence = 0;
 		saveFolder.nSize = nNoteName;
@@ -226,9 +226,9 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 		saveFolder.strCreateTime = strCreateTime;
 		saveFolder.strUpdateTime = strCreateTime;
 
-		notepad->CreateNoteXml(saveNote);
-		notepad->SaveFolderXml(saveFolder);
-		LoadNotePad({ notepad->otherNoteList });
+		notePadManager->CreateNoteXml(saveNote);
+		notePadManager->SaveFolderXml(saveFolder);
+		LoadNotePad({ notePadManager->m_otherNoteList });
 	}
 }
 
@@ -301,10 +301,10 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			if (PtInRect(rect, convertPoint))
 			{
 				// 스왑한 노트정보를 현재 상속된 폴더에 업데이트한다.
-				notepad->folderlist->UpdateFolderVector(saveNoteList, nFindSaveFolderSequence);
+				notePadManager->UpdateFolderVector(saveNoteList, nFindSaveFolderSequence);
 
 				// 스왑한 노트정보를 notepad에 있는 전체폴더에 업데이트한다.
-				notepad->UpdateAllNoteVector(saveNoteList, nFindSaveFolderSequence);
+				notePadManager->UpdateAllNoteVector(saveNoteList, nFindSaveFolderSequence);
 
 				// 업데이트한 노트정보를 메모장에 업데이트한다.
 				NoteFile updateNoteContentFile;
@@ -326,14 +326,14 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 					strNoteName.Format(_T("%s\\%d%d.txt"), strFullPath, saveNote->GetFolderSequence(), i);
 					updateNoteContentFile.NoteWrite(strNoteName, saveNote->GetNoteContent());
 
-					NotePad::NoteSaveData updateNote;
+					NotePadManager::NoteSaveData updateNote;
 					updateNote.nFolderSequence = saveNote->GetFolderSequence();
 					updateNote.nLock = saveNote->IsLock();
 					updateNote.nNoteName = saveNote->GetNoteName();
-					updateNote.strCreateTime = notepad->GetTimeCal(saveNote->GetCreateTime());
-					updateNote.strUpdateTime = notepad->GetTimeCal(bUpdateNote ? CTime::GetCurrentTime() : saveNote->GetUpdateTime());
+					updateNote.strCreateTime = notePadManager->GetTimeCal(saveNote->GetCreateTime());
+					updateNote.strUpdateTime = notePadManager->GetTimeCal(bUpdateNote ? CTime::GetCurrentTime() : saveNote->GetUpdateTime());
 
-					notepad->SaveNoteXml(updateNote);
+					notePadManager->SaveNoteXml(updateNote);
 				}
 
 
@@ -342,7 +342,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			// 현재 마우스 포인트가 노트 밖에 있을 경우 다시 초기로 갱신
 			else
 			{
-				LoadNotePad(baseViewNoteList);
+				LoadNotePad(notePadManager->m_viewNoteList);
 			}
 		}
 		// 현재 마우스 포인트가 폴더리스트 영역에 있을 경우
@@ -352,17 +352,17 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			if (nSelectFolderSequence != nFindSaveFolderSequence)
 			{
 				// 폴더 영역인데 폴더가 없을경우는 리턴한다.
-				if (nFindSaveFolderSequence > (int)notepad->allNoteList.size() - 1 || nSelectFolderSequence > (int)notepad->allNoteList.size() - 1)
+				if (nFindSaveFolderSequence > (int)notePadManager->m_allNoteList.size() - 1 || nSelectFolderSequence > (int)notePadManager->m_allNoteList.size() - 1)
 				{
-					LoadNotePad(baseViewNoteList);
+					LoadNotePad(notePadManager->m_viewNoteList);
 					return FALSE;
 				}
 
 				ViewNoteList updateNoteList;
-				if ((int)baseViewNoteList.size() > 1)
-					updateNoteList = baseViewNoteList.at(nFindSaveFolderSequence);
+				if ((int)notePadManager->m_viewNoteList.size() > 1)
+					updateNoteList = notePadManager->m_viewNoteList.at(nFindSaveFolderSequence);
 				else
-					updateNoteList = baseViewNoteList.at(0);
+					updateNoteList = notePadManager->m_viewNoteList.at(0);
 
 				// 현재 노트를 현재 폴더에서 지운다
 				int nDeleteNoteIndex = 0;
@@ -379,7 +379,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 
 				// 현재 폴더 갱신
-				FolderItem0* updateFolder = notepad->folderlist->folderlist.at(nFindSaveFolderSequence);
+				FolderItem0* updateFolder = notePadManager->m_allFolderList.at(nFindSaveFolderSequence);
 				FolderItem0::FolderInit updateFolderInit;
 
 				int nUpdateFolderSize = updateFolder->GetFolderSize() - 1;
@@ -390,13 +390,13 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				updateFolderInit.strFolderName = updateFolder->GetFolderName();
 				updateFolder->Update(updateFolderInit);
 
-				notepad->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
-				notepad->folderlist->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
+				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
+				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
 
 
 				// 현재 노트를 선택한 폴더에 추가한다
-				ViewNoteList insertNoteList = notepad->allNoteList.at(nSelectFolderSequence);
-				FolderItem0* insertFolder = notepad->allFolderList.at(nSelectFolderSequence);
+				ViewNoteList insertNoteList = notePadManager->m_allNoteList.at(nSelectFolderSequence);
+				FolderItem0* insertFolder = notePadManager->m_allFolderList.at(nSelectFolderSequence);
 				FolderItem0::FolderInit selectFolderInit;
 
 				NoteItem::NoteInit updateinit;
@@ -405,7 +405,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				updateinit.nFolderSize = (int)insertNoteList.size() + 1;
 				updateinit.nNoteName = (int)insertNoteList.size();
 				updateinit.strNoteContent = findnote->GetNoteContent();
-				updateinit.tagColor = notepad->GetTagColorFromIndex(insertFolder->GetFolderColorIndex());
+				updateinit.tagColor = notePadManager->GetTagColorFromIndex(insertFolder->GetFolderColorIndex());
 				updateinit.createTime = findnote->GetCreateTime();
 				updateinit.updateTime = CTime::GetCurrentTime();
 				findnote->Update(updateinit);
@@ -423,16 +423,15 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				insertFolder->Update(selectFolderInit);
 
 				// 선택 폴더의 크기가 1이상일때만 (전체 폴더일 때) 선택폴더를 갱신한다.
-				if ((int)viewNoteList.size() > 1) 
+				if ((int)notePadManager->m_viewNoteList.size() > 1)
 					UpdateNoteVector(insertNoteList, nSelectFolderSequence);
 
-				notepad->UpdateAllNoteVector(insertNoteList, nSelectFolderSequence);
-				notepad->UpdateAllFolderVector(insertFolder, nSelectFolderSequence);
-				notepad->folderlist->UpdateAllFolderVector(insertFolder, nSelectFolderSequence);
+				notePadManager->UpdateAllNoteVector(insertNoteList, nSelectFolderSequence);
+				notePadManager->UpdateAllFolderVector(insertFolder, nSelectFolderSequence);
 				notepad->folderlist->Invalidate();
 
 				// 업데이트한 노트정보를 xml에 저장한다.
-				NotePad::NoteSaveData originNoteData, updateNoteData;
+				NotePadManager::NoteSaveData originNoteData, updateNoteData;
 				originNoteData.nFolderSequence = nFindSaveFolderSequence;
 				originNoteData.nLock = updateinit.isLock;
 				originNoteData.nNoteName = nDeleteNoteIndex;
@@ -442,10 +441,10 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				updateNoteData.nFolderSequence = nSelectFolderSequence;
 				updateNoteData.nLock = updateinit.isLock;
 				updateNoteData.nNoteName = updateinit.nNoteName;
-				updateNoteData.strCreateTime = notepad->GetTimeCal(updateinit.createTime);
-				updateNoteData.strUpdateTime = notepad->GetTimeCal(updateinit.updateTime);
+				updateNoteData.strCreateTime = notePadManager->GetTimeCal(updateinit.createTime);
+				updateNoteData.strUpdateTime = notePadManager->GetTimeCal(updateinit.updateTime);
 
-				notepad->UpdateNoteXml(originNoteData, updateNoteData);
+				notePadManager->UpdateNoteXml(originNoteData, updateNoteData);
 
 				NoteFile file;
 				CString strFullPath;
@@ -473,7 +472,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				int curScrollPos = scroll.GetCurrentLinePos();
 
 				// 현재 폴더 화면 갱신
-				LoadNotePad(baseViewNoteList);
+				LoadNotePad(notePadManager->m_viewNoteList);
 				for (int i = 1; i < curScrollPos; i++)
 				{
 					OnVScroll(SB_PAGEDOWN, 0, GetScrollBarCtrl(SB_VERT));
@@ -481,7 +480,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			}
 			else
 			{
-				LoadNotePad(baseViewNoteList);
+				LoadNotePad(notePadManager->m_viewNoteList);
 			}
 		}
 		// 현재 마우스 포인트가 부모창 영역에 있을 경우
@@ -493,7 +492,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			{
 				TRACE(_T("쓰레기통 진입\n"));
 			}
-			LoadNotePad(baseViewNoteList);	// 일단 임시로 해둠 쓰레기통 구분해야함
+			LoadNotePad(notePadManager->m_viewNoteList);	// 일단 임시로 해둠 쓰레기통 구분해야함
 		}
 	}
 	
@@ -671,7 +670,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 				if (PtInRect(findFolderRect, folderPoint))
 				{
 					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 1;
-					ViewFolderList viewFolderList = notepad->folderlist->folderlist;
+					ViewFolderList viewFolderList = notePadManager->m_allFolderList;
 					if (nSelectFolderSequence > (int)(int)viewFolderList.size() - 1)
 					{
 						if (bMousePointFolderAccess)
@@ -771,7 +770,7 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			if (noteClickState == NOTE_CLICK_STATE_TAG)
 			{
 				// 현재 노트리스트가 전체일경우 이벤트 제한
-				if ((int)viewNoteList.size() > 1) return FALSE;
+				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL) return FALSE;
 				if (DragEventUp(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
@@ -795,7 +794,7 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			if (noteClickState == NOTE_CLICK_STATE_TAG)
 			{
 				// 현재 노트리스트가 전체일경우 이벤트 제한
-				if ((int)viewNoteList.size() > 1) return FALSE;
+				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL) return FALSE;
 				if (DragEventDown(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)

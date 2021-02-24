@@ -13,11 +13,12 @@
 
 IMPLEMENT_DYNAMIC(FolderList, CDialogEx)
 
-FolderList::FolderList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
+FolderList::FolderList(NotePadManager* notePadManager, ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_FOLDER_LIST, pParent)
 {
 	this->currentTheme = currentTheme;
 	this->pParent = pParent;
+	this->notePadManager = notePadManager;
 
 	nButtonCount = 0;
 	nLineEndCount = 0;
@@ -29,7 +30,7 @@ FolderList::FolderList(ThemeData* currentTheme, CWnd* pParent /*=nullptr*/)
 
 FolderList::~FolderList()
 {
-	folderlist.clear();
+	//folderlist.clear();
 }
 
 void FolderList::DoDataExchange(CDataExchange* pDX)
@@ -112,9 +113,9 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
 	{
-		for (int i = 0; i < (int)folderlist.size(); i++)
+		for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
 		{
-			FolderItem0* folder = folderlist.at(i);
+			FolderItem0* folder = notePadManager->m_allFolderList.at(i);
 			CGdipButton* folderButton = folder->folderButton;
 			if (pMsg->hwnd == folderButton->m_hWnd)
 			{
@@ -126,11 +127,11 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	}
 	else  if (pMsg->message == WM_LBUTTONDBLCLK)
 	{
-		for (int i = 0; i < (int)folderlist.size(); i++)
+		for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
 		{
-			if (pMsg->hwnd == folderlist.at(i)->folderButton->m_hWnd)
+			if (pMsg->hwnd == notePadManager->m_allFolderList.at(i)->folderButton->m_hWnd)
 			{
-				UpdateFolder(folderlist.at(i));
+				UpdateFolder(notePadManager->m_allFolderList.at(i));
 				return TRUE;
 			}
 		}
@@ -183,7 +184,6 @@ HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void FolderList::LoadFolder(ViewFolderList allFolderList)
 {
 	nButtonCount = 0;
-	this->folderlist = allFolderList;
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -214,7 +214,6 @@ void FolderList::ViewFolder(ViewFolderList folderlist)
 		folderRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 5));
 		targetFolder->ShowWindow(true);
 		targetFolder->MoveWindow(folderRect.left, folderRect.top);
-		targetFolder->folderStatic->SetWindowTextW(targetFolder->GetFolderName());
 		nButtonCount++;
 		if (nButtonCount > 1)
 		{
@@ -312,9 +311,9 @@ void FolderList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	scroll.OperateScroll(nSBCode, nPos);
 	Invalidate();
-	for (int i = 0; i < (int)folderlist.size(); i++)
+	for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
 	{
-		FolderItem0* folder = folderlist.at(i);
+		FolderItem0* folder = notePadManager->m_allFolderList.at(i);
 		folder->folderButton->DisConnect();
 	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
@@ -353,7 +352,8 @@ afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 			undoFolder->folderButton->ToggleClickChange();
 		std::vector<ViewNoteList> allFolder;
 		allFolder.push_back(downFolder->GetFolder());
-		notepad->notepadlist->LoadNotePad(allFolder);
+		notePadManager->SetNoteView(allFolder, NotePadManager::NOTE_VIEW_FOLDER);
+		notepad->notepadlist->LoadNotePad(notePadManager->m_viewNoteList);
 		undoFolder = downFolder;
 	}
 	else
@@ -368,7 +368,7 @@ afx_msg LRESULT FolderList::OnFolderView(WPARAM wParam, LPARAM lParam)
 
 void FolderList::UpdateFolder(FolderItem0* folderItem)
 {
-	COLORREF updateColor = notepad->GetTagColorFromIndex(folderItem->GetFolderColorIndex());
+	COLORREF updateColor = notePadManager->GetTagColorFromIndex(folderItem->GetFolderColorIndex());
 	CString strUpdateFolderName = folderItem->GetFolderName();
 	FolderDlg createFolder(FOLDER_UPDATE, currentTheme, &updateColor, &strUpdateFolderName, this);
 
@@ -378,7 +378,7 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 		updateFolder.nFolderSequence = folderItem->GetFolderSequence();
 		updateFolder.nFolderSize = (int)folderItem->GetFolderSize();
 		updateFolder.strFolderName = strUpdateFolderName;
-		updateFolder.nFolderColorIndex = notepad->GetIndexFromTagColor(updateColor);
+		updateFolder.nFolderColorIndex = notePadManager->GetIndexFromTagColor(updateColor);
 		updateFolder.folder = folderItem->GetFolder();
 		updateFolder.createTime = folderItem->GetCreateTime();
 		updateFolder.updateTime = CTime::GetCurrentTime();
@@ -398,35 +398,15 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 			noteItem->Update(updateNote);
 		}
 
-		NotePad::FolderSaveData saveFolder;
+		NotePadManager::FolderSaveData saveFolder;
 		saveFolder.folderTagColor = updateColor;
 		saveFolder.nFolderSequence = updateFolder.nFolderSequence;
 		saveFolder.nSize = updateFolder.nFolderSize;
 		saveFolder.strFolderName = strUpdateFolderName;
-		saveFolder.strCreateTime = notepad->GetTimeCal(updateFolder.createTime);
-		saveFolder.strUpdateTime = notepad->GetTimeCal(updateFolder.updateTime);
+		saveFolder.strCreateTime = notePadManager->GetTimeCal(updateFolder.createTime);
+		saveFolder.strUpdateTime = notePadManager->GetTimeCal(updateFolder.updateTime);
 
-		notepad->SaveFolderXml(saveFolder);
+		notePadManager->SaveFolderXml(saveFolder);
 		notepad->InvalidateSame();
 	}
-}
-
-void FolderList::UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex)
-{
-	folderlist.at(nUpdateIndex)->SetFolder(updateNoteList);
-}
-
-void FolderList::UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex)
-{
-	ViewFolderList newAllocFolderList;
-	for (int i = 0; i < nUpdateIndex; i++)
-	{
-		newAllocFolderList.push_back(folderlist.at(i));
-	}
-	newAllocFolderList.push_back(updateFolder);
-	for (int i = (int)newAllocFolderList.size(); i < (int)folderlist.size(); i++)
-	{
-		newAllocFolderList.push_back(folderlist.at(i));
-	}
-	folderlist.assign(newAllocFolderList.begin(), newAllocFolderList.end());
 }

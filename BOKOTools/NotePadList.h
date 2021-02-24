@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
-#include "FolderItem.h"
+#include "NotePadManager.h"
+//#include "FolderItem.h"
 #include <algorithm>
 
 // NotePadList 대화 상자
@@ -16,7 +17,7 @@ class NotePadList : public CDialogEx, public DragWrapper<NoteItem*>
 	friend class NotePad;
 
 public:
-	NotePadList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	NotePadList(NotePadManager* notePadManager, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePadList();
 
 // 대화 상자 데이터입니다.
@@ -32,6 +33,7 @@ private:
 	ThemeData* currentTheme;
 	CWnd* pParent;
 	NotePad* notepad;
+	NotePadManager* notePadManager;
 
 	enum NoteClickState
 	{
@@ -55,7 +57,7 @@ private:
 	};
 
 	std::vector<ViewNoteList> viewNoteList;
-	std::vector<ViewNoteList> baseViewNoteList;
+	//std::vector<ViewNoteList> baseViewNoteList;
 
 	CustomScroll scroll;
 

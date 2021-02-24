@@ -237,6 +237,7 @@
     <ClInclude Include="NoteItem.h" />
     <ClInclude Include="NotePad.h" />
     <ClInclude Include="NotePadList.h" />
+    <ClInclude Include="NotePadManager.h" />
     <ClInclude Include="NotePadRecycle.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Formula.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="NoteItem.cpp" />
     <ClCompile Include="NotePad.cpp" />
     <ClCompile Include="NotePadList.cpp" />
+    <ClCompile Include="NotePadManager.cpp" />
     <ClCompile Include="NotePadRecycle.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

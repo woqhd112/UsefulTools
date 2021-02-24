@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CustomScroll.h"
 #include "DragWrapper.h"
+#include "NotePadManager.h"
 #include "FolderDlg.h"
 
 
@@ -17,7 +18,7 @@ class FolderList : public CDialogEx, public DragWrapper<FolderItem0*>
 	friend class NotePad;
 
 public:
-	FolderList(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	FolderList(NotePadManager* notePadManager, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~FolderList();
 
 // 대화 상자 데이터입니다.
@@ -36,10 +37,11 @@ private:
 	ThemeData* currentTheme;
 	CWnd* pParent;
 	NotePad* notepad;
+	NotePadManager* notePadManager;
 
 	int nButtonCount;
 	int nLineEndCount;
-	ViewFolderList folderlist;
+	//ViewFolderList folderlist;
 	FolderItem0* downFolder;
 	FolderItem0* undoFolder;
 
@@ -50,8 +52,6 @@ private:
 	int LocationAndScrollToFolderSequence(int nLocToPos);
 	CRect SetButtonPosition(int nItemCount);
 	void UpdateFolder(FolderItem0* folderItem);
-	void UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex);
-	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
 
 	bool bThread;
 	bool bPressMaintain;

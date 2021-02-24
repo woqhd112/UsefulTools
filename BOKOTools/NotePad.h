@@ -1,19 +1,14 @@
 ﻿#pragma once
 #include "NotePadList.h"
 #include "FolderList.h"
+#include "NotePadRecycle.h"
 #include "UsingManualDialog.h"
-#include "CustomXml.h"
-#include "NoteFile.h"
+//#include "CustomXml.h"
+//#include "NoteFile.h"
+#include "NotePadManager.h"
 #include "CalculateEdit.h"
 
 // NotePad 대화 상자
-#define TAG_COLOR_1		RGB(245, 85, 79)
-#define TAG_COLOR_2		RGB(252, 184, 74)
-#define TAG_COLOR_3		RGB(115, 215, 108)
-#define TAG_COLOR_4		RGB(131, 94, 224)
-#define TAG_COLOR_5		RGB(160, 160, 160)
-#define TAG_COLOR_6		RGB(224, 153, 94)
-#define TAG_COLOR_7		RGB(94, 165, 224)
 
 class NotePad : public CDialogEx
 {
@@ -21,6 +16,7 @@ class NotePad : public CDialogEx
 
 	friend class FolderList;
 	friend class NotePadList;
+	friend class NotePadRecycle;
 
 public:
 	NotePad(int nManualImageID, bool bUsingManual, ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
@@ -59,14 +55,9 @@ private:
 
 	NotePadList* notepadlist;
 	FolderList* folderlist;
+	NotePadRecycle* notepadrecycle;
+	NotePadManager* notePadManager;
 
-	std::vector<ViewNoteList> allNoteList;
-	ViewNoteList otherNoteList;
-	ViewFolderList allFolderList;
-
-	ViewNoteList recycleNoteList;
-	ViewFolderList recycleFolderList;
-	
 	CBrush m_topBrush;
 	CBrush m_bottomBrush;
 	CRect wrapBorderRect;
@@ -75,39 +66,9 @@ private:
 	CRect trashButtonRect;
 	CString strLatelyNoteContent;
 
-	struct NoteSaveData
-	{
-		CString strUpdateTime;
-		CString strCreateTime;
-		int nNoteName;
-		int nLock;
-		int nFolderSequence;
-	};
-
-	struct FolderSaveData
-	{
-		CString strUpdateTime;
-		CString strCreateTime;
-		CString strFolderName;
-		COLORREF folderTagColor;
-		int nFolderSequence;
-		int nSize;
-	};
-
 	void LoadNotePad();
-	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
-	void SaveNoteXml(NoteSaveData notedata);
-	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
-	void CreateNoteXml(NoteSaveData notedata);
-	void SaveFolderXml(FolderSaveData folderdata);
-	void UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata);
-	void CreateFolderXml(FolderSaveData folderdata);
 	void InvalidateSame();
-	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
-	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
 	void SetLatelyNote(CString strLatelyNote);
-	CTime GetTimeCal(CString strTime);
-	CString GetTimeCal(CTime calTime);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -117,8 +78,6 @@ protected:
 public:
 
 	CRect dragRect;
-	COLORREF GetTagColorFromIndex(int nIndex);
-	int GetIndexFromTagColor(COLORREF tagcolor);
 	void LoadAllNote();
 	void LoadOtherNote();
 

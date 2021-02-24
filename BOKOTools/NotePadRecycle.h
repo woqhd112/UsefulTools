@@ -1,13 +1,20 @@
 ﻿#pragma once
-#include "ThemeData.h"
+#include "NoteItem.h"
+#include "FolderItem.h"
+
 
 // NotePadRecycle 대화 상자
 
+class NotePad;
 class NotePadRecycle : public CDialogEx
 {
 	DECLARE_DYNAMIC(NotePadRecycle)
 
 public:
+
+	typedef std::vector<NoteItem*> ViewNoteList;
+	typedef std::vector<FolderItem0*> ViewFolderList;
+
 	NotePadRecycle(ThemeData* currentTheme, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~NotePadRecycle();
 
@@ -20,6 +27,17 @@ private:
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
+	NotePad* notepad;
+
+	ViewNoteList recycleNoteList;
+	ViewFolderList recycleFolderList;
+
+
+public:
+
+	void LoadRecycleData();
+	void Init(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList);
+
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
