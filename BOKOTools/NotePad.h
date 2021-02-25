@@ -3,9 +3,6 @@
 #include "FolderList.h"
 #include "NotePadRecycle.h"
 #include "UsingManualDialog.h"
-//#include "CustomXml.h"
-//#include "NoteFile.h"
-#include "NotePadManager.h"
 #include "CalculateEdit.h"
 
 // NotePad 대화 상자
@@ -29,8 +26,10 @@ public:
 
 private:
 
-	typedef std::vector<NoteItem*> ViewNoteList;
-	typedef std::vector<FolderItem0*> ViewFolderList;
+	//typedef std::vector<NoteItem*> ViewNoteList;
+	//typedef std::vector<FolderItem0*> ViewFolderList;
+	typedef NotePadContainer<NoteItem*> ViewNoteList;
+	typedef NotePadContainer<FolderItem0*> ViewFolderList;
 
 	CalculateButton m_btn_edit_bold;
 	CalculateButton m_btn_edit_italic;

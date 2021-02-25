@@ -3,7 +3,7 @@
 #include "DragWrapper.h"
 #include "NotePadManager.h"
 //#include "FolderItem.h"
-#include <algorithm>
+//#include <algorithm>
 
 // NotePadList 대화 상자
 class NotePad;
@@ -27,8 +27,10 @@ public:
 
 private:
 
-	typedef std::vector<NoteItem*> ViewNoteList;
-	typedef std::vector<FolderItem0*> ViewFolderList;
+	//typedef std::vector<NoteItem*> ViewNoteList;
+	//typedef std::vector<FolderItem0*> ViewFolderList;
+	typedef NotePadContainer<NoteItem*> ViewNoteList;
+	typedef NotePadContainer<FolderItem0*> ViewFolderList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;
@@ -56,8 +58,7 @@ private:
 		DRAG_SECTOR_FOLDER = 2,
 	};
 
-	std::vector<ViewNoteList> viewNoteList;
-	//std::vector<ViewNoteList> baseViewNoteList;
+	NotePadContainer<ViewNoteList> viewNoteList;
 
 	CustomScroll scroll;
 
@@ -93,6 +94,7 @@ private:
 
 	NoteItem* FindNoteButton(HWND clickWND);
 	BOOL DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT, POINT pt);
+	void SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& strFindSortNoteTagSequence);
 
 	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote = nullptr);
 	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findnote = nullptr);
@@ -104,7 +106,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	void LoadNotePad(std::vector<ViewNoteList> allFolderList);
+	void LoadNotePad(NotePadContainer<ViewNoteList> allFolderList);
 	void AddNotePad(CString strContent, bool isLock);
 	void UpdateNotePad(NoteItem* updateNote, CString strContent, bool isLock);
 	bool OpenNoteDlg(int nNoteMode, CString* strNoteContent, bool* isLock);

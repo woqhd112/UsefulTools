@@ -113,9 +113,9 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
 	{
-		for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
+		for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
 		{
-			FolderItem0* folder = notePadManager->m_allFolderList.at(i);
+			FolderItem0* folder = notePadManager->m_allFolderList.At(i);
 			CGdipButton* folderButton = folder->folderButton;
 			if (pMsg->hwnd == folderButton->m_hWnd)
 			{
@@ -127,11 +127,11 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	}
 	else  if (pMsg->message == WM_LBUTTONDBLCLK)
 	{
-		for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
+		for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
 		{
-			if (pMsg->hwnd == notePadManager->m_allFolderList.at(i)->folderButton->m_hWnd)
+			if (pMsg->hwnd == notePadManager->m_allFolderList.At(i)->folderButton->m_hWnd)
 			{
-				UpdateFolder(notePadManager->m_allFolderList.at(i));
+				UpdateFolder(notePadManager->m_allFolderList.At(i));
 				return TRUE;
 			}
 		}
@@ -207,9 +207,9 @@ void FolderList::LoadFolder(ViewFolderList allFolderList)
 
 void FolderList::ViewFolder(ViewFolderList folderlist)
 {
-	for (int i = 1; i < (int)folderlist.size(); i++)
+	for (int i = 1; i < folderlist.Size(); i++)
 	{
-		FolderItem0* targetFolder = folderlist.at(i);
+		FolderItem0* targetFolder = folderlist.At(i);
 		CRect folderRect;
 		folderRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 5));
 		targetFolder->ShowWindow(true);
@@ -311,9 +311,9 @@ void FolderList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	scroll.OperateScroll(nSBCode, nPos);
 	Invalidate();
-	for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
+	for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
 	{
-		FolderItem0* folder = notePadManager->m_allFolderList.at(i);
+		FolderItem0* folder = notePadManager->m_allFolderList.At(i);
 		folder->folderButton->DisConnect();
 	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
@@ -385,9 +385,9 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 		folderItem->Update(updateFolder);
 
 		ViewNoteList notelist = folderItem->GetFolder();
-		for (int i = 0; i < (int)notelist.size(); i++)
+		for (int i = 0; i < notelist.Size(); i++)
 		{
-			NoteItem* noteItem = notelist.at(i);
+			NoteItem* noteItem = notelist.At(i);
 			NoteItem::NoteInit updateNote;
 			updateNote.isLock = noteItem->IsLock();
 			updateNote.nFolderSequence = updateFolder.nFolderSequence;

@@ -324,6 +324,9 @@
     <ClInclude Include="NoteFile.h">
       <Filter>NotePad\File</Filter>
     </ClInclude>
+    <ClInclude Include="NotePadContainer.h">
+      <Filter>NotePad\Process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BOKOTools.ico">

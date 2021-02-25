@@ -19,8 +19,10 @@ class NotePadRecycle;
 
 class NotePadManager
 {
-	typedef std::vector<NoteItem*> ViewNoteList;
-	typedef std::vector<FolderItem0*> ViewFolderList;
+	//typedef std::vector<NoteItem*> ViewNoteList;
+	//typedef std::vector<FolderItem0*> ViewFolderList;
+	typedef NotePadContainer<NoteItem*> ViewNoteList;
+	typedef NotePadContainer<FolderItem0*> ViewFolderList;
 
 public:
 
@@ -52,8 +54,8 @@ public:
 		NOTE_VIEW_FOLDER = 2
 	};
 
-	std::vector<ViewNoteList> m_allNoteList;
-	std::vector<ViewNoteList> m_viewNoteList;
+	NotePadContainer<ViewNoteList> m_allNoteList;
+	NotePadContainer<ViewNoteList> m_viewNoteList;
 	ViewNoteList m_otherNoteList;
 	ViewFolderList m_allFolderList;
 
@@ -66,14 +68,16 @@ public:
 	bool LoadNotePadData();
 
 	void UpdateFolderVector(ViewNoteList updateNoteList, int nUpdateIndex);
-	void UpdateViewNoteList(std::vector<ViewNoteList> updateViewNoteList);
+	void UpdateViewNoteList(NotePadContainer<ViewNoteList> updateViewNoteList);
 	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
 
-	void SetNoteView(std::vector<ViewNoteList> viewNoteList ,FolderViewState viewState);
+	void SetNoteView(NotePadContainer<ViewNoteList> viewNoteList ,FolderViewState viewState);
 
 	void AddFolder(FolderItem0* newFolder);
 	void AddNote(NoteItem* newNote);
+	void UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
+	ViewNoteList FolderChange(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence);
 
 	int MaxFolderSequence();
 	CString GetLatleyNoteContent();
@@ -107,6 +111,7 @@ public:
 		int nSize;
 	};
 
+	void RecycleNoteXml(NoteSaveData origindata);
 	void SaveNoteXml(NoteSaveData notedata);
 	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
 	void CreateNoteXml(NoteSaveData notedata);

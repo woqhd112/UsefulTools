@@ -236,6 +236,7 @@
     <ClInclude Include="NoteFile.h" />
     <ClInclude Include="NoteItem.h" />
     <ClInclude Include="NotePad.h" />
+    <ClInclude Include="NotePadContainer.h" />
     <ClInclude Include="NotePadList.h" />
     <ClInclude Include="NotePadManager.h" />
     <ClInclude Include="NotePadRecycle.h" />

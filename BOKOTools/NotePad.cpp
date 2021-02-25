@@ -210,7 +210,7 @@ BOOL NotePad::OnInitDialog()
 	LoadNotePad();
 
 
-	if (notePadManager->m_recycleNoteList.empty() && notePadManager->m_recycleFolderList.empty())
+	if (notePadManager->m_recycleNoteList.Empty() && notePadManager->m_recycleFolderList.Empty())
 	{
 		m_btn_trash.LoadStdImage(IDB_PNG_NOTEPAD_RECYCLE_EMPTY_NOMAL, _T("PNG"));
 		m_btn_trash.LoadHovImage(IDB_PNG_NOTEPAD_RECYCLE_EMPTY_HOVER, _T("PNG"));
@@ -438,9 +438,9 @@ void NotePad::OnBnClickedButtonAllNotefolder()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	LoadAllNote();
-	for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
+	for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
 	{
-		FolderItem0* targetFolder = notePadManager->m_allFolderList.at(i);
+		FolderItem0* targetFolder = notePadManager->m_allFolderList.At(i);
 		if (targetFolder)
 		{
 			if (targetFolder == folderlist->downFolder)
@@ -458,9 +458,9 @@ void NotePad::OnBnClickedButtonOtherNotefolder()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	LoadOtherNote();
-	for (int i = 0; i < (int)notePadManager->m_allFolderList.size(); i++)
+	for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
 	{
-		FolderItem0* targetFolder = notePadManager->m_allFolderList.at(i);
+		FolderItem0* targetFolder = notePadManager->m_allFolderList.At(i);
 		if (targetFolder)
 		{
 			if (targetFolder == folderlist->downFolder)
@@ -525,9 +525,11 @@ void NotePad::OnBnClickedButtonNotepadCreateNote()
 void NotePad::OnBnClickedButtonNotepadTrash()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CRect thisRect;
+	this->GetWindowRect(thisRect);
 
 	notepadrecycle->LoadRecycleData();
-	notepadrecycle->MoveWindow(dragRect.right, dragRect.top, 500, 500);
+	notepadrecycle->MoveWindow(thisRect.right, thisRect.top, 450, 500);
 	notepadrecycle->ShowWindow(SW_SHOW);
 	/*if(notepadrecycle->DoModal() == IDOK)
 	{

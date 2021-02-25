@@ -31,8 +31,10 @@ public:
 
 private:
 
-	typedef std::vector<NoteItem*> ViewNoteList;
-	typedef std::vector<FolderItem0*> ViewFolderList;
+	//typedef std::vector<NoteItem*> ViewNoteList;
+	//typedef std::vector<FolderItem0*> ViewFolderList;
+	typedef NotePadContainer<NoteItem*> ViewNoteList;
+	typedef NotePadContainer<FolderItem0*> ViewFolderList;
 
 	ThemeData* currentTheme;
 	CWnd* pParent;

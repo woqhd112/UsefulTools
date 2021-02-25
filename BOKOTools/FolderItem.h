@@ -1,5 +1,6 @@
 #pragma once
 #include "NoteItem.h"
+#include "NotePadContainer.h"
 #include "CalculateStatic.h"
 #include <vector>
 
@@ -11,7 +12,7 @@ public:
 	FolderItem0(ThemeData* currentTheme, CWnd* pParent);
 	~FolderItem0();
 
-	typedef std::vector<NoteItem*> Folder, ViewNoteList;
+	typedef NotePadContainer<NoteItem*> Folder, ViewNoteList;
 
 	struct FolderInit
 	{

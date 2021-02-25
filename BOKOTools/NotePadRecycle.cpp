@@ -32,6 +32,8 @@ void NotePadRecycle::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(NotePadRecycle, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_CTLCOLOR()
+	ON_WM_VSCROLL()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -101,30 +103,115 @@ void NotePadRecycle::Init(ViewNoteList recycleNoteList, ViewFolderList recycleFo
 	this->recycleFolderList = recycleFolderList;
 }
 
+CRect NotePadRecycle::SetNoteButtonPosition(int nNoteIndex)
+{
+	int nStartPos_Valy = 30;
+
+	int nPictureSize_x = 365;
+	int nPictureSize_y = 40;
+
+	int nPictureToPictureMargin_y = 2;
+
+	CRect ButtonPos;
+
+	nStartPos_Valy += ((nPictureSize_y + nPictureToPictureMargin_y) * (nNoteIndex));
+	nStartPos_Sumy = nStartPos_y + nStartPos_Valy;
+
+	ButtonPos = { nStartPos_x, nStartPos_Sumy, nStartPos_x + nPictureSize_x, nStartPos_Sumy + nPictureSize_y };
+	return ButtonPos;
+}
+
+CRect NotePadRecycle::SetFolderButtonPosition(int nFolderIndex)
+{
+	int nStartPos_Valx = 30;
+	int nStartPos_Valy = 30;
+
+	int nPictureSize_x = 64;
+	int nPictureSize_y = 64 + 20;
+
+	int nPictureToPictureMargin_y = 20;
+	int nPictureToPictureMargin_x = 30;
+	CRect ButtonPos;
+
+	nStartPos_Valy += ((nPictureSize_y + nPictureToPictureMargin_y) * (nFolderIndex / 4));
+	nStartPos_y = nStartPos_Valy;
+	nStartPos_Sumy = nStartPos_y;
+
+	nStartPos_Valx += ((nPictureSize_x + nPictureToPictureMargin_x) * (nFolderIndex % 4));
+	nStartPos_x = nStartPos_Valx;
+	nStartPos_Sumx = nStartPos_x;
+
+	ButtonPos = { nStartPos_Valx, nStartPos_Valy, nStartPos_Valx + nPictureSize_x, nStartPos_Valy + nPictureSize_y };
+	return ButtonPos;
+}
+
 void NotePadRecycle::LoadRecycleData()
 {
-	int nStart_x = 30;
-	int nStart_y = 30;
-	// 일단 정렬은 임시임
-	int nMarginValue = 0;
+	scroll.Destroy();
 
-	for (int i = 0; i < (int)recycleFolderList.size(); i++)
+	scroll.Create(this);
+	CustomScroll::CustomScrollInfo csi;
+	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
+	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
+	csi.nAllPageSize = 0;
+	csi.nOnePageSize = 500;
+	csi.nScrollPos = 0;
+	scroll.Initialize(csi);
+
+	nStartPos_x = 30;
+	nStartPos_y = 30;
+	nStartPos_Sumx = 30;
+	nStartPos_Sumy = 30;
+
+	for (int i = 0; i < recycleFolderList.Size(); i++)
 	{
-		FolderItem0* recycleFolder = recycleFolderList.at(i);
+		FolderItem0* recycleFolder = recycleFolderList.At(i);
+		CRect folderRect = SetFolderButtonPosition(i);
 		recycleFolder->ShowWindow(true);
-		recycleFolder->MoveWindow(nStart_x, nStart_y + nMarginValue);
-		nMarginValue += 90;
+		recycleFolder->MoveWindow(folderRect.left, folderRect.top);
+
+		if (nStartPos_Sumy >= 500 * scroll.GetLineCount())
+			scroll.LineEnd();
 	}
 
+	nStartPos_x = 30;
+	nStartPos_y += 84;
 
-	for (int i = 0; i < (int)recycleNoteList.size(); i++)
+	for (int i = 0; i < recycleNoteList.Size(); i++)
 	{
-		NoteItem* recycleNote = recycleNoteList.at(i);
+		NoteItem* recycleNote = recycleNoteList.At(i);
+		CRect noteRect = SetNoteButtonPosition(i);
 		recycleNote->ShowWindow(true);
 		recycleNote->ShowLock(recycleNote->IsLock());
-		recycleNote->MoveWindow(nStart_x, nStart_y + nMarginValue);
-		nMarginValue += 90;
+		recycleNote->MoveWindow(noteRect.left, noteRect.top);
+
+		if (nStartPos_Sumy >= 500 * scroll.GetLineCount())
+			scroll.LineEnd();
 	}
 
+	scroll.ExecuteScrollPos(currentTheme);
+
 	Invalidate();
+}
+
+void NotePadRecycle::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	scroll.OperateScroll(nSBCode, nPos);
+
+	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+BOOL NotePadRecycle::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (scroll.GetLineCount() > 1)
+	{
+		UINT nFlag = scroll.OperateWheel(zDelta);
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		else { OnVScroll(nFlag, 0, GetScrollBarCtrl(SB_VERT)); }
+	}
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

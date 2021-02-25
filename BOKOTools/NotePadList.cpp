@@ -75,16 +75,16 @@ BOOL NotePadList::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
+void NotePadList::LoadNotePad(NotePadContainer<ViewNoteList> allFolderList)
 {
-	for (int i = 0; i < (int)viewNoteList.size(); i++)
+	for (int i = 0; i < viewNoteList.Size(); i++)
 	{
-		ViewNoteList notelist = viewNoteList.at(i);
-		if (notelist.size() > 0)
+		ViewNoteList notelist = viewNoteList.At(i);
+		if (notelist.Size() > 0)
 		{
-			for (int j = 0; j < (int)notelist.size(); j++)
+			for (int j = 0; j < notelist.Size(); j++)
 			{
-				notelist.at(j)->ShowWindow(false);
+				notelist.At(j)->ShowWindow(false);
 			}
 		}
 	}
@@ -102,9 +102,9 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);
 
-	for (int i = 0; i < (int)allFolderList.size(); i++)
+	for (int i = 0; i < allFolderList.Size(); i++)
 	{
-		ViewNote(allFolderList.at(i));
+		ViewNote(allFolderList.At(i));
 	}
 	notePadManager->m_viewNoteList = allFolderList;
 	viewNoteList = allFolderList;
@@ -121,7 +121,7 @@ void NotePadList::LoadNotePad(std::vector<ViewNoteList> allFolderList)
 void NotePadList::SuccessUpdate()
 {
 	nFindSaveFolderSequence = 0;
-	saveNoteList.clear();
+	saveNoteList.Clear();
 	notePadManager->UpdateViewNoteList(viewNoteList);
 }
 
@@ -182,7 +182,7 @@ void NotePadList::UpdateNotePad(NoteItem* updateNote, CString strContent, bool i
 
 void NotePadList::AddNotePad(CString strContent, bool isLock)
 {
-	int nNoteName = (int)notePadManager->m_otherNoteList.size();
+	int nNoteName = notePadManager->m_otherNoteList.Size();
 	NoteItem* newNote = new NoteItem(currentTheme, this);
 	NoteItem::NoteInit noteinit;
 
@@ -228,15 +228,17 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 
 		notePadManager->CreateNoteXml(saveNote);
 		notePadManager->SaveFolderXml(saveFolder);
-		LoadNotePad({ notePadManager->m_otherNoteList });
+		NotePadContainer<ViewNoteList> alloc;
+		alloc.Push(notePadManager->m_otherNoteList);
+		LoadNotePad(alloc);
 	}
 }
 
 void NotePadList::ViewNote(ViewNoteList notelist)
 {
-	for (int i = 0; i < (int)notelist.size(); i++)
+	for (int i = 0; i < notelist.Size(); i++)
 	{
-		NoteItem* targetNote = notelist.at(i);
+		NoteItem* targetNote = notelist.At(i);
 		CRect noteRect;
 		noteRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 6));
 		targetNote->ShowWindow(true);
@@ -300,43 +302,8 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			// 현재 마우스 포인트가 해당 노트에 있을경우
 			if (PtInRect(rect, convertPoint))
 			{
-				// 스왑한 노트정보를 현재 상속된 폴더에 업데이트한다.
-				notePadManager->UpdateFolderVector(saveNoteList, nFindSaveFolderSequence);
-
-				// 스왑한 노트정보를 notepad에 있는 전체폴더에 업데이트한다.
-				notePadManager->UpdateAllNoteVector(saveNoteList, nFindSaveFolderSequence);
-
-				// 업데이트한 노트정보를 메모장에 업데이트한다.
-				NoteFile updateNoteContentFile;
-				for (int i = 0; i < (int)saveNoteList.size(); i++)
-				{
-					bool bUpdateNote = false;
-					NoteItem* saveNote = saveNoteList.at(i);
-					if (saveNote == findnote)
-					{
-						bUpdateNote = true;
-					}
-
-					saveNote->SetNoteName(i);
-
-					CString strFullPath = _T("");
-					CString strNoteName;
-					CustomXml::GetModulePath(strFullPath);
-					strFullPath += _T("\\Note");
-					strNoteName.Format(_T("%s\\%d%d.txt"), strFullPath, saveNote->GetFolderSequence(), i);
-					updateNoteContentFile.NoteWrite(strNoteName, saveNote->GetNoteContent());
-
-					NotePadManager::NoteSaveData updateNote;
-					updateNote.nFolderSequence = saveNote->GetFolderSequence();
-					updateNote.nLock = saveNote->IsLock();
-					updateNote.nNoteName = saveNote->GetNoteName();
-					updateNote.strCreateTime = notePadManager->GetTimeCal(saveNote->GetCreateTime());
-					updateNote.strUpdateTime = notePadManager->GetTimeCal(bUpdateNote ? CTime::GetCurrentTime() : saveNote->GetUpdateTime());
-
-					notePadManager->SaveNoteXml(updateNote);
-				}
-
-
+				notePadManager->UpdateNoteSwap(saveNoteList, findnote, nFindSaveFolderSequence);
+				
 				SuccessUpdate();
 			}
 			// 현재 마우스 포인트가 노트 밖에 있을 경우 다시 초기로 갱신
@@ -352,120 +319,27 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			if (nSelectFolderSequence != nFindSaveFolderSequence)
 			{
 				// 폴더 영역인데 폴더가 없을경우는 리턴한다.
-				if (nFindSaveFolderSequence > (int)notePadManager->m_allNoteList.size() - 1 || nSelectFolderSequence > (int)notePadManager->m_allNoteList.size() - 1)
+				if (nFindSaveFolderSequence > notePadManager->m_allNoteList.Size() - 1 || nSelectFolderSequence > notePadManager->m_allNoteList.Size() - 1)
 				{
 					LoadNotePad(notePadManager->m_viewNoteList);
 					return FALSE;
 				}
 
 				ViewNoteList updateNoteList;
-				if ((int)notePadManager->m_viewNoteList.size() > 1)
-					updateNoteList = notePadManager->m_viewNoteList.at(nFindSaveFolderSequence);
+				if (notePadManager->m_viewNoteList.Size() > 1)
+					updateNoteList = notePadManager->m_viewNoteList.At(nFindSaveFolderSequence);
 				else
-					updateNoteList = notePadManager->m_viewNoteList.at(0);
+					updateNoteList = notePadManager->m_viewNoteList.At(0);
 
-				// 현재 노트를 현재 폴더에서 지운다
-				int nDeleteNoteIndex = 0;
-				for (int i = 0; i < (int)updateNoteList.size(); i++)
-				{
-					NoteItem* updateNote = updateNoteList.at(i);
-					updateNote->SetFolderSize(updateNote->GetFolderSize() - 1);
-					if (updateNote == findnote)
-					{
-						nDeleteNoteIndex = i;
-						updateNoteList.erase(updateNoteList.begin() + i);
-					}
-				}
+				ViewNoteList insertNoteList = notePadManager->FolderChange(updateNoteList, findnote, nFindSaveFolderSequence, nSelectFolderSequence);
+
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 
-				// 현재 폴더 갱신
-				FolderItem0* updateFolder = notePadManager->m_allFolderList.at(nFindSaveFolderSequence);
-				FolderItem0::FolderInit updateFolderInit;
-
-				int nUpdateFolderSize = updateFolder->GetFolderSize() - 1;
-				updateFolderInit.folder = updateNoteList;
-				updateFolderInit.nFolderColorIndex = updateFolder->GetFolderColorIndex();
-				updateFolderInit.nFolderSequence = updateFolder->GetFolderSequence();
-				updateFolderInit.nFolderSize = nUpdateFolderSize;
-				updateFolderInit.strFolderName = updateFolder->GetFolderName();
-				updateFolder->Update(updateFolderInit);
-
-				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
-				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
-
-
-				// 현재 노트를 선택한 폴더에 추가한다
-				ViewNoteList insertNoteList = notePadManager->m_allNoteList.at(nSelectFolderSequence);
-				FolderItem0* insertFolder = notePadManager->m_allFolderList.at(nSelectFolderSequence);
-				FolderItem0::FolderInit selectFolderInit;
-
-				NoteItem::NoteInit updateinit;
-				updateinit.isLock = findnote->IsLock();
-				updateinit.nFolderSequence = nSelectFolderSequence;
-				updateinit.nFolderSize = (int)insertNoteList.size() + 1;
-				updateinit.nNoteName = (int)insertNoteList.size();
-				updateinit.strNoteContent = findnote->GetNoteContent();
-				updateinit.tagColor = notePadManager->GetTagColorFromIndex(insertFolder->GetFolderColorIndex());
-				updateinit.createTime = findnote->GetCreateTime();
-				updateinit.updateTime = CTime::GetCurrentTime();
-				findnote->Update(updateinit);
-
-				// 선택 폴더 갱신
-				insertNoteList.push_back(findnote);
-				int nSelectFolderSize = insertFolder->GetFolderSize() + 1;
-				selectFolderInit.folder = insertNoteList;
-				selectFolderInit.nFolderColorIndex = insertFolder->GetFolderColorIndex();
-				selectFolderInit.nFolderSequence = insertFolder->GetFolderSequence();
-				selectFolderInit.nFolderSize = nSelectFolderSize;
-				selectFolderInit.strFolderName = insertFolder->GetFolderName();
-				selectFolderInit.createTime = insertFolder->GetCreateTime();
-				selectFolderInit.updateTime = updateinit.updateTime;
-				insertFolder->Update(selectFolderInit);
-
 				// 선택 폴더의 크기가 1이상일때만 (전체 폴더일 때) 선택폴더를 갱신한다.
-				if ((int)notePadManager->m_viewNoteList.size() > 1)
+				if (notePadManager->m_viewNoteList.Size() > 1)
 					UpdateNoteVector(insertNoteList, nSelectFolderSequence);
 
-				notePadManager->UpdateAllNoteVector(insertNoteList, nSelectFolderSequence);
-				notePadManager->UpdateAllFolderVector(insertFolder, nSelectFolderSequence);
 				notepad->folderlist->Invalidate();
-
-				// 업데이트한 노트정보를 xml에 저장한다.
-				NotePadManager::NoteSaveData originNoteData, updateNoteData;
-				originNoteData.nFolderSequence = nFindSaveFolderSequence;
-				originNoteData.nLock = updateinit.isLock;
-				originNoteData.nNoteName = nDeleteNoteIndex;
-				originNoteData.strCreateTime = _T("");
-				originNoteData.strUpdateTime = _T("");
-
-				updateNoteData.nFolderSequence = nSelectFolderSequence;
-				updateNoteData.nLock = updateinit.isLock;
-				updateNoteData.nNoteName = updateinit.nNoteName;
-				updateNoteData.strCreateTime = notePadManager->GetTimeCal(updateinit.createTime);
-				updateNoteData.strUpdateTime = notePadManager->GetTimeCal(updateinit.updateTime);
-
-				notePadManager->UpdateNoteXml(originNoteData, updateNoteData);
-
-				NoteFile file;
-				CString strFullPath;
-				CustomXml::GetModulePath(strFullPath);
-				strFullPath += _T("\\Note");
-				// 업데이트한 노트이름으로 메모장이름을 변경한다.
-				CString strEventNoteOriginFileName, strEventNoteUpdateFileName;
-				strEventNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, originNoteData.nFolderSequence, originNoteData.nNoteName);
-				strEventNoteUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, updateNoteData.nFolderSequence, updateNoteData.nNoteName);
-				file.NoteRename(strEventNoteOriginFileName, strEventNoteUpdateFileName);
-
-				// 삭제된 폴더의 노트들의 이름을 정렬한다.
-				for (int i = 0; i < (int)updateNoteList.size(); i++)
-				{
-					NoteItem* noteitem = updateNoteList.at(i);
-					int nFolderSequence = noteitem->GetFolderSequence();
-					CString strNoteOriginFileName, strNoteUpdateFileName;
-					strNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, nFolderSequence, noteitem->GetNoteName());
-					strNoteUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, nFolderSequence, i);
-					file.NoteRename(strNoteOriginFileName, strNoteUpdateFileName);
-				}
 
 				SuccessUpdate();
 
@@ -490,6 +364,67 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			notepad->ScreenToClient(&parentPoint);
 			if (PtInRect(notepad->trashButtonRect, parentPoint))
 			{
+				ViewNoteList updateNoteList;
+				if (notePadManager->m_viewNoteList.Size() > 1)
+					updateNoteList = notePadManager->m_viewNoteList.At(nFindSaveFolderSequence);
+				else
+					updateNoteList = notePadManager->m_viewNoteList.At(0);
+
+				// 해당 노트를 폴더에서 지운다.
+				int nDeleteNoteIndex = 0;
+				for (int i = 0; i < updateNoteList.Size(); i++)
+				{
+					NoteItem* updateNote = updateNoteList.At(i);
+					updateNote->SetFolderSize(updateNote->GetFolderSize() - 1);
+					if (updateNote == findnote)
+					{
+						nDeleteNoteIndex = i;
+						updateNoteList.Erase(i);
+					}
+				}
+
+				// 해당 폴더를 업데이트한다.
+				FolderItem0* updateFolder = notePadManager->m_allFolderList.At(nFindSaveFolderSequence);
+				FolderItem0::FolderInit updateFolderInit;
+
+				int nUpdateFolderSize = updateFolder->GetFolderSize() - 1;
+				updateFolderInit.folder = updateNoteList;
+				updateFolderInit.nFolderColorIndex = updateFolder->GetFolderColorIndex();
+				updateFolderInit.nFolderSequence = updateFolder->GetFolderSequence();
+				updateFolderInit.nFolderSize = nUpdateFolderSize;
+				updateFolderInit.strFolderName = updateFolder->GetFolderName();
+				updateFolder->Update(updateFolderInit);
+
+				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
+				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
+
+				// 해당 노트를 쓰레기통에 추가한다.
+				notePadManager->m_recycleNoteList.Push(findnote);
+
+				// 해당 노트를 xml에 업데이트한다.
+				NotePadManager::NoteSaveData recycleNoteData;
+				recycleNoteData.nFolderSequence = findnote->GetFolderSequence();
+				recycleNoteData.nLock = findnote->IsLock();
+				recycleNoteData.nNoteName = findnote->GetNoteName();
+				recycleNoteData.strCreateTime = notePadManager->GetTimeCal(findnote->GetCreateTime());
+				recycleNoteData.strUpdateTime = notePadManager->GetTimeCal(findnote->GetUpdateTime());
+				notePadManager->RecycleNoteXml(recycleNoteData);
+
+				// 해당 노트의 파일 이름을 변경한다.
+				NoteFile file;
+				CString strFullPath;
+				CustomXml::GetModulePath(strFullPath);
+				strFullPath += _T("\\Note");
+				// 업데이트한 노트이름으로 메모장이름을 변경한다.
+				CString strEventNoteOriginFileName, strEventNoteUpdateFileName;
+				strEventNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
+				strEventNoteUpdateFileName.Format(_T("%s\\sr%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
+				file.NoteRename(strEventNoteOriginFileName, strEventNoteUpdateFileName);
+
+				// 화면을 갱신한다.
+
+				// 쓰레기통이 켜져있으면 쓰레기통 화면도 갱신한다.
+
 				TRACE(_T("쓰레기통 진입\n"));
 			}
 			LoadNotePad(notePadManager->m_viewNoteList);	// 일단 임시로 해둠 쓰레기통 구분해야함
@@ -579,37 +514,25 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 				if (notePosState == NOTE_POS_STATE_HALF_DETECT)
 				{
 					// 사이즈가 1보다 클경우는 전체 폴더리스트
-					if ((int)viewNoteList.size() > 1)
-						saveNoteList = viewNoteList.at(nFindSaveFolderSequence);
+					if (viewNoteList.Size() > 1)
+						saveNoteList = viewNoteList.At(nFindSaveFolderSequence);
 					else
-						saveNoteList = viewNoteList.at(0);
+						saveNoteList = viewNoteList.At(0);
 
-					if (nNoteLocToPos > ((int)saveNoteList.size() - 1) || nEventPos > ((int)saveNoteList.size() - 1)) return FALSE;
+					if (nNoteLocToPos > (saveNoteList.Size() - 1) || nEventPos > (saveNoteList.Size() - 1)) return FALSE;
 
 					// 찾은노트아이템이 들어올린 노트보다 위에 있을 경우
 					CString strSortNoteTagSequence;
 					if (absJump >= 1 && nJump > 0)
 					{
-						for (int i = nEventPos; i > nNoteLocToPos; i--)
-						{
-							NoteItem* sortNoteItem = saveNoteList.at(i - 1);
-							CRect sortRect = SetButtonPosition(i);
-							sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
-
-							strSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
-							int nNoteTagSequence = _ttoi(strSortNoteTagSequence);
-							CString strFormat;
-							strFormat.Format(_T("%d"), nNoteTagSequence + 1);
-							sortNoteItem->SetNoteTagSequence(strFormat);
-
-						}
+						SwapNoteTagSequence(nEventPos, nNoteLocToPos, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
 
 						for (int i = nEventPos; i > nNoteLocToPos; i--)
 						{
 							if (i - 1 < 0) return FALSE;
-							std::iter_swap(saveNoteList.begin() + i, saveNoteList.begin() + i - 1);
+							saveNoteList.Swap(i, i - 1);
 						}
 
 						UpdateNoteVector(saveNoteList, nFindSaveFolderSequence);
@@ -618,26 +541,14 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					}
 					else if (absJump >= 1 && nJump < 0)
 					{
-						for (int i = nEventPos; i < nNoteLocToPos; i++)
-						{
-							NoteItem* sortNoteItem = saveNoteList.at(i + 1);
-							CRect sortRect = SetButtonPosition(i);
-							sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
-
-							strSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
-							int nNoteTagSequence = _ttoi(strSortNoteTagSequence);
-							CString strFormat;
-							strFormat.Format(_T("%d"), nNoteTagSequence - 1);
-							sortNoteItem->SetNoteTagSequence(strFormat);
-
-						}
+						SwapNoteTagSequence(nEventPos, nNoteLocToPos, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
 
 						for (int i = nEventPos; i < nNoteLocToPos; i++)
 						{
-							if (i + 1 >= (int)saveNoteList.size()) return FALSE;
-							std::iter_swap(saveNoteList.begin() + i, saveNoteList.begin() + i + 1);
+							if (i + 1 >= saveNoteList.Size()) return FALSE;
+							saveNoteList.Swap(i, i + 1);
 						}
 						UpdateNoteVector(saveNoteList, nFindSaveFolderSequence);
 
@@ -671,7 +582,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 				{
 					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 1;
 					ViewFolderList viewFolderList = notePadManager->m_allFolderList;
-					if (nSelectFolderSequence > (int)(int)viewFolderList.size() - 1)
+					if (nSelectFolderSequence > viewFolderList.Size() - 1)
 					{
 						if (bMousePointFolderAccess)
 						{
@@ -682,7 +593,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 						return FALSE;
 					}
 
-					FolderItem0* findFolder = viewFolderList.at(nSelectFolderSequence);
+					FolderItem0* findFolder = viewFolderList.At(nSelectFolderSequence);
 
 					findFolderButton = findFolder->folderButton;
 					findFolderButton->UseHoverEvent();
@@ -708,6 +619,16 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 
 				dragSectorPos = DRAG_SECTOR_PARENT;
 			
+				// 마우스가 쓰레기통버튼에 접근했을때 호버이벤트 발생
+				if (PtInRect(notepad->trashButtonRect, parentPoint))
+				{
+					notepad->m_btn_trash.UseHoverEvent();
+				}
+				else
+				{
+					notepad->m_btn_trash.UseLeaveEvent();
+				}
+
 				// 마우스가 기타버튼에 접근했을때 폴더지역으로 전환
 				if (PtInRect(notepad->otherButtonRect, parentPoint))
 				{
@@ -723,29 +644,65 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 	return bReturn;
 }
 
+void NotePadList::SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& strFindSortNoteTagSequence)
+{
+	if (nEventPos > nLocToPos)
+	{
+		for (int i = nEventPos; i > nLocToPos; i--)
+		{
+			NoteItem* sortNoteItem = saveNoteList.At(i - 1);
+			CRect sortRect = SetButtonPosition(i);
+			sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
+
+			strFindSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
+			int nNoteTagSequence = _ttoi(strFindSortNoteTagSequence);
+			CString strFormat;
+			strFormat.Format(_T("%d"), nNoteTagSequence + 1);
+			sortNoteItem->SetNoteTagSequence(strFormat);
+
+		}
+	}
+	else if (nEventPos < nLocToPos)
+	{
+		for (int i = nEventPos; i < nLocToPos; i++)
+		{
+			NoteItem* sortNoteItem = saveNoteList.At(i + 1);
+			CRect sortRect = SetButtonPosition(i);
+			sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
+
+			strFindSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
+			int nNoteTagSequence = _ttoi(strFindSortNoteTagSequence);
+			CString strFormat;
+			strFormat.Format(_T("%d"), nNoteTagSequence - 1);
+			sortNoteItem->SetNoteTagSequence(strFormat);
+
+		}
+	}
+}
+
 NoteItem* NotePadList::FindNoteButton(HWND clickWND)
 {
 	noteClickState = NOTE_CLICK_STATE_NONE;
 
-	for (int i = 0; i < (int)viewNoteList.size(); i++)
+	for (int i = 0; i < viewNoteList.Size(); i++)
 	{
-		ViewNoteList notelists = viewNoteList.at(i);
-		for (int j = 0; j < (int)notelists.size(); j++)
+		ViewNoteList notelists = viewNoteList.At(i);
+		for (int j = 0; j < notelists.Size(); j++)
 		{
-			if (notelists.at(j)->noteButton->m_hWnd == clickWND)
+			if (notelists.At(j)->noteButton->m_hWnd == clickWND)
 			{
 				noteClickState = NOTE_CLICK_STATE_NOTE;
-				return notelists.at(j);
+				return notelists.At(j);
 			}
-			else if (notelists.at(j)->wrapButton->m_hWnd == clickWND)
+			else if (notelists.At(j)->wrapButton->m_hWnd == clickWND)
 			{
 				noteClickState = NOTE_CLICK_STATE_WRAP;
-				return notelists.at(j);
+				return notelists.At(j);
 			}
-			else if (notelists.at(j)->tagButton->m_hWnd == clickWND)
+			else if (notelists.At(j)->tagButton->m_hWnd == clickWND)
 			{
 				noteClickState = NOTE_CLICK_STATE_TAG;
-				return notelists.at(j);
+				return notelists.At(j);
 			}
 		}
 	}
@@ -795,6 +752,8 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			{
 				// 현재 노트리스트가 전체일경우 이벤트 제한
 				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL) return FALSE;
+				// 선택한 노트가 잠겨있을경우 이벤트 제한
+				if (findNote->IsLock()) return FALSE;
 				if (DragEventDown(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
@@ -875,22 +834,22 @@ bool NotePadList::OpenNoteDlg(int nNoteMode, CString* strNoteContent, bool* isLo
 
 void NotePadList::UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex)
 {
-	std::vector<ViewNoteList> newAllocNoteList;
-	if ((int)viewNoteList.size() == 1)
+	NotePadContainer<ViewNoteList> newAllocNoteList;
+	if (viewNoteList.Size() == 1)
 	{
-		newAllocNoteList.push_back(updateNoteList);
+		newAllocNoteList.Push(updateNoteList);
 	}
 	else
 	{
 		for (int i = 0; i < nUpdateIndex; i++)
 		{
-			newAllocNoteList.push_back(viewNoteList.at(i));
+			newAllocNoteList.Push(viewNoteList.At(i));
 		}
-		newAllocNoteList.push_back(updateNoteList);
-		for (int i = (int)newAllocNoteList.size(); i < (int)viewNoteList.size(); i++)
+		newAllocNoteList.Push(updateNoteList);
+		for (int i = newAllocNoteList.Size(); i < viewNoteList.Size(); i++)
 		{
-			newAllocNoteList.push_back(viewNoteList.at(i));
+			newAllocNoteList.Push(viewNoteList.At(i));
 		}
 	}
-	viewNoteList.assign(newAllocNoteList.begin(), newAllocNoteList.end());
+	viewNoteList.Assign(newAllocNoteList, 0, newAllocNoteList.Size() - 1);
 }
