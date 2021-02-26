@@ -528,7 +528,7 @@ void NotePad::OnBnClickedButtonNotepadTrash()
 	CRect thisRect;
 	this->GetWindowRect(thisRect);
 
-	notepadrecycle->LoadRecycleData();
+	notepadrecycle->LoadRecycleData(notePadManager->m_recycleNoteList, notePadManager->m_recycleFolderList);
 	notepadrecycle->MoveWindow(thisRect.right, thisRect.top, 450, 500);
 	notepadrecycle->ShowWindow(SW_SHOW);
 	/*if(notepadrecycle->DoModal() == IDOK)

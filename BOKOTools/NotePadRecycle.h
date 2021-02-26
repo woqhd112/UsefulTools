@@ -40,7 +40,7 @@ private:
 
 public:
 
-	void LoadRecycleData();
+	void LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList);
 	void Init(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList);
 
 private:

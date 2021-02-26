@@ -375,7 +375,10 @@ void NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* fi
 	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);
 
 	// 업데이트한 노트정보를 메모장에 업데이트한다.
+	CString strFullPath = _T("");
 	NoteFile updateNoteContentFile;
+	CustomXml::GetModulePath(strFullPath);
+	strFullPath += _T("\\Note");
 	for (int i = 0; i < variableNoteList.Size(); i++)
 	{
 		bool bUpdateNote = false;
@@ -387,10 +390,7 @@ void NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* fi
 
 		saveNote->SetNoteName(i);
 
-		CString strFullPath = _T("");
 		CString strNoteName;
-		CustomXml::GetModulePath(strFullPath);
-		strFullPath += _T("\\Note");
 		strNoteName.Format(_T("%s\\%d%d.txt"), strFullPath, saveNote->GetFolderSequence(), i);
 		updateNoteContentFile.NoteWrite(strNoteName, saveNote->GetNoteContent());
 
@@ -552,6 +552,21 @@ void NotePadManager::UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdat
 	m_allFolderList.Assign(newAllocFolderList, 0, newAllocFolderList.Size() - 1);
 }
 
+void NotePadManager::UpdateRecycleNoteVector(NoteItem* updateNote, int nUpdateIndex)
+{
+	ViewNoteList newAllocNoteList;
+	for (int i = 0; i < nUpdateIndex; i++)
+	{
+		newAllocNoteList.Push(m_recycleNoteList.At(i));
+	}
+	newAllocNoteList.Push(updateNote);
+	for (int i = newAllocNoteList.Size(); i < m_recycleNoteList.Size(); i++)
+	{
+		newAllocNoteList.Push(m_recycleNoteList.At(i));
+	}
+	m_recycleNoteList.Assign(newAllocNoteList, 0, newAllocNoteList.Size() - 1);
+}
+
 bool NotePadManager::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
 {
 	bool bReturn = false;
@@ -710,6 +725,7 @@ void NotePadManager::RecycleNoteXml(NoteSaveData origindata)
 					markUp.OutOfElem();
 				}
 			}
+			markUp.OutOfElem();
 		}
 
 		if (markUp.FindElem(_T("recy")))

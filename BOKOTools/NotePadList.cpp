@@ -395,12 +395,6 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				updateFolderInit.strFolderName = updateFolder->GetFolderName();
 				updateFolder->Update(updateFolderInit);
 
-				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
-				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
-
-				// 해당 노트를 쓰레기통에 추가한다.
-				notePadManager->m_recycleNoteList.Push(findnote);
-
 				// 해당 노트를 xml에 업데이트한다.
 				NotePadManager::NoteSaveData recycleNoteData;
 				recycleNoteData.nFolderSequence = findnote->GetFolderSequence();
@@ -421,7 +415,44 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				strEventNoteUpdateFileName.Format(_T("%s\\sr%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
 				file.NoteRename(strEventNoteOriginFileName, strEventNoteUpdateFileName);
 
+				// 삭제된 메모의 폴더에서 메모이름을 정렬한다.
+				for (int i = 0; i < updateNoteList.Size(); i++)
+				{
+					bool bUpdateNote = false;
+					NoteItem* saveNote = updateNoteList.At(i);
+
+
+					CString strFullPath = _T("");
+					CString strNoteName;
+					CString strFolderOriginFileName, strFolderUpdateFileName;
+					strFolderOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, saveNote->GetNoteName());
+					strFolderUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, i);
+					file.NoteRename(strFolderOriginFileName, strFolderUpdateFileName);
+
+					saveNote->SetNoteName(i);
+
+					NotePadManager::NoteSaveData updateNote;
+					updateNote.nFolderSequence = saveNote->GetFolderSequence();
+					updateNote.nLock = saveNote->IsLock();
+					updateNote.nNoteName = saveNote->GetNoteName();
+					updateNote.strCreateTime = notePadManager->GetTimeCal(saveNote->GetCreateTime());
+					updateNote.strUpdateTime = notePadManager->GetTimeCal(saveNote->GetUpdateTime());
+
+					notePadManager->SaveNoteXml(updateNote);
+				}
+
+				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
+				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
+
+				// 해당 노트를 쓰레기통에 추가한다.
+				notePadManager->m_recycleNoteList.Push(findnote); // 이상하게 쓰레기통에 업데이트가 안되네 뭐지?
+
+				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
+				SuccessUpdate();
+
 				// 화면을 갱신한다.
+				notepad->folderlist->Invalidate();
+
 
 				// 쓰레기통이 켜져있으면 쓰레기통 화면도 갱신한다.
 
@@ -728,6 +759,8 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			{
 				// 현재 노트리스트가 전체일경우 이벤트 제한
 				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL) return FALSE;
+				// 선택한 노트가 잠겨있을경우 이벤트 제한
+				if (findNote->IsLock()) return FALSE;
 				if (DragEventUp(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)

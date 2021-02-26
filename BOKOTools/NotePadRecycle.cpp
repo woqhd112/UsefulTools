@@ -145,8 +145,11 @@ CRect NotePadRecycle::SetFolderButtonPosition(int nFolderIndex)
 	return ButtonPos;
 }
 
-void NotePadRecycle::LoadRecycleData()
+void NotePadRecycle::LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList)
 {
+	this->recycleNoteList = recycleNoteList;
+	this->recycleFolderList = recycleFolderList;
+
 	scroll.Destroy();
 
 	scroll.Create(this);
@@ -154,7 +157,7 @@ void NotePadRecycle::LoadRecycleData()
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
 	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_VERTICAL;
 	csi.nAllPageSize = 0;
-	csi.nOnePageSize = 500;
+	csi.nOnePageSize = 460;
 	csi.nScrollPos = 0;
 	scroll.Initialize(csi);
 
@@ -185,7 +188,7 @@ void NotePadRecycle::LoadRecycleData()
 		recycleNote->ShowLock(recycleNote->IsLock());
 		recycleNote->MoveWindow(noteRect.left, noteRect.top);
 
-		if (nStartPos_Sumy >= 500 * scroll.GetLineCount())
+		if (nStartPos_Sumy >= 460 * scroll.GetLineCount())
 			scroll.LineEnd();
 	}
 

@@ -71,6 +71,7 @@ public:
 	void UpdateViewNoteList(NotePadContainer<ViewNoteList> updateViewNoteList);
 	void UpdateAllNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 	void UpdateAllFolderVector(FolderItem0* updateFolder, int nUpdateIndex);
+	void UpdateRecycleNoteVector(NoteItem* updateNote, int nUpdateIndex);
 
 	void SetNoteView(NotePadContainer<ViewNoteList> viewNoteList ,FolderViewState viewState);
 
