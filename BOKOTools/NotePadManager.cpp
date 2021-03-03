@@ -214,8 +214,11 @@ bool NotePadManager::LoadNotePadData()
 				ViewNoteList allocFolder;
 				while (markUp.FindElem(_T("note")))
 				{
+					int nNoteName = 0;
+					CString strNoteName;
+					strNoteName.Format(_T("%d"), nNoteName);
 					CString strNotePath;
-					CString strNoteName = markUp.GetAttrib(_T("name"));
+					//CString strNoteName = markUp.GetAttrib(_T("name"));
 					CString strLocked = markUp.GetAttrib(_T("lock"));
 					CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
 					CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
@@ -240,7 +243,7 @@ bool NotePadManager::LoadNotePadData()
 					{
 						NoteItem* newNote = new NoteItem(currentTheme, pRecycleDlg);
 						NoteItem::NoteInit noteinit;
-						noteinit.nNoteName = _ttoi(strNoteName);
+						noteinit.nNoteName = nNoteName;
 						noteinit.nFolderSequence = nNoteFolderSequence;
 						noteinit.strNoteContent = strNoteContent;
 						noteinit.tagColor = folderColor;
@@ -257,6 +260,7 @@ bool NotePadManager::LoadNotePadData()
 					{
 						AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
 					}
+					nNoteName++;
 				}
 				markUp.OutOfElem();
 
@@ -278,8 +282,11 @@ bool NotePadManager::LoadNotePadData()
 
 			while (markUp.FindElem(_T("note")))
 			{
+				int nNoteName = 0;
+				CString strNoteName;
+				strNoteName.Format(_T("%d"), nNoteName);
 				CString strNotePath;
-				CString strNoteName = markUp.GetAttrib(_T("name"));
+				//CString strNoteName = markUp.GetAttrib(_T("name"));
 				CString strLocked = markUp.GetAttrib(_T("lock"));
 				CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
 				CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
@@ -304,7 +311,7 @@ bool NotePadManager::LoadNotePadData()
 				{
 					NoteItem* newNote = new NoteItem(currentTheme, pRecycleDlg);
 					NoteItem::NoteInit noteinit;
-					noteinit.nNoteName = _ttoi(strNoteName);
+					noteinit.nNoteName = nNoteName;
 					noteinit.nFolderSequence = nNoteFolderSequence;
 					noteinit.strNoteContent = strNoteContent;
 					noteinit.tagColor = TAG_COLOR_5;
@@ -321,6 +328,7 @@ bool NotePadManager::LoadNotePadData()
 				{
 					AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
 				}
+				nNoteName++;
 			}
 
 			markUp.OutOfElem();
@@ -408,17 +416,7 @@ void NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* fi
 NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence)
 {
 	// 현재 노트를 현재 폴더에서 지운다
-	int nDeleteNoteIndex = 0;
-	for (int i = 0; i < variableNoteList.Size(); i++)
-	{
-		NoteItem* updateNote = variableNoteList.At(i);
-		updateNote->SetFolderSize(updateNote->GetFolderSize() - 1);
-		if (updateNote == findNote)
-		{
-			nDeleteNoteIndex = i;
-			variableNoteList.Erase(i);
-		}
-	}
+	int nDeleteNoteIndex = EraseNoteList(variableNoteList, findNote);
 
 	// 현재 폴더 갱신
 	FolderItem0* updateFolder = m_allFolderList.At(nFindVariableFolderSequence);
@@ -486,25 +484,97 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 	NoteFile file;
 	CString strFullPath;
 	CustomXml::GetModulePath(strFullPath);
-	strFullPath += _T("\\Note");
+	strFullPath += _T("\\Note\\");
 	// 업데이트한 노트이름으로 메모장이름을 변경한다.
-	CString strEventNoteOriginFileName, strEventNoteUpdateFileName;
-	strEventNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, originNoteData.nFolderSequence, originNoteData.nNoteName);
-	strEventNoteUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, updateNoteData.nFolderSequence, updateNoteData.nNoteName);
-	file.NoteRename(strEventNoteOriginFileName, strEventNoteUpdateFileName);
+	file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, originNoteData.nFolderSequence, originNoteData.nNoteName, updateNoteData.nFolderSequence, updateNoteData.nNoteName);
 
 	// 삭제된 폴더의 노트들의 이름을 정렬한다.
 	for (int i = 0; i < variableNoteList.Size(); i++)
 	{
 		NoteItem* noteitem = variableNoteList.At(i);
 		int nFolderSequence = noteitem->GetFolderSequence();
-		CString strNoteOriginFileName, strNoteUpdateFileName;
-		strNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, nFolderSequence, noteitem->GetNoteName());
-		strNoteUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, nFolderSequence, i);
-		file.NoteRename(strNoteOriginFileName, strNoteUpdateFileName);
+		file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, nFolderSequence, noteitem->GetNoteName(), nFolderSequence, i);
 	}
 
 	return insertNoteList;
+}
+
+void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence)
+{
+	// 해당 노트를 폴더에서 지운다.
+	int nDeleteNoteIndex = EraseNoteList(variableNoteList, findNote);
+	
+	// 해당 폴더를 업데이트한다.
+	FolderItem0* updateFolder = m_allFolderList.At(nFindVariableFolderSequence);
+	FolderItem0::FolderInit updateFolderInit;
+
+	int nUpdateFolderSize = updateFolder->GetFolderSize() - 1;
+	updateFolderInit.folder = variableNoteList;
+	updateFolderInit.nFolderColorIndex = updateFolder->GetFolderColorIndex();
+	updateFolderInit.nFolderSequence = updateFolder->GetFolderSequence();
+	updateFolderInit.nFolderSize = nUpdateFolderSize;
+	updateFolderInit.strFolderName = updateFolder->GetFolderName();
+	updateFolder->Update(updateFolderInit);
+
+	// 해당 노트를 xml에 업데이트한다.
+	NotePadManager::NoteSaveData recycleNoteData;
+	recycleNoteData.nFolderSequence = findNote->GetFolderSequence();
+	recycleNoteData.nLock = findNote->IsLock();
+	recycleNoteData.nNoteName = findNote->GetNoteName();
+	recycleNoteData.strCreateTime = GetTimeCal(findNote->GetCreateTime());
+	recycleNoteData.strUpdateTime = GetTimeCal(findNote->GetUpdateTime());
+	RecycleNoteXml(recycleNoteData);
+
+	// 해당 노트의 파일 이름을 변경한다.
+	NoteFile file;
+	CString strFullPath;
+	CustomXml::GetModulePath(strFullPath);
+	strFullPath += _T("\\Note\\");
+	// 업데이트한 노트이름으로 메모장이름을 변경한다.
+	file.NoteRename(strFullPath, NoteFile::NOTE_BY_SINGLE_RECYCLE_NOTE, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
+
+	// 삭제된 메모의 폴더에서 메모이름을 정렬한다.
+	for (int i = 0; i < variableNoteList.Size(); i++)
+	{
+		bool bUpdateNote = false;
+		NoteItem* saveNote = variableNoteList.At(i);
+
+		file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, recycleNoteData.nFolderSequence, saveNote->GetNoteName(), recycleNoteData.nFolderSequence, i);
+
+		saveNote->SetNoteName(i);
+
+		NotePadManager::NoteSaveData updateNote;
+		updateNote.nFolderSequence = saveNote->GetFolderSequence();
+		updateNote.nLock = saveNote->IsLock();
+		updateNote.nNoteName = saveNote->GetNoteName();
+		updateNote.strCreateTime = GetTimeCal(saveNote->GetCreateTime());
+		updateNote.strUpdateTime = GetTimeCal(saveNote->GetUpdateTime());
+
+		SaveNoteXml(updateNote);
+	}
+
+	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);
+	UpdateAllFolderVector(updateFolder, nFindVariableFolderSequence);
+
+	// 해당 노트를 쓰레기통에 추가한다.
+	m_recycleNoteList.Push(NoteByRecycleParentSwap(findNote));
+
+}
+
+int NotePadManager::EraseNoteList(ViewNoteList& variableNoteList, NoteItem* findNote)
+{
+	int nDeleteNoteIndex = 0;
+	for (int i = 0; i < variableNoteList.Size(); i++)
+	{
+		NoteItem* updateNote = variableNoteList.At(i);
+		updateNote->SetFolderSize(updateNote->GetFolderSize() - 1);
+		if (updateNote == findNote)
+		{
+			nDeleteNoteIndex = i;
+			variableNoteList.Erase(i);
+		}
+	}
+	return nDeleteNoteIndex;
 }
 
 void NotePadManager::SetNoteView(NotePadContainer<ViewNoteList> viewNoteList, FolderViewState viewState)
@@ -565,6 +635,43 @@ void NotePadManager::UpdateRecycleNoteVector(NoteItem* updateNote, int nUpdateIn
 		newAllocNoteList.Push(m_recycleNoteList.At(i));
 	}
 	m_recycleNoteList.Assign(newAllocNoteList, 0, newAllocNoteList.Size() - 1);
+}
+
+
+NoteItem* NotePadManager::NoteByRecycleParentSwap(NoteItem* updateNote)
+{
+	NoteItem* newNote = new NoteItem(currentTheme, pRecycleDlg);
+	NoteItem::NoteInit noteinit;
+	noteinit.nNoteName = updateNote->GetNoteName();
+	noteinit.nFolderSequence = updateNote->GetFolderSequence();
+	noteinit.strNoteContent = updateNote->GetNoteContent();
+	noteinit.tagColor = TAG_COLOR_5;
+	noteinit.isLock = updateNote->IsLock();
+	noteinit.nFolderSize = updateNote->GetFolderSize();
+	noteinit.createTime = updateNote->GetCreateTime();
+	noteinit.updateTime = updateNote->GetUpdateTime();
+
+	newNote->Initialize(noteinit);
+
+	return newNote;
+}
+
+NoteItem* NotePadManager::RecycleByNoteParentSwap(NoteItem* updateNote)
+{
+	NoteItem* newNote = new NoteItem(currentTheme, pNotePadList);
+	NoteItem::NoteInit noteinit;
+	noteinit.nNoteName = updateNote->GetNoteName();
+	noteinit.nFolderSequence = updateNote->GetFolderSequence();
+	noteinit.strNoteContent = updateNote->GetNoteContent();
+	noteinit.tagColor = TAG_COLOR_5;
+	noteinit.isLock = updateNote->IsLock();
+	noteinit.nFolderSize = updateNote->GetFolderSize();
+	noteinit.createTime = updateNote->GetCreateTime();
+	noteinit.updateTime = updateNote->GetUpdateTime();
+
+	newNote->Initialize(noteinit);
+
+	return newNote;
 }
 
 bool NotePadManager::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath)
@@ -731,9 +838,16 @@ void NotePadManager::RecycleNoteXml(NoteSaveData origindata)
 		if (markUp.FindElem(_T("recy")))
 		{
 			markUp.IntoElem();
+			int nNoteNameCount = 0;
+			while (markUp.FindElem(_T("note")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+					nNoteNameCount++;
+			}
+
 			markUp.AddElem(_T("note"));
 			markUp.AddAttrib(_T("seq"), origindata.nFolderSequence);
-			markUp.AddAttrib(_T("name"), origindata.nNoteName);
+			markUp.AddAttrib(_T("name"), nNoteNameCount);
 			markUp.AddAttrib(_T("lock"), origindata.nLock);
 			markUp.AddAttrib(_T("create"), origindata.strCreateTime);
 			markUp.AddAttrib(_T("update"), origindata.strUpdateTime);

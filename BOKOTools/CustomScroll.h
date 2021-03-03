@@ -22,14 +22,22 @@ public:
 		CUSTOM_SCROLL_FLAGS_HORIZON		= SB_HORZ
 	};
 
+	enum CustomScrollEvent
+	{
+		CUSTOM_SCROLL_EVENT_DEFAULT	= 0,
+		CUSTOM_SCROLL_EVENT_INCREASE_COUNT_LINE	= 1,
+	};
+
 	struct CustomScrollInfo
 	{
 		CustomScrollType cst;
 		CustomScrollFlags csf;
+		CustomScrollEvent cse = CUSTOM_SCROLL_EVENT_DEFAULT;
 		int nWheelValue;
 		int nAllPageSize;
 		int nOnePageSize;
 		int nScrollPos;
+		int nCseMaxCount = 1;
 		bool bLikeButtonEvent = true;
 	};
 
@@ -37,6 +45,7 @@ public:
 	void Destroy();
 	void Initialize(CustomScrollInfo csi);
 	void LineEnd();
+	void LineAnyEnd();
 	void LineDelete();
 	void LoadScroll(int nThisHeight);
 	void ExecuteScrollPos(ThemeData* currentTheme);
@@ -47,7 +56,9 @@ public:
 	UINT OperateWheel(short zDelta);
 
 	int GetLineCount();
+	int GetCseMaxLineCount();
 	int GetCurrentLinePos();
+	void SetDefaultLinePos();
 
 	void IncreaseScroll();
 
@@ -61,9 +72,14 @@ private:
 	int nLineCount;
 	int nCurrentLinePos;
 
+	int nSceMaxCounts;
+
 	bool bOneButtonLight;
 
 	std::vector<CGdipButton*> buttonVector;
 	std::vector<CRect> buttonRect;
+
+
+	int GetCalculateLinePos(CustomScrollEvent cse, int nSBCode);
 };
 

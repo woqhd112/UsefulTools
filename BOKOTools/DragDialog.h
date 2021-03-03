@@ -12,7 +12,7 @@ class DragDialog : public CDialogEx
 
 public:
 	
-	DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, bool nBindPicture, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~DragDialog();
 
 // 대화 상자 데이터입니다.
@@ -25,6 +25,7 @@ private:
 	CalculateStatic* hoverStatic;
 	int nButtonWidth;
 	int nButtonHeight;
+	bool nBindPicture;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.

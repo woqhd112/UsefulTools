@@ -24,6 +24,7 @@ FolderList::FolderList(NotePadManager* notePadManager, ThemeData* currentTheme, 
 	nLineEndCount = 0;
 	bThread = false;
 	bPressMaintain = false;
+	bThreadDownEvent = false;
 	undoFolder = nullptr;
 	downFolder = nullptr;
 }
@@ -58,14 +59,14 @@ BOOL FolderList::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
+	
 	notepad = (NotePad*)pParent;
 
-	Init(this, notepad->GetParent(), BIND_REGULAR, MODE_BUTTONVIEW);
+	Init(this, notepad, BIND_REGULAR, MODE_BUTTONVIEW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-
 
 void FolderList::OnOK()
 {
@@ -85,10 +86,19 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		{
 			TRACE(_T("스레드 동작함\n"));
 			bPressMaintain = false;
-			if (downFolder)
+			if (bThread)
 			{
-				downFolder->folderButton->ToggleClickChange();	//이부분이상함
+				bThread = false;
+				DWORD nExitCode = NULL;
+
+				GetExitCodeThread(thrMaintain->m_hThread, &nExitCode);
+				if (TerminateThread(thrMaintain->m_hThread, nExitCode) != 0)
+				{
+					delete thrMaintain;
+					thrMaintain = nullptr;
+				}
 			}
+			
 			return TRUE;
 		}
 		else // press 1초이상 동작 이벤트 비활성화
@@ -113,31 +123,60 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_LBUTTONDOWN)
 	{
-		for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
+		FolderItem0* findfolder = FindFolderButton(pMsg->hwnd);
+		if (findfolder != nullptr)
 		{
-			FolderItem0* folder = notePadManager->m_allFolderList.At(i);
-			CGdipButton* folderButton = folder->folderButton;
-			if (pMsg->hwnd == folderButton->m_hWnd)
+			downFolder = findfolder;
+			dragPoint = pMsg->pt;
+			PostMessage(PRESS_MAINTAIN, 0, 0);
+			return TRUE;
+		}
+	}
+	else if (pMsg->message == WM_MOUSEMOVE)
+	{
+		dragPoint = pMsg->pt;
+
+		FolderItem0* findfolder = FindFolderButton(pMsg->hwnd);
+
+		if (findfolder != nullptr)
+		{
+			if (bThreadDownEvent)
 			{
-				downFolder = folder;
-				PostMessage(PRESS_MAINTAIN, 0, 0);
-				break;
+				SetDownEvent(pMsg->hwnd, pMsg->pt, findfolder);
+				/*ExecuteDragEvent(findfolder->folderButton, findfolder->folderStatic);
+				SetSizeDragDlg(CRect(dragPoint.x + 2, dragPoint.y + 2, dragPoint.x + 2 + 64, dragPoint.y + 2 + 84));
+				findfolder->ShowWindow(false);*/
+				bThreadDownEvent = false;
 			}
 		}
+		if (DragEventMove(pMsg->hwnd, pMsg->pt, findfolder))
+			return TRUE;
 	}
 	else  if (pMsg->message == WM_LBUTTONDBLCLK)
 	{
-		for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
+		FolderItem0* findfolder = FindFolderButton(pMsg->hwnd);
+		if (findfolder != nullptr)
 		{
-			if (pMsg->hwnd == notePadManager->m_allFolderList.At(i)->folderButton->m_hWnd)
-			{
-				UpdateFolder(notePadManager->m_allFolderList.At(i));
-				return TRUE;
-			}
+			UpdateFolder(findfolder);
+			return TRUE;
 		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+FolderItem0* FolderList::FindFolderButton(HWND clickWND)
+{
+	for (int i = 0; i < notePadManager->m_allFolderList.Size(); i++)
+	{
+		FolderItem0* findFolder = notePadManager->m_allFolderList.At(i);
+		if (findFolder->folderButton->m_hWnd == clickWND)
+		{
+			return findFolder;
+		}
+	}
+
+	return nullptr;
 }
 
 UINT FolderList::thrPressMaintainButton(LPVOID method)
@@ -161,7 +200,8 @@ void FolderList::StartPressMaintainButton()
 		{
 			bPressMaintain = true;
 			bThread = false;
-			// 아이콘 들어올리기 함수 실행
+			
+			DragEventDown(nullptr, dragPoint, downFolder);
 		}
 	}
 }
@@ -181,7 +221,7 @@ HBRUSH FolderList::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
-void FolderList::LoadFolder(ViewFolderList allFolderList)
+void FolderList::LoadFolder(ViewFolderList allFolderList, bool bUseScrollEvent)
 {
 	nButtonCount = 0;
 	scroll.Destroy();
@@ -190,9 +230,11 @@ void FolderList::LoadFolder(ViewFolderList allFolderList)
 	CustomScroll::CustomScrollInfo csi;
 	csi.cst = CustomScroll::CUSTOM_SCROLL_TYPE_BUTTON;
 	csi.csf = CustomScroll::CUSTOM_SCROLL_FLAGS_HORIZON;
+	csi.cse = CustomScroll::CUSTOM_SCROLL_EVENT_INCREASE_COUNT_LINE;
 	csi.nAllPageSize = 0;
 	csi.nOnePageSize = 74;
 	csi.nScrollPos = 0;
+	csi.nCseMaxCount = 3;
 	scroll.Initialize(csi);
 
 	ViewFolder(allFolderList);
@@ -203,6 +245,14 @@ void FolderList::LoadFolder(ViewFolderList allFolderList)
 	}
 
 	scroll.ExecuteScrollPos(currentTheme);
+
+	if (bUseScrollEvent)
+	{
+		for (int i = 0; i < scroll.GetLineCount(); i++)
+		{
+			OnHScroll(SB_PAGEDOWN, 0, GetScrollBarCtrl(SB_HORZ));
+		}
+	}
 }
 
 void FolderList::ViewFolder(ViewFolderList folderlist)
@@ -284,23 +334,41 @@ CRect FolderList::SetButtonPosition(int nItemCount)
 	return ButtonPos;
 }
 
-BOOL FolderList::DragEventUp(HWND upHWND, CPoint upPoint)
+void FolderList::SetDownEvent(HWND downHWND, CPoint downPoint, FolderItem0* findfolder)
+{
+	ExecuteDragEvent(findfolder->folderButton, findfolder->folderStatic);	
+	SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 64, downPoint.y + 2 + 84));
+	findfolder->ShowWindow(false);
+	bThreadDownEvent = false;
+}
+
+BOOL FolderList::DragEventUp(HWND upHWND, CPoint upPoint, FolderItem0* findfolder)
 {
 	BOOL bReturn = FALSE;
 
 	return bReturn;
 }
 
-BOOL FolderList::DragEventDown(HWND downHWND, CPoint downPoint)
+BOOL FolderList::DragEventDown(HWND downHWND, CPoint downPoint, FolderItem0* findfolder)
 {
 	BOOL bReturn = FALSE;
+	bThreadDownEvent = true;
+	
+	bReturn = TRUE;
 
 	return bReturn;
 }
 
-BOOL FolderList::DragEventMove(HWND moveHWND, CPoint movePoint)
+BOOL FolderList::DragEventMove(HWND moveHWND, CPoint movePoint, FolderItem0* findfolder)
 {
 	BOOL bReturn = FALSE;
+	if (IsDragging(notepad->dragRect, movePoint))
+	{
+		POINT convertPoint = movePoint;
+		notepad->ScreenToClient(&convertPoint);
+
+		bReturn = TRUE;
+	}
 
 	return bReturn;
 }
@@ -326,8 +394,8 @@ BOOL FolderList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	if (scroll.GetLineCount() > 1)
 	{
 		UINT nFlag = scroll.OperateWheel(zDelta);
-		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() == 1) {}
-		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetLineCount()) {}
+		if (nFlag == SB_PAGEUP && scroll.GetCurrentLinePos() <= 0) { scroll.SetDefaultLinePos(); }
+		else if (nFlag == SB_PAGEDOWN && scroll.GetCurrentLinePos() == scroll.GetCseMaxLineCount()) {}
 		else { OnHScroll(nFlag, 0, GetScrollBarCtrl(SB_HORZ)); }
 	}
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
@@ -336,7 +404,7 @@ BOOL FolderList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 afx_msg LRESULT FolderList::OnPressMaintain(WPARAM wParam, LPARAM lParam)
 {
-	AfxBeginThread(thrPressMaintainButton, this);
+	thrMaintain = AfxBeginThread(thrPressMaintainButton, this);
 
 	return 0;
 }

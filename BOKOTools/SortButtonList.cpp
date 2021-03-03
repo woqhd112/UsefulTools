@@ -85,7 +85,7 @@ BOOL SortButtonList::OnInitDialog()
 	saveCtlVector = ctlVector;
 	LoadSortButton(ctlVector);
 	
-	Init(this, sorticon->GetParent(), BIND_HALF, MODE_BUTTONVIEW);
+	Init(this, sorticon, BIND_HALF, MODE_BUTTONVIEW);
 
 	DrawEmptyLine();
 	EnableEmptyLine(SW_HIDE);

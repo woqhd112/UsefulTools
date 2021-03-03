@@ -89,7 +89,7 @@ BOOL AllButtonList::OnInitDialog()
 
 	LoadAllButton();
 
-	Init(this, sorticon->GetParent(), BIND_HALF, MODE_BUTTONVIEW);
+	Init(this, sorticon, BIND_HALF, MODE_BUTTONVIEW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

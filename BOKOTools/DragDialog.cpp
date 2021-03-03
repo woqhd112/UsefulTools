@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(DragDialog, CDialogEx)
 
-DragDialog::DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, CWnd* pParent /*=nullptr*/)
+DragDialog::DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, int nButtonWidth, int nButtonHeight, bool nBindPicture, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_DRAG, pParent)
 {
 	this->hoverButton = eventButton;
@@ -24,6 +24,7 @@ DragDialog::DragDialog(CGdipButton* eventButton, CalculateStatic* eventStatic, i
 	this->pParent = pParent;
 	this->nButtonWidth = nButtonWidth;
 	this->nButtonHeight = nButtonHeight;
+	this->nBindPicture = nBindPicture;
 }
 
 DragDialog::~DragDialog()
@@ -76,9 +77,9 @@ BOOL DragDialog::OnInitDialog()
 		int nAlt = hoverButton->nStdImageID;
 
 		newButton->strButtonName = hoverButton->strButtonName;
-		newButton->LoadStdImage(nStd, _T("PNG"), true);
-		newButton->LoadHovImage(nHov, _T("PNG"), true);
-		newButton->LoadAltImage(nAlt, _T("PNG"), true);
+		newButton->LoadStdImage(nStd, _T("PNG"), nBindPicture);
+		newButton->LoadHovImage(nHov, _T("PNG"), nBindPicture);
+		newButton->LoadAltImage(nAlt, _T("PNG"), nBindPicture);
 		newButton->ShowWindow(SW_SHOW);
 		newButton->MoveWindow(0, 0, nButtonWidth, nButtonHeight);
 	}
@@ -89,7 +90,7 @@ BOOL DragDialog::OnInitDialog()
 		newStatic->Create(_T(""), SS_CENTER, CRect(0, 0, 0, 0), this, 50001);
 		newStatic->Initialize(15, hoverStatic->strFontName);
 		newStatic->ShowWindow(SW_SHOW);
-		newStatic->MoveWindow(0, 0, nButtonWidth, 20);
+		newStatic->MoveWindow(0, nButtonHeight, nButtonWidth, 20);
 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control

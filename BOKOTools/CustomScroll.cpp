@@ -9,7 +9,12 @@ static char THIS_FILE[] = __FILE__;
 
 CustomScroll::CustomScroll()
 {
-
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, CUSTOM_SCROLL_EVENT_DEFAULT, 0, 0, 0 };
+	nLineCount = 0;
+	nCurrentLinePos = 0;
+	nButtonID = 30000;
+	bOneButtonLight = false;
+	nSceMaxCounts = 0;
 }
 
 CustomScroll::~CustomScroll()
@@ -19,7 +24,7 @@ CustomScroll::~CustomScroll()
 
 void CustomScroll::Destroy()
 {
-	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, 0, 0, 0 };
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, CUSTOM_SCROLL_EVENT_DEFAULT, 0, 0, 0 };
 	for (int i = 0; i < (int)buttonVector.size(); i++)
 	{
 		CGdipButton* button = buttonVector.at(i);
@@ -31,16 +36,18 @@ void CustomScroll::Destroy()
 	nLineCount = 0;
 	nCurrentLinePos = 0;
 	bOneButtonLight = false;
+	nSceMaxCounts = 0;
 }
 
 void CustomScroll::Create(CWnd* pDialogCtl)
 {
 	thisCtlDialog = pDialogCtl;
-	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, 0, 0, 0 };
+	csi = { CUSTOM_SCROLL_TYPE_DEFAULT, CUSTOM_SCROLL_FLAGS_VERTICAL, CUSTOM_SCROLL_EVENT_DEFAULT, 0, 0, 0 };
 	nLineCount = 0;
 	nCurrentLinePos = 0;
 	nButtonID = 30000;
 	bOneButtonLight = false;
+	nSceMaxCounts = 0;
 }
 
 void CustomScroll::Initialize(CustomScrollInfo csi)
@@ -50,8 +57,13 @@ void CustomScroll::Initialize(CustomScrollInfo csi)
 
 void CustomScroll::LineEnd()
 {
-	csi.nAllPageSize += csi.nOnePageSize;
+	LineAnyEnd();
 	nLineCount++;
+}
+
+void CustomScroll::LineAnyEnd()
+{
+	csi.nAllPageSize += csi.nOnePageSize;
 }
 
 void CustomScroll::LineDelete()
@@ -74,7 +86,10 @@ void CustomScroll::IncreaseScroll()
 		int nButtonPos_x = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 10 : 20;
 		int nButtonPos_y = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 20 : 10;
 
-		for (int i = 0; i < nLineCount; i++)
+		int nMaxButtonCount = (int)ceil((double)nLineCount / (double)csi.nCseMaxCount);
+		nMaxButtonCount <= 0 ? nMaxButtonCount = 0 : nMaxButtonCount = nMaxButtonCount;
+
+		for (int i = 1; i <= nMaxButtonCount; i++)
 		{
 			csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? nButtonPos_y += 12 : nButtonPos_x += 12;
 		}
@@ -122,7 +137,10 @@ void CustomScroll::ExecuteScrollPos(ThemeData* currentTheme)
 		int nButtonPos_x = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 10 : 20;
 		int nButtonPos_y = csi.csf == CUSTOM_SCROLL_FLAGS_VERTICAL ? 20 : 10;
 
-		for (int i = 1; i <= nLineCount; i++)
+		int nMaxButtonCount = (int)ceil((double)nLineCount / (double)csi.nCseMaxCount);
+		nMaxButtonCount <= 0 ? nMaxButtonCount = 0 : nMaxButtonCount = nMaxButtonCount;
+
+		for (int i = 1; i <= nMaxButtonCount; i++)
 		{
 			button = new CGdipButton;
 			button->Create(_T(""), BS_PUSHBUTTON, CRect(0, 0, 0, 0), thisCtlDialog, nButtonID++);
@@ -190,6 +208,46 @@ void CustomScroll::LoadScroll(int nThisHeight)
 	thisCtlDialog->SetScrollInfo(csi.csf, &si, TRUE);
 }
 
+int CustomScroll::GetCalculateLinePos(CustomScrollEvent cse, int nSBCode)
+{
+	int nReturnLinePos = 0;
+	if (cse == CUSTOM_SCROLL_EVENT_DEFAULT)
+	{
+		if (nSBCode == SB_LINEUP || nSBCode == SB_PAGEUP)
+		{
+			nCurrentLinePos--;
+		}
+		else if (nSBCode == SB_LINEDOWN || nSBCode == SB_PAGEDOWN)
+		{
+			nCurrentLinePos++;
+		}
+		nReturnLinePos = nCurrentLinePos;
+	}
+	else if (cse == CUSTOM_SCROLL_EVENT_INCREASE_COUNT_LINE)
+	{
+		if (nSBCode == SB_LINEUP || nSBCode == SB_PAGEUP)
+		{
+			nSceMaxCounts--;
+		}
+		else if (nSBCode == SB_LINEDOWN || nSBCode == SB_PAGEDOWN)
+		{
+			nSceMaxCounts++;
+		}
+
+		if (nSceMaxCounts < 0)
+			nSceMaxCounts = 0;
+		if (nSceMaxCounts > nLineCount - 1)
+			nSceMaxCounts = nLineCount - 1;
+
+		nCurrentLinePos = nSceMaxCounts / csi.nCseMaxCount;
+
+		nReturnLinePos = nCurrentLinePos;
+
+	}
+
+	return nReturnLinePos;
+}
+
 // 이 함수는 OnVScroll 이나 OnHScroll 함수안에서 호출할것.
 bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 {
@@ -198,22 +256,26 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 	{
 		case SB_LINEUP:
 			delta = -csi.nWheelValue;
-			nCurrentLinePos--;
+			GetCalculateLinePos(csi.cse, SB_LINEUP);
+			//nCurrentLinePos--;
 			break;
 		case SB_PAGEUP:
 			delta = -csi.nOnePageSize;
-			nCurrentLinePos--;
+			GetCalculateLinePos(csi.cse, SB_PAGEUP);
+			//nCurrentLinePos--;
 			break;
 		case SB_THUMBTRACK:
 			delta = static_cast<int>(nPos) - csi.nScrollPos;
 			break;
 		case SB_PAGEDOWN:
 			delta = csi.nOnePageSize;
-			nCurrentLinePos++;
+			GetCalculateLinePos(csi.cse, SB_PAGEDOWN);
+			//nCurrentLinePos++;
 			break;
 		case SB_LINEDOWN:
 			delta = csi.nWheelValue;
-			nCurrentLinePos++;
+			GetCalculateLinePos(csi.cse, SB_LINEDOWN);
+			//nCurrentLinePos++;
 			break;
 		default:
 			return false;
@@ -282,6 +344,16 @@ bool CustomScroll::OperateScroll(int nSBCode, int nPos)
 
 
 	return false;
+}
+
+int CustomScroll::GetCseMaxLineCount()
+{
+	return (int)ceil((double)nLineCount / (double)csi.nCseMaxCount);
+}
+
+void CustomScroll::SetDefaultLinePos()
+{
+	nCurrentLinePos = 0;
 }
 
 // 이 함수는 OnMouseWheel 함수안에서 호출할것.

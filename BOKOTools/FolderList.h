@@ -10,7 +10,7 @@
 class NotePad;
 class NotePadList;
 
-class FolderList : public CDialogEx, public DragWrapper<FolderItem0*>
+class FolderList : public CDialogEx, public DragWrapper<CGdipButton*>
 {
 	DECLARE_DYNAMIC(FolderList)
 
@@ -46,6 +46,7 @@ private:
 	//ViewFolderList folderlist;
 	FolderItem0* downFolder;
 	FolderItem0* undoFolder;
+	POINT dragPoint;
 
 	CustomScroll scroll;
 
@@ -54,15 +55,21 @@ private:
 	int LocationAndScrollToFolderSequence(int nLocToPos);
 	CRect SetButtonPosition(int nItemCount);
 	void UpdateFolder(FolderItem0* folderItem);
+	FolderItem0* FindFolderButton(HWND clickWND);
 
 	bool bThread;
 	bool bPressMaintain;
+	bool bThreadDownEvent;
+	CWinThread* thrMaintain;
+	
 
 	static UINT thrPressMaintainButton(LPVOID method);
 
-	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint);
-	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint);
-	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint);
+	virtual BOOL DragEventUp(HWND upHWND, CPoint upPoint, FolderItem0* findfolder = nullptr);
+	virtual BOOL DragEventDown(HWND downHWND, CPoint downPoint, FolderItem0* findfolder = nullptr);
+	virtual BOOL DragEventMove(HWND moveHWND, CPoint movePoint, FolderItem0* findfolder = nullptr);
+
+	void SetDownEvent(HWND downHWND, CPoint downPoint, FolderItem0* findfolder);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -70,7 +77,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	void LoadFolder(ViewFolderList allFolderList);
+	void LoadFolder(ViewFolderList allFolderList, bool bUseScrollEvent);
 	void StartPressMaintainButton();
 
 	virtual BOOL OnInitDialog();

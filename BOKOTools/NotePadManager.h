@@ -79,6 +79,7 @@ public:
 	void AddNote(NoteItem* newNote);
 	void UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
 	ViewNoteList FolderChange(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence);
+	void RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
 
 	int MaxFolderSequence();
 	CString GetLatleyNoteContent();
@@ -86,6 +87,11 @@ public:
 	int GetIndexFromTagColor(COLORREF tagcolor);
 	CTime GetTimeCal(CString strTime);
 	CString GetTimeCal(CTime calTime);
+	int EraseNoteList(ViewNoteList& variableNoteList, NoteItem* findNote);
+
+	// m_allNoteList, m_viewNoteList, m_otherNoteList, m_allFolderList 모두 erase 되었는지 확인 후 사용
+	NoteItem* NoteByRecycleParentSwap(NoteItem* updateNote);
+	NoteItem* RecycleByNoteParentSwap(NoteItem* updateNote);
 
 private:
 

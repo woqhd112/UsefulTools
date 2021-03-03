@@ -25,7 +25,6 @@ public:
 	{
 		BIND_REGULAR = 1,
 		BIND_HALF = 2,
-		BIND_THIRD_DIVIDE = 3,
 	};
 
 	enum DragMode
@@ -56,7 +55,7 @@ private:
 
 protected:
 
-	BOOL ExecuteDragEvent(T t)
+	BOOL ExecuteDragEvent(T t, CalculateStatic* tStatic = nullptr)
 	{
 		useWnd->SetCapture();
 
@@ -65,9 +64,10 @@ protected:
 		if (dm == MODE_BUTTONVIEW)
 		{
 			bUseDragDlg = true;
-			dragDlg = new DragDialog((CGdipButton*)t, nullptr, 64, 64, mainFrame);
+			bool bBind = (bd == BIND_HALF) ? true : false;
+			dragDlg = new DragDialog((CGdipButton*)t, tStatic, 64, 64, bBind, mainFrame);
 
-			dragDlg->Create(DragDialog::IDD);
+			dragDlg->Create(DragDialog::IDD, mainFrame);
 			dragDlg->ShowWindow(SW_SHOW);
 		}
 		else if(dm == MODE_MOUSEPOINT)
@@ -109,7 +109,7 @@ protected:
 				{
 					if (PtInRect(dragRect, mousePoint))
 					{
-						dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / (int)bd, targetDragRect.Width() / (int)bd);
+						dragDlg->MoveWindow(mousePoint.x - 32, mousePoint.y - 32, targetDragRect.Width() / (int)bd, targetDragRect.Height() / (int)bd);
 						dragDlg->newButton->DisConnect();
 						bReturn = TRUE;
 					}

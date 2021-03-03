@@ -65,9 +65,73 @@ bool NoteFile::NoteWrite(CString strPath, CString strContent)
 	return bReturn;
 }
 
-void NoteFile::NoteRename(CString strOldNoteName, CString strNewNoteName)
+void NoteFile::GetFileFormat(NoteRenameMode mode, CString& strUpdateFileFormat, CString& strOldFileFormat)
 {
-	CFile::Rename(strOldNoteName, strNewNoteName);
+	switch (mode)
+	{
+	case DEFAULT_NOTE:
+		strUpdateFileFormat = _T("%d%d.txt");
+		strOldFileFormat = _T("%d%d.txt");
+		break;
+	case NOTE_BY_SINGLE_RECYCLE_NOTE:
+		strUpdateFileFormat = _T("sr%d%d.txt");
+		strOldFileFormat = _T("%d%d.txt");
+		break;
+	case NOTE_BY_MULTI_RECYCLE_NOTE:
+		strUpdateFileFormat = _T("r%d%d.txt");
+		strOldFileFormat = _T("%d%d.txt");
+		break;
+	case RECYCLE_BY_SINGLE_RECYCLE_NOTE:
+		strUpdateFileFormat = _T("%d%d.txt");
+		strOldFileFormat = _T("sr%d%d.txt");
+		break;
+	case RECYCLE_BY_MULTI_RECYCLE_NOTE:
+		strUpdateFileFormat = _T("%d%d.txt");
+		strOldFileFormat = _T("r%d%d.txt");
+		break;
+	case DEFAULT_SINGLE_RECYCLE:
+		strUpdateFileFormat = _T("sr%d%d.txt");
+		strOldFileFormat = _T("sr%d%d.txt");
+		break;
+	case DEFAULT_MULTI_RECYCLE:
+		strUpdateFileFormat = _T("r%d%d.txt");
+		strOldFileFormat = _T("r%d%d.txt");
+		break;
+	default:
+		break;
+	}
+}
+
+void NoteFile::NoteRename(CString strSystemPath, NoteRenameMode mode, int nOldFolderSequence, int nOldNoteName, int nNewFolderSequence, int nNewNoteName)
+{
+	CString strUpdateFileFormat, strOldFileFormat;
+	GetFileFormat(mode, strUpdateFileFormat, strOldFileFormat);
+	
+	CString strFolderOriginFileName, strFolderUpdateFileName;
+	strFolderOriginFileName.Format(strOldFileFormat, nOldFolderSequence, nOldNoteName);
+	strFolderUpdateFileName.Format(strUpdateFileFormat, nNewFolderSequence, nNewNoteName);
+
+	if (strFolderOriginFileName.Compare(strFolderUpdateFileName) == 0) return;
+
+	CFileFind find;
+
+	BOOL bFind = find.FindFile(strSystemPath + _T("*.txt"));
+	while (bFind)
+	{
+		bFind = find.FindNextFileW();
+		if (find.IsDots()) continue;
+		if (!find.IsDirectory())
+		{
+			CString strFindFileName = find.GetFileName();
+			if (strFindFileName.Compare(strFolderUpdateFileName) == 0)	// 같을경우
+			{
+				strFolderUpdateFileName.Format(strUpdateFileFormat, nNewFolderSequence, ++nNewNoteName);
+			}
+		}
+	}
+	find.Close();
+
+	CFile::Rename(strSystemPath + strFolderOriginFileName, strSystemPath + strFolderUpdateFileName);
 }
 
 char* NoteFile::UTF8toANSI(char *pszCode)

@@ -63,6 +63,7 @@ private:
 	CRect wrapCenterRect;
 	CRect otherButtonRect;
 	CRect trashButtonRect;
+	CRect recycleRect;
 	CString strLatelyNoteContent;
 
 	void LoadNotePad();
@@ -79,6 +80,7 @@ public:
 	CRect dragRect;
 	void LoadAllNote();
 	void LoadOtherNote();
+	void InvalidateRecycle();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);

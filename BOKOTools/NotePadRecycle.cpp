@@ -145,6 +145,21 @@ CRect NotePadRecycle::SetFolderButtonPosition(int nFolderIndex)
 	return ButtonPos;
 }
 
+int NotePadRecycle::GetCurrentScrollLine()
+{
+	return scroll.GetCurrentLinePos();
+}
+
+void NotePadRecycle::SetCurrentScrollLine(int nScrollCount)
+{
+	if (nScrollCount == 1) return;
+
+	for (int i = 0; i < nScrollCount; i++)
+	{
+		OnVScroll(SB_PAGEDOWN, 0, GetScrollBarCtrl(SB_VERT));
+	}
+}
+
 void NotePadRecycle::LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList)
 {
 	this->recycleNoteList = recycleNoteList;
@@ -173,7 +188,7 @@ void NotePadRecycle::LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderLis
 		recycleFolder->ShowWindow(true);
 		recycleFolder->MoveWindow(folderRect.left, folderRect.top);
 
-		if (nStartPos_Sumy >= 500 * scroll.GetLineCount())
+		if (nStartPos_Sumy >= 440 * scroll.GetLineCount())
 			scroll.LineEnd();
 	}
 
@@ -188,7 +203,7 @@ void NotePadRecycle::LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderLis
 		recycleNote->ShowLock(recycleNote->IsLock());
 		recycleNote->MoveWindow(noteRect.left, noteRect.top);
 
-		if (nStartPos_Sumy >= 460 * scroll.GetLineCount())
+		if (nStartPos_Sumy >= 440 * scroll.GetLineCount())
 			scroll.LineEnd();
 	}
 

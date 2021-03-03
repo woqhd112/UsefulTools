@@ -40,6 +40,8 @@ private:
 
 public:
 
+	int GetCurrentScrollLine();
+	void SetCurrentScrollLine(int nScrollCount);
 	void LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList);
 	void Init(ViewNoteList recycleNoteList, ViewFolderList recycleFolderList);
 

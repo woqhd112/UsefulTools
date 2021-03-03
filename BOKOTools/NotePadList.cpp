@@ -67,9 +67,10 @@ BOOL NotePadList::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	this->SetBackgroundColor(currentTheme->GetFunctionSubColor());
+
 	notepad = (NotePad*)pParent;
 
-	Init(this, notepad->GetParent(), BIND_REGULAR, MODE_MOUSEPOINT);
+	Init(this, notepad, BIND_REGULAR, MODE_MOUSEPOINT);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -362,7 +363,8 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 		{
 			POINT parentPoint = upPoint;
 			notepad->ScreenToClient(&parentPoint);
-			if (PtInRect(notepad->trashButtonRect, parentPoint))
+
+			if (PtInRect(notepad->trashButtonRect, parentPoint) || PtInRect(notepad->recycleRect, upPoint))
 			{
 				ViewNoteList updateNoteList;
 				if (notePadManager->m_viewNoteList.Size() > 1)
@@ -370,82 +372,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				else
 					updateNoteList = notePadManager->m_viewNoteList.At(0);
 
-				// 해당 노트를 폴더에서 지운다.
-				int nDeleteNoteIndex = 0;
-				for (int i = 0; i < updateNoteList.Size(); i++)
-				{
-					NoteItem* updateNote = updateNoteList.At(i);
-					updateNote->SetFolderSize(updateNote->GetFolderSize() - 1);
-					if (updateNote == findnote)
-					{
-						nDeleteNoteIndex = i;
-						updateNoteList.Erase(i);
-					}
-				}
-
-				// 해당 폴더를 업데이트한다.
-				FolderItem0* updateFolder = notePadManager->m_allFolderList.At(nFindSaveFolderSequence);
-				FolderItem0::FolderInit updateFolderInit;
-
-				int nUpdateFolderSize = updateFolder->GetFolderSize() - 1;
-				updateFolderInit.folder = updateNoteList;
-				updateFolderInit.nFolderColorIndex = updateFolder->GetFolderColorIndex();
-				updateFolderInit.nFolderSequence = updateFolder->GetFolderSequence();
-				updateFolderInit.nFolderSize = nUpdateFolderSize;
-				updateFolderInit.strFolderName = updateFolder->GetFolderName();
-				updateFolder->Update(updateFolderInit);
-
-				// 해당 노트를 xml에 업데이트한다.
-				NotePadManager::NoteSaveData recycleNoteData;
-				recycleNoteData.nFolderSequence = findnote->GetFolderSequence();
-				recycleNoteData.nLock = findnote->IsLock();
-				recycleNoteData.nNoteName = findnote->GetNoteName();
-				recycleNoteData.strCreateTime = notePadManager->GetTimeCal(findnote->GetCreateTime());
-				recycleNoteData.strUpdateTime = notePadManager->GetTimeCal(findnote->GetUpdateTime());
-				notePadManager->RecycleNoteXml(recycleNoteData);
-
-				// 해당 노트의 파일 이름을 변경한다.
-				NoteFile file;
-				CString strFullPath;
-				CustomXml::GetModulePath(strFullPath);
-				strFullPath += _T("\\Note");
-				// 업데이트한 노트이름으로 메모장이름을 변경한다.
-				CString strEventNoteOriginFileName, strEventNoteUpdateFileName;
-				strEventNoteOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
-				strEventNoteUpdateFileName.Format(_T("%s\\sr%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
-				file.NoteRename(strEventNoteOriginFileName, strEventNoteUpdateFileName);
-
-				// 삭제된 메모의 폴더에서 메모이름을 정렬한다.
-				for (int i = 0; i < updateNoteList.Size(); i++)
-				{
-					bool bUpdateNote = false;
-					NoteItem* saveNote = updateNoteList.At(i);
-
-
-					CString strFullPath = _T("");
-					CString strNoteName;
-					CString strFolderOriginFileName, strFolderUpdateFileName;
-					strFolderOriginFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, saveNote->GetNoteName());
-					strFolderUpdateFileName.Format(_T("%s\\%d%d.txt"), strFullPath, recycleNoteData.nFolderSequence, i);
-					file.NoteRename(strFolderOriginFileName, strFolderUpdateFileName);
-
-					saveNote->SetNoteName(i);
-
-					NotePadManager::NoteSaveData updateNote;
-					updateNote.nFolderSequence = saveNote->GetFolderSequence();
-					updateNote.nLock = saveNote->IsLock();
-					updateNote.nNoteName = saveNote->GetNoteName();
-					updateNote.strCreateTime = notePadManager->GetTimeCal(saveNote->GetCreateTime());
-					updateNote.strUpdateTime = notePadManager->GetTimeCal(saveNote->GetUpdateTime());
-
-					notePadManager->SaveNoteXml(updateNote);
-				}
-
-				notePadManager->UpdateAllNoteVector(updateNoteList, nFindSaveFolderSequence);
-				notePadManager->UpdateAllFolderVector(updateFolder, nFindSaveFolderSequence);
-
-				// 해당 노트를 쓰레기통에 추가한다.
-				notePadManager->m_recycleNoteList.Push(findnote); // 이상하게 쓰레기통에 업데이트가 안되네 뭐지?
+				notePadManager->RecycleNote(updateNoteList, findnote, nFindSaveFolderSequence);
 
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 				SuccessUpdate();
@@ -453,11 +380,11 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				// 화면을 갱신한다.
 				notepad->folderlist->Invalidate();
 
-
 				// 쓰레기통이 켜져있으면 쓰레기통 화면도 갱신한다.
+				notepad->InvalidateRecycle();
 
-				TRACE(_T("쓰레기통 진입\n"));
 			}
+
 			LoadNotePad(notePadManager->m_viewNoteList);	// 일단 임시로 해둠 쓰레기통 구분해야함
 		}
 	}
@@ -646,7 +573,9 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 			else
 			{
 				POINT parentPoint = movePoint;
+				POINT recyclePoint = movePoint;
 				notepad->ScreenToClient(&parentPoint);
+				notepad->notepadrecycle->ScreenToClient(&recyclePoint);
 
 				dragSectorPos = DRAG_SECTOR_PARENT;
 			

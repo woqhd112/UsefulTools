@@ -225,7 +225,7 @@ BOOL NotePad::OnInitDialog()
 	m_btn_trash.EnableToggle();
 
 	notepadlist->LoadNotePad(notePadManager->m_allNoteList);
-	folderlist->LoadFolder(notePadManager->m_allFolderList);
+	folderlist->LoadFolder(notePadManager->m_allFolderList, false);
 
 	if (bUsingManual)
 	{
@@ -405,6 +405,8 @@ void NotePad::OnBnClickedButtonNotepadReport()
 	}
 
 	m_richedit_note.SetWindowTextW(_T(""));
+	m_richedit_note.SetFocus();
+	m_richedit_note.ShowCaret();
 }
 
 
@@ -416,7 +418,8 @@ void NotePad::OnMove(int x, int y)
 
 	CRect changeRect;
 	GetWindowRect(&changeRect);
-	dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
+	//dragRect.SetRect(changeRect.left, changeRect.top, dragRect.right + (changeRect.left - dragRect.left), dragRect.bottom + (changeRect.top - dragRect.top));
+	dragRect.SetRect(changeRect.left, changeRect.top, changeRect.right, changeRect.bottom);
 }
 
 
@@ -505,7 +508,7 @@ void NotePad::OnBnClickedButtonAddFolder()
 		newFolder->Initialize(folderinit);
 		notePadManager->AddFolder(newFolder);
 		notepadlist->LoadNotePad(notePadManager->m_viewNoteList);
-		folderlist->LoadFolder(notePadManager->m_allFolderList);
+		folderlist->LoadFolder(notePadManager->m_allFolderList, true);
 	}
 }
 
@@ -525,15 +528,22 @@ void NotePad::OnBnClickedButtonNotepadCreateNote()
 void NotePad::OnBnClickedButtonNotepadTrash()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	InvalidateRecycle();
+}
+
+void NotePad::InvalidateRecycle()
+{
 	CRect thisRect;
 	this->GetWindowRect(thisRect);
+
+	int nScrollLine = notepadrecycle->GetCurrentScrollLine();
 
 	notepadrecycle->LoadRecycleData(notePadManager->m_recycleNoteList, notePadManager->m_recycleFolderList);
 	notepadrecycle->MoveWindow(thisRect.right, thisRect.top, 450, 500);
 	notepadrecycle->ShowWindow(SW_SHOW);
-	/*if(notepadrecycle->DoModal() == IDOK)
-	{
 
-		m_btn_trash.ToggleClickChange();
-	}*/
+	notepadrecycle->SetCurrentScrollLine(nScrollLine);
+
+	notepadrecycle->GetWindowRect(recycleRect);
 }
