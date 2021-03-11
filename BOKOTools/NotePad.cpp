@@ -495,7 +495,7 @@ void NotePad::OnBnClickedButtonAddFolder()
 		folderinit.createTime = CTime::GetCurrentTime();
 		folderinit.updateTime = folderinit.createTime;
 
-		NotePadManager::FolderSaveData folderdata;
+		NotePadXMLManager::FolderSaveData folderdata;
 		folderdata.strFolderName = strCreateFolderName;
 		folderdata.folderTagColor = createTagColor;
 		folderdata.nFolderSequence = folderinit.nFolderSequence;

@@ -22,6 +22,8 @@ FolderList::FolderList(NotePadManager* notePadManager, ThemeData* currentTheme, 
 
 	nButtonCount = 0;
 	nLineEndCount = 0;
+	nEventPos = 0;
+	nEventFolderSequence = 0;
 	bThread = false;
 	bPressMaintain = false;
 	bThreadDownEvent = false;
@@ -84,7 +86,6 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		// press 1초이상 동작 이벤트 활성화
 		if (bPressMaintain)
 		{
-			TRACE(_T("스레드 동작함\n"));
 			bPressMaintain = false;
 			if (bThread)
 			{
@@ -98,12 +99,22 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 					thrMaintain = nullptr;
 				}
 			}
-			
-			return TRUE;
+			FolderItem0* findfolder = FindFolderButton(pMsg->hwnd);
+			if (DragEventUp(pMsg->hwnd, pMsg->pt, findfolder))
+				return TRUE;
 		}
 		else // press 1초이상 동작 이벤트 비활성화
 		{
 			bThread = false;
+			DWORD nExitCode = NULL;
+
+			GetExitCodeThread(thrMaintain->m_hThread, &nExitCode);
+			if (TerminateThread(thrMaintain->m_hThread, nExitCode) != 0)
+			{
+				delete thrMaintain;
+				thrMaintain = nullptr;
+			}
+
 			if (downFolder)
 			{
 				if (pMsg->hwnd == downFolder->folderButton->m_hWnd)
@@ -142,10 +153,7 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		{
 			if (bThreadDownEvent)
 			{
-				SetDownEvent(pMsg->hwnd, pMsg->pt, findfolder);
-				/*ExecuteDragEvent(findfolder->folderButton, findfolder->folderStatic);
-				SetSizeDragDlg(CRect(dragPoint.x + 2, dragPoint.y + 2, dragPoint.x + 2 + 64, dragPoint.y + 2 + 84));
-				findfolder->ShowWindow(false);*/
+				SetDownEvent(pMsg->hwnd, pMsg->pt, downFolder);
 				bThreadDownEvent = false;
 			}
 		}
@@ -237,6 +245,7 @@ void FolderList::LoadFolder(ViewFolderList allFolderList, bool bUseScrollEvent)
 	csi.nCseMaxCount = 3;
 	scroll.Initialize(csi);
 
+	viewFolderlist = allFolderList;
 	ViewFolder(allFolderList);
 
 	for (int i = 0; i < nButtonCount; i++)
@@ -304,13 +313,13 @@ int FolderList::LocationAndScrollToFolderSequence(int nLocToPos)
 	if (nLocToPos == -1) return nReturnSequence;
 
 	// 첫스크롤일때
-	if (scroll.GetCurrentLinePos() == 1)
+	if (scroll.GetCseLineCount() == 1)
 	{
 		nReturnSequence = nLocToPos;
 	}
 	else
 	{
-		nReturnSequence = nLocToPos + (scroll.GetCurrentLinePos() - 1);
+		nReturnSequence = nLocToPos + (scroll.GetCseLineCount() - 1);
 	}
 
 	return nReturnSequence;
@@ -336,8 +345,10 @@ CRect FolderList::SetButtonPosition(int nItemCount)
 
 void FolderList::SetDownEvent(HWND downHWND, CPoint downPoint, FolderItem0* findfolder)
 {
+	nEventPos = ButtonLocationToPos(downPoint);
+	nEventFolderSequence = LocationAndScrollToFolderSequence(nEventPos);
 	ExecuteDragEvent(findfolder->folderButton, findfolder->folderStatic);	
-	SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 64, downPoint.y + 2 + 84));
+	SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 64, downPoint.y + 2 + 64));
 	findfolder->ShowWindow(false);
 	bThreadDownEvent = false;
 }
@@ -345,6 +356,17 @@ void FolderList::SetDownEvent(HWND downHWND, CPoint downPoint, FolderItem0* find
 BOOL FolderList::DragEventUp(HWND upHWND, CPoint upPoint, FolderItem0* findfolder)
 {
 	BOOL bReturn = FALSE;
+	if (ExistDragDlg())
+	{
+		POINT convertPoint = upPoint;
+		ScreenToClient(&convertPoint);
+
+		// 폴더 위치 변경
+
+		downFolder->ShowWindow(true);
+		DeleteDragDlg();
+		bReturn = TRUE;
+	}
 
 	return bReturn;
 }
@@ -365,7 +387,30 @@ BOOL FolderList::DragEventMove(HWND moveHWND, CPoint movePoint, FolderItem0* fin
 	if (IsDragging(notepad->dragRect, movePoint))
 	{
 		POINT convertPoint = movePoint;
-		notepad->ScreenToClient(&convertPoint);
+		ScreenToClient(&convertPoint);
+
+		int nFolderLocToPos = ButtonLocationToPos(convertPoint);
+		int nLocAndScrollToFolderSequence = LocationAndScrollToFolderSequence(nFolderLocToPos);
+		TRACE(L"eventpos : %d\n", nEventPos);
+		TRACE(L"locpos : %d\n", nFolderLocToPos);
+		TRACE(L"eventseq : %d\n", nEventFolderSequence);
+		TRACE(L"locseq : %d\n", nLocAndScrollToFolderSequence);
+		CRect folderSortRect = SetButtonPosition(nFolderLocToPos);
+
+		if (nLocAndScrollToFolderSequence == -1) return FALSE;
+		if (viewFolderlist.Empty()) return FALSE;
+		if (nLocAndScrollToFolderSequence > (viewFolderlist.Size() - 1) || nEventFolderSequence > (viewFolderlist.Size() - 1)) return FALSE;
+		if (nLocAndScrollToFolderSequence == nEventFolderSequence) return FALSE;
+
+		if (PtInRect(folderSortRect, convertPoint))
+		{
+			FolderItem0* targetFolder = viewFolderlist.At(nLocAndScrollToFolderSequence);	// 드래그해서 갖다댄 폴더
+
+			nEventFolderSequence = nLocAndScrollToFolderSequence;
+			nEventPos = nFolderLocToPos;
+			TRACE(L"폴더 접근\n");
+		}
+		// notepadlist 처럼 view 컨테이너 하나 생성해서 처리해야함
 
 		bReturn = TRUE;
 	}
@@ -466,7 +511,7 @@ void FolderList::UpdateFolder(FolderItem0* folderItem)
 			noteItem->Update(updateNote);
 		}
 
-		NotePadManager::FolderSaveData saveFolder;
+		NotePadXMLManager::FolderSaveData saveFolder;
 		saveFolder.folderTagColor = updateColor;
 		saveFolder.nFolderSequence = updateFolder.nFolderSequence;
 		saveFolder.nSize = updateFolder.nFolderSize;

@@ -351,6 +351,11 @@ int CustomScroll::GetCseMaxLineCount()
 	return (int)ceil((double)nLineCount / (double)csi.nCseMaxCount);
 }
 
+int CustomScroll::GetCseLineCount()
+{
+	return nSceMaxCounts;
+}
+
 void CustomScroll::SetDefaultLinePos()
 {
 	nCurrentLinePos = 0;

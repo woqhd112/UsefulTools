@@ -151,6 +151,9 @@
     <ClCompile Include="NoteFile.cpp">
       <Filter>NotePad\File</Filter>
     </ClCompile>
+    <ClCompile Include="NotePadXMLManager.cpp">
+      <Filter>NotePad\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseCalculate.h">
@@ -325,6 +328,9 @@
       <Filter>NotePad\File</Filter>
     </ClInclude>
     <ClInclude Include="NotePadContainer.h">
+      <Filter>NotePad\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="NotePadXMLManager.h">
       <Filter>NotePad\Process</Filter>
     </ClInclude>
   </ItemGroup>

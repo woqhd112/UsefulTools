@@ -48,7 +48,7 @@ private:
 	enum NoteDragPosState
 	{
 		NOTE_POS_STATE_NONE			= 0,	// 아무상태 아닐때
-		NOTE_POS_STATE_HALF_DETECT		= 1,	// 마우스가 아래로 내려갈때 버튼 위에 댔을때
+		NOTE_POS_STATE_HALF_DETECT	= 1,	// 마우스가 아래로 내려갈때 버튼 위에 댔을때
 	};
 
 	enum DragSectorPos
@@ -72,10 +72,10 @@ private:
 	int nLineCount;
 
 	int nEventPos;
+	int nEventNoteSequence;
 	NoteClickState noteClickState;
 	NoteDragPosState notePosState;
 	DragSectorPos dragSectorPos;
-	POINT postMousePoint;
 
 
 	int nFindSaveFolderSequence;
@@ -86,8 +86,9 @@ private:
 	bool bMousePointFolderAccess;
 
 
-	CRect SetButtonPosition(int nItemCount);
+	CRect SetButtonPosition(int nItemCount, bool bScrollCalc = true);
 	void ViewNote(ViewNoteList notelist);
+	int LocationAndScrollToNoteSequence(int nLocToPos);
 	int ButtonLocationToPos(POINT pt);
 	void UpdateNoteVector(ViewNoteList updateNoteList, int nUpdateIndex);
 	void SuccessUpdate();

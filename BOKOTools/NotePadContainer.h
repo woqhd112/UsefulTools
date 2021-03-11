@@ -67,6 +67,14 @@ public:
 		return object;
 	}
 
+	T Pop()
+	{
+		T object = notepadObject.end();
+		notepadObject.erase(notepadObject.end());
+
+		return object;
+	}
+
 	void Swap(int nChangeIndex1, int nChangeIndex2)
 	{
 		std::iter_swap(notepadObject.begin() + nChangeIndex1, notepadObject.begin() + nChangeIndex2);

@@ -57,6 +57,7 @@ public:
 
 	int GetLineCount();
 	int GetCseMaxLineCount();
+	int GetCseLineCount();
 	int GetCurrentLinePos();
 	void SetDefaultLinePos();
 

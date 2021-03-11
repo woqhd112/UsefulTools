@@ -31,10 +31,10 @@ NotePadList::NotePadList(NotePadManager* notePadManager, ThemeData* currentTheme
 	nLineEndCount = 0;
 	nLineCount = 0;
 	nEventPos = 0;
+	nEventNoteSequence = 0;
 	noteClickState = NOTE_CLICK_STATE_NONE;
 	notePosState = NOTE_POS_STATE_NONE;
 	dragSectorPos = DRAG_SECTOR_NOTE;
-	postMousePoint = { 0, 0 };
 	nSelectFolderSequence = 0;
 	bMousePointFolderAccess = false;
 }
@@ -126,7 +126,7 @@ void NotePadList::SuccessUpdate()
 	notePadManager->UpdateViewNoteList(viewNoteList);
 }
 
-CRect NotePadList::SetButtonPosition(int nItemCount)
+CRect NotePadList::SetButtonPosition(int nItemCount, bool bScrollCalc /*= true*/)
 {
 	int nStartPos_x = 25;
 	int nStartPos_y = 2;
@@ -137,7 +137,11 @@ CRect NotePadList::SetButtonPosition(int nItemCount)
 	//int nPictureToPictureMargin_x = 30;
 	CRect ButtonPos;
 
-	nStartPos_y += ((nPictureSize_y + nPictureToPictureMargin_y) * (nItemCount));
+	int nErrorScrollCount = 0;
+	if (bScrollCalc) 
+		nErrorScrollCount = ((scroll.GetCurrentLinePos() - 1) * 6);
+
+	nStartPos_y += ((nPictureSize_y + nPictureToPictureMargin_y) * (nItemCount - nErrorScrollCount));
 
 	//nStartPos_x += ((nPictureSize + nPictureToPictureMargin_x) * (nItemCount % 4));
 
@@ -169,7 +173,7 @@ void NotePadList::UpdateNotePad(NoteItem* updateNote, CString strContent, bool i
 	NoteFile file;
 	if (file.NoteWrite(strTextPath, strContent))
 	{
-		NotePadManager::NoteSaveData saveNote;
+		NotePadXMLManager::NoteSaveData saveNote;
 		saveNote.nFolderSequence = init.nFolderSequence;
 		saveNote.nLock = init.isLock;
 		saveNote.nNoteName = init.nNoteName;
@@ -212,14 +216,14 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 	NoteFile file;
 	if (file.NoteWrite(strTextPath, strContent))
 	{
-		NotePadManager::NoteSaveData saveNote;
+		NotePadXMLManager::NoteSaveData saveNote;
 		saveNote.nFolderSequence = 0;
 		saveNote.nLock = 0;
 		saveNote.nNoteName = nNoteName;
 		saveNote.strCreateTime = strCreateTime;
 		saveNote.strUpdateTime = strCreateTime;
 
-		NotePadManager::FolderSaveData saveFolder;
+		NotePadXMLManager::FolderSaveData saveFolder;
 		saveFolder.folderTagColor = TAG_COLOR_5;
 		saveFolder.nFolderSequence = 0;
 		saveFolder.nSize = nNoteName;
@@ -241,7 +245,7 @@ void NotePadList::ViewNote(ViewNoteList notelist)
 	{
 		NoteItem* targetNote = notelist.At(i);
 		CRect noteRect;
-		noteRect = SetButtonPosition(nButtonCount - ((scroll.GetCurrentLinePos() - 1) * 6));
+		noteRect = SetButtonPosition(nButtonCount);
 		targetNote->ShowWindow(true);
 		targetNote->ShowLock(targetNote->IsLock() ? true : false);
 		targetNote->MoveWindow(noteRect.left, noteRect.top);
@@ -298,7 +302,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			ScreenToClient(&convertPoint);
 
 			int nLocToPos = ButtonLocationToPos(convertPoint);
-			CRect rect = SetButtonPosition(nLocToPos);
+			CRect rect = SetButtonPosition(nLocToPos, false);
 			
 			// 현재 마우스 포인트가 해당 노트에 있을경우
 			if (PtInRect(rect, convertPoint))
@@ -403,6 +407,7 @@ BOOL NotePadList::DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findn
 	ScreenToClient(&convertPoint);
 
 	nEventPos = ButtonLocationToPos(convertPoint);
+	nEventNoteSequence = LocationAndScrollToNoteSequence(nEventPos);
 
 	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
 	findnote->ShowWindow(false);
@@ -423,7 +428,6 @@ BOOL NotePadList::DetectionPtInRect(const RECT* targetRECT, const RECT* thisRECT
 		{
 			
 			notePosState = NOTE_POS_STATE_HALF_DETECT;
-			postMousePoint = pt;
 			return TRUE;
 		}
 		else
@@ -446,9 +450,13 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 
 		int nNoteLocToPos = ButtonLocationToPos(convertPoint);
 		
+		int nLocAndScrollToNoteSequence = LocationAndScrollToNoteSequence(nNoteLocToPos);
 
-		CRect findRect = SetButtonPosition(nNoteLocToPos);
-		CRect eventRect = SetButtonPosition(nEventPos);
+		//TRACE(L"ns : %d\n", nLocAndScrollToNoteSequence);
+		//TRACE(L"es : %d\n", nEventNoteSequence);
+
+		CRect findRect = SetButtonPosition(nLocAndScrollToNoteSequence);
+		CRect eventRect = SetButtonPosition(nEventNoteSequence);
 		/*TRACE(L"pt x : %ld\n", convertPoint.x);
 		TRACE(L"pt y : %ld\n", convertPoint.y);
 		TRACE(L"loc : %d\n", nLocToPos);
@@ -457,37 +465,33 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 		TRACE(L"rect width : %d\n", findRect.Width());
 		TRACE(L"rect height : %d\n", findRect.Height());*/
 
-		int nJump = nEventPos - nNoteLocToPos;
+		int nJump = nEventNoteSequence - nLocAndScrollToNoteSequence;
 		int absJump = abs(nJump);
-
+		//TRACE(L"점프 : %d\n", absJump);
 		CRect noteSortRect;
 		this->GetClientRect(noteSortRect);
 		
 		if (PtInRect(noteSortRect, convertPoint))
 		{
 			dragSectorPos = DRAG_SECTOR_NOTE;
-			if (nNoteLocToPos == -1) return FALSE;
+			if (nLocAndScrollToNoteSequence == -1) return FALSE;
 			if (DetectionPtInRect(findRect, eventRect, convertPoint))
 			{
 				if (notePosState == NOTE_POS_STATE_HALF_DETECT)
 				{
-					// 사이즈가 1보다 클경우는 전체 폴더리스트
-					if (viewNoteList.Size() > 1)
-						saveNoteList = viewNoteList.At(nFindSaveFolderSequence);
-					else
-						saveNoteList = viewNoteList.At(0);
+					saveNoteList = viewNoteList.At(0);
 
-					if (nNoteLocToPos > (saveNoteList.Size() - 1) || nEventPos > (saveNoteList.Size() - 1)) return FALSE;
+					if (nLocAndScrollToNoteSequence > (saveNoteList.Size() - 1) || nEventNoteSequence > (saveNoteList.Size() - 1)) return FALSE;
 
 					// 찾은노트아이템이 들어올린 노트보다 위에 있을 경우
 					CString strSortNoteTagSequence;
 					if (absJump >= 1 && nJump > 0)
 					{
-						SwapNoteTagSequence(nEventPos, nNoteLocToPos, strSortNoteTagSequence);
+						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
 
-						for (int i = nEventPos; i > nNoteLocToPos; i--)
+						for (int i = nEventNoteSequence; i > nLocAndScrollToNoteSequence; i--)
 						{
 							if (i - 1 < 0) return FALSE;
 							saveNoteList.Swap(i, i - 1);
@@ -495,21 +499,23 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 
 						UpdateNoteVector(saveNoteList, nFindSaveFolderSequence);
 
+						nEventNoteSequence = nLocAndScrollToNoteSequence;
 						nEventPos = nNoteLocToPos;
 					}
 					else if (absJump >= 1 && nJump < 0)
 					{
-						SwapNoteTagSequence(nEventPos, nNoteLocToPos, strSortNoteTagSequence);
+						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
 
-						for (int i = nEventPos; i < nNoteLocToPos; i++)
+						for (int i = nEventNoteSequence; i < nLocAndScrollToNoteSequence; i++)
 						{
 							if (i + 1 >= saveNoteList.Size()) return FALSE;
 							saveNoteList.Swap(i, i + 1);
 						}
 						UpdateNoteVector(saveNoteList, nFindSaveFolderSequence);
 
+						nEventNoteSequence = nLocAndScrollToNoteSequence;
 						nEventPos = nNoteLocToPos;
 					}
 				}
@@ -538,7 +544,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 				// 마우스가 폴더에 접근했을 때
 				if (PtInRect(findFolderRect, folderPoint))
 				{
-					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 1;
+					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 2;
 					ViewFolderList viewFolderList = notePadManager->m_allFolderList;
 					if (nSelectFolderSequence > viewFolderList.Size() - 1)
 					{
@@ -549,6 +555,11 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 							bMousePointFolderAccess = false;
 						}
 						return FALSE;
+					}
+
+					for (int i = 0; i < viewFolderList.Size(); i++)
+					{
+						viewFolderList.At(i)->folderButton->UseLeaveEvent();
 					}
 
 					FolderItem0* findFolder = viewFolderList.At(nSelectFolderSequence);
@@ -606,6 +617,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 
 void NotePadList::SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& strFindSortNoteTagSequence)
 {
+	// 들어올린 노트가 놓을 위치의 노트보다 아래에 있었을경우
 	if (nEventPos > nLocToPos)
 	{
 		for (int i = nEventPos; i > nLocToPos; i--)
@@ -613,7 +625,6 @@ void NotePadList::SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& str
 			NoteItem* sortNoteItem = saveNoteList.At(i - 1);
 			CRect sortRect = SetButtonPosition(i);
 			sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
-
 			strFindSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
 			int nNoteTagSequence = _ttoi(strFindSortNoteTagSequence);
 			CString strFormat;
@@ -622,6 +633,7 @@ void NotePadList::SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& str
 
 		}
 	}
+	// 들어올린 노트가 놓을 위치의 노트보다 위에 있었을경우
 	else if (nEventPos < nLocToPos)
 	{
 		for (int i = nEventPos; i < nLocToPos; i++)
@@ -629,7 +641,6 @@ void NotePadList::SwapNoteTagSequence(int nEventPos, int nLocToPos, CString& str
 			NoteItem* sortNoteItem = saveNoteList.At(i + 1);
 			CRect sortRect = SetButtonPosition(i);
 			sortNoteItem->MoveWindow(sortRect.left, sortRect.top);
-
 			strFindSortNoteTagSequence = sortNoteItem->GetNoteTagSequence();
 			int nNoteTagSequence = _ttoi(strFindSortNoteTagSequence);
 			CString strFormat;
@@ -667,6 +678,16 @@ NoteItem* NotePadList::FindNoteButton(HWND clickWND)
 		}
 	}
 	return nullptr;
+}
+
+int NotePadList::LocationAndScrollToNoteSequence(int nLocToPos)
+{
+	int nReturnSequence = -1;
+	if (nLocToPos == -1) return nReturnSequence;
+
+	nReturnSequence = nLocToPos + 6 * (scroll.GetCurrentLinePos() - 1);
+
+	return nReturnSequence;
 }
 
 BOOL NotePadList::PreTranslateMessage(MSG* pMsg)

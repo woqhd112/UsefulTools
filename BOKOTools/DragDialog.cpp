@@ -37,13 +37,13 @@ DragDialog::~DragDialog()
 		newButton = nullptr;
 	}
 
-	if (newStatic)
+	/*if (newStatic)
 	{
 		newStatic->ShowWindow(SW_HIDE);
 		newStatic->DestroyWindow();
 		delete newStatic;
 		newStatic = nullptr;
-	}
+	}*/
 }
 
 void DragDialog::DoDataExchange(CDataExchange* pDX)
@@ -84,14 +84,17 @@ BOOL DragDialog::OnInitDialog()
 		newButton->MoveWindow(0, 0, nButtonWidth, nButtonHeight);
 	}
 
-	if (hoverStatic)
+	/*if (hoverStatic)
 	{
 		newStatic = new CalculateStatic;
 		newStatic->Create(_T(""), SS_CENTER, CRect(0, 0, 0, 0), this, 50001);
 		newStatic->Initialize(15, hoverStatic->strFontName);
 		newStatic->ShowWindow(SW_SHOW);
 		newStatic->MoveWindow(0, nButtonHeight, nButtonWidth, 20);
-	}
+		CString strStaticText;
+		hoverStatic->GetWindowTextW(strStaticText);
+		newStatic->SetWindowTextW(strStaticText);
+	}*/
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -137,7 +140,12 @@ void DragDialog::OnMove(int x, int y)
 	if (newButton)
 	{
 		//OnCtlColor(this->GetDC(), this, CTLCOLOR_DLG);
-		Invalidate();
+		/*newButton->DisConnect();
+		newButton->DeleteImage();
+		newButton->LoadStdImage(hoverButton->nStdImageID, _T("PNG"), nBindPicture);
+		newButton->LoadHovImage(hoverButton->nHovImageID, _T("PNG"), nBindPicture);
+		newButton->LoadAltImage(hoverButton->nStdImageID, _T("PNG"), nBindPicture);
+		Invalidate();*/
 		//newButton->DisConnect();
 	}
 }

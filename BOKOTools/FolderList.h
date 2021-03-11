@@ -43,10 +43,13 @@ private:
 
 	int nButtonCount;
 	int nLineEndCount;
-	//ViewFolderList folderlist;
+	ViewFolderList viewFolderlist;
 	FolderItem0* downFolder;
 	FolderItem0* undoFolder;
 	POINT dragPoint;
+
+	int nEventPos;
+	int nEventFolderSequence;
 
 	CustomScroll scroll;
 

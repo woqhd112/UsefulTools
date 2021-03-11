@@ -1,17 +1,13 @@
 #pragma once
-#include "NoteItem.h"
-#include "FolderItem.h"
-#include "CustomXml.h"
-#include "NoteFile.h"
+#include "NotePadXMLManager.h"
 
-
-#define TAG_COLOR_1		RGB(245, 85, 79)
-#define TAG_COLOR_2		RGB(252, 184, 74)
-#define TAG_COLOR_3		RGB(115, 215, 108)
-#define TAG_COLOR_4		RGB(131, 94, 224)
-#define TAG_COLOR_5		RGB(160, 160, 160)
-#define TAG_COLOR_6		RGB(224, 153, 94)
-#define TAG_COLOR_7		RGB(94, 165, 224)
+#define TAG_COLOR_1	RGB(245, 85, 79)
+#define TAG_COLOR_2	RGB(252, 184, 74)
+#define TAG_COLOR_3	RGB(115, 215, 108)
+#define TAG_COLOR_4	RGB(131, 94, 224)
+#define TAG_COLOR_5	RGB(160, 160, 160)
+#define TAG_COLOR_6	RGB(224, 153, 94)
+#define TAG_COLOR_7	RGB(94, 165, 224)
 
 class NotePadList;
 class FolderList;
@@ -19,6 +15,7 @@ class NotePadRecycle;
 
 class NotePadManager
 {
+	friend class NotePadXMLManager;
 	//typedef std::vector<NoteItem*> ViewNoteList;
 	//typedef std::vector<FolderItem0*> ViewFolderList;
 	typedef NotePadContainer<NoteItem*> ViewNoteList;
@@ -33,10 +30,9 @@ public:
 private:
 
 	ThemeData* currentTheme;
-	NotePadList* pNotePadList;
-	FolderList* pFolderList;
-	NotePadRecycle* pRecycleDlg;
+	
 
+	NotePadXMLManager* xmlManager;
 
 	CString strLatelyNoteContent;
 
@@ -93,39 +89,44 @@ public:
 	NoteItem* NoteByRecycleParentSwap(NoteItem* updateNote);
 	NoteItem* RecycleByNoteParentSwap(NoteItem* updateNote);
 
+	void CreateFolderXml(NotePadXMLManager::FolderSaveData folderdata);
+	void UpdateFolderXml(NotePadXMLManager::FolderSaveData origindata, NotePadXMLManager::FolderSaveData updatedata);
+	void SaveFolderXml(NotePadXMLManager::FolderSaveData folderdata);
+	void CreateNoteXml(NotePadXMLManager::NoteSaveData notedata);
+	void SaveNoteXml(NotePadXMLManager::NoteSaveData notedata);
+	void UpdateNoteXml(NotePadXMLManager::NoteSaveData origindata, NotePadXMLManager::NoteSaveData updatedata);
+	void RecycleNoteXml(NotePadXMLManager::NoteSaveData origindata);
+
 private:
 
-	bool CreateDefaultNoteXml(CMarkup* markUp, CString strFullPath);
 
 public:
 
-	struct NoteSaveData
-	{
-		CString strUpdateTime;
-		CString strCreateTime;
-		int nNoteName;
-		int nLock;
-		int nFolderSequence;
-	};
+	//struct NoteSaveData
+	//{
+	//	CString strUpdateTime;
+	//	CString strCreateTime;
+	//	int nNoteName;
+	//	int nLock;
+	//	int nFolderSequence;
+	//};
 
-	struct FolderSaveData
-	{
-		CString strUpdateTime;
-		CString strCreateTime;
-		CString strFolderName;
-		COLORREF folderTagColor;
-		int nFolderSequence;
-		int nSize;
-	};
+	//struct FolderSaveData
+	//{
+	//	CString strUpdateTime;
+	//	CString strCreateTime;
+	//	CString strFolderName;
+	//	COLORREF folderTagColor;
+	//	int nFolderSequence;
+	//	int nSize;
+	//};
 
-	void RecycleNoteXml(NoteSaveData origindata);
-	void SaveNoteXml(NoteSaveData notedata);
-	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
-	void CreateNoteXml(NoteSaveData notedata);
-	void SaveFolderXml(FolderSaveData folderdata);
-	void UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata);
-	void CreateFolderXml(FolderSaveData folderdata);
+	//void RecycleNoteXml(NoteSaveData origindata);
+	//void SaveNoteXml(NoteSaveData notedata);
+	//void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
+	//void CreateNoteXml(NoteSaveData notedata);
+	//void SaveFolderXml(FolderSaveData folderdata);
+	//void UpdateFolderXml(FolderSaveData origindata, FolderSaveData updatedata);
 
 
 };
-
