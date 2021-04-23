@@ -304,9 +304,12 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			int nLocToPos = ButtonLocationToPos(convertPoint);
 			CRect rect = SetButtonPosition(nLocToPos, false);
 			
+			if (nFindSaveFolderSequence < 0 || saveNoteList.Size() <= 0) return FALSE;
+
 			// 현재 마우스 포인트가 해당 노트에 있을경우
 			if (PtInRect(rect, convertPoint))
 			{
+				TRACE(L"노트잡고 노트에 떨굼\n");
 				notePadManager->UpdateNoteSwap(saveNoteList, findnote, nFindSaveFolderSequence);
 				
 				SuccessUpdate();
@@ -349,7 +352,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				SuccessUpdate();
 
 				int curScrollPos = scroll.GetCurrentLinePos();
-
+				TRACE(L"노트잡고 폴더에 떨굼\n");
 				// 현재 폴더 화면 갱신
 				LoadNotePad(notePadManager->m_viewNoteList);
 				for (int i = 1; i < curScrollPos; i++)
@@ -380,7 +383,7 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 				SuccessUpdate();
-
+				TRACE(L"노트잡고 쓰레기통에 떨굼\n");
 				// 화면을 갱신한다.
 				notepad->folderlist->Invalidate();
 
@@ -487,6 +490,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					CString strSortNoteTagSequence;
 					if (absJump >= 1 && nJump > 0)
 					{
+						TRACE(L"노트 잡고 아래로\n");
 						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
@@ -504,6 +508,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					}
 					else if (absJump >= 1 && nJump < 0)
 					{
+						TRACE(L"노트 잡고 위로\n");
 						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
@@ -563,7 +568,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					}
 
 					FolderItem0* findFolder = viewFolderList.At(nSelectFolderSequence);
-
+					TRACE(L"노트잡고 폴더에 접근\n");
 					findFolderButton = findFolder->folderButton;
 					findFolderButton->UseHoverEvent();
 					bMousePointFolderAccess = true;

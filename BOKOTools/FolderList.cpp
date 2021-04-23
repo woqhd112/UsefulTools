@@ -105,14 +105,17 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		}
 		else // press 1초이상 동작 이벤트 비활성화
 		{
-			bThread = false;
-			DWORD nExitCode = NULL;
 
-			GetExitCodeThread(thrMaintain->m_hThread, &nExitCode);
-			if (TerminateThread(thrMaintain->m_hThread, nExitCode) != 0)
+			if (bThread)
 			{
-				delete thrMaintain;
-				thrMaintain = nullptr;
+				bThread = false;
+				DWORD nExitCode = NULL;
+				GetExitCodeThread(thrMaintain->m_hThread, &nExitCode);
+				if (TerminateThread(thrMaintain->m_hThread, nExitCode) != 0)
+				{
+					delete thrMaintain;
+					thrMaintain = nullptr;
+				}
 			}
 
 			if (downFolder)

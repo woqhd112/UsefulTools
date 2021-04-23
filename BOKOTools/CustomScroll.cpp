@@ -377,7 +377,7 @@ UINT CustomScroll::OperateWheel(short zDelta)
 		if (csi.cst == CUSTOM_SCROLL_TYPE_DEFAULT) nFlag = SB_LINEDOWN;
 		else nFlag = SB_PAGEDOWN;
 	}
-
+	 
 	return nFlag;
 }
 

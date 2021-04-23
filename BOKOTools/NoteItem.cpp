@@ -82,7 +82,7 @@ void NoteItem::Initialize(NoteInit init)
 	lockButton->LoadAltImage(IDB_PNG_NOTELIST_LOCK, _T("PNG"));
 	noteButton->Initialize(RGB(255, 255, 255), CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 25);
 	noteButton->SetWindowTextW(strNoteTitle);
-	tagButton->Initialize(init.tagColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 20);
+	tagButton->Initialize(init.tagColor, CMFCButton::FlatStyle::BUTTONSTYLE_NOBORDERS, currentTheme->GetThemeFontName(), 18);
 
 	// button sizing
 	wrapButton->MoveWindow(0, 0, 365, 40);
@@ -92,7 +92,7 @@ void NoteItem::Initialize(NoteInit init)
 
 	// button z-order
 	/*wrapButton->ModifyStyle(0, WS_CLIPSIBLINGS, 0);
-	tagButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+	tagButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDRE, 0);
 	lockButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	noteButton->ModifyStyle(0, WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 	tagButton->BringWindowToTop();

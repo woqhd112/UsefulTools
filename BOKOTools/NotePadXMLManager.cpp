@@ -230,10 +230,10 @@ void NotePadXMLManager::LoadNotePad()
 			while (markUp.FindElem(_T("note")))
 			{
 				int nNoteName = 0;
-				CString strNoteName;
-				strNoteName.Format(_T("%d"), nNoteName);
+				//CString strNoteName;
+				//strNoteName.Format(_T("%d"), nNoteName);
 				CString strNotePath;
-				//CString strNoteName = markUp.GetAttrib(_T("name"));
+				CString strNoteName = markUp.GetAttrib(_T("name"));
 				CString strLocked = markUp.GetAttrib(_T("lock"));
 				CString strNoteCreateTime = markUp.GetAttrib(_T("create"));
 				CString strNoteUpdateTime = markUp.GetAttrib(_T("update"));
@@ -242,7 +242,7 @@ void NotePadXMLManager::LoadNotePad()
 				CTime createNoteTime = pManager->GetTimeCal(strNoteCreateTime);
 				CTime updateNoteTime = pManager->GetTimeCal(strNoteUpdateTime);
 
-
+				nNoteName = _ttoi(strNoteName);
 				int nNoteFolderSequence = _ttoi(strNoteFolderSequence);
 				int nLocked = _ttoi(strLocked);
 				if (nLocked <= 0) nLocked = 0;
@@ -275,11 +275,18 @@ void NotePadXMLManager::LoadNotePad()
 				{
 					AfxMessageBox(_T("노트정보를 읽지 못하였습니다."));
 				}
-				nNoteName++;
+				//nNoteName++;
 			}
 
 			markUp.OutOfElem();
 		}
+
+		if (pManager->m_allNoteList.Empty())
+		{
+			NotePadContainer<NoteItem*> addNoteList;
+			pManager->m_allNoteList.Push(addNoteList);
+		}
+
 	}
 	else
 	{
@@ -336,8 +343,9 @@ bool NotePadXMLManager::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPat
 	return bReturn;
 }
 
-void NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
+int NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
 {
+	int nNoteNameCount = 0;
 	CMarkup markUp;
 	CString strFullPath = _T("");
 	CustomXml::CreateConfigFile(strFullPath);
@@ -379,7 +387,7 @@ void NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
 		if (markUp.FindElem(_T("recy")))
 		{
 			markUp.IntoElem();
-			int nNoteNameCount = 0;
+			
 			while (markUp.FindElem(_T("note")))
 			{
 				if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
@@ -396,6 +404,8 @@ void NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
 		}
 	}
 	CustomXml::SaveXml(&markUp, strFullPath);
+
+	return nNoteNameCount;
 }
 
 void NotePadXMLManager::UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata)

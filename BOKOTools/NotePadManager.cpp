@@ -93,8 +93,9 @@ void NotePadManager::UpdateViewNoteList(NotePadContainer<ViewNoteList> updateVie
 
 void NotePadManager::AddFolder(FolderItem0* newFolder)
 {
+	ViewNoteList addNoteList;
 	m_allFolderList.Push(newFolder);
-	m_allNoteList.Push({});
+	m_allNoteList.Push(addNoteList);
 	m_viewNoteList = {};
 }
 
@@ -165,8 +166,6 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 	updateFolderInit.strFolderName = updateFolder->GetFolderName();
 	updateFolder->Update(updateFolderInit);
 
-	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);
-	UpdateAllFolderVector(updateFolder, nFindVariableFolderSequence);
 
 
 	// 현재 노트를 선택한 폴더에 추가한다
@@ -221,6 +220,7 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 	CustomXml::GetModulePath(strFullPath);
 	strFullPath += _T("\\Note\\");
 	// 업데이트한 노트이름으로 메모장이름을 변경한다.
+
 	file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, originNoteData.nFolderSequence, originNoteData.nNoteName, updateNoteData.nFolderSequence, updateNoteData.nNoteName);
 
 	// 삭제된 폴더의 노트들의 이름을 정렬한다.
@@ -230,6 +230,14 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 		int nFolderSequence = noteitem->GetFolderSequence();
 		file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, nFolderSequence, noteitem->GetNoteName(), nFolderSequence, i);
 	}
+	for (int i = 0; i < variableNoteList.Size(); i++)
+	{
+		NoteItem* noteitem = variableNoteList.At(i);
+		noteitem->SetNoteName(i);
+	}
+
+	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);
+	UpdateAllFolderVector(updateFolder, nFindVariableFolderSequence);
 
 	return insertNoteList;
 }
@@ -258,7 +266,7 @@ void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findN
 	recycleNoteData.nNoteName = findNote->GetNoteName();
 	recycleNoteData.strCreateTime = GetTimeCal(findNote->GetCreateTime());
 	recycleNoteData.strUpdateTime = GetTimeCal(findNote->GetUpdateTime());
-	xmlManager->RecycleNoteXml(recycleNoteData);
+	int nChangeReturnRecycleNoteName = xmlManager->RecycleNoteXml(recycleNoteData);
 
 	// 해당 노트의 파일 이름을 변경한다.
 	NoteFile file;
@@ -266,26 +274,27 @@ void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findN
 	CustomXml::GetModulePath(strFullPath);
 	strFullPath += _T("\\Note\\");
 	// 업데이트한 노트이름으로 메모장이름을 변경한다.
-	file.NoteRename(strFullPath, NoteFile::NOTE_BY_SINGLE_RECYCLE_NOTE, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName);
+	int nRecycleNoteLastIndex = 0;
+	for (int i = 0; i < m_recycleNoteList.Size(); i++)
+	{
+		NoteItem* recycleNote = m_recycleNoteList.At(i);
+		if (recycleNote->GetFolderSequence() == recycleNoteData.nFolderSequence)
+		{
+
+		}
+	}
+	file.NoteRename(strFullPath, NoteFile::NOTE_BY_SINGLE_RECYCLE_NOTE, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName, recycleNoteData.nFolderSequence, nChangeReturnRecycleNoteName);
 
 	// 삭제된 메모의 폴더에서 메모이름을 정렬한다.
 	for (int i = 0; i < variableNoteList.Size(); i++)
 	{
-		bool bUpdateNote = false;
 		NoteItem* saveNote = variableNoteList.At(i);
-
 		file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, recycleNoteData.nFolderSequence, saveNote->GetNoteName(), recycleNoteData.nFolderSequence, i);
-
+	}
+	for (int i = 0; i < variableNoteList.Size(); i++)
+	{
+		NoteItem* saveNote = variableNoteList.At(i);
 		saveNote->SetNoteName(i);
-
-		NotePadXMLManager::NoteSaveData updateNote;
-		updateNote.nFolderSequence = saveNote->GetFolderSequence();
-		updateNote.nLock = saveNote->IsLock();
-		updateNote.nNoteName = saveNote->GetNoteName();
-		updateNote.strCreateTime = GetTimeCal(saveNote->GetCreateTime());
-		updateNote.strUpdateTime = GetTimeCal(saveNote->GetUpdateTime());
-
-		xmlManager->SaveNoteXml(updateNote);
 	}
 
 	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);

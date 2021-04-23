@@ -48,7 +48,7 @@ private:
 
 	void Init(NotePadList* pNotePadList, FolderList* pFolderList, NotePadRecycle* pRecycleDlg);
 	void LoadNotePad();
-	void RecycleNoteXml(NoteSaveData origindata);
+	int RecycleNoteXml(NoteSaveData origindata);
 	void SaveNoteXml(NoteSaveData notedata);
 	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
 	void CreateNoteXml(NoteSaveData notedata);

@@ -11,11 +11,12 @@ public:
 
 	NotePadContainer()
 	{
-		
+		nCurrentIndex = 0;
 	}
 
-	NotePadContainer(std::vector<T> allocObject)
+	NotePadContainer(std::vector<T>& allocObject)
 	{
+		nCurrentIndex = 0;
 		notepadObject = allocObject;
 	}
 
@@ -24,11 +25,13 @@ public:
 	
 	}
 
-	T At(int nObjectIndex)
+	T& At(int nObjectIndex)
 	{
-		pointerObject = notepadObject.at(nObjectIndex);
+		//pointerObject = notepadObject.at(nObjectIndex);
 
-		return pointerObject;
+		//return pointerObject;
+		nCurrentIndex = nObjectIndex;
+		return notepadObject.at(nObjectIndex);
 	}
 
 	T Begin()
@@ -59,20 +62,20 @@ public:
 		return (int)notepadObject.size();
 	}
 
-	T Pop(int nObjectIndex)
+	T& Pop(int nObjectIndex)
 	{
 		T object = notepadObject.at(nObjectIndex);
 		notepadObject.erase(notepadObject.begin() + nObjectIndex);
 
-		return object;
+		return &object;
 	}
 
-	T Pop()
+	T& Pop()
 	{
 		T object = notepadObject.end();
 		notepadObject.erase(notepadObject.end());
 
-		return object;
+		return &object;
 	}
 
 	void Swap(int nChangeIndex1, int nChangeIndex2)
@@ -157,9 +160,39 @@ public:
 		notepadObject.clear();
 	}*/
 
-	bool operator == (NotePadContainer<T>& t1)
+	/*bool operator == (NotePadContainer<T>& t1)
 	{
 		return (t1.pointerObject == pointerObject);
+	}*/
+
+	bool operator == (NotePadContainer<T>& t1)
+	{
+		return (notepadObject == t1.notepadObject);
+	}
+
+	/*NotePadContainer<T>& operator = (NotePadContainer<T>& t1)
+	{
+		notepadObject.assign(t1.Begin(), t1.End());
+
+		return this;
+	}
+
+	std::vector<T>& operator = (std::vector<T>& t1)
+	{
+		notepadObject = t1;
+
+		return notepadObject;
+	}*/
+
+	T& operator = (T& t1)
+	{
+		if (nCurrentIndex > notepadObject.size() - 1)
+			return nullptr;
+
+		T returnT = notepadObject.at(nCurrentIndex);
+		returnT = t1;
+
+		return returnT;
 	}
 
 private:
@@ -167,6 +200,8 @@ private:
 	std::vector<T> notepadObject;
 
 	T pointerObject;
+
+	int nCurrentIndex;
 
 };
 
