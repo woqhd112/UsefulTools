@@ -506,9 +506,12 @@ void NotePad::OnBnClickedButtonAddFolder()
 		notePadManager->CreateFolderXml(folderdata);
 
 		newFolder->Initialize(folderinit);
+		newFolder->folderButton->ToggleClickChange();
+
 		notePadManager->AddFolder(newFolder);
 		notepadlist->LoadNotePad(notePadManager->m_viewNoteList);
 		folderlist->LoadFolder(notePadManager->m_allFolderList, true);
+
 	}
 }
 

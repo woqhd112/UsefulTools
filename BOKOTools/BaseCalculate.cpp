@@ -221,13 +221,11 @@ CString BaseCalculate::OutputSetToTen(int nMacro)
 	CString strText = _T("");
 	CString strTest = _T("");
 	CString strFormat = _T("");
-	int nBase = 0;
 	int nLength = 0;
 	int nSum = 0;
 	int nConvertInt = 0;
 
 	m_edit_input_ten_from_base.GetWindowTextW(strText);
-	nBase = _ttoi(strText);
 
 	nLength = strText.GetLength();
 

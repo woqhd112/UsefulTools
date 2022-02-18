@@ -158,6 +158,9 @@ bool SortButtonList::ExistButtonPos(int nButtonIndex)
 			bExistButtonPos = true;
 		}
 	}
+
+	if (nButtonIndex == -1)
+		bExistButtonPos = true;
 	
 	return bExistButtonPos;
 }
@@ -516,7 +519,6 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findb
 					delete button;
 					button = nullptr;
 					bCursorRevertButton = true;
-
 					break;
 				}
 			}
@@ -566,6 +568,8 @@ BOOL SortButtonList::DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findb
 		EnableEmptyLine(SW_HIDE);
 
 		bReturn = TRUE;
+
+		CloseDragEvent();
 	}
 	return bReturn;
 }

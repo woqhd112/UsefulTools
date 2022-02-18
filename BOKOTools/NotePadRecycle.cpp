@@ -193,7 +193,10 @@ void NotePadRecycle::LoadRecycleData(ViewNoteList recycleNoteList, ViewFolderLis
 	}
 
 	nStartPos_x = 30;
-	nStartPos_y += 84;
+	if (recycleFolderList.Empty())
+		nStartPos_y = 0;
+	else
+		nStartPos_y += 84;
 
 	for (int i = 0; i < recycleNoteList.Size(); i++)
 	{

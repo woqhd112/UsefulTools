@@ -335,6 +335,7 @@ BOOL AllButtonList::DragEventUp(HWND upHWND, CPoint upPoint, CGdipButton* findbu
 		sorticon->sortButtonList->EnableEmptyLine(SW_HIDE);
 
 		bReturn = TRUE;
+		CloseDragEvent();
 	}
 	return bReturn;
 }

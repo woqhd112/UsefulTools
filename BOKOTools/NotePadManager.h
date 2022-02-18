@@ -73,9 +73,10 @@ public:
 
 	void AddFolder(FolderItem0* newFolder);
 	void AddNote(NoteItem* newNote);
-	void UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
-	ViewNoteList FolderChange(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence);
-	void RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
+	bool UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
+	bool FolderChange(ViewNoteList& variableNoteList, ViewNoteList* inputNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence);
+	bool RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence);
+	bool RecycleFolder(FolderItem0* findFolder, int nFindVariableFolderSequence);
 
 	int MaxFolderSequence();
 	CString GetLatleyNoteContent();
@@ -84,10 +85,13 @@ public:
 	CTime GetTimeCal(CString strTime);
 	CString GetTimeCal(CTime calTime);
 	int EraseNoteList(ViewNoteList& variableNoteList, NoteItem* findNote);
+	int EraseFolder(FolderItem0* findFolder);
 
 	// m_allNoteList, m_viewNoteList, m_otherNoteList, m_allFolderList 모두 erase 되었는지 확인 후 사용
 	NoteItem* NoteByRecycleParentSwap(NoteItem* updateNote);
 	NoteItem* RecycleByNoteParentSwap(NoteItem* updateNote);
+	FolderItem0* FolderByRecycleParentSwap(FolderItem0* updateFolder);
+	FolderItem0* RecycleByFolderParentSwap(FolderItem0* updateFolder);
 
 	void CreateFolderXml(NotePadXMLManager::FolderSaveData folderdata);
 	void UpdateFolderXml(NotePadXMLManager::FolderSaveData origindata, NotePadXMLManager::FolderSaveData updatedata);

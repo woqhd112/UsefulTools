@@ -110,8 +110,11 @@ void NotePadManager::AddNote(NoteItem* newNote)
 	m_allNoteList.At(0) = m_otherNoteList;
 }
 
-void NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence)
+bool NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence)
 {
+	if (findNote == nullptr) return false;
+	if (nFindVariableFolderSequence < 0) return false;
+
 	// 스왑한 노트정보를 현재 상속된 폴더에 업데이트한다.
 	UpdateFolderVector(variableNoteList, nFindVariableFolderSequence);
 
@@ -147,10 +150,15 @@ void NotePadManager::UpdateNoteSwap(ViewNoteList& variableNoteList, NoteItem* fi
 
 		xmlManager->SaveNoteXml(updateNote);
 	}
+
+	return true;
 }
 
-NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence)
+bool NotePadManager::FolderChange(ViewNoteList& variableNoteList, ViewNoteList* inputNoteList, NoteItem* findNote, int nFindVariableFolderSequence, int nSelectVariableFolderSequence)
 {
+	if (findNote == nullptr) return false;
+	if (nFindVariableFolderSequence < 0) return false;
+
 	// 현재 노트를 현재 폴더에서 지운다
 	int nDeleteNoteIndex = EraseNoteList(variableNoteList, findNote);
 
@@ -165,8 +173,6 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 	updateFolderInit.nFolderSize = nUpdateFolderSize;
 	updateFolderInit.strFolderName = updateFolder->GetFolderName();
 	updateFolder->Update(updateFolderInit);
-
-
 
 	// 현재 노트를 선택한 폴더에 추가한다
 	ViewNoteList insertNoteList = m_allNoteList.At(nSelectVariableFolderSequence);
@@ -239,11 +245,16 @@ NotePadManager::ViewNoteList NotePadManager::FolderChange(ViewNoteList& variable
 	UpdateAllNoteVector(variableNoteList, nFindVariableFolderSequence);
 	UpdateAllFolderVector(updateFolder, nFindVariableFolderSequence);
 
-	return insertNoteList;
+	*inputNoteList = insertNoteList;
+	return true;
 }
 
-void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence)
+bool NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findNote, int nFindVariableFolderSequence)
 {
+	if (variableNoteList.Empty()) return false;
+	if (findNote == nullptr) return false;
+	if (nFindVariableFolderSequence < 0) return false;
+
 	// 해당 노트를 폴더에서 지운다.
 	int nDeleteNoteIndex = EraseNoteList(variableNoteList, findNote);
 	
@@ -266,7 +277,7 @@ void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findN
 	recycleNoteData.nNoteName = findNote->GetNoteName();
 	recycleNoteData.strCreateTime = GetTimeCal(findNote->GetCreateTime());
 	recycleNoteData.strUpdateTime = GetTimeCal(findNote->GetUpdateTime());
-	int nChangeReturnRecycleNoteName = xmlManager->RecycleNoteXml(recycleNoteData);
+	xmlManager->RecycleNoteXml(recycleNoteData);
 
 	// 해당 노트의 파일 이름을 변경한다.
 	NoteFile file;
@@ -280,10 +291,11 @@ void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findN
 		NoteItem* recycleNote = m_recycleNoteList.At(i);
 		if (recycleNote->GetFolderSequence() == recycleNoteData.nFolderSequence)
 		{
-
+			nRecycleNoteLastIndex++;
 		}
 	}
-	file.NoteRename(strFullPath, NoteFile::NOTE_BY_SINGLE_RECYCLE_NOTE, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName, recycleNoteData.nFolderSequence, nChangeReturnRecycleNoteName);
+	findNote->SetNoteName(nRecycleNoteLastIndex);
+	file.NoteRename(strFullPath, NoteFile::NOTE_BY_SINGLE_RECYCLE_NOTE, recycleNoteData.nFolderSequence, recycleNoteData.nNoteName, recycleNoteData.nFolderSequence, nRecycleNoteLastIndex);
 
 	// 삭제된 메모의 폴더에서 메모이름을 정렬한다.
 	for (int i = 0; i < variableNoteList.Size(); i++)
@@ -303,6 +315,101 @@ void NotePadManager::RecycleNote(ViewNoteList& variableNoteList, NoteItem* findN
 	// 해당 노트를 쓰레기통에 추가한다.
 	m_recycleNoteList.Push(NoteByRecycleParentSwap(findNote));
 
+	return true;
+}
+
+bool NotePadManager::RecycleFolder(FolderItem0* findFolder, int nFindVariableFolderSequence)
+{
+	if (nFindVariableFolderSequence < 1) return false;
+	if (findFolder == nullptr) return false;
+
+	// 해당 폴더를 폴더리스트에서 지운다.
+	int nDeleteNoteIndex = EraseFolder(findFolder);
+
+	// 해당 폴더를 xml에 업데이트한다.
+	NotePadXMLManager::FolderSaveData recycleFolderData;
+	recycleFolderData.nFolderSequence = findFolder->GetFolderSequence();
+	recycleFolderData.nSize = findFolder->GetFolderSize();
+	recycleFolderData.strFolderName = findFolder->GetFolderName();
+	recycleFolderData.folderTagColor = GetTagColorFromIndex(findFolder->GetFolderColorIndex());
+	recycleFolderData.strCreateTime = GetTimeCal(findFolder->GetCreateTime());
+	recycleFolderData.strUpdateTime = GetTimeCal(findFolder->GetUpdateTime());
+	recycleFolderData.folder = findFolder->GetFolder();
+	xmlManager->RecycleFolderXml(recycleFolderData);
+
+	// 폴더 시퀀스 recyclelist에서 사이즈로 설정 및 하위 노트이름들 변경
+	int nUpdateFolderSequence = m_recycleFolderList.Size();
+	FolderItem0::FolderInit updateFolderInit;
+	ViewNoteList updateNoteList = findFolder->GetFolder();
+
+	NoteFile file;
+	CString strFullPath;
+	CustomXml::GetModulePath(strFullPath);
+	strFullPath += _T("\\Note\\");
+	for (int i = 0; i < updateNoteList.Size(); i++)
+	{
+		NoteItem* updateNote = updateNoteList.At(i);
+		file.NoteRename(strFullPath, NoteFile::NOTE_BY_MULTI_RECYCLE_NOTE, updateNote->GetFolderSequence(), updateNote->GetNoteName(), nUpdateFolderSequence, updateNote->GetNoteName());
+	}
+
+	for (int i = 0; i < updateNoteList.Size(); i++)
+	{
+		NoteItem* updateNote = updateNoteList.At(i);
+		NoteItem::NoteInit updateNoteInit;
+		updateNoteInit.isLock = updateNote->IsLock();
+		updateNoteInit.nFolderSequence = nUpdateFolderSequence;
+		updateNoteInit.nFolderSize = updateNote->GetFolderSize();
+		updateNoteInit.nNoteName = updateNote->GetNoteName();
+		updateNoteInit.strNoteContent = updateNote->GetNoteContent();
+		updateNoteInit.tagColor = updateNote->GetTagColor();
+		updateNoteInit.createTime = updateNote->GetCreateTime();
+		updateNoteInit.updateTime = updateNote->GetUpdateTime();
+		updateNote->Update(updateNoteInit);
+	}
+	updateFolderInit.folder = updateNoteList;
+	updateFolderInit.nFolderColorIndex = findFolder->GetFolderColorIndex();
+	updateFolderInit.nFolderSequence = findFolder->GetFolderSequence();
+	updateFolderInit.nFolderSize = nUpdateFolderSequence;
+	updateFolderInit.strFolderName = findFolder->GetFolderName();
+	findFolder->Update(updateFolderInit);
+
+	// 해당 폴더를 쓰레기통에 추가
+	m_recycleFolderList.Push(FolderByRecycleParentSwap(findFolder));
+
+	// 해당 폴더보다 뒤에있는 폴더들의 폴더인덱스를 모두 변경하고 노트의 시퀀스도 같이 변경한다. 파일명도 같이변경
+	if (nFindVariableFolderSequence <= (m_allFolderList.Size() - 1))
+	{
+		for (int i = nFindVariableFolderSequence; i < m_allFolderList.Size(); i++)
+		{
+			FolderItem0* updateFolder = m_allFolderList.At(i);
+			updateFolder->SetFolderSequence(i - 1);
+			ViewNoteList updateNoteList = updateFolder->GetFolder();
+			for (int j = 0; j < updateNoteList.Size(); j++)
+			{
+				NoteItem* updateNote = updateNoteList.At(j);
+				file.NoteRename(strFullPath, NoteFile::DEFAULT_NOTE, updateNote->GetFolderSequence(), updateNote->GetNoteName(), i - 1, updateNote->GetNoteName());
+				updateNote->SetFolderSequence(i - 1);
+			}
+		}
+	}
+
+	return true;
+}
+
+int NotePadManager::EraseFolder(FolderItem0* findFolder)
+{
+	int nDeleteFolderIndex = 0;
+	for (int i = 0; i < m_allFolderList.Size(); i++)
+	{
+		FolderItem0* updateFolder = m_allFolderList.At(i);
+		if (updateFolder == findFolder)
+		{
+			nDeleteFolderIndex = i;
+			m_allFolderList.Erase(i);
+		}
+	}
+
+	return nDeleteFolderIndex;
 }
 
 int NotePadManager::EraseNoteList(ViewNoteList& variableNoteList, NoteItem* findNote)
@@ -381,6 +488,45 @@ void NotePadManager::UpdateRecycleNoteVector(NoteItem* updateNote, int nUpdateIn
 	m_recycleNoteList.Assign(newAllocNoteList, 0, newAllocNoteList.Size() - 1);
 }
 
+FolderItem0* NotePadManager::FolderByRecycleParentSwap(FolderItem0* updateFolder)
+{
+	FolderItem0* newFolder = new FolderItem0(currentTheme, xmlManager->pRecycleDlg);
+	FolderItem0::FolderInit folderinit;
+	folderinit.nFolderSequence = updateFolder->GetFolderSequence();
+	folderinit.nFolderSize = updateFolder->GetFolderSize();
+	folderinit.strFolderName = updateFolder->GetFolderName();
+	folderinit.createTime = updateFolder->GetCreateTime();
+	folderinit.updateTime = updateFolder->GetUpdateTime();
+	folderinit.nFolderColorIndex = GetIndexFromTagColor(TAG_COLOR_5);
+	folderinit.folder = updateFolder->GetFolder();
+
+	newFolder->Initialize(folderinit);
+
+	delete updateFolder;
+	updateFolder = nullptr;
+
+	return newFolder;
+}
+
+FolderItem0* NotePadManager::RecycleByFolderParentSwap(FolderItem0* updateFolder)
+{
+	FolderItem0* newFolder = new FolderItem0(currentTheme, xmlManager->pFolderList);
+	FolderItem0::FolderInit folderinit;
+	folderinit.nFolderSequence = updateFolder->GetFolderSequence();
+	folderinit.nFolderSize = updateFolder->GetFolderSize();
+	folderinit.strFolderName = updateFolder->GetFolderName();
+	folderinit.createTime = updateFolder->GetCreateTime();
+	folderinit.updateTime = updateFolder->GetUpdateTime();
+	folderinit.nFolderColorIndex = TAG_COLOR_5;
+	folderinit.folder = updateFolder->GetFolder();
+
+	newFolder->Initialize(folderinit);
+
+	delete updateFolder;
+	updateFolder = nullptr;
+
+	return newFolder;
+}
 
 NoteItem* NotePadManager::NoteByRecycleParentSwap(NoteItem* updateNote)
 {
@@ -396,6 +542,9 @@ NoteItem* NotePadManager::NoteByRecycleParentSwap(NoteItem* updateNote)
 	noteinit.updateTime = updateNote->GetUpdateTime();
 
 	newNote->Initialize(noteinit);
+
+	delete updateNote;
+	updateNote = nullptr;
 
 	return newNote;
 }
@@ -414,6 +563,9 @@ NoteItem* NotePadManager::RecycleByNoteParentSwap(NoteItem* updateNote)
 	noteinit.updateTime = updateNote->GetUpdateTime();
 
 	newNote->Initialize(noteinit);
+
+	delete updateNote;
+	updateNote = nullptr;
 
 	return newNote;
 }
@@ -473,7 +625,7 @@ int NotePadManager::MaxFolderSequence()
 {
 	int nMaxSequence = 0;
 
-	for (int i = 0; i < m_allFolderList.Size(); i++)
+	/*for (int i = 0; i < m_allFolderList.Size(); i++)
 	{
 		FolderItem0* folder = m_allFolderList.At(i);
 		int nCompareSequence = folder->GetFolderSequence();
@@ -487,7 +639,9 @@ int NotePadManager::MaxFolderSequence()
 		int nCompareSequence = folder->GetFolderSequence();
 		if (nMaxSequence < nCompareSequence)
 			nMaxSequence = nCompareSequence;
-	}
+	}*/
+
+	nMaxSequence = m_allFolderList.Size() - 1;
 
 	return nMaxSequence;
 }

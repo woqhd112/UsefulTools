@@ -13,6 +13,7 @@ class NotePadRecycle;
 class NotePadXMLManager
 {
 	friend class NotePadManager;
+	typedef NotePadContainer<NoteItem*> Folder, ViewNoteList;
 public:
 
 	NotePadXMLManager(ThemeData* currentTheme, NotePadManager* pManager);
@@ -33,6 +34,7 @@ public:
 		CString strCreateTime;
 		CString strFolderName;
 		COLORREF folderTagColor;
+		Folder folder;
 		int nFolderSequence;
 		int nSize;
 	};
@@ -48,7 +50,8 @@ private:
 
 	void Init(NotePadList* pNotePadList, FolderList* pFolderList, NotePadRecycle* pRecycleDlg);
 	void LoadNotePad();
-	int RecycleNoteXml(NoteSaveData origindata);
+	void RecycleNoteXml(NoteSaveData origindata);
+	void RecycleFolderXml(FolderSaveData origindata);
 	void SaveNoteXml(NoteSaveData notedata);
 	void UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata);
 	void CreateNoteXml(NoteSaveData notedata);

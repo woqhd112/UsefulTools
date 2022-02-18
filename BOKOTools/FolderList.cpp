@@ -29,6 +29,7 @@ FolderList::FolderList(NotePadManager* notePadManager, ThemeData* currentTheme, 
 	bThreadDownEvent = false;
 	undoFolder = nullptr;
 	downFolder = nullptr;
+	dragSectorPos = DRAG_SECTOR_FOLDER;
 }
 
 FolderList::~FolderList()
@@ -100,8 +101,16 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			FolderItem0* findfolder = FindFolderButton(pMsg->hwnd);
-			if (DragEventUp(pMsg->hwnd, pMsg->pt, findfolder))
-				return TRUE;
+			if (downFolder)
+			{
+				if (DragEventUp(pMsg->hwnd, pMsg->pt, downFolder))
+					return TRUE;
+				else
+				{
+					//CloseDragEvent();
+				}
+			}
+			return TRUE;
 		}
 		else // press 1초이상 동작 이벤트 비활성화
 		{
@@ -143,8 +152,8 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 			downFolder = findfolder;
 			dragPoint = pMsg->pt;
 			PostMessage(PRESS_MAINTAIN, 0, 0);
-			return TRUE;
 		}
+		return TRUE;
 	}
 	else if (pMsg->message == WM_MOUSEMOVE)
 	{
@@ -162,6 +171,13 @@ BOOL FolderList::PreTranslateMessage(MSG* pMsg)
 		}
 		if (DragEventMove(pMsg->hwnd, pMsg->pt, findfolder))
 			return TRUE;
+		else
+		{
+			/*if (IsState() == 0)
+			{
+				CloseDragEvent();
+			}*/
+		}
 	}
 	else  if (pMsg->message == WM_LBUTTONDBLCLK)
 	{
@@ -348,7 +364,9 @@ CRect FolderList::SetButtonPosition(int nItemCount)
 
 void FolderList::SetDownEvent(HWND downHWND, CPoint downPoint, FolderItem0* findfolder)
 {
-	nEventPos = ButtonLocationToPos(downPoint);
+	POINT convertPoint = downPoint;
+	ScreenToClient(&convertPoint);
+	nEventPos = ButtonLocationToPos(convertPoint);
 	nEventFolderSequence = LocationAndScrollToFolderSequence(nEventPos);
 	ExecuteDragEvent(findfolder->folderButton, findfolder->folderStatic);	
 	SetSizeDragDlg(CRect(downPoint.x + 2, downPoint.y + 2, downPoint.x + 2 + 64, downPoint.y + 2 + 64));
@@ -364,11 +382,41 @@ BOOL FolderList::DragEventUp(HWND upHWND, CPoint upPoint, FolderItem0* findfolde
 		POINT convertPoint = upPoint;
 		ScreenToClient(&convertPoint);
 
-		// 폴더 위치 변경
+		// 현재 마우스 포인트가 노트리스트 영역에 있을 경우
+		if (dragSectorPos == DRAG_SECTOR_NOTE)
+		{
 
-		downFolder->ShowWindow(true);
+		}
+		// 현재 마우스 포인트가 폴더리스트 영역에 있을 경우
+		else if (dragSectorPos == DRAG_SECTOR_FOLDER)
+		{
+			// 폴더 위치 변경
+
+		}
+		// 현재 마우스 포인트가 부모창 영역에 있을 경우
+		else if (dragSectorPos == DRAG_SECTOR_PARENT)
+		{
+			POINT parentPoint = upPoint;
+			notepad->ScreenToClient(&parentPoint);
+			if (PtInRect(notepad->trashButtonRect, parentPoint) || PtInRect(notepad->recycleRect, upPoint))
+			{
+				if (notePadManager->RecycleFolder(findfolder, nEventFolderSequence + 1) == false)	// +1은 seq 0은 항상 other이 들어가있기 때문
+				{
+					LoadFolder(notePadManager->m_allFolderList, true);
+					return FALSE;
+				}
+				
+				// viewfolder 전역변수 추가할거면 여기에 업데이트함수 생성해서 호출해야함
+
+				Invalidate();
+				// 쓰레기통이 켜져있으면 쓰레기통 화면도 갱신한다.
+				notepad->InvalidateRecycle();
+			}
+		}
+
 		DeleteDragDlg();
 		bReturn = TRUE;
+		CloseDragEvent();
 	}
 
 	return bReturn;
@@ -392,28 +440,69 @@ BOOL FolderList::DragEventMove(HWND moveHWND, CPoint movePoint, FolderItem0* fin
 		POINT convertPoint = movePoint;
 		ScreenToClient(&convertPoint);
 
-		int nFolderLocToPos = ButtonLocationToPos(convertPoint);
-		int nLocAndScrollToFolderSequence = LocationAndScrollToFolderSequence(nFolderLocToPos);
-		TRACE(L"eventpos : %d\n", nEventPos);
-		TRACE(L"locpos : %d\n", nFolderLocToPos);
-		TRACE(L"eventseq : %d\n", nEventFolderSequence);
-		TRACE(L"locseq : %d\n", nLocAndScrollToFolderSequence);
-		CRect folderSortRect = SetButtonPosition(nFolderLocToPos);
-
-		if (nLocAndScrollToFolderSequence == -1) return FALSE;
-		if (viewFolderlist.Empty()) return FALSE;
-		if (nLocAndScrollToFolderSequence > (viewFolderlist.Size() - 1) || nEventFolderSequence > (viewFolderlist.Size() - 1)) return FALSE;
-		if (nLocAndScrollToFolderSequence == nEventFolderSequence) return FALSE;
+		CRect folderSortRect;
+		this->GetClientRect(folderSortRect);
 
 		if (PtInRect(folderSortRect, convertPoint))
 		{
-			FolderItem0* targetFolder = viewFolderlist.At(nLocAndScrollToFolderSequence);	// 드래그해서 갖다댄 폴더
+			dragSectorPos = DRAG_SECTOR_FOLDER;
 
-			nEventFolderSequence = nLocAndScrollToFolderSequence;
-			nEventPos = nFolderLocToPos;
-			TRACE(L"폴더 접근\n");
+			int nFolderLocToPos = ButtonLocationToPos(convertPoint);
+			int nLocAndScrollToFolderSequence = LocationAndScrollToFolderSequence(nFolderLocToPos);
+			TRACE(L"eventpos : %d\n", nEventPos);
+			TRACE(L"locpos : %d\n", nFolderLocToPos);
+			TRACE(L"eventseq : %d\n", nEventFolderSequence);
+			TRACE(L"locseq : %d\n", nLocAndScrollToFolderSequence);
+			CRect folderSortRect = SetButtonPosition(nFolderLocToPos);
+
+			if (nLocAndScrollToFolderSequence == -1) return FALSE;
+			if (viewFolderlist.Empty()) return FALSE;
+			if (nLocAndScrollToFolderSequence > (viewFolderlist.Size() - 1) || nEventFolderSequence > (viewFolderlist.Size() - 1)) return FALSE;
+			if (nLocAndScrollToFolderSequence == nEventFolderSequence) return FALSE;
+
+			if (PtInRect(folderSortRect, convertPoint))
+			{
+				FolderItem0* targetFolder = viewFolderlist.At(nLocAndScrollToFolderSequence);	// 드래그해서 갖다댄 폴더
+
+				nEventFolderSequence = nLocAndScrollToFolderSequence;
+				nEventPos = nFolderLocToPos;
+				TRACE(L"폴더 접근\n");
+			}
+			// notepadlist 처럼 view 컨테이너 하나 생성해서 처리해야함
 		}
-		// notepadlist 처럼 view 컨테이너 하나 생성해서 처리해야함
+		else
+		{
+			CRect noteInsertRect;
+			notepad->notepadlist->GetWindowRect(noteInsertRect);
+			ScreenToClient(noteInsertRect);
+
+			// 마우스가 노트리스트에 접근했을 때
+			if (PtInRect(noteInsertRect, convertPoint))
+			{
+				dragSectorPos = DRAG_SECTOR_NOTE;
+
+			}
+			// 마우스가 부모창에 접근했을 때
+			else
+			{
+				dragSectorPos = DRAG_SECTOR_PARENT;
+
+				POINT parentPoint = movePoint;
+				POINT recyclePoint = movePoint;
+				notepad->ScreenToClient(&parentPoint);
+				notepad->notepadrecycle->ScreenToClient(&recyclePoint);
+
+				// 마우스가 쓰레기통버튼에 접근했을때 호버이벤트 발생
+				if (PtInRect(notepad->trashButtonRect, parentPoint))
+				{
+					notepad->m_btn_trash.UseHoverEvent();
+				}
+				else
+				{
+					notepad->m_btn_trash.UseLeaveEvent();
+				}
+			}
+		}
 
 		bReturn = TRUE;
 	}

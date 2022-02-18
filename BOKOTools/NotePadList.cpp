@@ -226,7 +226,7 @@ void NotePadList::AddNotePad(CString strContent, bool isLock)
 		NotePadXMLManager::FolderSaveData saveFolder;
 		saveFolder.folderTagColor = TAG_COLOR_5;
 		saveFolder.nFolderSequence = 0;
-		saveFolder.nSize = nNoteName;
+		saveFolder.nSize = notePadManager->m_otherNoteList.Size();
 		saveFolder.strFolderName = _T("other");
 		saveFolder.strCreateTime = strCreateTime;
 		saveFolder.strUpdateTime = strCreateTime;
@@ -309,8 +309,11 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 			// 현재 마우스 포인트가 해당 노트에 있을경우
 			if (PtInRect(rect, convertPoint))
 			{
-				TRACE(L"노트잡고 노트에 떨굼\n");
-				notePadManager->UpdateNoteSwap(saveNoteList, findnote, nFindSaveFolderSequence);
+				if (notePadManager->UpdateNoteSwap(saveNoteList, findnote, nFindSaveFolderSequence) == false)
+				{
+					LoadNotePad(notePadManager->m_viewNoteList);
+					return FALSE;
+				}
 				
 				SuccessUpdate();
 			}
@@ -339,7 +342,12 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				else
 					updateNoteList = notePadManager->m_viewNoteList.At(0);
 
-				ViewNoteList insertNoteList = notePadManager->FolderChange(updateNoteList, findnote, nFindSaveFolderSequence, nSelectFolderSequence);
+				ViewNoteList insertNoteList;
+				if (notePadManager->FolderChange(updateNoteList, &insertNoteList, findnote, nFindSaveFolderSequence, nSelectFolderSequence) == false)
+				{
+					LoadNotePad(notePadManager->m_viewNoteList);
+					return FALSE;
+				}
 
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 
@@ -352,13 +360,13 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				SuccessUpdate();
 
 				int curScrollPos = scroll.GetCurrentLinePos();
-				TRACE(L"노트잡고 폴더에 떨굼\n");
+			
 				// 현재 폴더 화면 갱신
 				LoadNotePad(notePadManager->m_viewNoteList);
-				for (int i = 1; i < curScrollPos; i++)
+				/*for (int i = 1; i < curScrollPos; i++)
 				{
 					OnVScroll(SB_PAGEDOWN, 0, GetScrollBarCtrl(SB_VERT));
-				}
+				}*/
 			}
 			else
 			{
@@ -379,11 +387,15 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 				else
 					updateNoteList = notePadManager->m_viewNoteList.At(0);
 
-				notePadManager->RecycleNote(updateNoteList, findnote, nFindSaveFolderSequence);
+				if (notePadManager->RecycleNote(updateNoteList, findnote, nFindSaveFolderSequence))
+				{
+					LoadNotePad(notePadManager->m_viewNoteList);
+					return FALSE;
+				}
 
 				UpdateNoteVector(updateNoteList, nFindSaveFolderSequence);
 				SuccessUpdate();
-				TRACE(L"노트잡고 쓰레기통에 떨굼\n");
+			
 				// 화면을 갱신한다.
 				notepad->folderlist->Invalidate();
 
@@ -394,9 +406,15 @@ BOOL NotePadList::DragEventUp(HWND upHWND, CPoint upPoint, NoteItem* findnote)
 
 			LoadNotePad(notePadManager->m_viewNoteList);	// 일단 임시로 해둠 쓰레기통 구분해야함
 		}
+		else
+		{
+			LoadNotePad(notePadManager->m_viewNoteList);
+		}
+
+		CloseDragEvent();
+		bReturn = TRUE;
 	}
-	
-	
+
 	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
 	return bReturn;
 }
@@ -415,7 +433,6 @@ BOOL NotePadList::DragEventDown(HWND downHWND, CPoint downPoint, NoteItem* findn
 	SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
 	findnote->ShowWindow(false);
 	nFindSaveFolderSequence = findnote->GetFolderSequence();
-	
 	return bReturn;
 }
 
@@ -490,7 +507,6 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					CString strSortNoteTagSequence;
 					if (absJump >= 1 && nJump > 0)
 					{
-						TRACE(L"노트 잡고 아래로\n");
 						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
@@ -508,7 +524,6 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					}
 					else if (absJump >= 1 && nJump < 0)
 					{
-						TRACE(L"노트 잡고 위로\n");
 						SwapNoteTagSequence(nEventNoteSequence, nLocAndScrollToNoteSequence, strSortNoteTagSequence);
 						findnote->MoveWindow(findRect.left, findRect.top);
 						findnote->SetNoteTagSequence(strSortNoteTagSequence);
@@ -549,7 +564,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 				// 마우스가 폴더에 접근했을 때
 				if (PtInRect(findFolderRect, folderPoint))
 				{
-					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 2;
+					nSelectFolderSequence = notepad->folderlist->LocationAndScrollToFolderSequence(nFolderLocToPos) + 1;
 					ViewFolderList viewFolderList = notePadManager->m_allFolderList;
 					if (nSelectFolderSequence > viewFolderList.Size() - 1)
 					{
@@ -568,7 +583,7 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 					}
 
 					FolderItem0* findFolder = viewFolderList.At(nSelectFolderSequence);
-					TRACE(L"노트잡고 폴더에 접근\n");
+
 					findFolderButton = findFolder->folderButton;
 					findFolderButton->UseHoverEvent();
 					bMousePointFolderAccess = true;
@@ -616,7 +631,6 @@ BOOL NotePadList::DragEventMove(HWND moveHWND, CPoint movePoint, NoteItem* findn
 		}
 		bReturn = TRUE;
 	}
-
 	return bReturn;
 }
 
@@ -713,10 +727,20 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			if (noteClickState == NOTE_CLICK_STATE_TAG)
 			{
 				// 현재 노트리스트가 전체일경우 이벤트 제한
-				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL) return FALSE;
+				if (notePadManager->viewState == NotePadManager::NOTE_VIEW_ALL)
+				{
+					//CloseDragEvent();
+				}
 				// 선택한 노트가 잠겨있을경우 이벤트 제한
-				if (findNote->IsLock()) return FALSE;
+				if (findNote->IsLock())
+				{
+					//CloseDragEvent();
+				}
 				if (DragEventUp(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
+				else
+				{
+					//CloseDragEvent();
+				}
 			}
 			else if (noteClickState == NOTE_CLICK_STATE_NOTE)
 			{
@@ -758,6 +782,13 @@ BOOL NotePadList::PreTranslateMessage(MSG* pMsg)
 			if (noteClickState == NOTE_CLICK_STATE_TAG)
 			{
 				if (DragEventMove(pMsg->hwnd, pMsg->pt, findNote)) return TRUE;
+				else
+				{
+					/*if (IsState() == 0)
+					{
+						CloseDragEvent();
+					}*/
+				}
 			}
 		}
 	}

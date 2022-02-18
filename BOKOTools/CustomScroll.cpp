@@ -234,8 +234,8 @@ int CustomScroll::GetCalculateLinePos(CustomScrollEvent cse, int nSBCode)
 			nSceMaxCounts++;
 		}
 
-		if (nSceMaxCounts < 0)
-			nSceMaxCounts = 0;
+		if (nSceMaxCounts < 1)
+			nSceMaxCounts = 1;
 		if (nSceMaxCounts > nLineCount - 1)
 			nSceMaxCounts = nLineCount - 1;
 
@@ -353,6 +353,7 @@ int CustomScroll::GetCseMaxLineCount()
 
 int CustomScroll::GetCseLineCount()
 {
+	if (nSceMaxCounts == 0) return 1;
 	return nSceMaxCounts;
 }
 

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.1259
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BOKOTools", "BOKOTools\BOKOTools.vcxproj", "{DA4223B3-AE16-455A-A7DE-4312FD178919}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BOKOTools_Setup", "BOKOTools_Setup\BOKOTools_Setup.vdproj", "{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|x64 = All|x64
@@ -29,12 +27,6 @@ Global
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x64.Build.0 = Release|x64
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x86.ActiveCfg = Release|Win32
 		{DA4223B3-AE16-455A-A7DE-4312FD178919}.Release|x86.Build.0 = Release|Win32
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.All|x64.ActiveCfg = Release
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.All|x86.ActiveCfg = Release
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.Debug|x64.ActiveCfg = Debug
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.Debug|x86.ActiveCfg = Debug
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.Release|x64.ActiveCfg = Release
-		{6D8FDD6C-8D2C-4AC5-A503-02F4225241A4}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

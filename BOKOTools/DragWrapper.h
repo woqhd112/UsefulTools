@@ -12,7 +12,7 @@ public:
 	DragWrapper()
 	{
 		bUseDragDlg = false;
-		ds = DRAG_STOP;
+		ds = DRAG_NONE;
 		bd = BIND_REGULAR;
 	}
 
@@ -39,7 +39,8 @@ private:
 	enum DragStatus
 	{
 		DRAG_MOVE = 0,
-		DRAG_STOP = 1
+		DRAG_STOP = 1,
+		DRAG_NONE = 2
 	};
 
 	DragStatus ds;
@@ -98,6 +99,11 @@ protected:
 		}
 	}
 
+	DragStatus IsState()
+	{
+		return ds;
+	}
+
 	BOOL IsDragging(CRect dragRect, POINT mousePoint) 
 	{
 		BOOL bReturn = FALSE;
@@ -132,6 +138,11 @@ protected:
 			ds = DRAG_STOP;
 		}
 		return ds == DRAG_STOP ? TRUE : FALSE;
+	}
+
+	void CloseDragEvent()
+	{
+		ds = DRAG_NONE;
 	}
 
 	void Init(CWnd* dragUseWnd, CWnd* mainFrameParent, BindDialog bd, DragMode dm)

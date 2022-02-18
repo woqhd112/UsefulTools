@@ -343,7 +343,7 @@ bool NotePadXMLManager::CreateDefaultNoteXml(CMarkup* markUp, CString strFullPat
 	return bReturn;
 }
 
-int NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
+void NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
 {
 	int nNoteNameCount = 0;
 	CMarkup markUp;
@@ -404,8 +404,67 @@ int NotePadXMLManager::RecycleNoteXml(NoteSaveData origindata)
 		}
 	}
 	CustomXml::SaveXml(&markUp, strFullPath);
+}
 
-	return nNoteNameCount;
+void NotePadXMLManager::RecycleFolderXml(FolderSaveData origindata)
+{
+	CMarkup markUp;
+	CString strFullPath = _T("");
+	CustomXml::CreateConfigFile(strFullPath);
+	strFullPath += _T("\\NotePad.conf");
+	if (CustomXml::LoadConfigXml(&markUp, strFullPath))
+	{
+		markUp.FindElem(_T("NotePad"));
+		markUp.IntoElem();
+
+		if (markUp.FindElem(_T("bin")))
+		{
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				if (_ttoi(markUp.GetAttrib(_T("seq"))) == origindata.nFolderSequence)
+				{
+					markUp.RemoveElem();
+				}
+			}
+			markUp.OutOfElem();
+		}
+
+		if (markUp.FindElem(_T("recy")))
+		{
+			int nLastFolderSequence = 0;
+			markUp.IntoElem();
+			while (markUp.FindElem(_T("folder")))
+			{
+				nLastFolderSequence++;
+			}
+
+			markUp.AddElem(_T("folder"));
+			markUp.AddAttrib(_T("seq"), nLastFolderSequence);
+			markUp.AddAttrib(_T("name"), origindata.strFolderName);
+			markUp.AddAttrib(_T("tagcolor"), pManager->GetIndexFromTagColor(origindata.folderTagColor));
+			markUp.AddAttrib(_T("size"), origindata.nSize);
+			markUp.AddAttrib(_T("create"), origindata.strCreateTime);
+			markUp.AddAttrib(_T("update"), origindata.strUpdateTime);
+
+			markUp.IntoElem();
+			for (int i = 0; i < origindata.folder.Size(); i++)
+			{
+				NoteItem* updateNote = origindata.folder.At(i);
+				markUp.AddElem(_T("note"));
+				markUp.AddAttrib(_T("seq"), nLastFolderSequence);
+				markUp.AddAttrib(_T("name"), updateNote->GetNoteName());
+				markUp.AddAttrib(_T("lock"), updateNote->IsLock());
+				markUp.AddAttrib(_T("create"), pManager->GetTimeCal(updateNote->GetCreateTime()));
+				markUp.AddAttrib(_T("update"), pManager->GetTimeCal(updateNote->GetUpdateTime()));
+			}
+			markUp.OutOfElem();
+
+			markUp.OutOfElem();
+		}
+	}
+
+	CustomXml::SaveXml(&markUp, strFullPath);
 }
 
 void NotePadXMLManager::UpdateNoteXml(NoteSaveData origindata, NoteSaveData updatedata)
@@ -446,7 +505,8 @@ void NotePadXMLManager::UpdateNoteXml(NoteSaveData origindata, NoteSaveData upda
 				}
 				else if (_ttoi(markUp.GetAttrib(_T("seq"))) == updatedata.nFolderSequence)
 				{
-					markUp.SetAttrib(_T("size"), _ttoi(markUp.GetAttrib(_T("size"))) + 1);
+					int nSize = _ttoi(markUp.GetAttrib(_T("size")));
+					markUp.SetAttrib(_T("size"), nSize + 1);
 					markUp.IntoElem();
 					markUp.AddElem(_T("note"));
 					markUp.AddAttrib(_T("seq"), updatedata.nFolderSequence);

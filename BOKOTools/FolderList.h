@@ -31,6 +31,13 @@ public:
 
 private:
 
+	enum DragSectorPos
+	{
+		DRAG_SECTOR_PARENT = 0,
+		DRAG_SECTOR_NOTE = 1,
+		DRAG_SECTOR_FOLDER = 2,
+	};
+
 	//typedef std::vector<NoteItem*> ViewNoteList;
 	//typedef std::vector<FolderItem0*> ViewFolderList;
 	typedef NotePadContainer<NoteItem*> ViewNoteList;
@@ -47,6 +54,7 @@ private:
 	FolderItem0* downFolder;
 	FolderItem0* undoFolder;
 	POINT dragPoint;
+	DragSectorPos dragSectorPos;
 
 	int nEventPos;
 	int nEventFolderSequence;
